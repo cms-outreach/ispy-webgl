@@ -1,0 +1,48 @@
+#titlebar {
+  background-color: black;
+  height: 25px;
+}
+
+#toolbar {
+  background-color: black;
+  float: left;
+}
+
+#treeview {
+  background-color: black;
+  height: 500px;
+}
+
+#display {
+  background-color: black;
+  height: 500px;
+}
+
+#tableview {
+  background-color: black;
+  height: 140px;
+}
+
+.bordered {
+  border: thin solid gray;
+}
+
+#toolbar img {
+  width: 24px;
+  height: 24px;
+}
+
+#toolbar td {
+  padding-bottom: 4px;
+  padding-top: 4px;
+  padding-right: 2px;
+}
+
+.toolbar-button,
+.toolbar-button.selected {
+  border: 0;
+  background: 0;
+  background-color: #dfdfdf;
+  padding: 2px;
+  margin-left: 2px;
+}
