@@ -27,6 +27,10 @@
   border: thin solid gray;
 }
 
+#titlebar {
+  color: white;
+}
+
 #toolbar img {
   width: 24px;
   height: 24px;
@@ -45,4 +49,14 @@
   background-color: #dfdfdf;
   padding: 2px;
   margin-left: 2px;
+}
+
+#treeview .group {
+  border-top: 1px solid black;
+  background-color: #202020;
+  color: white;
+}
+
+#treeview .table-hover tr:hover td {
+  background-color: gray;
 }
