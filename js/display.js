@@ -4,8 +4,6 @@ yae.init = function() {
   var scene = new THREE.Scene();
   yae.scene = scene;
 
-  //yae.scene.add( new THREE.AmbientLight( 0x404040 ) );
-
   var width = 850.0;
   var height = 500.0;
 
@@ -42,9 +40,7 @@ yae.init = function() {
   yae.renderer.domElement.addEventListener('mousedown', yae.onDocumentMouseDown, false);
 
   yae.addGroups();
-  yae.loadDetector();
-
-  console.log(yae.scene.getObjectByName("Detector"));
+  yae.addDetector();
 }
 
 yae.render = function() {
@@ -133,7 +129,7 @@ yae.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "Physics Obje
 yae.addGroups = function() {
   var group_table = $('#treeview table');
   yae.data_groups.forEach(function(g) {
-    group_table.append("<tr><td class='group'>"+ g + "</td></tr>")
+    group_table.append("<tr id='"+ g +"'><td class='group'>"+ g +"</td></tr>")
   });
 }
 
@@ -200,6 +196,10 @@ yae.makeDT = function(dt, style) {
   return yae.makeWireframeBox(dt, style, 1);
 }
 
+yae.makeCSC = function(csc, style) {
+  return yae.makeWireframeBox(csc, style, 1);
+}
+
 yae.POINT = 0;
 yae.LINE = 1;
 yae.BOX = 2;
@@ -207,7 +207,7 @@ yae.SCALEDBOX = 3;
 yae.TRACK = 4;
 
 yae.data_description = {
-  "DTs3D_V1": {type: yae.BOX, on: true, group: "Detector", name: "Drift Tubes (muon)",
+  "DTs3D_V1": {type: yae.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
     fn: yae.makeDT, style: {color: [1, 0.6, 0], opacity: 0.3, linewidth: 0.9}},
   "CSC3D_V1": {type: yae.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
     fn: yae.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.3, linewidth: 0.8}},
@@ -221,8 +221,27 @@ for (var key in yae.data_description) {
   }
 }
 
-yae.loadDetector = function() {
+yae.toggle = function(group, key) {
+  yae.disabled[key] = !yae.disabled[key];
 
+  yae.scene.getObjectByName(group).children.forEach(function(c) {
+    if ( c.name === key ) {
+      c.visible = !yae.disabled[key];
+    }
+  });
+}
+
+yae.addSelectionRow = function(group, key, name) {
+  var html = "<tr>";
+  html += "<td class='collection'>"+ name +"</td>";
+  html += "<td class='collection'>";
+  html += "<input type='checkbox' onchange='yae.toggle(\""+ group + "\",\"" + key + "\");'>";
+  html += "</td>";
+  html += "</tr>";
+  $('#'+group).after(html);
+}
+
+yae.addDetector = function() {
   // Iterate over objects specified in yae.data_description
   // and if they are in the detector geometry add them to the scene
   for ( var key in yae.data_description ) {
@@ -233,10 +252,11 @@ yae.loadDetector = function() {
       }
 
       var descr = yae.data_description[key];
+      yae.addSelectionRow(descr.group, key, descr.name);
 
       // If something is already disabled via the toggle then this
       // should override what comes from the description
-      //var on = ! yae.disabled[key] ? descr.on = true : descr.on = false;
+      var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
 
       switch(descr.type) {
 
@@ -247,8 +267,8 @@ yae.loadDetector = function() {
             if ( box != null ) {
 
               box.forEach(function(l) {
-                l.name = descr.key;
-                l.visible = true;
+                l.name = key;
+                l.visible = visible;
                 yae.scene.getObjectByName(descr.group).add(l);
               });
             }

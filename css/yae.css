@@ -57,6 +57,7 @@
   color: white;
 }
 
-#treeview .table-hover tr:hover td {
-  background-color: gray;
+#treeview .collection {
+  border-top: 0px;
+  color: white;
 }
