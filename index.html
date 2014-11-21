@@ -9,6 +9,8 @@
   <script src="./js/CombinedCamera.js"></script>
   <script src="./js/TrackballControls.js"></script>
   <script src="./js/setup.js"></script>
+  <script src="./js/detector.js"></script>
+  <script src="./js/display.js"></script>
   <title>YAE</title>
 </head>
 <body>
@@ -23,67 +25,67 @@
         <table id="toolbar">
           <tr>
             <td>
-              <a class="toolbar-button btn" onclick="showEventLoader();">
+              <a class="toolbar-button btn" onclick="yae.showEventLoader();">
                 <img src="./graphics/open.png" title="Open File"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button disabled btn" id="prev-event-button" onclick="prevEvent();">
+              <a class="toolbar-button disabled btn" id="prev-event-button" onclick="yae.prevEvent();">
                 <img src="./graphics/prev-event.png" title="Previous Event"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button disabled btn" id="next-event-button" onclick="nextEvent();">
+              <a class="toolbar-button disabled btn" id="next-event-button" onclick="yae.nextEvent();">
                 <img src="./graphics/next-event.png" title="Next Event"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="setCameraHome();">
+              <a class="toolbar-button btn" onclick="yae.setCameraHome();">
                 <img src="./graphics/home.png" title="Return to Start View"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="zoom(1);">
+              <a class="toolbar-button btn" onclick="yae.zoom(0.5);">
                 <img src="./graphics/zoom_in_24.png" title="Zoom In"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="zoom(-1);">
+              <a class="toolbar-button btn" onclick="yae.zoom(-0.5);">
                 <img src="./graphics/zoom_out_24.png" title="Zoom Out"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="setCameraRotation(0, 0, 0);">
+              <a class="toolbar-button btn" onclick="yae.setXY();">
                 <img src="./graphics/z-plane.png" title="X-Y Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="setCameraRotation(0, Math.PI / 2, Math.PI / 2);">
+              <a class="toolbar-button btn" onclick="yae.setZX();">
                 <img src="./graphics/y-plane.png" title="Z-X Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="setCameraRotation(0, Math.PI / 2, 0);">
+              <a class="toolbar-button btn" onclick="yae.setYZ();">
                 <img src="./graphics/x-plane.png" title="Y-Z Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" id="perspective-view" onclick="setPerspectiveProjection(true);">
+              <a class="toolbar-button btn" id="perspective-view" onclick="yae.setPerspective();">
                 <img src="./graphics/perspective-projection.png" title="Perspective View"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" id="orthographic-view" onclick="setPerspectiveProjection(false);">
+              <a class="toolbar-button btn" id="orthographic-view" onclick="yae.setOrthographic();">
                 <img src="./graphics/orthographic-projection.png" title="Orthographic View"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="showSettings();">
+              <a class="toolbar-button btn" onclick="yae.showSettings();">
                 <img src="./graphics/settings.png" title="Settings"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="openAboutWindow();">
+              <a class="toolbar-button btn" onclick="yae.openAboutWindow();">
                 <img src="./graphics/help2.png" title="About"/>
               </a>
             </td>
@@ -96,6 +98,7 @@
         <table class="table table-hover">
         </table>
       </div>
+      <!-- The canvas goes into this div -->
       <div class="col-lg-9 bordered" id="display"></div>
     </div>
     <div class="row">
@@ -104,8 +107,8 @@
   <div>
   <script type="text/javascript">
     $(function() {
-      yae.version();
       yae.init();
+      yae.animate();
     });
   </script>
 </body>
