@@ -11,11 +11,13 @@
 #treeview {
   background-color: black;
   height: 500px;
+  overflow: scroll;
 }
 
 #display {
   background-color: black;
   height: 500px;
+  overflow: hidden;
 }
 
 #tableview {
