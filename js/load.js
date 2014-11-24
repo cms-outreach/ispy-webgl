@@ -51,14 +51,33 @@ yae.updateEventList = function() {
   }
 }
 
+yae.enableNextPrev = function() {
+  if ( yae.event_index > 0 ) {
+    $("#prev-event-button").removeClass("disabled");
+  }
+  else {
+    $("#prev-event-button").addClass("disabled");
+  }
+
+  if ( yae.event_list && yae.event_list.length - 1 > yae.event_index ) {
+    $("#next-event-button").removeClass("disabled");
+  }
+  else {
+    $("#next-event-button").addClass("disabled");
+  }
+}
+
 yae.loadEvent = function() {
   $("#files").modal('hide');
-  $("#event-loaded").html(yae.file_name + ":" + yae.event_list[yae.event_index]);
+  $("#event-loaded").html("Loading...");
 
-  var msg = "Want to load ";
-  msg += yae.event_list[yae.event_index] + " ?";
-  msg += "Coming soon!"
-  alert(msg);
+  try {
+    var event = JSON.parse(yae.cleanupData(yae.ig_data.file(yae.event_list[yae.event_index]).asText()));
+  } catch(err) {
+    alert(err);
+  }
+
+  $("#event-loaded").html(yae.file_name + ":" + yae.event_list[yae.event_index]);
 }
 
 yae.selectLocalFile = function(index) {
@@ -77,6 +96,7 @@ yae.selectLocalFile = function(index) {
     });
 
     yae.event_list = event_list;
+    yae.event_index = 0;
     yae.updateEventList();
     yae.ig_data = zip;
   }
@@ -143,6 +163,7 @@ yae.selectFile = function(filename) {
       });
 
       yae.event_list = event_list;
+      yae.event_index = 0;
       yae.updateEventList();
       yae.ig_data = zip;
     }
