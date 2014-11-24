@@ -11,6 +11,7 @@
   <script src="./js/TrackballControls.js"></script>
   <script src="./js/setup.js"></script>
   <script src="./js/detector.js"></script>
+  <script src="./js/loader.js"></script>
   <script src="./js/display.js"></script>
   <title>YAE</title>
 </head>
@@ -26,7 +27,7 @@
         <table id="toolbar">
           <tr>
             <td>
-              <a class="toolbar-button btn" data-toggle="modal" data-target="#event-browser">
+              <a class="toolbar-button btn" data-toggle="modal" data-target="#open-files">
                 <img src="./graphics/open.png" title="Open File"/>
               </a>
             </td>
@@ -81,12 +82,12 @@
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.showSettings();">
+              <a class="toolbar-button btn" data-toggle="modal" data-target="#settings">
                 <img src="./graphics/settings.png" title="Settings"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.openAboutWindow();">
+              <a class="toolbar-button btn" data-toggle="modal" data-target="#about">
                 <img src="./graphics/help2.png" title="About"/>
               </a>
             </td>
@@ -116,7 +117,29 @@
   </script>
 </body>
 
-<div id="event-browser" role="dialog" class="modal">
+<div id="open-files" role="dialog" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Open File</h4>
+      </div>
+      <div class="modal-body">
+        <table>
+          <p><button type="button" class="btn btn-default" onclick="yae.openDialog('#files'); $('#open-files').modal('hide');">Open file(s) from the Web</button></p>
+          <p>
+            Open local file(s): <input type="file" onclick="$('#open-files').modal('hide');" multiple/>
+          </p>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="files" role="dialog" class="modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -129,7 +152,7 @@
             <th class="browser-header" width="50%">Files</th>
             <th class="browser-header">Events</th>
           </tr>
-          <tr id="panels">
+          <tr>
             <td>
               <table id="browser-files"></table>
             </td>
@@ -143,6 +166,40 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-default">Load</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="settings" role="dialog" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Settings</h4>
+      </div>
+      <div class="modal-body">
+        Settings stuff goes here...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="about" role="dialog" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">About</h4>
+      </div>
+      <div class="modal-body">
+        About stuff goes here...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

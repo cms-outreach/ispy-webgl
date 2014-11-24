@@ -64,12 +64,12 @@
   color: white;
 }
 
-#event-browser button.close {
+.modal-dialog button.close {
   color: red;
   opacity: 1.0;
 }
 
-#event-browser .browser-header {
+.browser-header {
   background-color: #202020;
   color: white;
 }
