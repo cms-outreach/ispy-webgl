@@ -73,11 +73,27 @@ yae.loadEvent = function() {
 
   try {
     var event = JSON.parse(yae.cleanupData(yae.ig_data.file(yae.event_list[yae.event_index]).asText()));
+    yae.addEvent(event);
   } catch(err) {
     alert(err);
   }
 
+  yae.enableNextPrev();
   $("#event-loaded").html(yae.file_name + ":" + yae.event_list[yae.event_index]);
+}
+
+yae.nextEvent = function() {
+  if ( yae.event_list && yae.event_list.length-1 > yae.event_index ) {
+    yae.event_index++;
+    yae.loadEvent();
+  }
+}
+
+yae.prevEvent = function() {
+  if ( yae.event_list && yae.event_index > 0) {
+    yae.event_index--;
+    yae.loadEvent();
+  }
 }
 
 yae.selectLocalFile = function(index) {

@@ -397,3 +397,7 @@ yae.makeDT = function(dt, style) {
 yae.makeCSC = function(csc, style) {
   return yae.makeWireframeBox(csc, style, 1);
 }
+
+yae.makeMuonChamber = function(chamber, style) {
+  return yae.makeWireframeBox(chamber, style, 1);
+}

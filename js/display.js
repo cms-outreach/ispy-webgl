@@ -55,14 +55,6 @@ yae.animate = function() {
   yae.render();
 }
 
-yae.previousEvent = function() {
-  console.log('previous event');
-};
-
-yae.nextEvent = function() {
-  console.log('next event');
-}
-
 yae.lookAtOrigin = function() {
   yae.camera.lookAt(new THREE.Vector3(0,0,0));
 }
@@ -165,6 +157,7 @@ yae.detector_description = {
 };
 
 yae.event_description = {
+/*
   "EBRecHits_V2": {type: yae.BOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05},
   "EERecHits_V2": {type: yae.BOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
@@ -188,13 +181,14 @@ yae.event_description = {
   "Tracks_V3": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     dataref: "Extras_V1", assoc: "TrackExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
-
+*/
   /*
     need to fix these
   "DTRecHits_V1": {type: yae.LINE, on: true, group: "Muon", name: "DT Rec. Hits",
     fn: yae.makeDTRecHits, style: {color: [0, 1, 0], opacity: 1.0, linewidth: 2}},
   */
 
+/*
   "DTRecSegment4D_V1": {type: yae.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
     fn: yae.makeDTRecSegments, style: {color: [1, 1, 0, 1], linewidth: 3}},
   "CSCSegments_V1": {type: yae.LINE, on: true, group: "Muon", name: "CSC Segments",
@@ -203,8 +197,10 @@ yae.event_description = {
     fn: yae.makeRPCRecHits, style: {color: [0.8, 1, 0, 1], linewidth: 3}},
   "CSCRecHit2Ds_V2": {type: yae.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
     fn: yae.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], linewidth: 2}},
+*/
   "MuonChambers_V1": {type: yae.BOX, on: true, group: "Muon", name: "Matching muon chambers",
-    fn: yae.makeMuonChamber, style: {color: [1, 0, 0, 0.3], linewidth: 0.8}},
+    fn: yae.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}}
+/*
   "GsfElectrons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
@@ -229,6 +225,7 @@ yae.event_description = {
     fn: yae.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
   "Jets_V1": {type: yae.SHAPE, on: false, group: "Physics Objects", name: "Jets",
     fn: yae.makeJet, style: {color: [1, 1, 0], opacity: 1.0}}
+*/
 };
 
 yae.disabled = new Array();
@@ -250,7 +247,12 @@ yae.toggle = function(group, key) {
 }
 
 yae.addSelectionRow = function(group, key, name) {
-  var html = "<tr>";
+  var dc = "Detector";
+  if ( group != "Detector" ) {
+    dc = "Event";
+  }
+
+  var html = "<tr class='" + dc + "'>";
   html += "<td class='collection'>"+ name +"</td>";
   html += "<td class='collection'>";
   html += "<input type='checkbox' onchange='yae.toggle(\""+ group + "\",\"" + key + "\");'>";
@@ -307,5 +309,46 @@ yae.addDetector = function() {
           }
         break;
       }
+  }
+}
+
+yae.addEvent = function(event) {
+  // remove all but the geometry from the
+  // scene before rendering
+  yae.scene.children.forEach(function(c) {
+    if ( c.name != "Detector" ) {
+      yae.scene.getObjectByName(c.name).children.length = 0;
+    }
+  });
+
+  // remove selectors for last event
+  $("tr.Event").remove();
+
+  for ( var key in yae.event_description ) {
+    var data = event["Collections"][key];
+    if ( ! data || data.length === 0 ) {
+      continue;
+    }
+
+    var descr = yae.event_description[key];
+    yae.addSelectionRow(descr.group, key, descr.name);
+
+    var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
+
+    switch(descr.type) {
+
+      case yae.BOX:
+        for ( var i = 0; i < data.length; i++ ) {
+          var box = descr.fn(data[i], descr.style);
+          if ( box != null ) {
+            box.forEach(function(l) {
+              l.name = key;
+              l.visible = visible;
+              yae.scene.getObjectByName(descr.group).add(l);
+            });
+          }
+        }
+      break;
+    }
   }
 }
