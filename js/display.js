@@ -626,8 +626,6 @@ yae.addDetector = function() {
         break;
 
         case yae.MODEL:
-          console.log(key, descr.name);
-
           for ( var i = 0; i < data.length; i++ ) {
             var models = descr.fn(data[i], descr.style);
 

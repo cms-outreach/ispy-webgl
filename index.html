@@ -4,11 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/yae.css">
+
   <script src="./js/jquery-1.11.1.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
   <script src="./js/three.js"></script>
   <script src="./js/CombinedCamera.js"></script>
   <script src="./js/TrackballControls.js"></script>
+  <script src="./js/jszip.min.js"></script>
+
   <script src="./js/setup.js"></script>
   <script src="./js/detector.js"></script>
   <script src="./js/loader.js"></script>
@@ -19,7 +22,10 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 bordered" id="titlebar">
-        YAE: Yay! Another Event display
+        <div class=row">
+          <div class="col-lg-6" id="application-name">YAE: Yay! Another Event display</div>
+          <div class="col-lg-6" id="event-loaded"></div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -126,9 +132,9 @@
       </div>
       <div class="modal-body">
         <table>
-          <p><button type="button" class="btn btn-default" onclick="yae.openDialog('#files'); $('#open-files').modal('hide');">Open file(s) from the Web</button></p>
+          <p><button type="button" class="btn btn-default" onclick="yae.openDialog('#files'); yae.loadWebFiles(); $('#open-files').modal('hide');">Open file(s) from the Web</button></p>
           <p>
-            Open local file(s): <input type="file" onclick="$('#open-files').modal('hide');" multiple/>
+            Open local file(s): <input type="file" id="local-files" onchange="yae.loadLocalFiles();" onclick="$('#open-files').modal('hide');" multiple/>
           </p>
         </table>
       </div>
@@ -154,10 +160,10 @@
           </tr>
           <tr>
             <td>
-              <table id="browser-files"></table>
+              <table class="table" id="browser-files"></table>
             </td>
             <td>
-              <table id="browser-events"></table>
+              <table class="table" id="browser-events"></table>
             </td>
           </tr>
         </table>
@@ -165,7 +171,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-default">Load</button>
+        <button type="button" class="btn btn-default" onclick="yae.loadEvent();">Load</button>
       </div>
     </div>
   </div>
