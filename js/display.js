@@ -55,10 +55,6 @@ yae.animate = function() {
   yae.render();
 }
 
-yae.showEventLoader = function() {
-  alert('coming soon!');
-};
-
 yae.previousEvent = function() {
   console.log('previous event');
 };

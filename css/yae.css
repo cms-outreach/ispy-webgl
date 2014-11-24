@@ -63,3 +63,13 @@
   border-top: 0px;
   color: white;
 }
+
+#event-browser button.close {
+  color: red;
+  opacity: 1.0;
+}
+
+#event-browser .browser-header {
+  background-color: #202020;
+  color: white;
+}
