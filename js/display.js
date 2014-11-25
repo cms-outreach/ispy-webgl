@@ -124,10 +124,11 @@ yae.addGroups = function() {
 yae.POINT = 0;
 yae.LINE = 1;
 yae.BOX = 2;
-yae.PATH = 3;
-yae.MODEL = 4;
-yae.TRACK = 5;
-yae.SHAPE = 6;
+yae.SCALEDBOX = 3;
+yae.PATH = 4;
+yae.MODEL = 5;
+yae.TRACK = 6;
+yae.SHAPE = 7;
 
 yae.detector_description = {
   "TrackerBarrel3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
@@ -157,21 +158,22 @@ yae.detector_description = {
 };
 
 yae.event_description = {
-/*
-  "EBRecHits_V2": {type: yae.BOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
+  "EBRecHits_V2": {type: yae.SCALEDBOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "EERecHits_V2": {type: yae.BOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
+  "EERecHits_V2": {type: yae.SCALEDBOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "ESRecHits_V2": {type: yae.BOX, on: false, group: "ECAL", name: "Preshower Rec. Hits",
+  "ESRecHits_V2": {type: yae.SCALEDBOX, on: false, group: "ECAL", name: "Preshower Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [1, 0.2, 0], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "HBRecHits_V2": {type: yae.BOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
+  "HBRecHits_V2": {type: yae.SCALEDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HERecHits_V2": {type: yae.BOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
+  "HERecHits_V2": {type: yae.SCALEDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HFRecHits_V2": {type: yae.BOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
+  "HFRecHits_V2": {type: yae.SCALEDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.6, 1, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HORecHits_V2": {type: yae.BOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
+  "HORecHits_V2": {type: yae.SCALEDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
+
+/*
   "Tracks_V1": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     dataref: "Extras_V1", assoc: "TrackExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
@@ -331,6 +333,8 @@ yae.addEvent = function(event) {
     }
 
     var descr = yae.event_description[key];
+    console.log(descr);
+
     yae.addSelectionRow(descr.group, key, descr.name);
 
     var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
@@ -345,6 +349,19 @@ yae.addEvent = function(event) {
               l.name = key;
               l.visible = visible;
               yae.scene.getObjectByName(descr.group).add(l);
+            });
+          }
+        }
+      break;
+
+      case yae.SCALEDBOX:
+        for ( var i = 0; i < data.length; i++ ) {
+          var sbox = descr.fn(data[i], descr.style, descr.scale);
+          if ( sbox != null ) {
+            sbox.forEach(function(s) {
+              s.name = key;
+              s.visible = visible;
+              yae.scene.getObjectByName(descr.group).add(s);
             });
           }
         }

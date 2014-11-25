@@ -390,6 +390,217 @@ yae.makeModelHcalEndcap = function(data, style) {
   return [[points, lines]];
 }
 
+yae.makeScaledWireframeBox = function(data, style, ci, scale) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+  var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+  var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+  var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+
+  b1.sub(f1);
+  b2.sub(f2);
+  b3.sub(f3);
+  b4.sub(f4);
+
+  b1.normalize();
+  b2.normalize();
+  b3.normalize();
+  b4.normalize();
+
+  b1.multiplyScalar(scale);
+  b2.multiplyScalar(scale);
+  b3.multiplyScalar(scale);
+  b4.multiplyScalar(scale);
+
+  b1.addVectors(f1,b1);
+  b2.addVectors(f2,b2);
+  b3.addVectors(f3,b3);
+  b4.addVectors(f4,b4);
+
+  var wfcolor = new THREE.Color();
+  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var material = new THREE.LineBasicMaterial({color:wfcolor,
+                                              linewidth:style.linewidth,
+                                              opacity:style.opacity});
+
+  var front = new THREE.Geometry();
+  front.vertices.push(f1);
+  front.vertices.push(f2);
+  front.vertices.push(f3);
+  front.vertices.push(f4);
+  front.vertices.push(f1);
+
+  var back = new THREE.Geometry();
+  back.vertices.push(b1);
+  back.vertices.push(b2);
+  back.vertices.push(b3);
+  back.vertices.push(b4);
+  back.vertices.push(b1);
+
+  var s1 = new THREE.Geometry();
+  s1.vertices.push(f1);
+  s1.vertices.push(b1);
+
+  var s2 = new THREE.Geometry();
+  s2.vertices.push(f2);
+  s2.vertices.push(b2);
+
+  var s3 = new THREE.Geometry();
+  s3.vertices.push(f3);
+  s3.vertices.push(b3);
+
+  var s4 = new THREE.Geometry();
+  s4.vertices.push(f4);
+  s4.vertices.push(b4);
+
+  return [new THREE.Line(front,material),
+          new THREE.Line(back,material),
+          new THREE.Line(s1,material),
+          new THREE.Line(s2,material),
+          new THREE.Line(s3,material),
+          new THREE.Line(s4,material)];
+}
+
+yae.makeScaledSolidBox = function(data, style, ci, scale) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+  var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+  var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+  var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+
+  var front = new THREE.Geometry();
+
+  front.vertices.push(f1);
+  front.vertices.push(f2);
+  front.vertices.push(f3);
+  front.vertices.push(f4);
+
+  front.faces.push(new THREE.Face3(0,1,2));
+  front.faces.push(new THREE.Face3(0,2,3));
+
+  //front.computeCentroids();
+  front.computeFaceNormals();
+  front.computeVertexNormals();
+
+  b1.sub(f1);
+  b2.sub(f2);
+  b3.sub(f3);
+  b4.sub(f4);
+
+  b1.normalize();
+  b2.normalize();
+  b3.normalize();
+  b4.normalize();
+
+  b1.multiplyScalar(scale);
+  b2.multiplyScalar(scale);
+  b3.multiplyScalar(scale);
+  b4.multiplyScalar(scale);
+
+  b1.addVectors(f1,b1);
+  b2.addVectors(f2,b2);
+  b3.addVectors(f3,b3);
+  b4.addVectors(f4,b4);
+
+  var back = new THREE.Geometry();
+
+  back.vertices.push(b1);
+  back.vertices.push(b2);
+  back.vertices.push(b3);
+  back.vertices.push(b4);
+
+  back.faces.push(new THREE.Face3(0,1,2));
+  back.faces.push(new THREE.Face3(0,2,3));
+
+  //back.computeCentroids();
+  back.computeFaceNormals();
+  back.computeVertexNormals();
+
+  var top = new THREE.Geometry();
+
+  top.vertices.push(b1);
+  top.vertices.push(b2);
+  top.vertices.push(f2);
+  top.vertices.push(f1);
+
+  top.faces.push(new THREE.Face3(0,1,2));
+  top.faces.push(new THREE.Face3(0,2,3));
+
+  //top.computeCentroids();
+  top.computeFaceNormals();
+  top.computeVertexNormals();
+
+  var bottom = new THREE.Geometry();
+
+  bottom.vertices.push(f3);
+  bottom.vertices.push(b3);
+  bottom.vertices.push(b4);
+  bottom.vertices.push(f4);
+
+  bottom.faces.push(new THREE.Face3(0,1,2));
+  bottom.faces.push(new THREE.Face3(0,2,3));
+
+  //bottom.computeCentroids();
+  bottom.computeFaceNormals();
+  bottom.computeVertexNormals();
+
+  var left = new THREE.Geometry();
+
+  left.vertices.push(f2);
+  left.vertices.push(b2);
+  left.vertices.push(b3);
+  left.vertices.push(f3);
+
+  left.faces.push(new THREE.Face3(0,1,2));
+  left.faces.push(new THREE.Face3(0,2,3));
+
+  //left.computeCentroids();
+  left.computeFaceNormals();
+  left.computeVertexNormals();
+
+  var right = new THREE.Geometry();
+
+  right.vertices.push(b1);
+  right.vertices.push(f1);
+  right.vertices.push(f4);
+  right.vertices.push(b4);
+
+  right.faces.push(new THREE.Face3(0,1,2));
+  right.faces.push(new THREE.Face3(0,2,3));
+
+  //right.computeCentroids();
+  right.computeFaceNormals();
+  right.computeVertexNormals();
+
+  var mcolor = new THREE.Color();
+  mcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var material = new THREE.MeshBasicMaterial({color:mcolor,
+                                              opacity:style.opacity});
+  material.side = THREE.DoubleSide;
+
+  return [new THREE.Mesh(front, material), new THREE.Mesh(back, material),
+          new THREE.Mesh(top, material), new THREE.Mesh(bottom, material),
+          new THREE.Mesh(left, material), new THREE.Mesh(right, material)];
+}
+
+yae.makeRecHit_V2 = function(data, style, scale) {
+  var energy = data[0];
+  if ( energy > 0.5 ) { // make this a setting
+    //return yae.makeScaledSolidBox(data, style, 5, scale*energy);
+    return yae.makeScaledWireframeBox(data, style, 5, scale*energy);
+  }
+}
+
 yae.makeDT = function(dt, style) {
   return yae.makeWireframeBox(dt, style, 1);
 }
