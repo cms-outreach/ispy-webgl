@@ -91,7 +91,11 @@ yae.makeWireframeBox = function(data, style, ci) {
   var wfcolor = new THREE.Color();
   wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
-  var material = new THREE.LineBasicMaterial({color:wfcolor,
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+  var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
                                               linewidth:style.linewidth,
                                               opacity:style.opacity});
 
@@ -142,7 +146,13 @@ yae.makeShapes = function(data, style) {
 
   var wfcolor = new THREE.Color();
     wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-  var material = new THREE.LineBasicMaterial({color:wfcolor, linewidth:style.linewidth, opacity: style.opacity});
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.LineBasicMaterial({color:wfcolor, linewidth:style.linewidth, transparent: transp, opacity: style.opacity});
 
   for ( var i = 0; i < lines.length; i++ ) {
     var l = lines[i];
@@ -424,7 +434,11 @@ yae.makeScaledWireframeBox = function(data, style, ci, scale) {
   var wfcolor = new THREE.Color();
   wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
-  var material = new THREE.LineBasicMaterial({color:wfcolor,
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+  var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
                                               linewidth:style.linewidth,
                                               opacity:style.opacity});
 
