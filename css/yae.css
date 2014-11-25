@@ -53,6 +53,10 @@
   margin-left: 2px;
 }
 
+.btn {
+  background-color: #dfdfdf;
+}
+
 #treeview .group {
   border-top: 1px solid black;
   background-color: #202020;
@@ -66,7 +70,33 @@
 
 .modal-dialog button.close {
   color: red;
+  background-color: #202020;
   opacity: 1.0;
+}
+
+.modal-content {
+  color:white;
+  background-color: black;
+}
+
+.modal-content div {
+  border: none;
+}
+
+.modal-content td {
+  background-color: #303030;
+}
+
+.modal-content td > a {
+  color: white;
+}
+
+.modal-title {
+  background-color: #202020;
+}
+
+.modal .modal-body {
+  max-height: 420px;
 }
 
 .browser-header {
