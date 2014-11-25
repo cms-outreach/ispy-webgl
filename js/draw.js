@@ -584,7 +584,11 @@ yae.makeScaledSolidBox = function(data, style, ci, scale) {
   var mcolor = new THREE.Color();
   mcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
-  var material = new THREE.MeshBasicMaterial({color:mcolor,
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+  var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
                                               opacity:style.opacity});
   material.side = THREE.DoubleSide;
 
@@ -596,8 +600,8 @@ yae.makeScaledSolidBox = function(data, style, ci, scale) {
 yae.makeRecHit_V2 = function(data, style, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
-    //return yae.makeScaledSolidBox(data, style, 5, scale*energy);
-    return yae.makeScaledWireframeBox(data, style, 5, scale*energy);
+    return yae.makeScaledSolidBox(data, style, 5, scale*energy);
+    //return yae.makeScaledWireframeBox(data, style, 5, scale*energy);
   }
 }
 

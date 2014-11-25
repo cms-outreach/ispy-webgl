@@ -135,7 +135,7 @@ yae.detector_description = {
     fn: yae.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
   "TrackerEndcap3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: yae.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: yae.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
     fn: yae.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcap3D_plus": {type: yae.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: yae.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
@@ -145,7 +145,7 @@ yae.detector_description = {
     fn: yae.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalEndcap3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: yae.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalOuter3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "HCAL Outer",
+  "HcalOuter3D_MODEL": {type: yae.MODEL, on: true, group: "Detector", name: "HCAL Outer",
     fn: yae.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalForward3D_plus": {type: yae.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
     fn: yae.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
@@ -238,6 +238,12 @@ for (var key in yae.detector_description) {
   }
 }
 
+for (var key in yae.event_description) {
+  if ( ! yae.event_description[key].on ) {
+    yae.disabled[key] = true;
+  }
+}
+
 yae.toggle = function(group, key) {
   yae.disabled[key] = !yae.disabled[key];
 
@@ -248,16 +254,18 @@ yae.toggle = function(group, key) {
   });
 }
 
-yae.addSelectionRow = function(group, key, name) {
+yae.addSelectionRow = function(group, key, name, visible) {
   var dc = "Detector";
   if ( group != "Detector" ) {
     dc = "Event";
   }
 
+  var on = !yae.disabled[key] ? ' checked="true"' : "";
+
   var html = "<tr class='" + dc + "'>";
   html += "<td class='collection'>"+ name +"</td>";
   html += "<td class='collection'>";
-  html += "<input type='checkbox' onchange='yae.toggle(\""+ group + "\",\"" + key + "\");'>";
+  html += "<input type='checkbox' " + on + "onchange='yae.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
   html += "</tr>";
   $('#'+group).after(html);
@@ -272,11 +280,11 @@ yae.addDetector = function() {
       }
 
       var descr = yae.detector_description[key];
-      yae.addSelectionRow(descr.group, key, descr.name);
 
       // If something is already disabled via the toggle then this
       // should override what comes from the description
       var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
+      yae.addSelectionRow(descr.group, key, descr.name, visible);
 
       switch(descr.type) {
 
@@ -333,11 +341,8 @@ yae.addEvent = function(event) {
     }
 
     var descr = yae.event_description[key];
-    console.log(descr);
-
-    yae.addSelectionRow(descr.group, key, descr.name);
-
     var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
+    yae.addSelectionRow(descr.group, key, descr.name, visible);
 
     switch(descr.type) {
 
