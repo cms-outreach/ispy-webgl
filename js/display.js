@@ -173,7 +173,6 @@ yae.event_description = {
   "HORecHits_V2": {type: yae.SCALEDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
     fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
 
-/*
   "Tracks_V1": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     dataref: "Extras_V1", assoc: "TrackExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
@@ -183,7 +182,7 @@ yae.event_description = {
   "Tracks_V3": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     dataref: "Extras_V1", assoc: "TrackExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
-*/
+
   /*
     need to fix these
   "DTRecHits_V1": {type: yae.LINE, on: true, group: "Muon", name: "DT Rec. Hits",
@@ -201,16 +200,18 @@ yae.event_description = {
     fn: yae.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], linewidth: 2}},
 */
   "MuonChambers_V1": {type: yae.BOX, on: true, group: "Muon", name: "Matching muon chambers",
-    fn: yae.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}}
-/*
+    fn: yae.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
   "GsfElectrons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
+
+/*
   "GsfElectrons_V2": {type: yae.PATH, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
   "Photons_V1": {type: yae.LINE, on: false, group: "Physics Objects", name: "Photons (Reco)",
      fn: yae.makePhotons, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
+*/
   "TrackerMuons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Tracker Muons (Reco)",
     dataref: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: yae.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
@@ -223,6 +224,7 @@ yae.event_description = {
   "GlobalMuons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Global Muons (Reco)",
     dataref: "Points_V1", assoc: "MuonGlobalPoints_V1",
     fn: yae.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
+/*
   "METs_V1": {type: yae.SHAPE, on: false, group: "Physics Objects", name: "Missing Et (Reco)",
     fn: yae.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
   "Jets_V1": {type: yae.SHAPE, on: false, group: "Physics Objects", name: "Jets",
@@ -341,6 +343,18 @@ yae.addEvent = function(event) {
     }
 
     var descr = yae.event_description[key];
+
+    var dataref = null;
+    var assoc = null;
+
+    if (descr.dataref) {
+        dataref = event["Collections"][descr.dataref];
+    }
+
+    if (descr.assoc) {
+      assoc = event["Associations"][descr.assoc];
+    }
+
     var visible = ! yae.disabled[key] ? descr.on = true : descr.on = false;
     yae.addSelectionRow(descr.group, key, descr.name, visible);
 
@@ -371,6 +385,15 @@ yae.addEvent = function(event) {
           }
         }
       break;
+
+      case yae.TRACK:
+        var tracks = descr.fn(data, descr.style, dataref, assoc);
+        tracks.forEach(function(t) {
+          t.name = key;
+          t.visible = visible;
+          yae.scene.getObjectByName(descr.group).add(t);
+        });
+        break;
     }
   }
 }

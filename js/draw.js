@@ -611,6 +611,107 @@ yae.makeScaledSolidBox = function(data, style, ci, scale) {
           new THREE.Mesh(left, material), new THREE.Mesh(right, material)];
 }
 
+yae.makeTrackPoints = function(data, style, data2, assoc) {
+  if ( ! assoc ) {
+    throw "No association!";
+  }
+
+  var wfcolor = new THREE.Color();
+  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var muons = [];
+  for ( var i = 0; i < data.length; i++ ) {
+    muons[i] = new THREE.Geometry();
+  }
+
+  var mi = 0;
+  for ( var j = 0; j < assoc.length; j++ ) {
+    mi = assoc[j][0][1];
+    pi = assoc[j][1][1];
+    muons[mi].vertices.push(new THREE.Vector3(data2[pi][0][0],data2[pi][0][1],data2[pi][0][2]));
+  }
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var lines = [];
+  for ( var k = 0; k < muons.length; k++ ) {
+    var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
+                                              linewidth:style.linewidth,
+                                              opacity:style.opacity});
+    lines.push(new THREE.Line(muons[k], material));
+  }
+
+  return lines;
+}
+
+yae.makeTrackCurves = function(tracks, style, extras, assocs) {
+  if ( ! assocs ) {
+    throw "No association!";
+  }
+
+  var wfcolor = new THREE.Color();
+  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var ti, ei;
+  var p1, d1, p2, d2;
+  var distance, scale, curve;
+  var geometry;
+
+  var curves = [];
+
+  for ( var i = 0; i < assocs.length; i++ ) {
+    ti = assocs[i][0][1];
+    ei = assocs[i][1][1];
+
+    p1 = new THREE.Vector3(extras[ei][0][0],extras[ei][0][1],extras[ei][0][2]);
+    d1 = new THREE.Vector3(extras[ei][1][0],extras[ei][1][1],extras[ei][1][2]);
+    d1.normalize();
+
+    p2 = new THREE.Vector3(extras[ei][2][0],extras[ei][2][1],extras[ei][2][2]);
+    d2 = new THREE.Vector3(extras[ei][3][0],extras[ei][3][1],extras[ei][3][2]);
+    d2.normalize();
+
+    // What's all this then?
+    // Well, we know the beginning and end points of the track as well
+    // as the directions at each of those points. This in-principle gives
+    // us the 4 control points needed for a cubic bezier spline.
+    // The control points from the directions are determined by moving along 0.25
+    // of the distance between the beginning and end points of the track.
+    // This 0.25 is nothing more than a fudge factor that reproduces closely-enough
+    // the NURBS-based drawing of tracks done in iSpy. At some point it may be nice
+    // to implement the NURBS-based drawing but I value my sanity.
+
+    distance = p1.distanceTo(p2);
+    scale = distance*0.25;
+
+    p3 = new THREE.Vector3(p1.x+scale*d1.x, p1.y+scale*d1.y, p1.z+scale*d1.z);
+    p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
+
+    curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
+    geometry = new THREE.Geometry();
+    geometry.vertices = curve.getPoints(16);
+
+    var transp = false;
+    if ( style.opacity < 1.0 ) {
+      transp = true;
+    }
+
+    var material = new THREE.LineBasicMaterial({color:wfcolor,
+                                                transparent: transp,
+                                                linewidth:style.linewidth,
+                                                linecap:'butt',
+                                                opacity:style.opacity});
+
+    curves.push(new THREE.Line(geometry,material));
+  }
+
+  return curves;
+}
+
+
 yae.makeRecHit_V2 = function(data, style, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
