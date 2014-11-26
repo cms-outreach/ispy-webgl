@@ -2,9 +2,6 @@ var yae = yae || {};
 yae.version = "0.0.1";
 
 yae.hasWebGL = function() {
-
-  return false;
-
   var canvas = document.createElement('canvas');
 
   if ( ! canvas.getContext('webgl') ) {
