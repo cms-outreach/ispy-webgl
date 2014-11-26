@@ -34,6 +34,10 @@ yae.hasWebGL = function() {
   }
 }
 
+yae.setttings = {
+  background: "black"
+};
+
 yae.init = function() {
   var screen_canvas = document.getElementById('display');
 
@@ -51,9 +55,11 @@ yae.init = function() {
   var renderer;
   if ( yae.hasWebGL() ) {
     console.log('yae: using webgl');
+    yae.settings.renderer = "webgl";
     renderer = new THREE.WebGLRenderer({antialias:true});
   } else {
     console.log('yae: using canvas');
+    yae.settings.renderer = "canvas";
     renderer = new THREE.CanvasRenderer();
   }
 

@@ -77,7 +77,6 @@ yae.loadEvent = function() {
     alert(err);
   }
 
-
   yae.addEvent(event);
 
   yae.enableNextPrev();

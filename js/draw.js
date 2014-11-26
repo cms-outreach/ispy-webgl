@@ -76,8 +76,7 @@ yae.makeTube = function(ir, or, len, pos, slices, segments) {
   return [points, lines];
 }
 
-yae.makeWireframeBox = function(data, style, ci) {
-
+yae.makeWireframeBox = function(data, material, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -87,17 +86,6 @@ yae.makeWireframeBox = function(data, style, ci) {
   var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
   var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
   var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-
-  var wfcolor = new THREE.Color();
-  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-  var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
-                                              linewidth:style.linewidth,
-                                              opacity:style.opacity});
 
   var front = new THREE.Geometry();
   front.vertices.push(f1);
@@ -139,20 +127,10 @@ yae.makeWireframeBox = function(data, style, ci) {
   return box;
 }
 
-yae.makeShapes = function(data, style) {
+yae.makeShapes = function(data, material) {
   points = data[0];
   lines = data[1];
   shapes = [];
-
-  var wfcolor = new THREE.Color();
-    wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-
-  var material = new THREE.LineBasicMaterial({color:wfcolor, linewidth:style.linewidth, transparent: transp, opacity: style.opacity});
 
   for ( var i = 0; i < lines.length; i++ ) {
     var l = lines[i];
@@ -167,7 +145,7 @@ yae.makeShapes = function(data, style) {
   return shapes;
 }
 
-yae.makeModelTrackerBarrel = function(data, style) {
+yae.makeModelTrackerBarrel = function(data) {
   var radii = [0.046, 0.07, 0.1,
                0.24, 0.27, 0.32, 0.37, 0.40, 0.43, 0.47, 0.51,
                0.62, 0.70, 0.78, 0.88, 0.97, 1.08];
@@ -188,7 +166,7 @@ yae.makeModelTrackerBarrel = function(data, style) {
   return wfs;
 }
 
-yae.makeModelTrackerEndcap = function(data, style) {
+yae.makeModelTrackerEndcap = function(data) {
   var ecradii =    [0.145, 0.145, 0.50, 0.47, 0.50, 0.47, 0.50, 0.47,
                     1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06,
                     1.08, 1.06, 1.08, 1.06, 1.08, 1.06];
@@ -213,7 +191,7 @@ yae.makeModelTrackerEndcap = function(data, style) {
   return wfs;
 }
 
-yae.makeModelEcalBarrel = function(data, style) {
+yae.makeModelEcalBarrel = function(data) {
   var hr = data[0];
   var pos = data[1];
   var fr = data[2];
@@ -256,20 +234,20 @@ yae.makeModelEcalBarrel = function(data, style) {
   return [[points, lines]];
 }
 
-yae.makeModelEcalEndcapMinus = function(data, style) {
+yae.makeModelEcalEndcapMinus = function(data) {
   return [yae.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
 }
 
-yae.makeModelEcalEndcapPlus = function(data, style) {
+yae.makeModelEcalEndcapPlus = function(data) {
   return [yae.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
 }
 
-yae.makeModelEcalPreshower = function(data, style) {
+yae.makeModelEcalPreshower = function(data) {
   return [yae.makeDisc(0.4, 1.3, 3.025, 24), yae.makeDisc(0.4, 1.3, 3.075, 24),
           yae.makeDisc(0.4, 1.3, -3.025, 24), yae.makeDisc(0.4, 1.3, -3.075, 24)];
 }
 
-yae.makeModelHcalBarrel = function(data, style) {
+yae.makeModelHcalBarrel = function(data) {
   var points = [];
   var lines = [];
 
@@ -326,25 +304,25 @@ yae.makeModelHcalBarrel = function(data, style) {
   return [[points, lines]];
 }
 
-yae.makeModelHcalForward = function(data, style) {
+yae.makeModelHcalForward = function(data) {
   return [yae.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2), yae.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
 }
 
-yae.makeModelHcalForwardPlus = function(data, style) {
+yae.makeModelHcalForwardPlus = function(data) {
   return [yae.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2)];
 }
 
-yae.makeModelHcalForwardMinus = function(data, style) {
+yae.makeModelHcalForwardMinus = function(data) {
   return [yae.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
 }
 
-yae.makeModelHcalOuter = function(data, style) {
+yae.makeModelHcalOuter = function(data) {
   return [yae.makeTube(3.9, 4.1, 3, -1.5, 48, 8), yae.makeCylinder(4.2, 2.5, 1.5, 24, 7),
           yae.makeCylinder(4.2, 3, 4.1, 24, 6), yae.makeCylinder(4.2, -2.5, -1.5, 24, 7),
           yae.makeCylinder(4.2, -3, -4.1, 24, 6)];
 }
 
-yae.makeModelHcalEndcap = function(data, style) {
+yae.makeModelHcalEndcap = function(data) {
   var points = [];
   var lines = [];
 
@@ -400,7 +378,7 @@ yae.makeModelHcalEndcap = function(data, style) {
   return [[points, lines]];
 }
 
-yae.makeScaledWireframeBox = function(data, style, ci, scale) {
+yae.makeScaledWireframeBox = function(data, material, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -434,6 +412,7 @@ yae.makeScaledWireframeBox = function(data, style, ci, scale) {
   var wfcolor = new THREE.Color();
   wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
+  /*
   var transp = false;
   if ( style.opacity < 1.0 ) {
     transp = true;
@@ -441,6 +420,8 @@ yae.makeScaledWireframeBox = function(data, style, ci, scale) {
   var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
                                               linewidth:style.linewidth,
                                               opacity:style.opacity});
+
+  */
 
   var front = new THREE.Geometry();
   front.vertices.push(f1);
@@ -480,7 +461,7 @@ yae.makeScaledWireframeBox = function(data, style, ci, scale) {
           new THREE.Line(s4,material)];
 }
 
-yae.makeScaledSolidBox = function(data, style, ci, scale) {
+yae.makeScaledSolidBox = function(data, material, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -595,29 +576,15 @@ yae.makeScaledSolidBox = function(data, style, ci, scale) {
   right.computeFaceNormals();
   right.computeVertexNormals();
 
-  var mcolor = new THREE.Color();
-  mcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-  var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
-                                              opacity:style.opacity});
-  material.side = THREE.DoubleSide;
-
   return [new THREE.Mesh(front, material), new THREE.Mesh(back, material),
           new THREE.Mesh(top, material), new THREE.Mesh(bottom, material),
           new THREE.Mesh(left, material), new THREE.Mesh(right, material)];
 }
 
-yae.makeTrackPoints = function(data, style, data2, assoc) {
+yae.makeTrackPoints = function(data, extra, assoc, material) {
   if ( ! assoc ) {
     throw "No association!";
   }
-
-  var wfcolor = new THREE.Color();
-  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
   var muons = [];
   for ( var i = 0; i < data.length; i++ ) {
@@ -628,32 +595,21 @@ yae.makeTrackPoints = function(data, style, data2, assoc) {
   for ( var j = 0; j < assoc.length; j++ ) {
     mi = assoc[j][0][1];
     pi = assoc[j][1][1];
-    muons[mi].vertices.push(new THREE.Vector3(data2[pi][0][0],data2[pi][0][1],data2[pi][0][2]));
-  }
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
+    muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
 
   var lines = [];
   for ( var k = 0; k < muons.length; k++ ) {
-    var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
-                                              linewidth:style.linewidth,
-                                              opacity:style.opacity});
     lines.push(new THREE.Line(muons[k], material));
   }
 
   return lines;
 }
 
-yae.makeTrackCurves = function(tracks, style, extras, assocs) {
+yae.makeTracks = function(tracks, extras, assocs, material) {
   if ( ! assocs ) {
     throw "No association!";
   }
-
-  var wfcolor = new THREE.Color();
-  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
   var ti, ei;
   var p1, d1, p2, d2;
@@ -694,17 +650,6 @@ yae.makeTrackCurves = function(tracks, style, extras, assocs) {
     geometry = new THREE.Geometry();
     geometry.vertices = curve.getPoints(16);
 
-    var transp = false;
-    if ( style.opacity < 1.0 ) {
-      transp = true;
-    }
-
-    var material = new THREE.LineBasicMaterial({color:wfcolor,
-                                                transparent: transp,
-                                                linewidth:style.linewidth,
-                                                linecap:'butt',
-                                                opacity:style.opacity});
-
     curves.push(new THREE.Line(geometry,material));
   }
 
@@ -712,22 +657,21 @@ yae.makeTrackCurves = function(tracks, style, extras, assocs) {
 }
 
 
-yae.makeRecHit_V2 = function(data, style, scale) {
+yae.makeRecHit_V2 = function(data, material, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
-    return yae.makeScaledSolidBox(data, style, 5, scale*energy);
-    //return yae.makeScaledWireframeBox(data, style, 5, scale*energy);
+    return yae.makeScaledSolidBox(data, material, 5, scale*energy);
   }
 }
 
-yae.makeDT = function(dt, style) {
-  return yae.makeWireframeBox(dt, style, 1);
+yae.makeDT = function(dt, material) {
+  return yae.makeWireframeBox(dt, material, 1);
 }
 
-yae.makeCSC = function(csc, style) {
-  return yae.makeWireframeBox(csc, style, 1);
+yae.makeCSC = function(csc, material) {
+  return yae.makeWireframeBox(csc, material, 1);
 }
 
-yae.makeMuonChamber = function(chamber, style) {
-  return yae.makeWireframeBox(chamber, style, 1);
+yae.makeMuonChamber = function(chamber, material) {
+  return yae.makeWireframeBox(chamber, material, 1);
 }

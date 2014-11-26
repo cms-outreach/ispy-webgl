@@ -79,11 +79,12 @@ yae.addGroups = function() {
 yae.POINT = 0;
 yae.LINE = 1;
 yae.BOX = 2;
-yae.SCALEDBOX = 3;
+yae.SCALEDSOLIDBOX = 3;
 yae.PATH = 4;
 yae.MODEL = 5;
 yae.TRACK = 6;
-yae.SHAPE = 7;
+yae.POLYLINE = 7;
+yae.SHAPE = 8;
 
 yae.detector_description = {
   "TrackerBarrel3D_MODEL": {type: yae.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
@@ -113,30 +114,30 @@ yae.detector_description = {
 };
 
 yae.event_description = {
-  "EBRecHits_V2": {type: yae.SCALEDBOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "EERecHits_V2": {type: yae.SCALEDBOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "ESRecHits_V2": {type: yae.SCALEDBOX, on: false, group: "ECAL", name: "Preshower Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [1, 0.2, 0], opacity: 0.5, linewidth: 1}, scale: 0.05},
-  "HBRecHits_V2": {type: yae.SCALEDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HERecHits_V2": {type: yae.SCALEDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HFRecHits_V2": {type: yae.SCALEDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.6, 1, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
-  "HORecHits_V2": {type: yae.SCALEDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
-    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1},
+  "EBRecHits_V2": {type: yae.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
+  "EERecHits_V2": {type: yae.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
+  "ESRecHits_V2": {type: yae.SCALEDSOLIDBOX, on: false, group: "ECAL", name: "Preshower Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [1, 0.2, 0], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
+  "HBRecHits_V2": {type: yae.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "HERecHits_V2": {type: yae.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "HFRecHits_V2": {type: yae.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.6, 1, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "HORecHits_V2": {type: yae.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
+    fn: yae.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
 
   "Tracks_V1": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
-    dataref: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
+    extra: "Extras_V1", assoc: "TrackExtras_V1",
+    fn: yae.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
   "Tracks_V2": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
-    dataref: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
+    extra: "Extras_V1", assoc: "TrackExtras_V1",
+    fn: yae.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
   "Tracks_V3": {type: yae.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
-    dataref: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: yae.makeTrackCurves, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}},
+    extra: "Extras_V1", assoc: "TrackExtras_V1",
+    fn: yae.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
 
   /*
     need to fix these
@@ -158,26 +159,26 @@ yae.event_description = {
     fn: yae.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
   "GsfElectrons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: yae.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
+    fn: yae.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
 
 /*
   "GsfElectrons_V2": {type: yae.PATH, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
-    dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
+    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: yae.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
   "Photons_V1": {type: yae.LINE, on: false, group: "Physics Objects", name: "Photons (Reco)",
      fn: yae.makePhotons, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
 */
-  "TrackerMuons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Tracker Muons (Reco)",
-    dataref: "Points_V1", assoc: "MuonTrackerPoints_V1",
+  "TrackerMuons_V1": {type: yae.POLYLINE, on: true, group: "Physics Objects", name: "Tracker Muons (Reco)",
+    extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: yae.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "StandaloneMuons_V1": {type: yae.TRACK, on: false, group: "Physics Objects", name: "Stand-alone Muons (Reco)",
-    dataref: "Points_V1", assoc: "MuonStandalonePoints_V1",
+  "StandaloneMuons_V1": {type: yae.POLYLINE, on: false, group: "Physics Objects", name: "Stand-alone Muons (Reco)",
+    extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
     fn: yae.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
   "StandaloneMuons_V2": {type: yae.TRACK, on: false, group: "Physics Objects", name: "Stand-alone Muons (Reco)",
-    dataref: "Extras_V1", assoc: "MuonTrackExtras_V1",
-    fn: yae.makeTrackCurves, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "GlobalMuons_V1": {type: yae.TRACK, on: true, group: "Physics Objects", name: "Global Muons (Reco)",
-    dataref: "Points_V1", assoc: "MuonGlobalPoints_V1",
+    extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
+    fn: yae.makeTracks, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
+  "GlobalMuons_V1": {type: yae.POLYLINE, on: true, group: "Physics Objects", name: "Global Muons (Reco)",
+    extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
     fn: yae.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
 /*
   "METs_V1": {type: yae.SHAPE, on: false, group: "Physics Objects", name: "Missing Et (Reco)",
@@ -246,9 +247,22 @@ yae.addDetector = function() {
       switch(descr.type) {
 
         case yae.BOX:
+
+          var bcolor = new THREE.Color();
+          bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+          var transp = false;
+          if ( descr.style.opacity < 1.0 ) {
+            transp = true;
+          }
+
+          var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
+                                                      linewidth:descr.style.linewidth,
+                                                      opacity:descr.style.opacity});
+
           for ( var i = 0; i < data.length; i++ ) {
 
-            var box = descr.fn(data[i], descr.style);
+            var box = descr.fn(data[i], material);
             if ( box != null ) {
 
               box.forEach(function(l) {
@@ -261,11 +275,23 @@ yae.addDetector = function() {
         break;
 
         case yae.MODEL:
+          var mcolor = new THREE.Color();
+          mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+          var transp = false;
+          if ( descr.style.opacity < 1.0 ) {
+            transp = true;
+          }
+
+          var material = new THREE.LineBasicMaterial({color:mcolor, transparent: transp,
+                                                      linewidth:descr.style.linewidth,
+                                                      opacity:descr.style.opacity});
+
           for ( var i = 0; i < data.length; i++ ) {
-            var models = descr.fn(data[i], descr.style);
+            var models = descr.fn(data[i]);
 
             for ( var j = 0; j < models.length; j++ ) {
-              var shapes = yae.makeShapes(models[j], descr.style);
+              var shapes = yae.makeShapes(models[j], material);
 
               shapes.forEach(function(s) {
                 s.name = key;
@@ -299,11 +325,11 @@ yae.addEvent = function(event) {
 
     var descr = yae.event_description[key];
 
-    var dataref = null;
+    var extra = null;
     var assoc = null;
 
-    if (descr.dataref) {
-        dataref = event["Collections"][descr.dataref];
+    if (descr.extra) {
+        extra = event["Collections"][descr.extra];
     }
 
     if (descr.assoc) {
@@ -316,8 +342,21 @@ yae.addEvent = function(event) {
     switch(descr.type) {
 
       case yae.BOX:
+
+        var bcolor = new THREE.Color();
+        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+
+        var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
+                                                    linewidth:descr.style.linewidth,
+                                                    opacity:descr.style.opacity});
+
         for ( var i = 0; i < data.length; i++ ) {
-          var box = descr.fn(data[i], descr.style);
+          var box = descr.fn(data[i], material);
           if ( box != null ) {
             box.forEach(function(l) {
               l.name = key;
@@ -328,9 +367,21 @@ yae.addEvent = function(event) {
         }
       break;
 
-      case yae.SCALEDBOX:
+      case yae.SCALEDSOLIDBOX:
+
+        var mcolor = new THREE.Color();
+        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+        var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
+                                                    opacity:descr.style.opacity});
+        material.side = THREE.DoubleSide;
+
         for ( var i = 0; i < data.length; i++ ) {
-          var sbox = descr.fn(data[i], descr.style, descr.scale);
+          var sbox = descr.fn(data[i], material, descr.scale);
           if ( sbox != null ) {
             sbox.forEach(function(s) {
               s.name = key;
@@ -342,7 +393,23 @@ yae.addEvent = function(event) {
       break;
 
       case yae.TRACK:
-        var tracks = descr.fn(data, descr.style, dataref, assoc);
+      case yae.POLYLINE:
+
+        var tcolor = new THREE.Color();
+        tcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+
+        var material = new THREE.LineBasicMaterial({color:tcolor,
+                                                    transparent: transp,
+                                                    linewidth:descr.style.linewidth,
+                                                    linecap:'butt',
+                                                    opacity:descr.style.opacity});
+
+        var tracks = descr.fn(data, extra, assoc, material);
         tracks.forEach(function(t) {
           t.name = key;
           t.visible = visible;
