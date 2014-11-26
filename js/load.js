@@ -68,15 +68,17 @@ yae.enableNextPrev = function() {
 }
 
 yae.loadEvent = function() {
-  $("#files").modal('hide');
   $("#event-loaded").html("Loading...");
 
   try {
+    console.log("parsing event");
     var event = JSON.parse(yae.cleanupData(yae.ig_data.file(yae.event_list[yae.event_index]).asText()));
-    yae.addEvent(event);
   } catch(err) {
     alert(err);
   }
+
+
+  yae.addEvent(event);
 
   yae.enableNextPrev();
   $("#event-loaded").html(yae.file_name + ":" + yae.event_list[yae.event_index]);

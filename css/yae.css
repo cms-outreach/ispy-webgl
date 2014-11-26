@@ -70,7 +70,7 @@
 
 .modal-dialog button.close {
   color: red;
-  background-color: #202020;
+  text-shadow: none;
   opacity: 1.0;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .modal-content div {
-  border: none;
+  border: 0;
 }
 
 .modal-content td {
@@ -95,11 +95,27 @@
   background-color: #202020;
 }
 
-.modal .modal-body {
-  max-height: 420px;
+#files .modal-body {
+  max-height: 300px;
+  overflow-y: scroll;
 }
 
-.browser-header {
+#selected-event {
+  border: 1px solid #ccc;
+  width: 60%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+#browser-table th {
   background-color: #202020;
   color: white;
+}
+
+#browser-files td {
+  border: 0;
+}
+
+#browser-events td {
+  border: 0;
 }

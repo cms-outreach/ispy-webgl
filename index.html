@@ -160,19 +160,21 @@
             <th class="browser-header bordered">Events</th>
           </tr>
           <tr>
-            <td>
+            <td class="bordered">
               <table class="table table-hover" id="browser-files"></table>
             </td>
-            <td>
+            <td class="bordered">
               <table class="table table-hover" id="browser-events"></table>
             </td>
           </tr>
         </table>
-        <div class="bordered" id="selected-event">Selected event</div>
       </div>
       <div class="modal-footer">
+
+        <div class="bordered" id="selected-event"> </div>
+
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-default" onclick="yae.loadEvent();">Load</button>
+        <button type="button" class="btn btn-default" onclick="$('#files').modal('hide'); yae.loadEvent();">Load</button>
       </div>
     </div>
   </div>
