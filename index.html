@@ -27,7 +27,7 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 bordered" id="titlebar">
+      <div class="col-lg-12 bordered black" id="titlebar">
         <div class=row">
           <div class="col-lg-6" id="application-name">YAE: Yay! Another Event display</div>
           <div class="col-lg-6" id="event-loaded"></div>
@@ -35,8 +35,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-12 bordered" id="toolbar">
-        <table id="toolbar">
+      <div class="col-lg-12 bordered black" id="toolbar">
+        <table>
           <tr>
             <td>
               <a class="toolbar-button btn" data-toggle="modal" data-target="#open-files">
@@ -108,17 +108,17 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-3 bordered" id="treeview">
+      <div class="col-lg-3 bordered black" id="treeview">
         <div class="table-responsive">
         <table class="table">
         </table>
         </div>
       </div>
       <!-- The canvas goes into this div -->
-      <div class="col-lg-9 bordered" id="display"></div>
+      <div class="col-lg-9 bordered black" id="display"></div>
     </div>
     <div class="row">
-      <div class="col-lg-12 bordered" id="tableview">Here goes the table view</div>
+      <div class="col-lg-12 bordered black" id="tableview">Here goes the table view</div>
     </div>
   </div>
   <script type="text/javascript">
@@ -133,10 +133,10 @@
 
 <div id="open-files" role="dialog" class="modal">
   <div class="modal-dialog modal-sm">
-    <div class="modal-content bordered">
+    <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Open File</h4>
+        <h4 class="modal-title black">Open File</h4>
       </div>
       <div class="modal-body">
         <table>
@@ -155,10 +155,10 @@
 
 <div id="files" role="dialog" class="modal">
   <div class="modal-dialog">
-    <div class="modal-content bordered">
+    <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Open Event</h4>
+        <h4 class="modal-title black">Open Event</h4>
       </div>
       <div class="modal-body">
         <table class="table" width="100%" id="browser-table">
@@ -189,13 +189,14 @@
 
 <div id="settings" role="dialog" class="modal">
   <div class="modal-dialog">
-    <div class="modal-content bordered">
+    <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Settings</h4>
+        <h4 class="modal-title black">Settings</h4>
       </div>
       <div class="modal-body">
-        Settings stuff goes here...
+        Invert colors:
+        <input type='checkbox' checked='false' onchange='yae.invertColors();'>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -206,10 +207,10 @@
 
 <div id="about" role="dialog" class="modal">
   <div class="modal-dialog">
-    <div class="modal-content bordered">
+    <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">About</h4>
+        <h4 class="modal-title black">About</h4>
       </div>
       <div class="modal-body">
         About stuff goes here...

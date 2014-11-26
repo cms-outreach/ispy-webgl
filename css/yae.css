@@ -1,36 +1,33 @@
-#titlebar {
-  background-color: black;
-  height: 25px;
-}
-
-#toolbar {
-  background-color: black;
-  float: left;
-}
-
-#treeview {
-  background-color: black;
-  height: 500px;
-  overflow: scroll;
-}
-
-#display {
-  background-color: black;
-  height: 500px;
-  overflow: hidden;
-}
-
-#tableview {
-  background-color: black;
-  height: 140px;
-}
-
 .bordered {
   border: thin solid gray;
 }
 
 #titlebar {
+  height: 25px;
+}
+
+#titlebar.black {
   color: white;
+  background-color: black;
+}
+
+#titlebar.white {
+  color: black;
+  background-color: white;
+}
+
+#toolbar {
+  float: left;
+}
+
+#toolbar.black {
+  color: white;
+  background-color: black;
+}
+
+#toolbar.white {
+  color: black;
+  background-color: white;
 }
 
 #toolbar img {
@@ -57,15 +54,79 @@
   background-color: #dfdfdf;
 }
 
+#treeview {
+  height: 500px;
+  overflow: scroll;
+}
+
+#treeview.black {
+  color: white;
+  background-color: black;
+}
+
+#treeview.white {
+  color: black;
+  background-color: white;
+}
+
 #treeview .group {
   border-top: 1px solid black;
   background-color: #202020;
   color: white;
 }
 
+#treeview .group.black {
+  border-top: 1px solid black;
+  background-color: #202020;
+  color: white;
+}
+
+#treeview .group.white {
+  border-top: 1px solid white;
+  background-color: #cccccc;
+  color: black;
+}
+
 #treeview .collection {
   border-top: 0px;
   color: white;
+}
+
+#treeview td.collection.black {
+  color: white;
+}
+
+#treeview td.collection.white {
+  color: black;
+}
+
+#display {
+  height: 500px;
+  overflow: hidden;
+}
+
+#display.black {
+  color: white;
+  background-color: black;
+}
+
+#display.white {
+  color: black;
+  background-color: white;
+}
+
+#tableview {
+  height: 140px;
+}
+
+#tableview.black {
+  color: white;
+  background-color: black;
+}
+
+#tableview.white {
+  color: black;
+  background-color: white;
 }
 
 .modal-dialog button.close {
@@ -74,9 +135,14 @@
   opacity: 1.0;
 }
 
-.modal-content {
-  color:white;
+.modal-content.black {
+  color: white;
   background-color: black;
+}
+
+modal-content.white {
+  color: black;
+  background-color: white;
 }
 
 .modal-content div {
@@ -91,8 +157,12 @@
   color: white;
 }
 
-.modal-title {
+.modal-title.black {
   background-color: #202020;
+}
+
+.modal-title.white {
+  background-color: #cccccc;
 }
 
 #files .modal-body {

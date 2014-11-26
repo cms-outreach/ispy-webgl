@@ -19,9 +19,9 @@ yae.setCameraHome = function() {
   var home_y = 8.6;
   var home_z = 14.0;
 
-  yae.camera.position.x = home_x;
-  yae.camera.position.y = home_y;
-  yae.camera.position.z = home_z;
+  yae.camera.position.x = home_x*0.5;
+  yae.camera.position.y = home_y*0.5;
+  yae.camera.position.z = home_z*0.5;
 
   yae.camera.setZoom(1);
   yae.camera.up = new THREE.Vector3(0,1,0);
@@ -63,6 +63,36 @@ yae.showSettings = function() {
   console.log('show settings');
 }
 
+yae.inverted_colors = false;
+
+yae.invertColors = function() {
+
+  if ( yae.inverted_colors ) {
+    // Set back to black
+    yae.renderer.setClearColor(0x000000,1);
+    yae.inverted_colors = false;
+  } else {
+    yae.renderer.setClearColor(0xffffff,1);
+    yae.inverted_colors = true;
+  }
+
+  // Yeeash I really need to clean up the class, ids, and css
+
+  $('#titlebar').toggleClass('white').toggleClass('black');
+  $('#toolbar').toggleClass('white').toggleClass('black');
+
+  $('#treeview').toggleClass('white').toggleClass('black');
+  $('#treeview td.group').toggleClass('white').toggleClass('black');
+  $('#treeview td.collection').toggleClass('white').toggleClass('black');
+
+
+  $('#display').toggleClass('white').toggleClass('black');
+  $('#tableview').toggleClass('white').toggleClass('black');
+
+  $('.modal-content').toggleClass('white').toggleClass('black');
+  $('.modal-title').toggleClass('white').toggleClass('black');
+}
+
 yae.openAboutWindow = function() {
   console.log('open about window');
 }
@@ -72,7 +102,7 @@ yae.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "Physics Obje
 yae.addGroups = function() {
   var group_table = $('#treeview table');
   yae.data_groups.forEach(function(g) {
-    group_table.append("<tr id='"+ g +"'><td class='group'>"+ g +"</td></tr>")
+    group_table.append("<tr id='"+ g +"'><td class='group black'>"+ g +"</td></tr>")
   });
 }
 
@@ -221,7 +251,7 @@ yae.addSelectionRow = function(group, key, name, visible) {
   var on = !yae.disabled[key] ? ' checked="true"' : "";
 
   var html = "<tr class='" + dc + "'>";
-  html += "<td class='collection'>"+ name +"</td>";
+  html += "<td class='collection black'>"+ name +"</td>";
   html += "<td class='collection'>";
   html += "<input type='checkbox' " + on + "onchange='yae.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
