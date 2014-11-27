@@ -1,7 +1,7 @@
-var yae = yae || {};
-yae.version = "0.0.1";
+var ispy = ispy || {};
+ispy.version = "0.0.1";
 
-yae.hasWebGL = function() {
+ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
 
   if ( ! canvas.getContext('webgl') ) {
@@ -34,44 +34,44 @@ yae.hasWebGL = function() {
   }
 }
 
-yae.init = function() {
+ispy.init = function() {
   var screen_canvas = document.getElementById('display');
 
   var scene = new THREE.Scene();
-  yae.scene = scene;
+  ispy.scene = scene;
 
   var width = 850.0;
   var height = 500.0;
 
   // width, height, fov, near, far, orthoNear, orthoFar
   var camera = new THREE.CombinedCamera(width, height, 70, 1, 100, 1, 48);
-  yae.camera = camera;
-  yae.setCameraHome();
+  ispy.camera = camera;
+  ispy.setCameraHome();
 
   var renderer;
-  if ( yae.hasWebGL() ) {
-    console.log('yae: using webgl');
+  if ( ispy.hasWebGL() ) {
+    console.log('ispy: using webgl');
     renderer = new THREE.WebGLRenderer({antialias:true});
   } else {
-    console.log('yae: using canvas');
+    console.log('ispy: using canvas');
     renderer = new THREE.CanvasRenderer();
   }
 
   renderer.setSize(width, height);
-  yae.renderer = renderer;
-  screen_canvas.appendChild(yae.renderer.domElement);
+  ispy.renderer = renderer;
+  screen_canvas.appendChild(ispy.renderer.domElement);
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
-  var controls = new THREE.TrackballControls(yae.camera, yae.renderer.domElement);
-  yae.controls = controls;
+  var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  ispy.controls = controls;
 
   // Add a parent object for each group
-  yae.data_groups.forEach(function(g) {
+  ispy.data_groups.forEach(function(g) {
     var obj_group = new THREE.Object3D();
     obj_group.name = g;
-    yae.scene.add(obj_group);
+    ispy.scene.add(obj_group);
   })
 
-  yae.renderer.domElement.addEventListener('mousedown', yae.onDocumentMouseDown, false);
+  ispy.renderer.domElement.addEventListener('mousedown', ispy.onDocumentMouseDown, false);
 }

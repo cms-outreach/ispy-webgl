@@ -1,21 +1,21 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
-yae.web_files = [
+ispy.web_files = [
   "http://opendata.cern.ch/record/601/EGMonitor.ig",
   "http://opendata.cern.ch/record/602/Electron.ig"
 ];
 
-yae.ig_data = null;
+ispy.ig_data = null;
 
-yae.openDialog = function(id) {
+ispy.openDialog = function(id) {
   $(id).modal('show');
 }
 
-yae.closeDialog = function(id) {
+ispy.closeDialog = function(id) {
   $(id).modal('hide');
 }
 
-yae.hasFileAPI = function() {
+ispy.hasFileAPI = function() {
   if ( window.FileReader ) {
     return true;
   } else {
@@ -27,39 +27,39 @@ yae.hasFileAPI = function() {
   }
 }
 
-yae.clearTable = function(id) {
+ispy.clearTable = function(id) {
   var tbl = document.getElementById(id);
   while (tbl.rows.length > 0) {
     tbl.deleteRow(0);
   }
 }
 
-yae.selectEvent = function(index) {
-  $("#selected-event").html(yae.event_list[index]);
-  yae.event_index = index;
+ispy.selectEvent = function(index) {
+  $("#selected-event").html(ispy.event_list[index]);
+  ispy.event_index = index;
 }
 
-yae.updateEventList = function() {
-  yae.clearTable("browser-events");
+ispy.updateEventList = function() {
+  ispy.clearTable("browser-events");
   var tbl = document.getElementById("browser-events");
 
-  for (var i = 0; i < yae.event_list.length; i++) {
-    var e = yae.event_list[i];
+  for (var i = 0; i < ispy.event_list.length; i++) {
+    var e = ispy.event_list[i];
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
-    cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="yae.selectEvent(\'' + i + '\');">' + e + '</a>';
+    cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="ispy.selectEvent(\'' + i + '\');">' + e + '</a>';
   }
 }
 
-yae.enableNextPrev = function() {
-  if ( yae.event_index > 0 ) {
+ispy.enableNextPrev = function() {
+  if ( ispy.event_index > 0 ) {
     $("#prev-event-button").removeClass("disabled");
   }
   else {
     $("#prev-event-button").addClass("disabled");
   }
 
-  if ( yae.event_list && yae.event_list.length - 1 > yae.event_index ) {
+  if ( ispy.event_list && ispy.event_list.length - 1 > ispy.event_index ) {
     $("#next-event-button").removeClass("disabled");
   }
   else {
@@ -67,39 +67,39 @@ yae.enableNextPrev = function() {
   }
 }
 
-yae.loadEvent = function() {
+ispy.loadEvent = function() {
   $("#event-loaded").html("Loading...");
 
   try {
     console.log("parsing event");
-    var event = JSON.parse(yae.cleanupData(yae.ig_data.file(yae.event_list[yae.event_index]).asText()));
+    var event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
   } catch(err) {
     alert(err);
   }
 
-  yae.addEvent(event);
+  ispy.addEvent(event);
 
-  yae.enableNextPrev();
-  $("#event-loaded").html(yae.file_name + ":" + yae.event_list[yae.event_index]);
+  ispy.enableNextPrev();
+  $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
 }
 
-yae.nextEvent = function() {
-  if ( yae.event_list && yae.event_list.length-1 > yae.event_index ) {
-    yae.event_index++;
-    yae.loadEvent();
+ispy.nextEvent = function() {
+  if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
+    ispy.event_index++;
+    ispy.loadEvent();
   }
 }
 
-yae.prevEvent = function() {
-  if ( yae.event_list && yae.event_index > 0) {
-    yae.event_index--;
-    yae.loadEvent();
+ispy.prevEvent = function() {
+  if ( ispy.event_list && ispy.event_index > 0) {
+    ispy.event_index--;
+    ispy.loadEvent();
   }
 }
 
-yae.selectLocalFile = function(index) {
+ispy.selectLocalFile = function(index) {
   var reader = new FileReader();
-  yae.file_name = yae.local_files[index].name;
+  ispy.file_name = ispy.local_files[index].name;
 
   reader.onload = function(e) {
     var data = e.target.result;
@@ -112,21 +112,21 @@ yae.selectLocalFile = function(index) {
       }
     });
 
-    yae.event_list = event_list;
-    yae.event_index = 0;
-    yae.updateEventList();
-    yae.ig_data = zip;
+    ispy.event_list = event_list;
+    ispy.event_index = 0;
+    ispy.updateEventList();
+    ispy.ig_data = zip;
   }
 
   reader.onerror = function(e) {
     alert(e);
   }
 
-  reader.readAsArrayBuffer(yae.local_files[index]);
+  reader.readAsArrayBuffer(ispy.local_files[index]);
 }
 
-yae.updateLocalFileList = function(list) {
-  yae.clearTable("browser-files");
+ispy.updateLocalFileList = function(list) {
+  ispy.clearTable("browser-files");
   var tbl = document.getElementById("browser-files");
 
   for (var i = 0; i < list.length; i++) {
@@ -134,12 +134,12 @@ yae.updateLocalFileList = function(list) {
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
     var cls = "file";
-    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="yae.selectLocalFile(\'' + i + '\');">' + name + '</a>';
+    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectLocalFile(\'' + i + '\');">' + name + '</a>';
   }
 }
 
-yae.loadLocalFiles = function() {
-  if (!yae.hasFileAPI()) {
+ispy.loadLocalFiles = function() {
+  if (!ispy.hasFileAPI()) {
     var err_msg = "Sorry. You seeem to be using a browser that does not support FileReader API. ";
     err_msg += "Please try with Chrome (6.0+), Firefox (3.6+), Safari (6.0+), or IE (10+). ";
     err_msg += "Alternatively, open a file from the web. ";
@@ -147,23 +147,23 @@ yae.loadLocalFiles = function() {
     return;
   }
 
-  yae.clearTable("browser-files");
-  yae.clearTable("browser-events");
+  ispy.clearTable("browser-files");
+  ispy.clearTable("browser-events");
   $('#selected-event').html("Selected event");
 
-  yae.local_files = document.getElementById('local-files').files;
-  yae.updateLocalFileList(yae.local_files);
-  yae.openDialog('#files');
+  ispy.local_files = document.getElementById('local-files').files;
+  ispy.updateLocalFileList(ispy.local_files);
+  ispy.openDialog('#files');
 }
 
-yae.selectFile = function(filename) {
-  yae.file_name = filename.split("/")[5];  // of course this isn't a general case for files
+ispy.selectFile = function(filename) {
+  ispy.file_name = filename.split("/")[5];  // of course this isn't a general case for files
 
   var xhr = new XMLHttpRequest();
   xhr.open("GET", filename, true);
   xhr.overrideMimeType("text/plain; charset=x-user-defined");
 
-  yae.clearTable("browser-events");
+  ispy.clearTable("browser-events");
   var ecell = document.getElementById("browser-events").insertRow(0).insertCell(0);
   ecell.innerHTML = 'Loading events...';
 
@@ -179,34 +179,34 @@ yae.selectFile = function(filename) {
         }
       });
 
-      yae.event_list = event_list;
-      yae.event_index = 0;
-      yae.updateEventList();
-      yae.ig_data = zip;
+      ispy.event_list = event_list;
+      ispy.event_index = 0;
+      ispy.updateEventList();
+      ispy.ig_data = zip;
     }
   };
 
   xhr.send();
 }
 
-yae.loadWebFiles = function() {
-  yae.clearTable("browser-files");
-  yae.clearTable("browser-events");
+ispy.loadWebFiles = function() {
+  ispy.clearTable("browser-files");
+  ispy.clearTable("browser-events");
   $('#selected-event').html("Selected event");
 
   var tbl = document.getElementById("browser-files");
 
-  for (var i = 0; i < yae.web_files.length; i++) {
-    var e = yae.web_files[i];
+  for (var i = 0; i < ispy.web_files.length; i++) {
+    var e = ispy.web_files[i];
     var name = e.split("/")[5];
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
     var cls = "file";
-    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="yae.selectFile(\'' + e + '\');">' + name + '</a>';
+    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
   }
 }
 
-yae.cleanupData = function(d) {
+ispy.cleanupData = function(d) {
   // rm non-standard json bits
   // newer files will not have this problem
   d = d.replace(/\(/g,'[')

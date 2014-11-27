@@ -1,4 +1,5 @@
-Yay! Another Event display! or (Yet Another Event display?)
-===========================================================
+ispy-webgl
+==========
 
-Regardless of how you feel, this is a browser-based event display for particle physics that uses bootstrap.js and three.js
+This is a browser-based event display for the CMS experiment at the LHC that uses
+three.js, bootstrap.js, and jQuery.

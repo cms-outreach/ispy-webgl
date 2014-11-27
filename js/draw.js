@@ -1,4 +1,4 @@
-yae.makeDisc = function(ir, or, pos, slices) {
+ispy.makeDisc = function(ir, or, pos, slices) {
   var lines = [];
   var points = [];
 
@@ -20,7 +20,7 @@ yae.makeDisc = function(ir, or, pos, slices) {
   return [points, lines];
 }
 
-yae.makeCylinder = function(r, len, pos, slices, segments) {
+ispy.makeCylinder = function(r, len, pos, slices, segments) {
   var lines = [];
   var points = [];
   for (var s = 0; s < segments; s++) {
@@ -45,7 +45,7 @@ yae.makeCylinder = function(r, len, pos, slices, segments) {
   return [points, lines];
 }
 
-yae.makeTube = function(ir, or, len, pos, slices, segments) {
+ispy.makeTube = function(ir, or, len, pos, slices, segments) {
   var lines = [];
   var points = [];
 
@@ -76,7 +76,7 @@ yae.makeTube = function(ir, or, len, pos, slices, segments) {
   return [points, lines];
 }
 
-yae.makeWireframeBox = function(data, material, ci) {
+ispy.makeWireframeBox = function(data, material, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -127,7 +127,7 @@ yae.makeWireframeBox = function(data, material, ci) {
   return box;
 }
 
-yae.makeShapes = function(data, material) {
+ispy.makeShapes = function(data, material) {
   points = data[0];
   lines = data[1];
   shapes = [];
@@ -145,7 +145,7 @@ yae.makeShapes = function(data, material) {
   return shapes;
 }
 
-yae.makeModelTrackerBarrel = function(data) {
+ispy.makeModelTrackerBarrel = function(data) {
   var radii = [0.046, 0.07, 0.1,
                0.24, 0.27, 0.32, 0.37, 0.40, 0.43, 0.47, 0.51,
                0.62, 0.70, 0.78, 0.88, 0.97, 1.08];
@@ -160,13 +160,13 @@ yae.makeModelTrackerBarrel = function(data) {
     var r = radii[i];
     var l = lengths[i];
 
-    wfs.push(yae.makeCylinder(r, l, -l / 2, slices, 2));
+    wfs.push(ispy.makeCylinder(r, l, -l / 2, slices, 2));
   }
 
   return wfs;
 }
 
-yae.makeModelTrackerEndcap = function(data) {
+ispy.makeModelTrackerEndcap = function(data) {
   var ecradii =    [0.145, 0.145, 0.50, 0.47, 0.50, 0.47, 0.50, 0.47,
                     1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06,
                     1.08, 1.06, 1.08, 1.06, 1.08, 1.06];
@@ -185,13 +185,13 @@ yae.makeModelTrackerEndcap = function(data) {
     var ecri = ecintradii[i];
     var ecp = ecpos[i];
 
-    wfs.push(yae.makeDisc(ecri, ecro, ecp, slices));
-    wfs.push(yae.makeDisc(ecri, ecro, -ecp, slices));
+    wfs.push(ispy.makeDisc(ecri, ecro, ecp, slices));
+    wfs.push(ispy.makeDisc(ecri, ecro, -ecp, slices));
   }
   return wfs;
 }
 
-yae.makeModelEcalBarrel = function(data) {
+ispy.makeModelEcalBarrel = function(data) {
   var hr = data[0];
   var pos = data[1];
   var fr = data[2];
@@ -234,20 +234,20 @@ yae.makeModelEcalBarrel = function(data) {
   return [[points, lines]];
 }
 
-yae.makeModelEcalEndcapMinus = function(data) {
-  return [yae.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
+ispy.makeModelEcalEndcapMinus = function(data) {
+  return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
 }
 
-yae.makeModelEcalEndcapPlus = function(data) {
-  return [yae.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
+ispy.makeModelEcalEndcapPlus = function(data) {
+  return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
 }
 
-yae.makeModelEcalPreshower = function(data) {
-  return [yae.makeDisc(0.4, 1.3, 3.025, 24), yae.makeDisc(0.4, 1.3, 3.075, 24),
-          yae.makeDisc(0.4, 1.3, -3.025, 24), yae.makeDisc(0.4, 1.3, -3.075, 24)];
+ispy.makeModelEcalPreshower = function(data) {
+  return [ispy.makeDisc(0.4, 1.3, 3.025, 24), ispy.makeDisc(0.4, 1.3, 3.075, 24),
+          ispy.makeDisc(0.4, 1.3, -3.025, 24), ispy.makeDisc(0.4, 1.3, -3.075, 24)];
 }
 
-yae.makeModelHcalBarrel = function(data) {
+ispy.makeModelHcalBarrel = function(data) {
   var points = [];
   var lines = [];
 
@@ -304,25 +304,25 @@ yae.makeModelHcalBarrel = function(data) {
   return [[points, lines]];
 }
 
-yae.makeModelHcalForward = function(data) {
-  return [yae.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2), yae.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
+ispy.makeModelHcalForward = function(data) {
+  return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2), ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
 }
 
-yae.makeModelHcalForwardPlus = function(data) {
-  return [yae.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2)];
+ispy.makeModelHcalForwardPlus = function(data) {
+  return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2)];
 }
 
-yae.makeModelHcalForwardMinus = function(data) {
-  return [yae.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
+ispy.makeModelHcalForwardMinus = function(data) {
+  return [ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
 }
 
-yae.makeModelHcalOuter = function(data) {
-  return [yae.makeTube(3.9, 4.1, 3, -1.5, 48, 8), yae.makeCylinder(4.2, 2.5, 1.5, 24, 7),
-          yae.makeCylinder(4.2, 3, 4.1, 24, 6), yae.makeCylinder(4.2, -2.5, -1.5, 24, 7),
-          yae.makeCylinder(4.2, -3, -4.1, 24, 6)];
+ispy.makeModelHcalOuter = function(data) {
+  return [ispy.makeTube(3.9, 4.1, 3, -1.5, 48, 8), ispy.makeCylinder(4.2, 2.5, 1.5, 24, 7),
+          ispy.makeCylinder(4.2, 3, 4.1, 24, 6), ispy.makeCylinder(4.2, -2.5, -1.5, 24, 7),
+          ispy.makeCylinder(4.2, -3, -4.1, 24, 6)];
 }
 
-yae.makeModelHcalEndcap = function(data) {
+ispy.makeModelHcalEndcap = function(data) {
   var points = [];
   var lines = [];
 
@@ -378,7 +378,7 @@ yae.makeModelHcalEndcap = function(data) {
   return [[points, lines]];
 }
 
-yae.makeScaledWireframeBox = function(data, material, ci, scale) {
+ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -409,10 +409,10 @@ yae.makeScaledWireframeBox = function(data, material, ci, scale) {
   b3.addVectors(f3,b3);
   b4.addVectors(f4,b4);
 
+  /*
   var wfcolor = new THREE.Color();
   wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
 
-  /*
   var transp = false;
   if ( style.opacity < 1.0 ) {
     transp = true;
@@ -461,7 +461,7 @@ yae.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 }
 
-yae.makeScaledSolidBox = function(data, material, ci, scale) {
+ispy.makeScaledSolidBox = function(data, material, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -581,7 +581,7 @@ yae.makeScaledSolidBox = function(data, material, ci, scale) {
           new THREE.Mesh(left, material), new THREE.Mesh(right, material)];
 }
 
-yae.makeTrackPoints = function(data, extra, assoc, material) {
+ispy.makeTrackPoints = function(data, extra, assoc, material) {
   if ( ! assoc ) {
     throw "No association!";
   }
@@ -606,7 +606,7 @@ yae.makeTrackPoints = function(data, extra, assoc, material) {
   return lines;
 }
 
-yae.makeTracks = function(tracks, extras, assocs, material) {
+ispy.makeTracks = function(tracks, extras, assocs, material) {
   if ( ! assocs ) {
     throw "No association!";
   }
@@ -657,21 +657,21 @@ yae.makeTracks = function(tracks, extras, assocs, material) {
 }
 
 
-yae.makeRecHit_V2 = function(data, material, scale) {
+ispy.makeRecHit_V2 = function(data, material, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
-    return yae.makeScaledSolidBox(data, material, 5, scale*energy);
+    return ispy.makeScaledSolidBox(data, material, 5, scale*energy);
   }
 }
 
-yae.makeDT = function(dt, material) {
-  return yae.makeWireframeBox(dt, material, 1);
+ispy.makeDT = function(dt, material) {
+  return ispy.makeWireframeBox(dt, material, 1);
 }
 
-yae.makeCSC = function(csc, material) {
-  return yae.makeWireframeBox(csc, material, 1);
+ispy.makeCSC = function(csc, material) {
+  return ispy.makeWireframeBox(csc, material, 1);
 }
 
-yae.makeMuonChamber = function(chamber, material) {
-  return yae.makeWireframeBox(chamber, material, 1);
+ispy.makeMuonChamber = function(chamber, material) {
+  return ispy.makeWireframeBox(chamber, material, 1);
 }

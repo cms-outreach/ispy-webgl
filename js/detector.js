@@ -1,4 +1,4 @@
-yae.detector = {
+ispy.detector = {
 "Types": {
 "DTs3D_V1": [["detid", "int"],["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]],
 "CSCs3D_V1": [["detid", "int"],["front_1", "v3d"],["front_2", "v3d"],["front_3", "v3d"],["front_4", "v3d"],["back_1", "v3d"],["back_2", "v3d"],["back_3", "v3d"],["back_4", "v3d"]]

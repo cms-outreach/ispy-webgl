@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/yae.css">
+  <link rel="stylesheet" href="./css/ispy.css">
 
   <script src="./js/jquery-1.11.1.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
@@ -22,14 +22,14 @@
   <script src="./js/load.js"></script>
   <script src="./js/draw.js"></script>
   <script src="./js/display.js"></script>
-  <title>YAE</title>
+  <title>iSpy WebGL</title>
 </head>
 <body>
   <div class="container">
     <div class="row">
       <div class="col-lg-12 bordered black" id="titlebar">
         <div class=row">
-          <div class="col-lg-6" id="application-name">YAE: Yay! Another Event display</div>
+          <div class="col-lg-6" id="application-name">iSpy WebGL</div>
           <div class="col-lg-6" id="event-loaded"></div>
         </div>
       </div>
@@ -44,52 +44,52 @@
               </a>
             </td>
             <td>
-              <a class="toolbar-button disabled btn" id="prev-event-button" onclick="yae.prevEvent();">
+              <a class="toolbar-button disabled btn" id="prev-event-button" onclick="ispy.prevEvent();">
                 <img src="./graphics/prev-event.png" title="Previous Event"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button disabled btn" id="next-event-button" onclick="yae.nextEvent();">
+              <a class="toolbar-button disabled btn" id="next-event-button" onclick="ispy.nextEvent();">
                 <img src="./graphics/next-event.png" title="Next Event"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.setCameraHome();">
+              <a class="toolbar-button btn" onclick="ispy.setCameraHome();">
                 <img src="./graphics/home.png" title="Return to Start View"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.zoom(0.5);">
+              <a class="toolbar-button btn" onclick="ispy.zoom(0.5);">
                 <img src="./graphics/zoom_in_24.png" title="Zoom In"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.zoom(-0.5);">
+              <a class="toolbar-button btn" onclick="ispy.zoom(-0.5);">
                 <img src="./graphics/zoom_out_24.png" title="Zoom Out"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.setXY();">
+              <a class="toolbar-button btn" onclick="ispy.setXY();">
                 <img src="./graphics/z-plane.png" title="X-Y Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.setZX();">
+              <a class="toolbar-button btn" onclick="ispy.setZX();">
                 <img src="./graphics/y-plane.png" title="Z-X Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" onclick="yae.setYZ();">
+              <a class="toolbar-button btn" onclick="ispy.setYZ();">
                 <img src="./graphics/x-plane.png" title="Y-Z Plane"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" id="perspective-view" onclick="yae.setPerspective();">
+              <a class="toolbar-button btn" id="perspective-view" onclick="ispy.setPerspective();">
                 <img src="./graphics/perspective-projection.png" title="Perspective View"/>
               </a>
             </td>
             <td>
-              <a class="toolbar-button btn" id="orthographic-view" onclick="yae.setOrthographic();">
+              <a class="toolbar-button btn" id="orthographic-view" onclick="ispy.setOrthographic();">
                 <img src="./graphics/orthographic-projection.png" title="Orthographic View"/>
               </a>
             </td>
@@ -123,10 +123,10 @@
   </div>
   <script type="text/javascript">
     $(function() {
-      yae.init();
-      yae.addGroups();
-      yae.addDetector();
-      yae.animate();
+      ispy.init();
+      ispy.addGroups();
+      ispy.addDetector();
+      ispy.animate();
     });
   </script>
 </body>
@@ -140,9 +140,9 @@
       </div>
       <div class="modal-body">
         <table>
-          <p><button type="button" class="btn btn-default" onclick="yae.openDialog('#files'); yae.loadWebFiles(); $('#open-files').modal('hide');">Open file(s) from the Web</button></p>
+          <p><button type="button" class="btn btn-default" onclick="ispy.openDialog('#files'); ispy.loadWebFiles(); $('#open-files').modal('hide');">Open file(s) from the Web</button></p>
           <p>
-            Open local file(s): <input type="file" id="local-files" onchange="yae.loadLocalFiles();" onclick="$('#open-files').modal('hide');" multiple/>
+            Open local file(s): <input type="file" id="local-files" onchange="ispy.loadLocalFiles();" onclick="$('#open-files').modal('hide');" multiple/>
           </p>
         </table>
       </div>
@@ -181,7 +181,7 @@
         <div class="bordered" id="selected-event"> </div>
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-default" onclick="$('#files').modal('hide'); yae.loadEvent();">Load</button>
+        <button type="button" class="btn btn-default" onclick="$('#files').modal('hide'); ispy.loadEvent();">Load</button>
       </div>
     </div>
   </div>
@@ -196,7 +196,7 @@
       </div>
       <div class="modal-body">
         Invert colors:
-        <input type='checkbox' checked='false' onchange='yae.invertColors();'>
+        <input type='checkbox' checked='false' onchange='ispy.invertColors();'>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
