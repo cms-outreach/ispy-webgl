@@ -8,6 +8,7 @@ ispy.animate = function() {
   requestAnimationFrame(ispy.animate);
   ispy.controls.update();
   ispy.render();
+  ispy.stats.update();
 }
 
 ispy.lookAtOrigin = function() {
@@ -109,19 +110,19 @@ ispy.addGroups = function() {
 ispy.POINT = 0;
 ispy.LINE = 1;
 ispy.BOX = 2;
-ispy.SCALEDSOLIDBOX = 3;
-ispy.PATH = 4;
-ispy.MODEL = 5;
-ispy.TRACK = 6;
-ispy.POLYLINE = 7;
-ispy.SHAPE = 8;
+ispy.SOLIDBOX = 3;
+ispy.SCALEDBOX = 4;
+ispy.SCALEDSOLIDBOX = 6;
+ispy.MODEL = 7;
+ispy.TRACK = 8;
+ispy.POLYLINE = 9;
 
 ispy.detector_description = {
   "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
     fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcap3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
@@ -131,16 +132,16 @@ ispy.detector_description = {
     fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
+  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalForward3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
     fn: ispy.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalForward3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
-    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.3, linewidth: 0.9}},
-  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
-    fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.3, linewidth: 0.8}}
+  "DTs3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Drift Tubes (muon)",
+    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.9}},
+  "CSC3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Cathode Strip Chambers (muon)",
+    fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}}
 };
 
 ispy.event_description = {
@@ -185,7 +186,8 @@ ispy.event_description = {
   "CSCRecHit2Ds_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
     fn: ispy.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], linewidth: 2}},
 */
-  "MuonChambers_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
+
+  "MuonChambers_V1": {type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
   "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
@@ -209,7 +211,7 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
   "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics Objects", name: "Global Muons (Reco)",
     extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-    fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
+    fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}}
 /*
   "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics Objects", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
@@ -290,18 +292,48 @@ ispy.addDetector = function() {
                                                       linewidth:descr.style.linewidth,
                                                       opacity:descr.style.opacity});
 
+
           for ( var i = 0; i < data.length; i++ ) {
+              var boxes = new THREE.Geometry();
 
-            var box = descr.fn(data[i], material);
-            if ( box != null ) {
+              descr.fn(data[i], boxes);
 
-              box.forEach(function(l) {
-                l.name = key;
-                l.visible = visible;
-                ispy.scene.getObjectByName(descr.group).add(l);
-              });
-            }
+              var lines = new THREE.Line(boxes, material);
+              lines.name = key;
+              lines.visible = visible;
+
+            ispy.scene.getObjectByName(descr.group).add(lines);
           }
+        break;
+
+        case ispy.SOLIDBOX:
+
+          var bcolor = new THREE.Color();
+          bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+          var transp = false;
+          if ( descr.style.opacity < 1.0 ) {
+            transp = true;
+          }
+
+          var material = new THREE.MeshBasicMaterial({color:bcolor,
+                                                      transparent: transp,
+                                                      linewidth: descr.style.linewidth,
+                                                      opacity:descr.style.opacity});
+          material.side = THREE.DoubleSide;
+
+          var boxes = new THREE.Geometry();
+
+          for ( var i = 0; i < data.length; i++ ) {
+              descr.fn(data[i], boxes);
+          }
+
+          var meshes = new THREE.Mesh(boxes, material);
+          meshes.name = key;
+          meshes.visible = visible;
+
+          ispy.scene.getObjectByName(descr.group).add(meshes);
+
         break;
 
         case ispy.MODEL:
@@ -371,7 +403,7 @@ ispy.addEvent = function(event) {
 
     switch(descr.type) {
 
-      case ispy.BOX:
+      case ispy.SOLIDBOX:
 
         var bcolor = new THREE.Color();
         bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
@@ -381,20 +413,24 @@ ispy.addEvent = function(event) {
           transp = true;
         }
 
-        var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
-                                                    linewidth:descr.style.linewidth,
+        var material = new THREE.MeshBasicMaterial({color:bcolor,
+                                                    transparent: transp,
+                                                    linewidth: descr.style.linewidth,
                                                     opacity:descr.style.opacity});
+        material.side = THREE.DoubleSide;
+
+        var boxes = new THREE.Geometry();
 
         for ( var i = 0; i < data.length; i++ ) {
-          var box = descr.fn(data[i], material);
-          if ( box != null ) {
-            box.forEach(function(l) {
-              l.name = key;
-              l.visible = visible;
-              ispy.scene.getObjectByName(descr.group).add(l);
-            });
-          }
+            descr.fn(data[i], boxes);
         }
+
+        var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
+        meshes.visible = visible;
+
+        ispy.scene.getObjectByName(descr.group).add(meshes);
+
       break;
 
       case ispy.SCALEDSOLIDBOX:
@@ -410,16 +446,18 @@ ispy.addEvent = function(event) {
                                                     opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
+        var boxes = new THREE.Geometry();
+
         for ( var i = 0; i < data.length; i++ ) {
-          var sbox = descr.fn(data[i], material, descr.scale);
-          if ( sbox != null ) {
-            sbox.forEach(function(s) {
-              s.name = key;
-              s.visible = visible;
-              ispy.scene.getObjectByName(descr.group).add(s);
-            });
-          }
+          descr.fn(data[i], boxes, descr.scale);
         }
+
+        var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
+        meshes.visible = visible;
+
+        ispy.scene.getObjectByName(descr.group).add(meshes);
+
       break;
 
       case ispy.TRACK:

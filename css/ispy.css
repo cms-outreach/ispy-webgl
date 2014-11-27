@@ -1,3 +1,9 @@
+#stats {
+  position: absolute;
+  top:0;
+  left: 0;
+}
+
 .bordered {
   border: thin solid gray;
 }

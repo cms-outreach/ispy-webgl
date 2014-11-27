@@ -61,6 +61,9 @@ ispy.init = function() {
   ispy.renderer = renderer;
   screen_canvas.appendChild(ispy.renderer.domElement);
 
+  ispy.stats = new Stats();
+  screen_canvas.appendChild(ispy.stats.domElement);
+
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
   var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);

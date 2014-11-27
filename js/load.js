@@ -1,8 +1,8 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "http://opendata.cern.ch/record/601/EGMonitor.ig",
-  "http://opendata.cern.ch/record/602/Electron.ig"
+  "/data/Mu.ig",
+  "/data/Electron.ig"
 ];
 
 ispy.ig_data = null;
@@ -71,15 +71,14 @@ ispy.loadEvent = function() {
   $("#event-loaded").html("Loading...");
 
   try {
-    console.log("parsing event");
     var event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
   } catch(err) {
     alert(err);
   }
 
   ispy.addEvent(event);
-
   ispy.enableNextPrev();
+
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
 }
 
@@ -157,7 +156,7 @@ ispy.loadLocalFiles = function() {
 }
 
 ispy.selectFile = function(filename) {
-  ispy.file_name = filename.split("/")[5];  // of course this isn't a general case for files
+  ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
 
   var xhr = new XMLHttpRequest();
   xhr.open("GET", filename, true);
@@ -198,7 +197,7 @@ ispy.loadWebFiles = function() {
 
   for (var i = 0; i < ispy.web_files.length; i++) {
     var e = ispy.web_files[i];
-    var name = e.split("/")[5];
+    var name = e.split("/")[2];
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
     var cls = "file";

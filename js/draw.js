@@ -76,7 +76,7 @@ ispy.makeTube = function(ir, or, len, pos, slices, segments) {
   return [points, lines];
 }
 
-ispy.makeWireframeBox = function(data, material, ci) {
+ispy.makeSolidBox = function(data, geometry, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -87,44 +87,118 @@ ispy.makeWireframeBox = function(data, material, ci) {
   var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
   var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
 
-  var front = new THREE.Geometry();
-  front.vertices.push(f1);
-  front.vertices.push(f2);
-  front.vertices.push(f3);
-  front.vertices.push(f4);
-  front.vertices.push(f1);
+  var box = new THREE.Geometry();
+  box.vertices = [f1,f2,f3,f4,b1,b2,b3,b4];
 
-  var back = new THREE.Geometry();
-  back.vertices.push(b1);
-  back.vertices.push(b2);
-  back.vertices.push(b3);
-  back.vertices.push(b4);
-  back.vertices.push(b1);
+  // front
+  box.faces.push(new THREE.Face3(0,1,2));
+  box.faces.push(new THREE.Face3(0,2,3));
 
-  var s1 = new THREE.Geometry();
-  s1.vertices.push(f1);
-  s1.vertices.push(b1);
+  // back
+  box.faces.push(new THREE.Face3(4,5,6));
+  box.faces.push(new THREE.Face3(4,6,7));
 
-  var s2 = new THREE.Geometry();
-  s2.vertices.push(f2);
-  s2.vertices.push(b2);
+  // top
+  box.faces.push(new THREE.Face3(4,5,1));
+  box.faces.push(new THREE.Face3(4,1,0));
 
-  var s3 = new THREE.Geometry();
-  s3.vertices.push(f3);
-  s3.vertices.push(b3);
+  // bottom
+  box.faces.push(new THREE.Face3(2,6,7));
+  box.faces.push(new THREE.Face3(2,3,7));
 
-  var s4 = new THREE.Geometry();
-  s4.vertices.push(f4);
-  s4.vertices.push(b4);
+  // left
+  box.faces.push(new THREE.Face3(1,5,7));
+  box.faces.push(new THREE.Face3(1,3,7));
 
-  var box = [new THREE.Line(front,material),
-             new THREE.Line(back,material),
-             new THREE.Line(s1,material),
-             new THREE.Line(s2,material),
-             new THREE.Line(s3,material),
-             new THREE.Line(s4,material)];
+  // right
+  box.faces.push(new THREE.Face3(4,6,2));
+  box.faces.push(new THREE.Face3(4,0,2));
 
-  return box;
+  box.computeFaceNormals();
+  box.computeVertexNormals();
+
+  geometry.merge(box);
+}
+
+ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+  var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+  var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+  var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+
+  var box = new THREE.Geometry();
+
+  box.vertices.push(f1);
+  box.vertices.push(f2);
+  box.vertices.push(f3);
+  box.vertices.push(f4);
+
+  box.faces.push(new THREE.Face3(0,1,2));
+  box.faces.push(new THREE.Face3(0,2,3));
+
+  b1.sub(f1);
+  b2.sub(f2);
+  b3.sub(f3);
+  b4.sub(f4);
+
+  b1.normalize();
+  b2.normalize();
+  b3.normalize();
+  b4.normalize();
+
+  b1.multiplyScalar(scale);
+  b2.multiplyScalar(scale);
+  b3.multiplyScalar(scale);
+  b4.multiplyScalar(scale);
+
+  b1.addVectors(f1,b1);
+  b2.addVectors(f2,b2);
+  b3.addVectors(f3,b3);
+  b4.addVectors(f4,b4);
+
+  box.vertices.push(b1);
+  box.vertices.push(b2);
+  box.vertices.push(b3);
+  box.vertices.push(b4);
+
+  box.faces.push(new THREE.Face3(0,1,2));
+  box.faces.push(new THREE.Face3(0,2,3));
+  box.faces.push(new THREE.Face3(4,5,6));
+  box.faces.push(new THREE.Face3(4,6,7));
+  box.faces.push(new THREE.Face3(4,5,1));
+  box.faces.push(new THREE.Face3(4,1,0));
+  box.faces.push(new THREE.Face3(2,6,7));
+  box.faces.push(new THREE.Face3(2,3,7));
+  box.faces.push(new THREE.Face3(1,5,7));
+  box.faces.push(new THREE.Face3(1,3,7));
+  box.faces.push(new THREE.Face3(4,6,2));
+  box.faces.push(new THREE.Face3(4,0,2));
+
+  box.computeFaceNormals();
+  box.computeVertexNormals();
+
+  geometry.merge(box);
+}
+
+
+// Need to be smarter about this.
+ispy.makeWireframeBox = function(data, geometry, ci) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+  var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+  var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+  var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+
+  geometry.vertices = [f1,f2,f3,f4,f1];
 }
 
 ispy.makeShapes = function(data, material) {
@@ -409,20 +483,6 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
   b3.addVectors(f3,b3);
   b4.addVectors(f4,b4);
 
-  /*
-  var wfcolor = new THREE.Color();
-  wfcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-  var material = new THREE.LineBasicMaterial({color:wfcolor, transparent: transp,
-                                              linewidth:style.linewidth,
-                                              opacity:style.opacity});
-
-  */
-
   var front = new THREE.Geometry();
   front.vertices.push(f1);
   front.vertices.push(f2);
@@ -461,126 +521,6 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 }
 
-ispy.makeScaledSolidBox = function(data, material, ci, scale) {
-  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
-
-  var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-  var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-  var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-  var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-
-  var front = new THREE.Geometry();
-
-  front.vertices.push(f1);
-  front.vertices.push(f2);
-  front.vertices.push(f3);
-  front.vertices.push(f4);
-
-  front.faces.push(new THREE.Face3(0,1,2));
-  front.faces.push(new THREE.Face3(0,2,3));
-
-  //front.computeCentroids();
-  front.computeFaceNormals();
-  front.computeVertexNormals();
-
-  b1.sub(f1);
-  b2.sub(f2);
-  b3.sub(f3);
-  b4.sub(f4);
-
-  b1.normalize();
-  b2.normalize();
-  b3.normalize();
-  b4.normalize();
-
-  b1.multiplyScalar(scale);
-  b2.multiplyScalar(scale);
-  b3.multiplyScalar(scale);
-  b4.multiplyScalar(scale);
-
-  b1.addVectors(f1,b1);
-  b2.addVectors(f2,b2);
-  b3.addVectors(f3,b3);
-  b4.addVectors(f4,b4);
-
-  var back = new THREE.Geometry();
-
-  back.vertices.push(b1);
-  back.vertices.push(b2);
-  back.vertices.push(b3);
-  back.vertices.push(b4);
-
-  back.faces.push(new THREE.Face3(0,1,2));
-  back.faces.push(new THREE.Face3(0,2,3));
-
-  //back.computeCentroids();
-  back.computeFaceNormals();
-  back.computeVertexNormals();
-
-  var top = new THREE.Geometry();
-
-  top.vertices.push(b1);
-  top.vertices.push(b2);
-  top.vertices.push(f2);
-  top.vertices.push(f1);
-
-  top.faces.push(new THREE.Face3(0,1,2));
-  top.faces.push(new THREE.Face3(0,2,3));
-
-  //top.computeCentroids();
-  top.computeFaceNormals();
-  top.computeVertexNormals();
-
-  var bottom = new THREE.Geometry();
-
-  bottom.vertices.push(f3);
-  bottom.vertices.push(b3);
-  bottom.vertices.push(b4);
-  bottom.vertices.push(f4);
-
-  bottom.faces.push(new THREE.Face3(0,1,2));
-  bottom.faces.push(new THREE.Face3(0,2,3));
-
-  //bottom.computeCentroids();
-  bottom.computeFaceNormals();
-  bottom.computeVertexNormals();
-
-  var left = new THREE.Geometry();
-
-  left.vertices.push(f2);
-  left.vertices.push(b2);
-  left.vertices.push(b3);
-  left.vertices.push(f3);
-
-  left.faces.push(new THREE.Face3(0,1,2));
-  left.faces.push(new THREE.Face3(0,2,3));
-
-  //left.computeCentroids();
-  left.computeFaceNormals();
-  left.computeVertexNormals();
-
-  var right = new THREE.Geometry();
-
-  right.vertices.push(b1);
-  right.vertices.push(f1);
-  right.vertices.push(f4);
-  right.vertices.push(b4);
-
-  right.faces.push(new THREE.Face3(0,1,2));
-  right.faces.push(new THREE.Face3(0,2,3));
-
-  //right.computeCentroids();
-  right.computeFaceNormals();
-  right.computeVertexNormals();
-
-  return [new THREE.Mesh(front, material), new THREE.Mesh(back, material),
-          new THREE.Mesh(top, material), new THREE.Mesh(bottom, material),
-          new THREE.Mesh(left, material), new THREE.Mesh(right, material)];
-}
-
 ispy.makeTrackPoints = function(data, extra, assoc, material) {
   if ( ! assoc ) {
     throw "No association!";
@@ -614,8 +554,6 @@ ispy.makeTracks = function(tracks, extras, assocs, material) {
   var ti, ei;
   var p1, d1, p2, d2;
   var distance, scale, curve;
-  var geometry;
-
   var curves = [];
 
   for ( var i = 0; i < assocs.length; i++ ) {
@@ -647,31 +585,31 @@ ispy.makeTracks = function(tracks, extras, assocs, material) {
     p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
 
     curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
-    geometry = new THREE.Geometry();
-    geometry.vertices = curve.getPoints(16);
 
-    curves.push(new THREE.Line(geometry,material));
+    var tg = new THREE.Geometry();
+    tg.vertices = curve.getPoints(16);
+
+    curves.push(new THREE.Line(tg,material));
   }
 
   return curves;
 }
 
-
-ispy.makeRecHit_V2 = function(data, material, scale) {
+ispy.makeRecHit_V2 = function(data, geometry, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
-    return ispy.makeScaledSolidBox(data, material, 5, scale*energy);
+    return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
 }
 
-ispy.makeDT = function(dt, material) {
-  return ispy.makeWireframeBox(dt, material, 1);
+ispy.makeDT = function(dt, geometry) {
+  return ispy.makeWireframeBox(dt, geometry, 1);
 }
 
-ispy.makeCSC = function(csc, material) {
-  return ispy.makeWireframeBox(csc, material, 1);
+ispy.makeCSC = function(csc, geometry) {
+  return ispy.makeWireframeBox(csc, geometry, 1);
 }
 
-ispy.makeMuonChamber = function(chamber, material) {
-  return ispy.makeWireframeBox(chamber, material, 1);
+ispy.makeMuonChamber = function(chamber, geometry) {
+  return ispy.makeSolidBox(chamber, geometry, 1);
 }
