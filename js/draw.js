@@ -185,9 +185,8 @@ ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   geometry.merge(box);
 }
 
-
 // Need to be smarter about this.
-ispy.makeWireframeBox = function(data, geometry, ci) {
+ispy.makeWireframeBox = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -198,7 +197,19 @@ ispy.makeWireframeBox = function(data, geometry, ci) {
   var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
   var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
 
-  geometry.vertices = [f1,f2,f3,f4,f1];
+  var front = new THREE.Geometry();
+  front.vertices = [f1,f2,f3,f4,f1];
+
+  var back = new THREE.Geometry();
+  back.vertices = [b1,b2,b3,b4,b1];
+
+  var top = new THREE.Geometry();
+  top.vertices = [f1,b1,b2,f2,f1];
+
+  var bottom = new THREE.Geometry();
+  bottom.vertices = [f3,b3,b4,f4,f3];
+
+  return [front,back,top,bottom];
 }
 
 ispy.makeShapes = function(data, material) {
@@ -603,13 +614,13 @@ ispy.makeRecHit_V2 = function(data, geometry, scale) {
 }
 
 ispy.makeDT = function(dt, geometry) {
-  return ispy.makeWireframeBox(dt, geometry, 1);
+  return ispy.makeWireframeBox(dt, 1);
 }
 
 ispy.makeCSC = function(csc, geometry) {
-  return ispy.makeWireframeBox(csc, geometry, 1);
+  return ispy.makeWireframeBox(csc, 1);
 }
 
 ispy.makeMuonChamber = function(chamber, geometry) {
-  return ispy.makeSolidBox(chamber, geometry, 1);
+  return ispy.makeSolidBox(chamber, 1);
 }

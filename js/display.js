@@ -122,7 +122,7 @@ ispy.detector_description = {
     fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcap3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
@@ -132,15 +132,15 @@ ispy.detector_description = {
     fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Outer",
+  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalForward3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
     fn: ispy.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalForward3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "DTs3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Drift Tubes (muon)",
+  "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
     fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.9}},
-  "CSC3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Cathode Strip Chambers (muon)",
+  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
     fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}}
 };
 
@@ -292,18 +292,17 @@ ispy.addDetector = function() {
                                                       linewidth:descr.style.linewidth,
                                                       opacity:descr.style.opacity});
 
-
           for ( var i = 0; i < data.length; i++ ) {
-              var boxes = new THREE.Geometry();
+            var boxes = descr.fn(data[i]);
 
-              descr.fn(data[i], boxes);
-
-              var lines = new THREE.Line(boxes, material);
-              lines.name = key;
-              lines.visible = visible;
-
-            ispy.scene.getObjectByName(descr.group).add(lines);
+            boxes.forEach(function(b) {
+              var line = new THREE.Line(b,material);
+              line.name = key;
+              line.visible = visible;
+              ispy.scene.getObjectByName(descr.group).add(line);
+            });
           }
+
         break;
 
         case ispy.SOLIDBOX:
