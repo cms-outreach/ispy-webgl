@@ -1,8 +1,8 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "/data/Mu.ig",
-  "/data/Electron.ig"
+  "./data/Mu.ig",
+  "./data/Electron.ig"
 ];
 
 ispy.ig_data = null;
