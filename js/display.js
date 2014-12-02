@@ -98,12 +98,16 @@ ispy.openAboutWindow = function() {
   console.log('open about window');
 }
 
-ispy.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "Physics Objects"];
+ispy.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 
 ispy.addGroups = function() {
   var group_table = $('#treeview table');
   ispy.data_groups.forEach(function(g) {
-    group_table.append("<tr id='"+ g +"'><td class='group black'>"+ g +"</td></tr>")
+    var n = g;
+    if ( g === "PhysicsObjects" ) {
+      n = "Physics Objects";
+    }
+    group_table.append("<tr id='"+ g +"'><td class='group black'>"+ n +"</td></tr>")
   });
 }
 
@@ -112,10 +116,11 @@ ispy.LINE = 1;
 ispy.BOX = 2;
 ispy.SOLIDBOX = 3;
 ispy.SCALEDBOX = 4;
-ispy.SCALEDSOLIDBOX = 6;
-ispy.MODEL = 7;
-ispy.TRACK = 8;
-ispy.POLYLINE = 9;
+ispy.SCALEDSOLIDBOX = 5;
+ispy.MODEL = 6;
+ispy.TRACK = 7;
+ispy.POLYLINE = 8;
+ispy.SHAPE = 9;
 
 ispy.detector_description = {
   "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
@@ -176,7 +181,7 @@ ispy.event_description = {
     fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 1.0, linewidth: 2}},
   */
 
-/*
+  /*
   "DTRecSegment4D_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
     fn: ispy.makeDTRecSegments, style: {color: [1, 1, 0, 1], linewidth: 3}},
   "CSCSegments_V1": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
@@ -185,39 +190,34 @@ ispy.event_description = {
     fn: ispy.makeRPCRecHits, style: {color: [0.8, 1, 0, 1], linewidth: 3}},
   "CSCRecHit2Ds_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
     fn: ispy.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], linewidth: 2}},
-*/
+  */
 
   "MuonChambers_V1": {type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
-  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
+  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
-
-/*
-  "GsfElectrons_V2": {type: ispy.PATH, on: true, group: "Physics Objects", name: "Electron Tracks (GSF)",
+  "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTrackCurves, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
-  "Photons_V1": {type: ispy.LINE, on: false, group: "Physics Objects", name: "Photons (Reco)",
-     fn: ispy.makePhotons, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
-*/
-  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics Objects", name: "Tracker Muons (Reco)",
+   fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
+  "Photons_V1": {type: ispy.LINE, on: false, group: "PhysicsObjects", name: "Photons (Reco)",
+     fn: ispy.makePhoton, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
+  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Tracker Muons (Reco)",
     extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "StandaloneMuons_V1": {type: ispy.POLYLINE, on: false, group: "Physics Objects", name: "Stand-alone Muons (Reco)",
+  "StandaloneMuons_V1": {type: ispy.POLYLINE, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
     extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "Physics Objects", name: "Stand-alone Muons (Reco)",
+  "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
     extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics Objects", name: "Global Muons (Reco)",
+  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Global Muons (Reco)",
     extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-    fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}}
-/*
-  "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics Objects", name: "Missing Et (Reco)",
+    fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
+  "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
-  "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics Objects", name: "Jets",
-    fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 1.0}}
-*/
+  "Jets_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Jets",
+    fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}}
 };
 
 ispy.disabled = new Array();
@@ -482,7 +482,45 @@ ispy.addEvent = function(event) {
           t.visible = visible;
           ispy.scene.getObjectByName(descr.group).add(t);
         });
-        break;
+      break;
+
+      case ispy.SHAPE:
+
+        for ( var i = 0; i < data.length; i++ ) {
+          var shape = descr.fn(data[i], descr.style);
+          if ( shape != null ) {
+            shape.name = key;
+            shape.visible = visible;
+            ispy.scene.getObjectByName(descr.group).add(shape);
+          }
+        }
+      break;
+
+      case ispy.LINE:
+
+        var lcolor = new THREE.Color();
+        lcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+
+        var material = new THREE.LineBasicMaterial({color:lcolor, transparent:transp,
+                                                    linewidth:descr.style.linewidth,
+                                                    opacity:descr.style.opacity});
+
+        var geometry = new THREE.Geometry();
+
+        for ( var i = 0; i < data.length; i++ ) {
+          descr.fn(data[i], geometry);
+        }
+
+        var line = new THREE.Line(geometry, material);
+        line.name = key;
+        line.visible = visible;
+        ispy.scene.getObjectByName(descr.group).add(line);
+
     }
   }
 }

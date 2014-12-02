@@ -622,5 +622,124 @@ ispy.makeCSC = function(csc, geometry) {
 }
 
 ispy.makeMuonChamber = function(chamber, geometry) {
-  return ispy.makeSolidBox(chamber, 1);
+  return ispy.makeSolidBox(chamber, geometry, 1);
+}
+
+ispy.makeMET = function(data, style) {
+  /*
+    "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
+  */
+  var pt = data[1];
+
+  if ( pt < 1.0 ) { //make this a setting
+    return null;
+  }
+
+  var px = data[2];
+  var py = data[3];
+
+  var dir = new THREE.Vector3(px,py,0);
+  dir.normalize();
+
+  var color = new THREE.Color();
+  color.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  // dir, origin, length, hex, headLength, headWidth
+  var origin = new THREE.Vector3(0,0,0);
+  var length = pt*0.1;
+
+  var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
+
+  return met;
+}
+
+ispy.makeJet = function(data, style) {
+  var et = data[0];
+
+  if ( et < 5.0 ) { //make this a setting
+    return null;
+  }
+
+  var theta = data[2];
+  var phi = data[3];
+
+  var ct = Math.cos(theta);
+  var st = Math.sin(theta);
+  var cp = Math.cos(phi);
+  var sp = Math.sin(phi);
+
+  var maxZ = 4.0;
+  var maxR = 2.0;
+
+  var length1 = ct ? maxZ / Math.abs(ct) : maxZ;
+  var length2 = st ? maxR / Math.abs(st) : maxR;
+  var length = length1 < length2 ? length1 : length2;
+  var radius = 0.3 * (1.0 /(1 + 0.001));
+
+  // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
+  var geometry = new THREE.CylinderGeometry(radius,0.0,length,8,1,true);
+  geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
+  geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
+
+  var jcolor = new THREE.Color();
+  jcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:jcolor, transparent: transp, opacity:style.opacity});
+  material.side = THREE.DoubleSide;
+
+  var jet = new THREE.Mesh(geometry, material);
+  jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct))
+
+  return jet;
+}
+
+ispy.makePhoton = function(data, geometry) {
+  /*
+     Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
+     "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
+  */
+  var lEB = 3.0;  // half-length of the EB (m)
+  var rEB = 1.24; // inner radius of the EB (m)
+
+  var eta = data[2];
+  var phi = data[3];
+
+  var px = Math.cos(phi);
+  var py = Math.sin(phi);
+  var pz = (Math.pow(Math.E, eta) - Math.pow(Math.E, -eta))/2;
+
+  var t = 0.0;
+
+  var x0 = data[4][0];
+  var y0 = data[4][1];
+  var z0 = data[4][2];
+
+  if ( Math.abs(eta) > 1.48 ) { // i.e. not in the EB, so propagate to ES
+    t = Math.abs((lEB - z0)/pz);
+  } else { // propagate to EB
+    var a = px*px + py*py;
+    var b = 2*x0*px + 2*y0*py;
+    var c = x0*x0 + y0*y0 - rEB*rEB;
+    t = (-b+Math.sqrt(b*b-4*a*c))/2*a;
+  }
+
+  var pt1 = new THREE.Vector3(x0, y0, z0);
+  var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
+
+  geometry.vertices.push(pt1);
+  geometry.vertices.push(pt2);
+}
+
+ispy.makeDTRecSegments = function(data, geometry) {
+  geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+  geometry.vertices.push(new THREE.Vector3(data[2][0], data[2][1], data[2][2]));
+}
+
+ispy.makeCSCSegments = function(data, geometry) {
+  return ispy.makeDTRecSegments(data, geometry);
 }
