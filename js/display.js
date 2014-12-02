@@ -253,7 +253,13 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   var on = !ispy.disabled[key] ? ' checked="true"' : "";
 
   var html = "<tr class='" + dc + "'>";
-  html += "<td class='collection black'>"+ name +"</td>";
+
+  if ( group != "Detector" ) {
+    html += "<td class='collection black' onclick='ispy.displayCollection(\""+key+"\");'>" + name + "</td>";
+  } else {
+    html += "<td class='collection black'>"+ name +"</td>";
+  }
+
   html += "<td class='collection'>";
   html += "<input type='checkbox' " + on + "onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
@@ -374,6 +380,8 @@ ispy.addEvent = function(event) {
       ispy.scene.getObjectByName(c.name).children.length = 0;
     }
   });
+
+  ispy.current_event = event;
 
   // remove selectors for last event
   $("tr.Event").remove();
@@ -523,4 +531,26 @@ ispy.addEvent = function(event) {
 
     }
   }
+}
+
+ispy.displayCollection = function(key) {
+  var type = ispy.current_event['Types'][key];
+  var collection = ispy.current_event['Collections'][key];
+
+  $('#collection-table').empty();
+  $('#collection-table').append('<thead> <tr>');
+
+   for ( var t in type ) {
+     $("#collection-table thead > tr").append($('<th class="group">').text(type[t][0]));
+   }
+
+   for ( var c in collection ) {
+     var row_content = "<tr>";
+
+     for ( v in collection[c] ) {
+       row_content += "<td>"+collection[c][v]+"</td>";
+     }
+
+     $('#collection-table').append(row_content);
+   }
 }

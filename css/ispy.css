@@ -123,6 +123,7 @@
 
 #tableview {
   height: 140px;
+  overflow: scroll;
 }
 
 #tableview.black {
