@@ -382,6 +382,7 @@ ispy.addEvent = function(event) {
   });
 
   ispy.current_event = event;
+  $('#collection-table').empty();
 
   // remove selectors for last event
   $("tr.Event").remove();
