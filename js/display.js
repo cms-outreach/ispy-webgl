@@ -74,7 +74,7 @@ ispy.showAxes = function() {
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 
-  if ( ispy.inverted_colors ) {
+  if ( !ispy.inverted_colors ) {
     ispy.renderer.setClearColor(0x000000,1);
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
