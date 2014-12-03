@@ -405,7 +405,7 @@ ispy.addEvent = function(event) {
   // remove all but the geometry from the
   // scene before rendering
   ispy.scene.children.forEach(function(c) {
-    if ( c.name === "Event" ) {
+    if ( c.name != "Detector" && c.name != "axes" ) {
       ispy.scene.getObjectByName(c.name).children.length = 0;
     }
   });
