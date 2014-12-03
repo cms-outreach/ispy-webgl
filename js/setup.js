@@ -63,6 +63,8 @@ ispy.init = function() {
 
   ispy.stats = new Stats();
   screen_canvas.appendChild(ispy.stats.domElement);
+  $('#stats').hide();
+  ispy.show_stats = false;
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas

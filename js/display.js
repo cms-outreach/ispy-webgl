@@ -66,10 +66,6 @@ ispy.zoom = function(step) {
   ispy.camera.setZoom(zoom+step);
 }
 
-ispy.showSettings = function() {
-  console.log('show settings');
-}
-
 ispy.inverted_colors = false;
 
 ispy.invertColors = function() {
@@ -92,12 +88,21 @@ ispy.invertColors = function() {
   $('#treeview td.group').toggleClass('white').toggleClass('black');
   $('#treeview td.collection').toggleClass('white').toggleClass('black');
 
-
   $('#display').toggleClass('white').toggleClass('black');
   $('#tableview').toggleClass('white').toggleClass('black');
 
   $('.modal-content').toggleClass('white').toggleClass('black');
   $('.modal-title').toggleClass('white').toggleClass('black');
+}
+
+ispy.showStats = function() {
+  ispy.show_stats = !ispy.show_stats;
+
+  if ( ispy.show_stats ) {
+    $('#stats').show();
+  } else {
+    $('#stats').hide();
+  }
 }
 
 ispy.openAboutWindow = function() {

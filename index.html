@@ -207,8 +207,12 @@
         <h4 class="modal-title black">Settings</h4>
       </div>
       <div class="modal-body">
-        Invert colors:
-        <input type='checkbox' checked='false' onchange='ispy.invertColors();'>
+        <p>
+          Invert colors: <input type='checkbox' checked='false' onchange='ispy.invertColors();'>
+        </p>
+        <p>
+          Show display statistics: <input type='checkbox' checked='false' onchange='ispy.showStats();'>
+        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -225,7 +229,18 @@
         <h4 class="modal-title black">About</h4>
       </div>
       <div class="modal-body">
-        About stuff goes here...
+        <p>
+          <h4>iSpy-WebGL v0.0</h4>
+        </p>
+        <p>
+          A browser-based event display for the <a href="http://cern.ch/cms">CMS experiment</a> at the LHC using WebGL.
+        </p>
+        <p>
+          <a href="mailto:ispy-developers@cern.ch">Questions/comments/problems</a>
+        </p>
+        <p>
+          Get the code on <a href="https://github.com/cms-outreach/ispy-webgl">GitHub</a>
+        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
