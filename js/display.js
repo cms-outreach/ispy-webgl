@@ -20,9 +20,9 @@ ispy.setCameraHome = function() {
   var home_y = 8.6;
   var home_z = 14.0;
 
-  ispy.camera.position.x = home_x*0.5;
-  ispy.camera.position.y = home_y*0.5;
-  ispy.camera.position.z = home_z*0.5;
+  ispy.camera.position.x = home_x*0.75;
+  ispy.camera.position.y = home_y*0.75;
+  ispy.camera.position.z = home_z*0.75;
 
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
@@ -30,19 +30,25 @@ ispy.setCameraHome = function() {
 }
 
 ispy.setXY = function() {
-  ispy.camera.position = new THREE.Vector3(0,0,ispy.camera.position.length());
+  ispy.camera.position.x = 0;
+  ispy.camera.position.y = 0;
+  ispy.camera.position.z = ispy.camera.position.length();
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
 }
 
 ispy.setZX = function() {
-  ispy.camera.position = new THREE.Vector3(0,ispy.camera.position.length(),0);
-  ispy.camera.up = new THREE.Vector3(1,0,0);
+  ispy.camera.position.x = 0;
+  ispy.camera.position.y = ispy.camera.position.length();
+  ispy.camera.position.z = 0;
+  ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
 }
 
 ispy.setYZ = function() {
-  ispy.camera.position = new THREE.Vector3(-ispy.camera.position.length(),0,0);
+  ispy.camera.position.x = -ispy.camera.position.length();
+  ispy.camera.position.y = 0;
+  ispy.camera.position.z = 0;
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
 }
