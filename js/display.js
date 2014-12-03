@@ -66,8 +66,6 @@ ispy.zoom = function(step) {
   ispy.camera.setZoom(zoom+step);
 }
 
-ispy.inverted_colors = false;
-
 ispy.invertColors = function() {
 
   if ( ispy.inverted_colors ) {
@@ -79,7 +77,7 @@ ispy.invertColors = function() {
     ispy.inverted_colors = true;
   }
 
-  // Yeeash I really need to clean up the class, ids, and css
+  // Yeeesh I really need to clean up the class, ids, and css
 
   $('#titlebar').toggleClass('white').toggleClass('black');
   $('#toolbar').toggleClass('white').toggleClass('black');
@@ -90,6 +88,10 @@ ispy.invertColors = function() {
 
   $('#display').toggleClass('white').toggleClass('black');
   $('#tableview').toggleClass('white').toggleClass('black');
+
+  $('#browser-table').toggleClass('white').toggleClass('black');
+  $('#browser-table th').toggleClass('white').toggleClass('black');
+  $('#browser-files').toggleClass('white').toggleClass('black');
 
   $('.modal-content').toggleClass('white').toggleClass('black');
   $('.modal-title').toggleClass('white').toggleClass('black');
@@ -265,10 +267,15 @@ ispy.addSelectionRow = function(group, key, name, visible) {
 
   var html = "<tr class='" + dc + "'>";
 
+  var cc = "black";
+  if (ispy.inverted_colors) {
+    cc = "white";
+  }
+
   if ( group != "Detector" ) {
-    html += "<td class='collection black' onclick='ispy.displayCollection(\""+key+"\");'>" + name + "</td>";
+    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\");'>" + name + "</td>";
   } else {
-    html += "<td class='collection black'>"+ name +"</td>";
+    html += "<td class='collection "+ cc +"'>"+ name +"</td>";
   }
 
   html += "<td class='collection'>";

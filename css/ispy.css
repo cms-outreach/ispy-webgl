@@ -147,7 +147,7 @@
   background-color: black;
 }
 
-modal-content.white {
+.modal-content.white {
   color: black;
   background-color: white;
 }
@@ -156,12 +156,12 @@ modal-content.white {
   border: 0;
 }
 
-.modal-content td {
+#browser-events td.black {
   background-color: #303030;
 }
 
-.modal-content td > a {
-  color: white;
+#browser-events td.white {
+  background-color: white;
 }
 
 .modal-title.black {
@@ -184,9 +184,40 @@ modal-content.white {
   padding-left: 20px;
 }
 
-#browser-table th {
+#browser-table.white {
+  background-color: white;
+  color: black;
+}
+
+#browser-table.black {
+  background-color: black;
+  color: white;
+}
+
+#browser-table th.black {
   background-color: #202020;
   color: white;
+}
+
+#browser-table th.white {
+  background-color: #cccccc;
+  color: black;
+}
+
+#browser-table.black td {
+  background-color: #303030;
+}
+
+#browser-table.white td {
+  background-color: white;
+}
+
+#browser-table.black td > a {
+  color: white;
+}
+
+#browser-table.white td > a {
+  color: black;
 }
 
 #browser-files td {

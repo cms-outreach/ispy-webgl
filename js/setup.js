@@ -66,6 +66,8 @@ ispy.init = function() {
   $('#stats').hide();
   ispy.show_stats = false;
 
+  ispy.inverted_colors = false;
+
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
   var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
