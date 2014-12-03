@@ -68,6 +68,24 @@ ispy.init = function() {
 
   ispy.inverted_colors = false;
 
+  var axes = new THREE.Object3D();
+  axes.name = "axes";
+  axes.visible = false;
+
+  var origin = new THREE.Vector3(0,0,0);
+  var length = 10;
+  // direction, origin, length, color hex, head length, head width
+  var arrowX = new THREE.ArrowHelper(new THREE.Vector3(1,0,0),origin,length,0xff0000);
+  var arrowY = new THREE.ArrowHelper(new THREE.Vector3(0,1,0),origin,length,0x00ff00);
+  var arrowZ = new THREE.ArrowHelper(new THREE.Vector3(0,0,1),origin,length,0x0000ff);
+
+  axes.add(arrowX);
+  axes.add(arrowY);
+  axes.add(arrowZ);
+
+  ispy.scene.add(axes);
+  ispy.show_axes = false;
+
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
   var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);

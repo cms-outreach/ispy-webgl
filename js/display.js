@@ -41,7 +41,7 @@ ispy.setZX = function() {
   ispy.camera.position.x = 0;
   ispy.camera.position.y = ispy.camera.position.length();
   ispy.camera.position.z = 0;
-  ispy.camera.up = new THREE.Vector3(0,1,0);
+  ispy.camera.up = new THREE.Vector3(1,0,0);
   ispy.lookAtOrigin();
 }
 
@@ -66,14 +66,18 @@ ispy.zoom = function(step) {
   ispy.camera.setZoom(zoom+step);
 }
 
+ispy.showAxes = function() {
+  ispy.show_axes = !ispy.show_axes;
+  ispy.scene.getObjectByName("axes").visible = ispy.show_axes;
+}
+
 ispy.invertColors = function() {
+  ispy.inverted_colors = !ispy.inverted_colors;
+
   if ( ispy.inverted_colors ) {
-    // Set back to black
     ispy.renderer.setClearColor(0x000000,1);
-    ispy.inverted_colors = false;
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
-    ispy.inverted_colors = true;
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
