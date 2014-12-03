@@ -67,7 +67,6 @@ ispy.zoom = function(step) {
 }
 
 ispy.invertColors = function() {
-
   if ( ispy.inverted_colors ) {
     // Set back to black
     ispy.renderer.setClearColor(0x000000,1);
@@ -107,10 +106,6 @@ ispy.showStats = function() {
   }
 }
 
-ispy.openAboutWindow = function() {
-  console.log('open about window');
-}
-
 ispy.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 
 ispy.addGroups = function() {
@@ -135,47 +130,56 @@ ispy.TRACK = 7;
 ispy.POLYLINE = 8;
 ispy.SHAPE = 9;
 
+// Hmmm, IIRC objects are unordered. However, at least Chrome and Firefox fetch things in
+// the reverse order than specified here. Therefore e.g. Tracker appears at the top of
+// row of the tree view and CSC at the bottom. Which is what we want.
+
 ispy.detector_description = {
-  "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
-    fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
-  "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
-    fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-  "EcalEndcap3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-  "EcalEndcap3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-  "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
-    fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
-    fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
-    fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalForward3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
-    fn: ispy.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalForward3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
-    fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
+    fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}},
+
   "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
     fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.9}},
-  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
-    fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}}
+
+  "HcalForward3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
+    fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalForward3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
+    fn: ispy.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
+    fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
+    fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
+    fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+
+  "EcalEndcap3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
+    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+  "EcalEndcap3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
+    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
+    fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+
+  "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
+    fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
+    fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
 };
 
 ispy.event_description = {
-  "EBRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
-    fn: ispy.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
   "EERecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
     fn: ispy.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
   "ESRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: false, group: "ECAL", name: "Preshower Rec. Hits",
     fn: ispy.makeRecHit_V2, style: {color: [1, 0.2, 0], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
-  "HBRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
-    fn: ispy.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
-  "HERecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
-    fn: ispy.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "EBRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Barrel Rec. Hits",
+    fn: ispy.makeRecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, min_energy: 0.5},
+
   "HFRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
     fn: ispy.makeRecHit_V2, style: {color: [0.6, 1, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
   "HORecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
+    fn: ispy.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "HERecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
+    fn: ispy.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
+  "HBRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
     fn: ispy.makeRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, scale: 0.1, min_energy: 0.5},
 
   "Tracks_V1": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
@@ -207,16 +211,16 @@ ispy.event_description = {
 
   "MuonChambers_V1": {type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
-  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
-    dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
-  "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
-    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-   fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
+
+  "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
+    fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
+  "Jets_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Jets",
+    fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}},
   "Photons_V1": {type: ispy.LINE, on: false, group: "PhysicsObjects", name: "Photons (Reco)",
      fn: ispy.makePhoton, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
-  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Tracker Muons (Reco)",
-    extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
+
+  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Global Muons (Reco)",
+    extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
   "StandaloneMuons_V1": {type: ispy.POLYLINE, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
     extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
@@ -224,13 +228,16 @@ ispy.event_description = {
   "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
     extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Global Muons (Reco)",
-    extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
+  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Tracker Muons (Reco)",
+    extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
-  "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
-    fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
-  "Jets_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Jets",
-    fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}}
+
+  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
+    dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
+  "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
+    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
+   fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
 };
 
 ispy.disabled = new Array();
