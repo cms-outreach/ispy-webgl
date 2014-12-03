@@ -110,7 +110,7 @@ ispy.showStats = function() {
   }
 }
 
-ispy.data_groups = ["Detector", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
+ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 
 ispy.addGroups = function() {
   var group_table = $('#treeview table');
@@ -133,6 +133,7 @@ ispy.MODEL = 6;
 ispy.TRACK = 7;
 ispy.POLYLINE = 8;
 ispy.SHAPE = 9;
+ispy.TEXT = 10;
 
 // Hmmm, IIRC objects are unordered. However, at least Chrome and Firefox fetch things in
 // the reverse order than specified here. Therefore e.g. Tracker appears at the top of
@@ -195,6 +196,11 @@ ispy.event_description = {
   "Tracks_V3": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
+
+  "Event_V1":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event",
+    fn: ispy.makeEvent, style: {color: [1.0, 1.0, 1.0]}},
+  "Event_V2":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event",
+    fn: ispy.makeEvent, style: {color: [1.0, 1.0, 1.0]}},
 
   /*
     need to fix these
@@ -558,7 +564,12 @@ ispy.addEvent = function(event) {
         line.name = key;
         line.visible = visible;
         ispy.scene.getObjectByName(descr.group).add(line);
+      break;
 
+      case ispy.TEXT:
+        // for now just display event information in table view
+        ispy.displayCollection(key);
+      break;
     }
   }
 }
