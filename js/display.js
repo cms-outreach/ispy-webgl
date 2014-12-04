@@ -119,7 +119,12 @@ ispy.addGroups = function() {
     if ( g === "PhysicsObjects" ) {
       n = "Physics Objects";
     }
-    group_table.append("<tr id='"+ g +"'><td class='group black'>"+ n +"</td></tr>")
+    var html = "<tr id='"+ g +"'>";
+    html += "<td class='group black'>"+ n +"</td>";
+    html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
+    html += "<span class='info glyphicon glyphicon-question-sign' aria-hidden='true'></a></span></td>";
+    html += "</tr>";
+    group_table.append(html);
   });
 }
 

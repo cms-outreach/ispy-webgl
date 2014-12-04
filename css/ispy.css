@@ -106,6 +106,10 @@
   color: black;
 }
 
+#treeview .info {
+  color: red;
+}
+
 #display {
   height: 500px;
   overflow: hidden;
