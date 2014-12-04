@@ -65,6 +65,14 @@
   overflow: scroll;
 }
 
+#treeview.black .table-hover tr:hover {
+  background-color: #777;
+}
+
+#treeview.white .table-hover tr:hover {
+  background-color: #dfdfdf;
+}
+
 #treeview.black {
   color: white;
   background-color: black;

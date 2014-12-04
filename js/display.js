@@ -295,7 +295,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   }
 
   if ( group != "Detector" ) {
-    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\");'>" + name + "</td>";
+    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + ": " + name +"\");'>" + name + "</td>";
   } else {
     html += "<td class='collection "+ cc +"'>"+ name +"</td>";
   }
@@ -573,17 +573,18 @@ ispy.addEvent = function(event) {
 
       case ispy.TEXT:
         // for now just display event information in table view
-        ispy.displayCollection(key);
+        ispy.displayCollection(key, descr.group +": "+descr.name);
       break;
     }
   }
 }
 
-ispy.displayCollection = function(key) {
+ispy.displayCollection = function(key, name) {
   var type = ispy.current_event['Types'][key];
   var collection = ispy.current_event['Collections'][key];
 
   $('#collection-table').empty();
+  $('#collection-table').append('<caption>' + name + '</caption>');
   $('#collection-table').append('<thead> <tr>');
 
    for ( var t in type ) {
