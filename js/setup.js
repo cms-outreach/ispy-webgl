@@ -99,4 +99,5 @@ ispy.init = function() {
   })
 
   ispy.renderer.domElement.addEventListener('mousedown', ispy.onDocumentMouseDown, false);
+  $('#version').html("v"+ispy.version);
 }
