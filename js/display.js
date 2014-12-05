@@ -82,6 +82,8 @@ ispy.invertColors = function() {
 
   // Yeeesh I really need to clean up the class, ids, and css
 
+  $('body').toggleClass('white').toggleClass('black');
+
   $('#titlebar').toggleClass('white').toggleClass('black');
   $('#toolbar').toggleClass('white').toggleClass('black');
 
@@ -108,6 +110,16 @@ ispy.showStats = function() {
   } else {
     $('#stats').hide();
   }
+}
+
+ispy.onWindowResize = function() {
+  var w = $('#display').innerWidth();
+  var h = $('#display').innerHeight();
+
+  ispy.camera.aspect	= w/h;
+  ispy.camera.updateProjectionMatrix();
+  ispy.renderer.setSize(w,h);
+  ispy.render();
 }
 
 ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];

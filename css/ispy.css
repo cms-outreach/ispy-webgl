@@ -1,3 +1,11 @@
+body.black {
+  background-color: black;
+}
+
+body.white {
+  background-color: white;
+}
+
 #stats {
   position: absolute;
   top:0;
@@ -121,6 +129,7 @@
 #display {
   height: 500px;
   overflow: hidden;
+  padding: 0;
 }
 
 #display.black {

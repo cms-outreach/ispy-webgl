@@ -40,8 +40,11 @@ ispy.init = function() {
   var scene = new THREE.Scene();
   ispy.scene = scene;
 
-  var width = 850.0;
-  var height = 500.0;
+  //var width = 850.0;
+  //var height = 500.0;
+
+  var width = $('#display').innerWidth();
+  var height = $('#display').innerHeight();
 
   // width, height, fov, near, far, orthoNear, orthoFar
   var camera = new THREE.CombinedCamera(width, height, 70, 1, 100, 1, 48);
@@ -100,4 +103,6 @@ ispy.init = function() {
 
   ispy.renderer.domElement.addEventListener('mousedown', ispy.onDocumentMouseDown, false);
   $('#version').html("v"+ispy.version);
+
+  window.addEventListener('resize', ispy.onWindowResize, false);
 }
