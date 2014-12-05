@@ -120,12 +120,12 @@
         </div>
       </div>
       <!-- The canvas goes into this div -->
-      <div class="col-lg-9 bordered black" id="display"></div>
+      <div class="col-lg-9 bordered black" id="display">
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-12 bordered black" id="tableview">
       <table id="collection-table" class="table">
-        <caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>
       </table>
       </div>
     </div>
@@ -143,6 +143,8 @@
     });
   </script>
 </body>
+
+<div id="event-info" class="black"></div>
 
 <div id="open-files" role="dialog" class="modal">
   <div class="modal-dialog modal-sm">

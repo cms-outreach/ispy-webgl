@@ -123,6 +123,7 @@ ispy.onWindowResize = function() {
 }
 
 ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
+ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
 
 ispy.addGroups = function() {
   var group_table = $('#treeview table');
@@ -214,10 +215,8 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
 
-  "Event_V1":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event",
-    fn: ispy.makeEvent, style: {color: [1.0, 1.0, 1.0]}},
-  "Event_V2":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event",
-    fn: ispy.makeEvent, style: {color: [1.0, 1.0, 1.0]}},
+  "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
 
   /*
     need to fix these
@@ -283,6 +282,17 @@ for (var key in ispy.event_description) {
 
 ispy.toggle = function(group, key) {
   ispy.disabled[key] = !ispy.disabled[key];
+
+  // For provenance (for now, just event information)
+  // we display as simple HTML so therefore not part of the scene
+  if ( group === "Provenance" ) {
+    console.log(group, key);
+    if ( ispy.disabled[key] ) {
+      $('#event-info').hide();
+    } else {
+      $('#event-info').show();
+    }
+  }
 
   ispy.scene.getObjectByName(group).children.forEach(function(c) {
     if ( c.name === key ) {
@@ -434,7 +444,9 @@ ispy.addEvent = function(event) {
   });
 
   ispy.current_event = event;
+  // Clear table from last event and show default caption
   $('#collection-table').empty();
+  $('#collection-table').append(ispy.table_caption);
 
   // remove selectors for last event
   $("tr.Event").remove();
@@ -584,8 +596,7 @@ ispy.addEvent = function(event) {
       break;
 
       case ispy.TEXT:
-        // for now just display event information in table view
-        ispy.displayCollection(key, descr.group +": "+descr.name);
+        descr.fn(data);
       break;
     }
   }

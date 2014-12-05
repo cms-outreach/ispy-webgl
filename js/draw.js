@@ -743,3 +743,20 @@ ispy.makeDTRecSegments = function(data, geometry) {
 ispy.makeCSCSegments = function(data, geometry) {
   return ispy.makeDTRecSegments(data, geometry);
 }
+
+ispy.makeEvent = function(data) {
+  /*
+  "Event_V2": [["run", "int"],["event", "int"],["ls", "int"],["orbit", "int"],["bx", "int"],["time", "string"],["localtime", "string"]]
+  for what we do here, Event_V1 is the same, i.e. we don't show localtime
+  */
+  var ei = data[0];
+  var run = ei[0], event = ei[1], ls = ei[2], time = ei[5];
+
+  var et = "CMS Experiment at the LHC, CERN<br>";
+  et += "Data recorded: " + time + "</br>";
+  et += "Run / Event / LS: " + run + " / " + event + " / " + ls + "</br>";
+
+  var ei = $('#event-info');
+  ei.html(et);
+  $('#display').append(ei);
+}

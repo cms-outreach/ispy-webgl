@@ -12,6 +12,19 @@ body.white {
   left: 0;
 }
 
+#event-info {
+  position: absolute;
+  top:0;
+  left:0;
+  padding-top: 10px;
+  padding-left: 10px;
+  display: block;
+}
+
+#event-info.black {
+  color: white;
+}
+
 .bordered {
   border: thin solid gray;
 }
