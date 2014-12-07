@@ -3,6 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/dataTables.booststrap.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
@@ -150,7 +151,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Open File</h4>
       </div>
       <div class="modal-body">
@@ -172,7 +173,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Open Event</h4>
       </div>
       <div class="modal-body">
@@ -192,12 +193,22 @@
         </table>
       </div>
       <div class="modal-footer">
-
         <div class="bordered" id="selected-event"> </div>
-
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-default" onclick="$('#files').modal('hide'); ispy.loadEvent();">Load</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="progress" role="dialog" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content bordered black">
+      <div class="modal-header"></div>
+      <div class="modal-body">
+        <h4><i class="fa fa-spinner fa-spin"></i> Loading...</h4>
+      </div>
+      <div class="modal-footer"></div>
     </div>
   </div>
 </div>
@@ -206,7 +217,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Settings</h4>
       </div>
       <div class="modal-body">
@@ -231,7 +242,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">About</h4>
       </div>
       <div class="modal-body">
@@ -261,7 +272,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Detector</h4>
       </div>
       <div class="modal-body">
@@ -301,7 +312,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Provenance</h4>
       </div>
       <div class="modal-body">
@@ -321,7 +332,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Tracking</h4>
       </div>
       <div class="modal-body">
@@ -349,7 +360,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">ECAL</h4>
       </div>
       <div class="modal-body">
@@ -373,7 +384,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">HCAL</h4>
       </div>
       <div class="modal-body">
@@ -399,7 +410,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Muon</h4>
       </div>
       <div class="modal-body">
@@ -431,7 +442,7 @@
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
         <h4 class="modal-title black">Physics Objects</h4>
       </div>
       <div class="modal-body">

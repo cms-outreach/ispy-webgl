@@ -190,6 +190,11 @@ body.white {
   border: 0;
 }
 
+#progress .modal-content {
+  width: 50%;
+  text-align: center;
+}
+
 #browser-events td.black {
   background-color: #303030;
 }

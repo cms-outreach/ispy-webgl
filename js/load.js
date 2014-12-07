@@ -68,7 +68,8 @@ ispy.enableNextPrev = function() {
 }
 
 ispy.loadEvent = function() {
-  $("#event-loaded").html("Loading...");
+  $("#event-loaded").html("");
+  $("#progress").modal("show");
 
   try {
     var event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
@@ -80,6 +81,7 @@ ispy.loadEvent = function() {
   ispy.enableNextPrev();
 
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
+  $("#progress").modal("hide");
 }
 
 ispy.nextEvent = function() {
