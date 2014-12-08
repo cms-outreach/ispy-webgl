@@ -58,23 +58,13 @@ body.white {
 }
 
 #toolbar img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
-#toolbar td {
-  padding-bottom: 4px;
-  padding-top: 4px;
-  padding-right: 2px;
-}
-
-.toolbar-button,
-.toolbar-button.selected {
-  border: 0;
-  background: 0;
-  background-color: #dfdfdf;
-  padding: 2px;
-  margin-left: 2px;
+#toolbar .button-toolbar {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .btn {

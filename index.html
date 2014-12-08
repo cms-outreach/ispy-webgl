@@ -42,75 +42,49 @@
     </div>
     <div class="row">
       <div class="col-lg-12 bordered black" id="toolbar">
-        <table>
-          <tr>
-            <td>
-              <a class="toolbar-button btn" data-toggle="modal" data-target="#open-files">
-                <img src="./graphics/open.png" title="Open File"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button disabled btn" id="prev-event-button" onclick="ispy.prevEvent();">
-                <img src="./graphics/prev-event.png" title="Previous Event"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button disabled btn" id="next-event-button" onclick="ispy.nextEvent();">
-                <img src="./graphics/next-event.png" title="Next Event"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.setCameraHome();">
-                <img src="./graphics/home.png" title="Return to Start View"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.zoom(0.5);">
-                <img src="./graphics/zoom_in_24.png" title="Zoom In"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.zoom(-0.5);">
-                <img src="./graphics/zoom_out_24.png" title="Zoom Out"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.setXY();">
-                <img src="./graphics/z-plane.png" title="X-Y Plane"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.setZX();">
-                <img src="./graphics/y-plane.png" title="Z-X Plane"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" onclick="ispy.setYZ();">
-                <img src="./graphics/x-plane.png" title="Y-Z Plane"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" id="perspective-view" onclick="ispy.setPerspective();">
-                <img src="./graphics/perspective-projection.png" title="Perspective View"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" id="orthographic-view" onclick="ispy.setOrthographic();">
-                <img src="./graphics/orthographic-projection.png" title="Orthographic View"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" data-toggle="modal" data-target="#settings">
-                <img src="./graphics/settings.png" title="Settings"/>
-              </a>
-            </td>
-            <td>
-              <a class="toolbar-button btn" data-toggle="modal" data-target="#about">
-                <img src="./graphics/help2.png" title="About"/>
-              </a>
-            </td>
-          </tr>
-        </table>
+        <div class="button-toolbar" role="toolbar">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#open-files" title="Open File">
+              <i class="fa fa-folder-open"></i>
+            </button>
+            <button type="button" class="btn btn-default disabled" id="prev-event-button" onclick="ispy.prevEvent();" title="Previous Event">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button type="button" class="btn btn-default disabled"id="next-event-button" onclick="ispy.nextEvent();" title="Next Event">
+              <i class="fa fa-step-forward"></i>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setCameraHome();" title="Return to Start View">
+              <i class="fa fa-home"></i>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.zoom(0.5);" title="Zoom In">
+              <i class="fa fa-search-plus"></i>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.zoom(-0.5);" title="Zoom Out">
+              <i class="fa fa-search-minus"></i>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setXY();" title="YX Plane">
+              <img src="./graphics/yx_small.png" class="img-responsive"/>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setYZ();" title="YZ plane">
+              <img src="./graphics/yz_small.png" class="img-responsive"/>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setZX();" title="XZ plane">
+              <img src="./graphics/xz_small.png" class="img-responsive" title=""/>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setPerspective();" title="Perspective Projection">
+              <img src="./graphics/perspective-projection.png" class="img-responsive"/>
+            </button>
+            <button type="button" class="btn btn-default" onclick="ispy.setOrthographic();" title="Orthographic Projection">
+              <img src="./graphics/orthographic-projection.png" class="img-responsive"/>
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#settings" title="Settings">
+              <i class="fa fa-gear"></i>
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#about" title="About">
+              <i class="fa fa-info"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
