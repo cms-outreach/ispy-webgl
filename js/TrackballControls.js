@@ -149,7 +149,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 				} else {
 
 					mouseOnBall.z = .5 / length;
-					
+
 				}
 
 			} else if ( length > 1.0 ) {

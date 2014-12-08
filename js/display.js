@@ -20,9 +20,9 @@ ispy.setCameraHome = function() {
   var home_y = 8.6;
   var home_z = 14.0;
 
-  ispy.camera.position.x = home_x*0.75;
-  ispy.camera.position.y = home_y*0.75;
-  ispy.camera.position.z = home_z*0.75;
+  ispy.camera.position.x = home_x*0.5;
+  ispy.camera.position.y = home_y*0.5;
+  ispy.camera.position.z = home_z*0.5;
 
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
@@ -30,23 +30,26 @@ ispy.setCameraHome = function() {
 }
 
 ispy.setXY = function() {
+  var length = ispy.camera.position.length();
   ispy.camera.position.x = 0;
   ispy.camera.position.y = 0;
-  ispy.camera.position.z = ispy.camera.position.length();
+  ispy.camera.position.z = length;
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
 }
 
 ispy.setZX = function() {
+  var length = ispy.camera.position.length();
   ispy.camera.position.x = 0;
-  ispy.camera.position.y = ispy.camera.position.length();
+  ispy.camera.position.y = length;
   ispy.camera.position.z = 0;
   ispy.camera.up = new THREE.Vector3(1,0,0);
   ispy.lookAtOrigin();
 }
 
 ispy.setYZ = function() {
-  ispy.camera.position.x = -ispy.camera.position.length();
+  var length = ispy.camera.position.length();
+  ispy.camera.position.x = -length;
   ispy.camera.position.y = 0;
   ispy.camera.position.z = 0;
   ispy.camera.up = new THREE.Vector3(0,1,0);
@@ -306,7 +309,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
     dc = "Event";
   }
 
-  var on = !ispy.disabled[key] ? ' checked="true"' : "";
+  var on = !ispy.disabled[key] ? "checked" : "";
 
   var html = "<tr class='" + dc + "'>";
 
@@ -322,7 +325,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   }
 
   html += "<td class='collection'>";
-  html += "<input type='checkbox' " + on + "onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
+  html += "<input type='checkbox' " + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
   html += "</tr>";
   $('#'+group).after(html);

@@ -12,6 +12,7 @@
   <script src="./js/stats.min.js"></script>
   <script src="./js/three.js"></script>
   <script src="./js/CombinedCamera.js"></script>
+  <!--<script src="./js/OrthographicTrackballControls.js"></script>-->
   <script src="./js/TrackballControls.js"></script>
 
   <script src="./js/Projector.js"></script>
@@ -95,8 +96,7 @@
         </div>
       </div>
       <!-- The canvas goes into this div -->
-      <div class="col-lg-9 bordered black" id="display">
-      </div>
+      <div class="col-lg-9 bordered black" id="display"></div>
     </div>
     <div class="row">
       <div class="col-lg-12 bordered black" id="tableview">
@@ -196,13 +196,13 @@
       </div>
       <div class="modal-body">
         <p>
-          Invert colors: <input type='checkbox' checked='false' onchange='ispy.invertColors();'>
+          Invert colors: <input type='checkbox' onchange='ispy.invertColors();'>
         </p>
         <p>
-          Show axes: <input type='checkbox' checked='false' onchange='ispy.showAxes();'>
+          Show axes: <input type='checkbox' onchange='ispy.showAxes();'>
         </p>
         <p>
-          Show display statistics: <input type='checkbox' checked='false' onchange='ispy.showStats();'>
+          Show display statistics: <input type='checkbox' onchange='ispy.showStats();'>
         </p>
       </div>
       <div class="modal-footer">

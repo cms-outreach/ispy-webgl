@@ -828,5 +828,6 @@ ispy.makeEvent = function(data) {
 
   var ei = $('#event-info');
   ei.html(et);
+
   $('#display').append(ei);
 }
