@@ -20,9 +20,9 @@ ispy.setCameraHome = function() {
   var home_y = 8.6;
   var home_z = 14.0;
 
-  ispy.camera.position.x = home_x*0.5;
-  ispy.camera.position.y = home_y*0.5;
-  ispy.camera.position.z = home_z*0.5;
+  ispy.camera.position.x = home_x*0.6;
+  ispy.camera.position.y = home_y*0.6;
+  ispy.camera.position.z = home_z*0.6;
 
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
@@ -113,6 +113,24 @@ ispy.showStats = function() {
   } else {
     $('#stats').hide();
   }
+}
+
+ispy.updateRendererInfo = function() {
+  var info = ispy.renderer.info;
+
+  console.log(info);
+
+  var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
+  html += "<dl>";
+
+  for ( var i in info ) {
+    html += "<dt><strong>"+ i +"</strong></dt>";
+    for ( var j in info[i] ) {
+      html += "<dd>" + j + ": " + info[i][j] + "</dd>";
+    }
+  }
+
+  $("#renderer-info").html(html);
 }
 
 ispy.onWindowResize = function() {
