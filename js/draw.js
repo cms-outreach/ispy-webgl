@@ -622,7 +622,7 @@ ispy.makeCSC = function(csc, geometry) {
 }
 
 ispy.makeMuonChamber = function(chamber, geometry) {
-  return ispy.makeSolidBox(chamber, geometry, 1);
+  return ispy.makeWireframeBox(chamber, 1);
 }
 
 ispy.makeMET = function(data, style) {
@@ -698,7 +698,7 @@ ispy.makeJet = function(data, style) {
   return jet;
 }
 
-ispy.makePhoton = function(data, geometry) {
+ispy.makePhoton = function(data) {
   /*
      Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
      "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
@@ -731,13 +731,83 @@ ispy.makePhoton = function(data, geometry) {
   var pt1 = new THREE.Vector3(x0, y0, z0);
   var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
 
-  geometry.vertices.push(pt1);
-  geometry.vertices.push(pt2);
+  var photon = new THREE.Geometry();
+
+  photon.vertices.push(pt1);
+  photon.vertices.push(pt2);
+
+  return [photon];
 }
 
-ispy.makeDTRecSegments = function(data, geometry) {
+ispy.makeDTRecHits = function(data) {
+  /*
+    ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
+    ["digitime", "double"],["wirePos", "v3d"],
+    ["lPlusGlobalPos", "v3d"],["lMinusGlobalPos", "v3d"],["rPlusGlobalPos", "v3d"],["rMinusGlobalPos", "v3d"],
+    ["lGlobalPos", "v3d"],["rGlobalPos", "v3d"],
+    ["axis", "v3d"],["angle", "double"],["cellWidth", "double"],["cellLength", "double"],["cellHeight", "double"]]
+  */
+
+  var pos = new THREE.Vector3(data[7][0], data[7][1], data[7][2]);
+  var axis = new THREE.Vector3(data[14][0], data[14][1], data[14][2]);
+  var angle = data[15];
+  var len = data[17];
+
+  var p1 = new THREE.Vector3(0, -len/2, 0);
+  var p2 = new THREE.Vector3(0, len/2, 0);
+
+  //console.log(p1,p2);
+
+  p1.applyAxisAngle(axis, angle);
+  p2.applyAxisAngle(axis, angle);
+
+  //console.log(p1,p2);
+
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(pos.add(p1));
+  geometry.vertices.push(pos.add(p2));
+
+  var line = new THREE.Line(geometry, material);
+  line.name = descr.key;
+  line.visible = descr.on;
+
+  //console.log(line);
+
+  return [line];
+}
+
+ispy.makeRPCRecHits = function(data) {
+  var u1 = new THREE.Vector3(data[0][0], data[0][1], data[0][2]);
+  var u2 = new THREE.Vector3(data[1][0], data[1][1], data[1][2]);
+  var v1 = new THREE.Vector3(data[2][0], data[2][1], data[2][2]);
+  var v2 = new THREE.Vector3(data[3][0], data[3][1], data[3][2]);
+  var w1 = new THREE.Vector3(data[4][0], data[4][1], data[4][2]);
+  var w2 = new THREE.Vector3(data[5][0], data[5][1], data[5][2]);
+
+  var u = new THREE.Geometry();
+  u.vertices.push(u1);
+  u.vertices.push(u2);
+
+  var v = new THREE.Geometry();
+  v.vertices.push(v1);
+  v.vertices.push(v2);
+
+  var w = new THREE.Geometry();
+  w.vertices.push(w1);
+  w.vertices.push(w2);
+
+  return [u,v,w];
+}
+
+ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
+  return ispy.makeRPCRecHits(data, descr);
+}
+
+ispy.makeDTRecSegments = function(data) {
+  var geometry = new THREE.Geometry();
   geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
   geometry.vertices.push(new THREE.Vector3(data[2][0], data[2][1], data[2][2]));
+  return [geometry];
 }
 
 ispy.makeCSCSegments = function(data, geometry) {

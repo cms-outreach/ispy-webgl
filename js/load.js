@@ -77,11 +77,11 @@ ispy.loadEvent = function() {
     alert(err);
   }
 
+  $("#progress").modal("hide");
   ispy.addEvent(event);
   ispy.enableNextPrev();
 
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
-  $("#progress").modal("hide");
 }
 
 ispy.nextEvent = function() {

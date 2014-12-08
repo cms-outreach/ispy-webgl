@@ -224,18 +224,17 @@ ispy.event_description = {
     fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 1.0, linewidth: 2}},
   */
 
-  /*
   "DTRecSegment4D_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-    fn: ispy.makeDTRecSegments, style: {color: [1, 1, 0, 1], linewidth: 3}},
+    fn: ispy.makeDTRecSegments, style: {color: [1, 1, 0, 1], opacity: 1.0, linewidth: 3}},
   "CSCSegments_V1": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-    fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], linewidth: 3}},
-  "RPCRecHits_V1": {type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-    fn: ispy.makeRPCRecHits, style: {color: [0.8, 1, 0, 1], linewidth: 3}},
-  "CSCRecHit2Ds_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
-    fn: ispy.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], linewidth: 2}},
-  */
+    fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
 
-  "MuonChambers_V1": {type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
+  "RPCRecHits_V1": {type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
+    fn: ispy.makeRPCRecHits, style: {color: [0.8, 1, 0, 1], opacity: 1.0, linewidth: 3}},
+  "CSCRecHit2Ds_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
+    fn: ispy.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], opacity: 1.0, linewidth: 2}},
+
+  "MuonChambers_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
 
   "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
@@ -259,7 +258,7 @@ ispy.event_description = {
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0.2], opacity: 1.0, linewidth: 2}},
 
   "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
-    dataref: "Extras_V1", assoc: "GsfElectronExtras_V1",
+    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
@@ -475,6 +474,33 @@ ispy.addEvent = function(event) {
 
     switch(descr.type) {
 
+      case ispy.BOX:
+
+        var bcolor = new THREE.Color();
+        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+
+        var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
+                                                    linewidth:descr.style.linewidth,
+                                                    opacity:descr.style.opacity});
+
+        for ( var i = 0; i < data.length; i++ ) {
+          var boxes = descr.fn(data[i]);
+
+          boxes.forEach(function(b) {
+            var line = new THREE.Line(b,material);
+            line.name = key;
+            line.visible = visible;
+            ispy.scene.getObjectByName(descr.group).add(line);
+          });
+        }
+
+      break;
+
       case ispy.SOLIDBOX:
 
         var bcolor = new THREE.Color();
@@ -583,16 +609,18 @@ ispy.addEvent = function(event) {
                                                     linewidth:descr.style.linewidth,
                                                     opacity:descr.style.opacity});
 
-        var geometry = new THREE.Geometry();
+
 
         for ( var i = 0; i < data.length; i++ ) {
-          descr.fn(data[i], geometry);
-        }
+          var lines = descr.fn(data[i]);
 
-        var line = new THREE.Line(geometry, material);
-        line.name = key;
-        line.visible = visible;
-        ispy.scene.getObjectByName(descr.group).add(line);
+          lines.forEach(function(l) {
+            var line = new THREE.Line(l, material);
+            line.name = key;
+            line.visible = visible;
+            ispy.scene.getObjectByName(descr.group).add(line);
+          });
+        }
       break;
 
       case ispy.TEXT:
