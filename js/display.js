@@ -204,8 +204,11 @@ ispy.detector_description = {
     fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
-    fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+
+  //"HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
+  //  fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
+   fn: ispy.makeHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
 
   "EcalEndcap3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
     fn: ispy.makeModelEcalEndcapMinus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
@@ -391,16 +394,17 @@ ispy.addDetector = function() {
                                                       linewidth:descr.style.linewidth,
                                                       opacity:descr.style.opacity});
 
-          for ( var i = 0; i < data.length; i++ ) {
-            var boxes = descr.fn(data[i]);
+          var geometry = new THREE.Geometry();
 
-            boxes.forEach(function(b) {
-              var line = new THREE.Line(b,material);
-              line.name = key;
-              line.visible = visible;
-              ispy.scene.getObjectByName(descr.group).add(line);
-            });
+          for ( var i = 0; i < data.length; i++ ) {
+            var box = descr.fn(data[i]);
+            geometry.merge(box);
           }
+
+          var line = new THREE.Line(geometry, material, THREE.LinePieces);
+          line.name = key;
+          line.visible = visible;
+          ispy.scene.getObjectByName(descr.group).add(line);
 
         break;
 
@@ -520,16 +524,17 @@ ispy.addEvent = function(event) {
                                                     linewidth:descr.style.linewidth,
                                                     opacity:descr.style.opacity});
 
-        for ( var i = 0; i < data.length; i++ ) {
-          var boxes = descr.fn(data[i]);
+        var geometry = new THREE.Geometry();
 
-          boxes.forEach(function(b) {
-            var line = new THREE.Line(b,material);
-            line.name = key;
-            line.visible = visible;
-            ispy.scene.getObjectByName(descr.group).add(line);
-          });
+        for ( var i = 0; i < data.length; i++ ) {
+          var box = descr.fn(data[i]);
+          geometry.merge(box);
         }
+
+        var line = new THREE.Line(geometry,material, THREE.LinePieces);
+        line.name = key;
+        line.visible = visible;
+        ispy.scene.getObjectByName(descr.group).add(line);
 
       break;
 

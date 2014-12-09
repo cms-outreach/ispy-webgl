@@ -197,19 +197,26 @@ ispy.makeWireframeBox = function(data, ci) {
   var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
   var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
 
-  var front = new THREE.Geometry();
-  front.vertices = [f1,f2,f3,f4,f1];
+  // With THREE.LinePieces the Line is made
+  // by connecting pairs of vertices instead
+  // of one continuous line
+  var box = new THREE.Geometry();
+  box.vertices.push(f1,f2);
+  box.vertices.push(f2,f3);
+  box.vertices.push(f3,f4);
+  box.vertices.push(f4,f1);
 
-  var back = new THREE.Geometry();
-  back.vertices = [b1,b2,b3,b4,b1];
+  box.vertices.push(b1,b2);
+  box.vertices.push(b2,b3);
+  box.vertices.push(b3,b4);
+  box.vertices.push(b4,b1);
 
-  var top = new THREE.Geometry();
-  top.vertices = [f1,b1,b2,f2,f1];
+  box.vertices.push(b1,f1);
+  box.vertices.push(b3,f3);
+  box.vertices.push(b2,f2);
+  box.vertices.push(b4,f4);
 
-  var bottom = new THREE.Geometry();
-  bottom.vertices = [f3,b3,b4,f4,f3];
-
-  return [front,back,top,bottom];
+  return box;
 }
 
 ispy.makeShapes = function(data, material) {
@@ -613,16 +620,20 @@ ispy.makeRecHit_V2 = function(data, geometry, scale) {
   }
 }
 
-ispy.makeDT = function(dt, geometry) {
+ispy.makeDT = function(dt) {
   return ispy.makeWireframeBox(dt, 1);
 }
 
-ispy.makeCSC = function(csc, geometry) {
+ispy.makeCSC = function(csc) {
   return ispy.makeWireframeBox(csc, 1);
 }
 
-ispy.makeMuonChamber = function(chamber, geometry) {
+ispy.makeMuonChamber = function(chamber) {
   return ispy.makeWireframeBox(chamber, 1);
+}
+
+ispy.makeHcalBarrel = function(hb) {
+  return ispy.makeWireframeBox(hb, 1);
 }
 
 ispy.makeMET = function(data, style) {
