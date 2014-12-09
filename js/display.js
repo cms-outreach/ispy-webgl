@@ -155,8 +155,10 @@ ispy.addGroups = function() {
     }
     var html = "<tr id='"+ g +"'>";
     html += "<td class='group black'>"+ n +"</td>";
-    html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-    html += "<span class='info glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></td>";
+
+    // Don't show these until text is sorted out
+    //html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
+    //html += "<span class='info glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></td>";
     html += "</tr>";
     group_table.append(html);
   });
