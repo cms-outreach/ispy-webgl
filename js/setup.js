@@ -40,9 +40,6 @@ ispy.init = function() {
   var scene = new THREE.Scene();
   ispy.scene = scene;
 
-  //var width = 850.0;
-  //var height = 500.0;
-
   var width = $('#display').innerWidth();
   var height = $('#display').innerHeight();
 
@@ -105,7 +102,16 @@ ispy.init = function() {
   })
 
   ispy.renderer.domElement.addEventListener('mousedown', ispy.onDocumentMouseDown, false);
+
   $('#version').html("v"+ispy.version);
 
   window.addEventListener('resize', ispy.onWindowResize, false);
+
+  /*
+   https://github.com/mrdoob/three.js/pull/421#issuecomment-1792008
+    via
+   http://stackoverflow.com/questions/15558418/how-do-you-save-an-image-from-a-three-js-canvas
+  */
+  ispy.get_image_data = false;
+  ispy.image_data = null;
 }

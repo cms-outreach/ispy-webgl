@@ -1,6 +1,11 @@
 ispy.render = function() {
   if ( ispy.renderer !== null ) {
     ispy.renderer.render(ispy.scene, ispy.camera);
+
+    if ( ispy.get_image_data ){
+      ispy.image_data = ispy.renderer.domElement.toDataURL();
+      ispy.get_image_data = false;
+    }
   }
 }
 
@@ -69,6 +74,12 @@ ispy.zoom = function(step) {
   ispy.camera.setZoom(zoom+step);
 }
 
+ispy.printImage = function() {
+  ispy.get_image_data = true;
+  ispy.render();
+  window.open(ispy.image_data, "toDataURL() image", "width=800, height=400");
+}
+
 ispy.showAxes = function() {
   ispy.show_axes = !ispy.show_axes;
   ispy.scene.getObjectByName("axes").visible = ispy.show_axes;
@@ -117,8 +128,6 @@ ispy.showStats = function() {
 
 ispy.updateRendererInfo = function() {
   var info = ispy.renderer.info;
-
-  console.log(info);
 
   var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
   html += "<dl>";
