@@ -117,26 +117,30 @@ ispy.init = function() {
   ispy.image_data = null;
 }
 
+ispy.getScript = function(scr) {
+  return $.ajax({url: scr, dataType: "script", cache: true});
+}
+
 ispy.initDetector = function() {
   // Loading and rendering the actual geometry when WebGL is available
   // works well. With CanvasRenderer, not so well, so load and render
   // the geometry models.
 
   if ( ispy.renderer_name === "CanvasRenderer" ) {
-    $.getScript("./js/models.js")
+    ispy.getScript("./js/models.js")
       .done(function() {
         ispy.addDetector();
       });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
-    $.when($.getScript("./js/hb.js"),
-           $.getScript("./js/ho.js"),
-           $.getScript("./js/hehf.js"),
-           $.getScript("./js/pixel.js"),
-           $.getScript("./js/tib.js"),
-           $.getScript("./js/tob.js"),
-           $.getScript("./js/tec.js"),
-           $.getScript("./js/tid.js"))
+    $.when(ispy.getScript("./js/hb.js"),
+           ispy.getScript("./js/ho.js"),
+           ispy.getScript("./js/hehf.js"),
+           ispy.getScript("./js/pixel.js"),
+           ispy.getScript("./js/tib.js"),
+           ispy.getScript("./js/tob.js"),
+           ispy.getScript("./js/tec.js"),
+           ispy.getScript("./js/tid.js"))
            .done(function() { ispy.addDetector(); });
   }
 }
