@@ -45,6 +45,12 @@ ispy.makeCylinder = function(r, len, pos, slices, segments) {
   return [points, lines];
 }
 
+/*
+ispy.makeCylinder = function(rT, rB, height, rSeg, hSeg, openEnded) {
+  return new THREE.CylinderGeometry(rT, rB, height, rSeg, hSeg, openEnded);
+}
+*/
+
 ispy.makeTube = function(ir, or, len, pos, slices, segments) {
   var lines = [];
   var points = [];
@@ -237,22 +243,20 @@ ispy.makeTrackerPiece = function(data) {
   return ispy.makeWireFace(data, 1);
 }
 
-ispy.makeShapes = function(data, material) {
+ispy.makeShapes = function(data) {
   points = data[0];
   lines = data[1];
   shapes = [];
 
+  var line = new THREE.Geometry();
+
   for ( var i = 0; i < lines.length; i++ ) {
     var l = lines[i];
-    var line = new THREE.Geometry();
-    var p1 = points[l.p1];
-    var p2 = points[l.p2];
     line.vertices.push(points[l.p1]);
     line.vertices.push(points[l.p2]);
-    shapes.push(new THREE.Line(line,material));
   }
 
-  return shapes;
+  return line;
 }
 
 ispy.makeModelTrackerBarrel = function(data) {
@@ -271,6 +275,9 @@ ispy.makeModelTrackerBarrel = function(data) {
     var l = lengths[i];
 
     wfs.push(ispy.makeCylinder(r, l, -l / 2, slices, 2));
+    //var barrel = ispy.makeCylinder(r, r, l, slices, 1, true);
+    //barrel.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
+    //wfs.push(barrel);
   }
 
   return wfs;

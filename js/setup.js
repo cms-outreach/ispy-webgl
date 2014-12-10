@@ -54,15 +54,16 @@ ispy.init = function() {
     console.log('ispy: using webgl');
     renderer = new THREE.WebGLRenderer({antialias:true});
     ispy.renderer_name = "WebGLRenderer";
+
   } else {
     console.log('ispy: using canvas');
     renderer = new THREE.CanvasRenderer();
-    ispy.renderer = renderer;
     ispy.renderer_name = "CanvasRenderer";
   }
 
   renderer.setSize(width, height);
   ispy.renderer = renderer;
+
   screen_canvas.appendChild(ispy.renderer.domElement);
 
   ispy.stats = new Stats();

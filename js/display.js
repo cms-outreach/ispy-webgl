@@ -217,7 +217,7 @@ ispy.detector_description = {
     fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
 
   "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
-    fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+   fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
 
@@ -477,26 +477,22 @@ ispy.addDetector = function() {
             transp = true;
           }
 
-          var material = new THREE.LineBasicMaterial({color:mcolor, transparent: transp,
-                                                      linewidth:descr.style.linewidth,
-                                                     opacity:descr.style.opacity});
-
-
-          var geometry = new THREE.Geometry();
+          var material = new THREE.LineBasicMaterial({color:mcolor,transparent: transp,
+                                                      linewidth: descr.style.linewidth,
+                                                      opacity:descr.style.opacity});
 
           for ( var i = 0; i < data.length; i++ ) {
             var models = descr.fn(data[i]);
 
             for ( var j = 0; j < models.length; j++ ) {
-              var shapes = ispy.makeShapes(models[j], material);
-
-              shapes.forEach(function(s) {
-                s.name = key;
-                s.visible = visible;
-                ispy.scene.getObjectByName(descr.group).add(s);
-              });
+              var shape = ispy.makeShapes(models[j]);
+              var line = new THREE.Line(shape, material, THREE.LinePieces);
+              line.name = key;
+              line.visible = visible;
+              ispy.scene.getObjectByName(descr.group).add(line);
             }
           }
+
         break;
       }
   }
