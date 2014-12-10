@@ -1,4 +1,5 @@
 var ispy = ispy || {};
+ispy.detector = {"Collections":{}};
 ispy.version = "0.0.1";
 
 ispy.hasWebGL = function() {
@@ -114,4 +115,28 @@ ispy.init = function() {
   */
   ispy.get_image_data = false;
   ispy.image_data = null;
+}
+
+ispy.initDetector = function() {
+  // Loading and rendering the actual geometry when WebGL is available
+  // works well. With CanvasRenderer, not so well, so load and render
+  // the geometry models.
+
+  if ( ispy.renderer_name === "CanvasRenderer" ) {
+    $.getScript("./js/models.js")
+      .done(function() {
+        ispy.addDetector();
+      });
+  } else if ( ispy.renderer_name === "WebGLRenderer" ) {
+
+    $.when($.getScript("./js/hb.js"),
+           $.getScript("./js/ho.js"),
+           $.getScript("./js/hehf.js"),
+           $.getScript("./js/pixel.js"),
+           $.getScript("./js/tib.js"),
+           $.getScript("./js/tob.js"),
+           $.getScript("./js/tec.js"),
+           $.getScript("./js/tid.js"))
+           .done(function() { ispy.addDetector(); });
+  }
 }

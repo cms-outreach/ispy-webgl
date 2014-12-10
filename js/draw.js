@@ -185,7 +185,6 @@ ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   geometry.merge(box);
 }
 
-// Need to be smarter about this.
 ispy.makeWireframeBox = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
@@ -217,6 +216,25 @@ ispy.makeWireframeBox = function(data, ci) {
   box.vertices.push(b4,f4);
 
   return box;
+}
+
+ispy.makeWireFace = function(data, ci) {
+  var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+  var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+  var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+  var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+
+  var box = new THREE.Geometry();
+  box.vertices.push(f1,f2);
+  box.vertices.push(f2,f3);
+  box.vertices.push(f3,f4);
+  box.vertices.push(f4,f1);
+
+  return box;
+}
+
+ispy.makeTrackerPiece = function(data) {
+  return ispy.makeWireFace(data, 1);
 }
 
 ispy.makeShapes = function(data, material) {
@@ -632,7 +650,7 @@ ispy.makeMuonChamber = function(chamber) {
   return ispy.makeWireframeBox(chamber, 1);
 }
 
-ispy.makeHcalBarrel = function(hb) {
+ispy.makeHcal = function(hb) {
   return ispy.makeWireframeBox(hb, 1);
 }
 

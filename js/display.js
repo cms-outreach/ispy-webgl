@@ -192,35 +192,65 @@ ispy.TEXT = 10;
 ispy.detector_description = {
   "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
     fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}},
-
   "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
     fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.9}},
 
-  "HcalForward3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
+  "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
-  "HcalForward3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
+  "HcalForwardPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
     fn: ispy.makeModelHcalForwardPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalForwardMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (-)",
+    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalForwardPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (+)",
+    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+
   "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeModelHcalOuter, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalOuter3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer",
+    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
+
   "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: ispy.makeModelHcalEndcap, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (-)",
+    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (+)",
+    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
 
-  //"HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
-  //  fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+  "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
+    fn: ispy.makeModelHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "HcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
-   fn: ispy.makeHcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+   fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
 
-  "EcalEndcap3D_minus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
+  "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
     fn: ispy.makeModelEcalEndcapMinus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-  "EcalEndcap3D_plus": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
+  "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
-
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
   "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
     fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 1.0}},
+
+  "SiStripTECMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Endcap (-)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "SiStripTECPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Endcap (+)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "SiStripTIDMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Detector (-)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "SiStripTIDPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Detector (+)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "SiStripTOB3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Outer Barrel",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "SiStripTIB3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Barrel",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+
+  "PixelEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (-)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "PixelEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (+)",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
+  "PixelBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
 };
 
 ispy.event_description = {
@@ -449,7 +479,10 @@ ispy.addDetector = function() {
 
           var material = new THREE.LineBasicMaterial({color:mcolor, transparent: transp,
                                                       linewidth:descr.style.linewidth,
-                                                      opacity:descr.style.opacity});
+                                                     opacity:descr.style.opacity});
+
+
+          var geometry = new THREE.Geometry();
 
           for ( var i = 0; i < data.length; i++ ) {
             var models = descr.fn(data[i]);
@@ -531,7 +564,7 @@ ispy.addEvent = function(event) {
           geometry.merge(box);
         }
 
-        var line = new THREE.Line(geometry,material, THREE.LinePieces);
+        var line = new THREE.Line(geometry, material, THREE.LinePieces);
         line.name = key;
         line.visible = visible;
         ispy.scene.getObjectByName(descr.group).add(line);

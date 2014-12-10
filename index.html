@@ -25,10 +25,9 @@
 
   <script src="./js/setup.js"></script>
 
-  <script src="./js/detector.js"></script>
-  <script src="./js/hcal.js"></script>
   <script src="./js/dt.js"></script>
   <script src="./js/csc.js"></script>
+  <script src="./js/ecal.js"></script>
 
   <script src="./js/load.js"></script>
   <script src="./js/draw.js"></script>
@@ -133,7 +132,7 @@
     $(function() {
       ispy.init();
       ispy.addGroups();
-      ispy.addDetector();
+      ispy.initDetector();
       ispy.animate();
 
       // need to debug why this doesn't work
