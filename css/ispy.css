@@ -217,9 +217,13 @@ body.white {
 
 #selected-event {
   border: 1px solid #ccc;
-  width: 60%;
+  width: 100%;
   text-align: left;
   padding-left: 20px;
+}
+
+#event-buttons {
+  padding-top: 10px;
 }
 
 #browser-table.white {
