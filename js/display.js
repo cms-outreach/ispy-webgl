@@ -93,9 +93,9 @@ ispy.printImage = function() {
 ispy.showAxes = function() {
   ispy.show_axes = !ispy.show_axes;
   if (!ispy.show_axes) {
-    $('#inset').hide();
+    $('#axes').hide();
   } else {
-    $('#inset').show();
+    $('#axes').show();
   }
 }
 
