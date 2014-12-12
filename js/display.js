@@ -104,8 +104,10 @@ ispy.invertColors = function() {
 
   if ( !ispy.inverted_colors ) {
     ispy.renderer.setClearColor(0x000000,1);
+    ispy.inset_renderer.setClearColor(0x000000,0);
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
+    ispy.inset_renderer.setClearColor(0xffffff,0);
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
@@ -120,7 +122,6 @@ ispy.invertColors = function() {
   $('#treeview td.collection').toggleClass('white').toggleClass('black');
 
   $('#display').toggleClass('white').toggleClass('black');
-  $('#axes').toggleClass('white').toggleClass('black');
   $('#tableview').toggleClass('white').toggleClass('black');
 
   $('#browser-table').toggleClass('white').toggleClass('black');

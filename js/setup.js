@@ -67,7 +67,7 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
-    inset_renderer = new THREE.WebGLRenderer({antialias:true});
+    inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
 
     ispy.renderer_name = "WebGLRenderer";
 
@@ -85,6 +85,7 @@ ispy.init = function() {
 
   ispy.renderer = renderer;
   ispy.inset_renderer = inset_renderer;
+  ispy.inset_renderer.alpha = 0.0;
 
   display.appendChild(ispy.renderer.domElement);
   inset.appendChild(ispy.inset_renderer.domElement);
