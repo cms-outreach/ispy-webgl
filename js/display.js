@@ -7,11 +7,21 @@ ispy.render = function() {
       ispy.get_image_data = false;
     }
   }
+
+  if ( ispy.inset_renderer !== null ) {
+    ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
+  }
 }
 
 ispy.animate = function() {
   requestAnimationFrame(ispy.animate);
   ispy.controls.update();
+
+  ispy.inset_camera.up = ispy.camera.up;
+  ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
+  ispy.inset_camera.position.setLength(10);
+  ispy.inset_camera.lookAt(ispy.inset_scene.position);
+
   ispy.render();
   ispy.stats.update();
 }
@@ -82,7 +92,11 @@ ispy.printImage = function() {
 
 ispy.showAxes = function() {
   ispy.show_axes = !ispy.show_axes;
-  ispy.scene.getObjectByName("axes").visible = ispy.show_axes;
+  if (!ispy.show_axes) {
+    $('#inset').hide();
+  } else {
+    $('#inset').show();
+  }
 }
 
 ispy.invertColors = function() {
@@ -106,6 +120,7 @@ ispy.invertColors = function() {
   $('#treeview td.collection').toggleClass('white').toggleClass('black');
 
   $('#display').toggleClass('white').toggleClass('black');
+  $('#axes').toggleClass('white').toggleClass('black');
   $('#tableview').toggleClass('white').toggleClass('black');
 
   $('#browser-table').toggleClass('white').toggleClass('black');
@@ -502,7 +517,7 @@ ispy.addEvent = function(event) {
   // remove all but the geometry from the
   // scene before rendering
   ispy.scene.children.forEach(function(c) {
-    if ( c.name != "Detector" && c.name != "axes" ) {
+    if ( c.name != "Detector" ) {
       ispy.scene.getObjectByName(c.name).children.length = 0;
     }
   });

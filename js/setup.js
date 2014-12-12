@@ -36,7 +36,8 @@ ispy.hasWebGL = function() {
 }
 
 ispy.init = function() {
-  var screen_canvas = document.getElementById('display');
+  var display = document.getElementById('display');
+  var inset = document.getElementById('axes');
 
   var scene = new THREE.Scene();
   ispy.scene = scene;
@@ -45,51 +46,60 @@ ispy.init = function() {
   var height = $('#display').innerHeight();
 
   // width, height, fov, near, far, orthoNear, orthoFar
-  var camera = new THREE.CombinedCamera(width, height, 70, 1, 100, 1, 48);
+  var camera = new THREE.CombinedCamera(width, height, 70, 1, 100, 1, 100);
   ispy.camera = camera;
   ispy.setCameraHome();
 
+  var inset_scene = new THREE.Scene();
+  ispy.inset_scene = inset_scene;
+
+  // fov, aspect, near, far
+  var inset_width = width/5;
+  var inset_height = height/5;
+  var inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
+  ispy.inset_camera = inset_camera;
+  ispy.inset_camera.up = ispy.camera.up;
+
   var renderer;
+  var inset_renderer;
+
   if ( ispy.hasWebGL() ) {
     console.log('ispy: using webgl');
+
     renderer = new THREE.WebGLRenderer({antialias:true});
+    inset_renderer = new THREE.WebGLRenderer({antialias:true});
+
     ispy.renderer_name = "WebGLRenderer";
 
   } else {
     console.log('ispy: using canvas');
+
     renderer = new THREE.CanvasRenderer();
+    inset_renderer = new THREE.CanvasRenderer();
+
     ispy.renderer_name = "CanvasRenderer";
   }
 
   renderer.setSize(width, height);
-  ispy.renderer = renderer;
+  inset_renderer.setSize(inset_width, inset_height);
 
-  screen_canvas.appendChild(ispy.renderer.domElement);
+  ispy.renderer = renderer;
+  ispy.inset_renderer = inset_renderer;
+
+  display.appendChild(ispy.renderer.domElement);
+  inset.appendChild(ispy.inset_renderer.domElement);
 
   ispy.stats = new Stats();
-  screen_canvas.appendChild(ispy.stats.domElement);
+  display.appendChild(ispy.stats.domElement);
   $('#stats').hide();
   ispy.show_stats = false;
 
   ispy.inverted_colors = false;
 
-  var axes = new THREE.Object3D();
-  axes.name = "axes";
-  axes.visible = false;
-
-  var origin = new THREE.Vector3(0,0,0);
-  var length = 10;
-  // direction, origin, length, color hex, head length, head width
-  var arrowX = new THREE.ArrowHelper(new THREE.Vector3(1,0,0),origin,length,0xff0000);
-  var arrowY = new THREE.ArrowHelper(new THREE.Vector3(0,1,0),origin,length,0x00ff00);
-  var arrowZ = new THREE.ArrowHelper(new THREE.Vector3(0,0,1),origin,length,0x0000ff);
-
-  axes.add(arrowX);
-  axes.add(arrowY);
-  axes.add(arrowZ);
-
-  ispy.scene.add(axes);
-  ispy.show_axes = false;
+  var axes = new THREE.AxisHelper(5);
+  axes.material.linewidth = 5;
+  ispy.inset_scene.add(axes);
+  ispy.show_axes = true;
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas

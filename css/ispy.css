@@ -12,6 +12,22 @@ body.white {
   left: 0;
 }
 
+#axes  {
+  border: none;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+#axes.black {
+  background-color: black;
+}
+
+#axes.white {
+  background-color: white;
+}
+
 #event-info {
   position: absolute;
   top:0;
