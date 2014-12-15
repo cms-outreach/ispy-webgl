@@ -145,6 +145,8 @@ ispy.initDetector = function() {
       });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
+  $('#progress').modal('show');
+
     $.when(ispy.getScript("./js/hb.js"),
            ispy.getScript("./js/ho.js"),
            ispy.getScript("./js/hehf.js"),
@@ -153,6 +155,9 @@ ispy.initDetector = function() {
            ispy.getScript("./js/tob.js"),
            ispy.getScript("./js/tec.js"),
            ispy.getScript("./js/tid.js"))
-           .done(function() { ispy.addDetector(); });
+           .done(function() {
+            $('#progress').modal('hide'); 
+            ispy.addDetector();
+          });
   }
 }
