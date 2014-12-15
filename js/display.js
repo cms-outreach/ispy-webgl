@@ -206,10 +206,16 @@ ispy.TEXT = 10;
 // row of the tree view and CSC at the bottom. Which is what we want.
 
 ispy.detector_description = {
-  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers (muon)",
-    fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0], opacity: 0.5, linewidth: 0.8}},
-  "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes (muon)",
-    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.9}},
+  "RPCMinusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
+    fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
+  "RPCPlusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (+)",
+    fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
+  "RPCBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
+    fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
+  "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
+    fn: ispy.makeCSC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 0.5}},
+  "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
+    fn: ispy.makeDT, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 0.5}},
 
   "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},

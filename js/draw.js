@@ -667,6 +667,10 @@ ispy.makeEcal = function(ecal) {
   return ispy.makeWireframeBox(ecal, 1);
 }
 
+ispy.makeRPC = function(rpc) {
+  return ispy.makeWireFace(rpc, 1);
+}
+
 ispy.makeMET = function(data, style) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]

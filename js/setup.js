@@ -3,6 +3,7 @@ ispy.detector = {"Collections":{}};
 ispy.version = "0.0.1";
 
 ispy.hasWebGL = function() {
+  return false;
   var canvas = document.createElement('canvas');
 
   if ( ! canvas.getContext('webgl') ) {
@@ -139,7 +140,7 @@ ispy.initDetector = function() {
   // the geometry models.
 
   if ( ispy.renderer_name === "CanvasRenderer" ) {
-    ispy.getScript("./js/models.js")
+    ispy.getScript("./geometry/models.js")
       .done(function() {
         ispy.addDetector();
       });
@@ -147,16 +148,16 @@ ispy.initDetector = function() {
 
     $('#progress').modal('show');
 
-    $.when(ispy.getScript("./js/eb.js"),
-           ispy.getScript("./js/ee.js"),
-           ispy.getScript("./js/hb.js"),
-           ispy.getScript("./js/ho.js"),
-           ispy.getScript("./js/hehf.js"),
-           ispy.getScript("./js/pixel.js"),
-           ispy.getScript("./js/tib.js"),
-           ispy.getScript("./js/tob.js"),
-           ispy.getScript("./js/tec.js"),
-           ispy.getScript("./js/tid.js"))
+    $.when(ispy.getScript("./geometry/eb.js"),
+           ispy.getScript("./geometry/ee.js"),
+           ispy.getScript("./geometry/hb.js"),
+           ispy.getScript("./geometry/ho.js"),
+           ispy.getScript("./geometry/hehf.js"),
+           ispy.getScript("./geometry/pixel.js"),
+           ispy.getScript("./geometry/tib.js"),
+           ispy.getScript("./geometry/tob.js"),
+           ispy.getScript("./geometry/tec.js"),
+           ispy.getScript("./geometry/tid.js"))
            .done(function() {
             $('#progress').modal('hide');
             ispy.addDetector();
