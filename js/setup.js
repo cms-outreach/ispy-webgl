@@ -3,7 +3,6 @@ ispy.detector = {"Collections":{}};
 ispy.version = "0.0.1";
 
 ispy.hasWebGL = function() {
-  return false;
   var canvas = document.createElement('canvas');
 
   if ( ! canvas.getContext('webgl') ) {
