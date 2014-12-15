@@ -661,6 +661,12 @@ ispy.makeHcal = function(hb) {
   return ispy.makeWireframeBox(hb, 1);
 }
 
+// Should either 1) use BufferGeometry or 2) use border positions to make wireframe
+// or 3) something else
+ispy.makeEcal = function(ecal) {
+  return ispy.makeWireframeBox(ecal, 1);
+}
+
 ispy.makeMET = function(data, style) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
