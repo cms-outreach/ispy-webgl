@@ -67,7 +67,7 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
-    inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+    inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 
     ispy.renderer_name = "WebGLRenderer";
 
