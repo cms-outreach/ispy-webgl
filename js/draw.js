@@ -785,7 +785,7 @@ ispy.makePhoton = function(data) {
   return [photon];
 }
 
-ispy.makeDTRecHits = function(data) {
+ispy.makeDTRecHits = function(data, geometry) {
   /*
     ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
     ["digitime", "double"],["wirePos", "v3d"],
@@ -797,29 +797,43 @@ ispy.makeDTRecHits = function(data) {
   var pos = new THREE.Vector3(data[7][0], data[7][1], data[7][2]);
   var axis = new THREE.Vector3(data[14][0], data[14][1], data[14][2]);
   var angle = data[15];
-  var len = data[17];
 
-  var p1 = new THREE.Vector3(0, -len/2, 0);
-  var p2 = new THREE.Vector3(0, len/2, 0);
+  var w = data[16]*0.5;
+  var h = data[17]*0.5;
+  var d = data[18]*0.5;
 
-  //console.log(p1,p2);
+  var box = new THREE.Geometry();
+  box.vertices = [new THREE.Vector3(-w, h,-d),
+                  new THREE.Vector3( w, h,-d),
+                  new THREE.Vector3( w, h, d),
+                  new THREE.Vector3(-w, h, d),
+                  new THREE.Vector3(-w,-h, d),
+                  new THREE.Vector3( w,-h, d),
+                  new THREE.Vector3( w,-h,-d),
+                  new THREE.Vector3(-w,-h,-d)];
 
-  p1.applyAxisAngle(axis, angle);
-  p2.applyAxisAngle(axis, angle);
+  box.faces.push(new THREE.Face3(0,1,2));
+  box.faces.push(new THREE.Face3(0,3,2));
 
-  //console.log(p1,p2);
+  box.faces.push(new THREE.Face3(7,6,5));
+  box.faces.push(new THREE.Face3(7,4,5));
 
-  var geometry = new THREE.Geometry();
-  geometry.vertices.push(pos.add(p1));
-  geometry.vertices.push(pos.add(p2));
+  box.faces.push(new THREE.Face3(4,5,2));
+  box.faces.push(new THREE.Face3(4,3,2));
 
-  var line = new THREE.Line(geometry, material);
-  line.name = descr.key;
-  line.visible = descr.on;
+  box.faces.push(new THREE.Face3(5,6,1));
+  box.faces.push(new THREE.Face3(5,2,1));
 
-  //console.log(line);
+  box.faces.push(new THREE.Face3(6,7,0));
+  box.faces.push(new THREE.Face3(6,1,0));
 
-  return [line];
+  box.faces.push(new THREE.Face3(7,4,3));
+  box.faces.push(new THREE.Face3(7,0,3));
+
+  box.applyMatrix(new THREE.Matrix4().makeRotationAxis(axis,angle));
+  box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
+
+  geometry.merge(box);
 }
 
 ispy.makeRPCRecHits = function(data) {
@@ -897,7 +911,7 @@ ispy.makeCSCDigis = function(data, geometry, w, d, rotate) {
   box.faces.push(new THREE.Face3(7,4,3));
   box.faces.push(new THREE.Face3(7,0,3));
 
-  box.applyMatrix(new THREE.Matrix4().makeRotationZ(angle));
+  box.applyMatrix(new THREE.Matrix4().makeRotationAxis(axis,angle));
   box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
 
   geometry.merge(box);

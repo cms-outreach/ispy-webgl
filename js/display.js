@@ -313,11 +313,8 @@ ispy.event_description = {
   "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
   "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
 
-  /*
-    need to fix these
-  "DTRecHits_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Hits",
-    fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 1.0, linewidth: 2}},
-  */
+  "DTRecHits_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
+    fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 0.5, linewidth: 2}},
 
   "DTRecSegment4D_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
     fn: ispy.makeDTRecSegments, style: {color: [1, 1, 0, 1], opacity: 1.0, linewidth: 3}},
@@ -368,7 +365,7 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}, min_pt: 0.5},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-   fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
 };
 
 ispy.disabled = new Array();
