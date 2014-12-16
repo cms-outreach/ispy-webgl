@@ -34,6 +34,10 @@ body.white {
   color: white;
 }
 
+#event-info.white {
+  color: black;
+}
+
 .bordered {
   border: thin solid gray;
 }

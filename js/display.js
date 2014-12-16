@@ -114,6 +114,8 @@ ispy.invertColors = function() {
 
   $('body').toggleClass('white').toggleClass('black');
 
+  $('#event-info').toggleClass('white').toggleClass('black');
+
   $('#titlebar').toggleClass('white').toggleClass('black');
   $('#toolbar').toggleClass('white').toggleClass('black');
 
