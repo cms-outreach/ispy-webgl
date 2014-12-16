@@ -321,16 +321,27 @@ ispy.event_description = {
 
   "DTRecSegment4D_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
     fn: ispy.makeDTRecSegments, style: {color: [1, 1, 0, 1], opacity: 1.0, linewidth: 3}},
-  "CSCSegments_V1": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-    fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
 
   "RPCRecHits_V1": {type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
     fn: ispy.makeRPCRecHits, style: {color: [0.8, 1, 0, 1], opacity: 1.0, linewidth: 3}},
+
+  "CSCStripDigis_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Strip Digis",
+    fn: ispy.makeCSCStripDigis, style: {color: [1.0, 0.2, 1.0], opacity: 0.5, linewidth: 1}},
+  "CSCWireDigis_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Wire Digis",
+    fn: ispy.makeCSCWireDigis, style: {color: [1.0, 0.6, 1.0], opacity: 0.5, linewidth: 1}},
+
+  /* this only exists in my test file
+  "MatchingCSCs_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching CSCs",
+    fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 2}},
+  */
+
   "CSCRecHit2Ds_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
     fn: ispy.makeCSCRecHit2Ds_V2, style: {color: [0.6, 1, 0.9, 1], opacity: 1.0, linewidth: 2}},
+  "CSCSegments_V1": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
+    fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
 
   "MuonChambers_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
-    fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 0.8}},
+    fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 3}},
 
   "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},

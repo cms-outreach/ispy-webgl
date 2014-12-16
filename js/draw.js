@@ -860,6 +860,62 @@ ispy.makeCSCSegments = function(data, geometry) {
   return ispy.makeDTRecSegments(data, geometry);
 }
 
+ispy.makeCSCDigis = function(data, geometry, w, d, rotate) {
+  var pos = new THREE.Vector3(data[0][0], data[0][1], data[0][2]);
+  var h = data[1]*0.5;
+  w *= 0.5;
+  d *= 0.5;
+  var axis = new THREE.Vector3(0.0, 0.0, 1.0);
+  var angle = -Math.atan2(pos.x, pos.y) - rotate;
+
+  var box = new THREE.Geometry();
+  // (-1,1,-1) (1,1,-1) (1,1,1) (-1,1,1) (-1,-1,1) (1,-1,1) (1,-1,-1) (-1,-1,-1)
+  box.vertices = [new THREE.Vector3(-w, h,-d),
+                  new THREE.Vector3( w, h,-d),
+                  new THREE.Vector3( w, h, d),
+                  new THREE.Vector3(-w, h, d),
+                  new THREE.Vector3(-w,-h, d),
+                  new THREE.Vector3( w,-h, d),
+                  new THREE.Vector3( w,-h,-d),
+                  new THREE.Vector3(-w,-h,-d)];
+
+  box.faces.push(new THREE.Face3(0,1,2));
+  box.faces.push(new THREE.Face3(0,3,2));
+
+  box.faces.push(new THREE.Face3(7,6,5));
+  box.faces.push(new THREE.Face3(7,4,5));
+
+  box.faces.push(new THREE.Face3(4,5,2));
+  box.faces.push(new THREE.Face3(4,3,2));
+
+  box.faces.push(new THREE.Face3(5,6,1));
+  box.faces.push(new THREE.Face3(5,2,1));
+
+  box.faces.push(new THREE.Face3(6,7,0));
+  box.faces.push(new THREE.Face3(6,1,0));
+
+  box.faces.push(new THREE.Face3(7,4,3));
+  box.faces.push(new THREE.Face3(7,0,3));
+
+  box.applyMatrix(new THREE.Matrix4().makeRotationZ(angle));
+  box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
+
+  geometry.merge(box);
+}
+
+/*
+"CSCStripDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
+"CSCWireDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
+*/
+
+ispy.makeCSCWireDigis = function(data, geometry) {
+  return ispy.makeCSCDigis(data, geometry, 0.02, 0.01, Math.PI*0.5);
+}
+
+ispy.makeCSCStripDigis = function(data, geometry) {
+  return ispy.makeCSCDigis(data, geometry, 0.01, 0.01, 0.0);
+}
+
 ispy.makeEvent = function(data) {
   /*
   "Event_V2": [["run", "int"],["event", "int"],["ls", "int"],["orbit", "int"],["bx", "int"],["time", "string"],["localtime", "string"]]
