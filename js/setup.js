@@ -114,8 +114,6 @@ ispy.init = function() {
     ispy.scene.add(obj_group);
   })
 
-  ispy.renderer.domElement.addEventListener('mousedown', ispy.onDocumentMouseDown, false);
-
   $('#version').html("v"+ispy.version);
 
   window.addEventListener('resize', ispy.onWindowResize, false);
@@ -127,6 +125,15 @@ ispy.init = function() {
   */
   ispy.get_image_data = false;
   ispy.image_data = null;
+
+  ispy.raycaster = new THREE.Raycaster();
+  ispy.raycaster.linePrecision = 0.01;
+
+  ispy.mouse = new THREE.Vector2();
+  ispy.intersected = null;
+
+  ispy.renderer.domElement.addEventListener('mousemove', ispy.onMouseMove, false);
+  ispy.renderer.domElement.addEventListener('mousedown', ispy.onMouseDown, false);
 }
 
 ispy.getScript = function(scr) {

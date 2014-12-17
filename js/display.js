@@ -168,6 +168,41 @@ ispy.onWindowResize = function() {
   ispy.render();
 }
 
+ispy.onMouseMove = function(e) {
+  e.preventDefault();
+
+  var w = $('#display').innerWidth();
+  var h = $('#display').innerHeight();
+
+  var offsetX = $('#display').offset().left;
+  var offsetY = $('#display').offset().top;
+
+  ispy.mouse.x = ((e.clientX-offsetX) / w)*2 - 1;
+  ispy.mouse.y = -((e.clientY-offsetY) / h)*2 +1;
+
+  var vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
+  ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
+  var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("PhysicsObjects"), true);
+
+  if ( intersects.length > 0 ) {
+    if ( ispy.intersected != intersects[0].object ) {
+      if ( ispy.intersected ) {
+        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+      }
+      ispy.intersected = intersects[0].object;
+      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
+      ispy.intersected.material.color.setHex(0xcccccc);
+    }
+  } else {
+      if ( ispy.intersected ){
+        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+        ispy.intersected = null;
+    }
+  }
+}
+
+ispy.onMouseDown = function(e) {}
+
 ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
 
@@ -388,7 +423,6 @@ ispy.toggle = function(group, key) {
   // For provenance (for now, just event information)
   // we display as simple HTML so therefore not part of the scene
   if ( group === "Provenance" ) {
-    console.log(group, key);
     if ( ispy.disabled[key] ) {
       $('#event-info').hide();
     } else {
