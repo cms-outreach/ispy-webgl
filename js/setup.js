@@ -54,7 +54,7 @@ ispy.init = function() {
   ispy.inset_scene = inset_scene;
 
   // fov, aspect, near, far
-  var inset_width = width/5;
+  var inset_width = height/5;
   var inset_height = height/5;
   var inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
   ispy.inset_camera = inset_camera;
@@ -97,10 +97,35 @@ ispy.init = function() {
 
   ispy.inverted_colors = false;
 
-  var axes = new THREE.AxisHelper(5);
+  // Make axes and labels XYZ -> RGB
+  var axes = new THREE.AxisHelper(4);
   axes.material.linewidth = 5;
   ispy.inset_scene.add(axes);
   ispy.show_axes = true;
+
+  console.log(THREE.FontUtils);
+
+  var x_geo = new THREE.TextGeometry('X', {size:0.75, height:0.1});
+  var x_color = new THREE.Color(0xff0000);
+  var x_material = new THREE.MeshBasicMaterial({ color: x_color});
+  var x_text = new THREE.Mesh(x_geo, x_material);
+  x_text.position.x = 4.5;
+
+  var y_geo = new THREE.TextGeometry('Y', {size:0.75, height:0.1});
+  var y_color = new THREE.Color(0x00ff00);
+  var y_material = new THREE.MeshBasicMaterial({ color: y_color});
+  var y_text = new THREE.Mesh(y_geo, y_material);
+  y_text.position.y = 4.5;
+
+  var z_geo = new THREE.TextGeometry('Z', {size:0.75, height:0.1});
+  var z_color = new THREE.Color(0x0000ff);
+  var z_material = new THREE.MeshBasicMaterial({ color: z_color});
+  var z_text = new THREE.Mesh(z_geo, z_material);
+  z_text.position.z = 4.5;
+
+  ispy.inset_scene.add(x_text);
+  ispy.inset_scene.add(y_text);
+  ispy.inset_scene.add(z_text);
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
