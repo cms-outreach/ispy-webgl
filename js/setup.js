@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.0.1";
+ispy.version = "0.9";
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
@@ -103,7 +103,7 @@ ispy.init = function() {
   ispy.inset_scene.add(axes);
   ispy.show_axes = true;
 
-  console.log(THREE.FontUtils);
+  //console.log(THREE.FontUtils);
 
   var x_geo = new THREE.TextGeometry('X', {size:0.75, height:0.1});
   var x_color = new THREE.Color(0xff0000);
