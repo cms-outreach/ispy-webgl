@@ -225,9 +225,8 @@ ispy.addGroups = function() {
     html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
     html += n +"</td>";
 
-    // Don't show these until text is sorted out
-    //html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-    //html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
+    html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
+    html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
     html += "</tr>";
     group_table.append(html);
   });
