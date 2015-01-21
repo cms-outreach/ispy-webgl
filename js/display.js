@@ -108,7 +108,7 @@ ispy.invertColors = function() {
     ispy.renderer.setClearColor(0xffffff,0);
   }
 
-  // Yeeesh I really need to clean up the class, ids, and css
+  // Yeeesh I really need to clean up thce class, ids, and css
 
   $('body').toggleClass('white').toggleClass('black');
 
@@ -206,6 +206,11 @@ ispy.onMouseDown = function(e) {}
 ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
 
+ispy.toggleCollapse = function(g) {
+  $('tr.'+g).toggle();
+  $('i.'+g).toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
+}
+
 ispy.addGroups = function() {
   var group_table = $('#treeview table');
   ispy.data_groups.forEach(function(g) {
@@ -213,12 +218,16 @@ ispy.addGroups = function() {
     if ( g === "PhysicsObjects" ) {
       n = "Physics Objects";
     }
+    //var html = "<tr id='"+ g +"' onclick='ispy.toggleCollapse(\"" + g + "\");'>";
     var html = "<tr id='"+ g +"'>";
-    html += "<td class='group black'>"+ n +"</td>";
+
+    html += "<td class='group black'><a onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
+    html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
+    html += n +"</td>";
 
     // Don't show these until text is sorted out
     //html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-    //html += "<span class='info glyphicon glyphicon-info-sign' aria-hidden='true'></span></a></td>";
+    //html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
     html += "</tr>";
     group_table.append(html);
   });
@@ -445,7 +454,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
 
   var on = !ispy.disabled[key] ? "checked" : "";
 
-  var html = "<tr class='" + dc + "'>";
+  var html = "<tr class='" + dc + " "+ group +"'>";
 
   var cc = "black";
   if (ispy.inverted_colors) {

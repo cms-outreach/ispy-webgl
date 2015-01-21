@@ -142,6 +142,11 @@ body.white {
   color: red;
 }
 
+#treeview .expand {
+  color: grey;
+  padding-right: 5px;
+}
+
 #display {
   height: 500px;
   overflow: hidden;
