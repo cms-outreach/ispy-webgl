@@ -207,7 +207,15 @@ ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon"
 ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
 
 ispy.toggleCollapse = function(g) {
-  $('tr.'+g).toggle();
+  // If the objects under the group category have not been loaded then
+  // do not toggle the chevron. We don't want to have it in the wrong
+  // state when the group is eventually populated
+  var children = $('tr.'+g);
+  if ( children.length === 0 ) {
+    return;
+  }
+
+  children.toggle();
   $('i.'+g).toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
 }
 
@@ -218,10 +226,11 @@ ispy.addGroups = function() {
     if ( g === "PhysicsObjects" ) {
       n = "Physics Objects";
     }
-    //var html = "<tr id='"+ g +"' onclick='ispy.toggleCollapse(\"" + g + "\");'>";
+
     var html = "<tr id='"+ g +"'>";
 
-    html += "<td class='group black'><a onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
+    html += "<td class='group black'><a class='expand' onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
+    //html += "<td class='group black'><a class='expand' href='#'>";
     html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
     html += n +"</td>";
 
@@ -470,6 +479,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   html += "<input type='checkbox' " + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
   html += "</tr>";
+
   $('#'+group).after(html);
 }
 
