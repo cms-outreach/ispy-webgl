@@ -217,3 +217,39 @@ ispy.cleanupData = function(d) {
        .replace(/nan/g, "0");
   return d;
 }
+
+ispy.exportString = function (output) {
+  // This comes from three.js editor
+  var blob = new Blob([output], {type: 'text/plain'});
+  var objectURL = URL.createObjectURL(blob);
+  window.open(objectURL, '_blank');
+  window.focus();
+}
+
+ispy.exportScene = function() {
+  // Only export objects in the scene that are visible.
+  // Each visible object is exported to its own tab (A feature, not a bug! For now.)
+  // WARNING! This works best (and is intended for) output of solid geometries.
+  // For tracks this will create a separate file for each track and wireframe
+  // geometries will only output vertices, connected in sequence. Use with care!
+  ispy.scene.children.forEach(function(c){
+    c.children.forEach(function(o){
+      if ( o.visible ) {
+        var output = o.toJSON();
+        output = JSON.stringify( output, null, '\t' );
+        output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+        ispy.exportString(output);
+      }
+    });
+  });
+}
+
+// Instead of a button, make output of 3D to JSON a "secret" key binding
+document.addEventListener('keydown', function(e) {
+  e.preventDefault();
+
+  // If shift + e then export
+  if ( e.which === 69 && e.shiftKey ) {
+    ispy.exportScene();
+  }
+});

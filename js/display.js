@@ -537,7 +537,8 @@ ispy.addDetector = function() {
           var boxes = new THREE.Geometry();
 
           for ( var i = 0; i < data.length; i++ ) {
-              descr.fn(data[i], boxes);
+              var box = descr.fn(data[i]);
+              boxes.merge(box);
           }
 
           var meshes = new THREE.Mesh(boxes, material);
@@ -666,7 +667,8 @@ ispy.addEvent = function(event) {
         var boxes = new THREE.Geometry();
 
         for ( var i = 0; i < data.length; i++ ) {
-            descr.fn(data[i], boxes);
+            var box = descr.fn(data[i]);
+            boxes.merge(box);
         }
 
         var meshes = new THREE.Mesh(boxes, material);

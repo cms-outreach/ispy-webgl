@@ -82,7 +82,7 @@ ispy.makeTube = function(ir, or, len, pos, slices, segments) {
   return [points, lines];
 }
 
-ispy.makeSolidBox = function(data, geometry, ci) {
+ispy.makeSolidBox = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
   var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -123,7 +123,7 @@ ispy.makeSolidBox = function(data, geometry, ci) {
   box.computeFaceNormals();
   box.computeVertexNormals();
 
-  geometry.merge(box);
+  return box;
 }
 
 ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
@@ -646,11 +646,13 @@ ispy.makeRecHit_V2 = function(data, geometry, scale) {
 }
 
 ispy.makeDT = function(dt) {
-  return ispy.makeWireframeBox(dt, 1);
+  return ispy.makeSolidBox(dt, 1);
+  //return ispy.makeWireframeBox(dt, 1);
 }
 
 ispy.makeCSC = function(csc) {
-  return ispy.makeWireframeBox(csc, 1);
+  return ispy.makeSolidBox(csc, 1);
+  //return ispy.makeWireframeBox(csc, 1);
 }
 
 ispy.makeMuonChamber = function(chamber) {
@@ -785,7 +787,7 @@ ispy.makePhoton = function(data) {
   return [photon];
 }
 
-ispy.makeDTRecHits = function(data, geometry) {
+ispy.makeDTRecHits = function(data) {
   /*
     ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
     ["digitime", "double"],["wirePos", "v3d"],
@@ -833,7 +835,7 @@ ispy.makeDTRecHits = function(data, geometry) {
   box.applyMatrix(new THREE.Matrix4().makeRotationAxis(axis,angle));
   box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
 
-  geometry.merge(box);
+  return box;
 }
 
 ispy.makeRPCRecHits = function(data) {
@@ -874,7 +876,7 @@ ispy.makeCSCSegments = function(data, geometry) {
   return ispy.makeDTRecSegments(data, geometry);
 }
 
-ispy.makeCSCDigis = function(data, geometry, w, d, rotate) {
+ispy.makeCSCDigis = function(data, w, d, rotate) {
   var pos = new THREE.Vector3(data[0][0], data[0][1], data[0][2]);
   var h = data[1]*0.5;
   w *= 0.5;
@@ -914,7 +916,7 @@ ispy.makeCSCDigis = function(data, geometry, w, d, rotate) {
   box.applyMatrix(new THREE.Matrix4().makeRotationAxis(axis,angle));
   box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
 
-  geometry.merge(box);
+  return box;
 }
 
 /*
@@ -922,12 +924,12 @@ ispy.makeCSCDigis = function(data, geometry, w, d, rotate) {
 "CSCWireDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
 */
 
-ispy.makeCSCWireDigis = function(data, geometry) {
-  return ispy.makeCSCDigis(data, geometry, 0.02, 0.01, Math.PI*0.5);
+ispy.makeCSCWireDigis = function(data) {
+  return ispy.makeCSCDigis(data, 0.02, 0.01, Math.PI*0.5);
 }
 
-ispy.makeCSCStripDigis = function(data, geometry) {
-  return ispy.makeCSCDigis(data, geometry, 0.01, 0.01, 0.0);
+ispy.makeCSCStripDigis = function(data) {
+  return ispy.makeCSCDigis(data, 0.01, 0.01, 0.0);
 }
 
 ispy.makeEvent = function(data) {
