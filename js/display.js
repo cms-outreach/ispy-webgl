@@ -814,10 +814,10 @@ ispy.displayCollection = function(key, name) {
      index += 1;
   }
 
-  index = 0;
-
   for ( var c in collection ) {
     var row_content = "<tr>";
+
+    index = 0;
 
     for ( v in collection[c] ) {
       if ( index === charge_index ) {
