@@ -796,17 +796,39 @@ ispy.displayCollection = function(key, name) {
   $('#collection-table').append('<caption>' + name + '</caption>');
   $('#collection-table').append('<thead> <tr>');
 
-   for ( var t in type ) {
-     $("#collection-table thead > tr").append($('<th class="group">').text(type[t][0]));
-   }
+  // NOTE: For the masterclasses we want to
+  // suppress charge in the table view.
+  var index = 0;
+  var charge_index = -1;
 
-   for ( var c in collection ) {
-     var row_content = "<tr>";
+  for ( var t in type ) {
 
-     for ( v in collection[c] ) {
-       row_content += "<td>"+collection[c][v]+"</td>";
+     if ( type[t][0] === 'charge' ){
+       charge_index = index;
+       index += 1;
+       continue;
      }
 
-     $('#collection-table').append(row_content);
-   }
+     $("#collection-table thead > tr").append($('<th class="group">').text(type[t][0]));
+
+     index += 1;
+  }
+
+  index = 0;
+
+  for ( var c in collection ) {
+    var row_content = "<tr>";
+
+    for ( v in collection[c] ) {
+      if ( index === charge_index ) {
+        index += 1;
+        continue;
+      }
+
+      row_content += "<td>"+collection[c][v]+"</td>";
+      index += 1;
+    }
+
+    $('#collection-table').append(row_content);
+  }
 }

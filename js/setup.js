@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9";
+ispy.version = "0.9-masterclass2015-rc1";
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');

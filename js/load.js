@@ -6,6 +6,41 @@ ispy.web_files = [
   "./data/Electron.ig"
 ];
 
+/*
+ispy.web_files = [
+  "masterclass_1.ig",
+  "masterclass_2.ig",
+  "masterclass_3.ig",
+  "masterclass_4.ig",
+  "masterclass_5.ig",
+  "masterclass_6.ig",
+  "masterclass_7.ig",
+  "masterclass_8.ig",
+  "masterclass_9.ig",
+  "masterclass_10.ig",
+  "masterclass_11.ig",
+  "masterclass_12.ig",
+  "masterclass_13.ig",
+  "masterclass_14.ig",
+  "masterclass_15.ig",
+  "masterclass_16.ig",
+  "masterclass_17.ig",
+  "masterclass_18.ig",
+  "masterclass_19.ig",
+  "masterclass_20.ig",
+  "masterclass_21.ig",
+  "masterclass_22.ig",
+  "masterclass_23.ig",
+  "masterclass_24.ig",
+  "masterclass_25.ig",
+  "masterclass_26.ig",
+  "masterclass_27.ig",
+  "masterclass_28.ig",
+  "masterclass_29.ig",
+  "masterclass_30.ig"
+];
+*/
+
 ispy.ig_data = null;
 
 ispy.openDialog = function(id) {
