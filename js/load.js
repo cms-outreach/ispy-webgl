@@ -1,45 +1,36 @@
-// For now, hard-code some examples files here for testing
-// the "files from the web"
 ispy.web_files = [
-  "./data/4lepton.ig",
-  "./data/Mu.ig",
-  "./data/Electron.ig"
+  "./masterclass-2015/masterclass_1.ig",
+  "./masterclass-2015/masterclass_2.ig",
+  "./masterclass-2015/masterclass_3.ig",
+  "./masterclass-2015/masterclass_4.ig",
+  "./masterclass-2015/masterclass_5.ig",
+  "./masterclass-2015/masterclass_6.ig",
+  "./masterclass-2015/masterclass_7.ig",
+  "./masterclass-2015/masterclass_8.ig",
+  "./masterclass-2015/masterclass_9.ig",
+  "./masterclass-2015/masterclass_10.ig",
+  "./masterclass-2015/masterclass_11.ig",
+  "./masterclass-2015/masterclass_12.ig",
+  "./masterclass-2015/masterclass_13.ig",
+  "./masterclass-2015/masterclass_14.ig",
+  "./masterclass-2015/masterclass_15.ig",
+  "./masterclass-2015/masterclass_16.ig",
+  "./masterclass-2015/masterclass_17.ig",
+  "./masterclass-2015/masterclass_18.ig",
+  "./masterclass-2015/masterclass_19.ig",
+  "./masterclass-2015/masterclass_20.ig",
+  "./masterclass-2015/masterclass_21.ig",
+  "./masterclass-2015/masterclass_22.ig",
+  "./masterclass-2015/masterclass_23.ig",
+  "./masterclass-2015/masterclass_24.ig",
+  "./masterclass-2015/masterclass_25.ig",
+  "./masterclass-2015/masterclass_26.ig",
+  "./masterclass-2015/masterclass_27.ig",
+  "./masterclass-2015/masterclass_28.ig",
+  "./masterclass-2015/masterclass_29.ig",
+  "./masterclass-2015/masterclass_30.ig"
 ];
 
-/*
-ispy.web_files = [
-  "masterclass_1.ig",
-  "masterclass_2.ig",
-  "masterclass_3.ig",
-  "masterclass_4.ig",
-  "masterclass_5.ig",
-  "masterclass_6.ig",
-  "masterclass_7.ig",
-  "masterclass_8.ig",
-  "masterclass_9.ig",
-  "masterclass_10.ig",
-  "masterclass_11.ig",
-  "masterclass_12.ig",
-  "masterclass_13.ig",
-  "masterclass_14.ig",
-  "masterclass_15.ig",
-  "masterclass_16.ig",
-  "masterclass_17.ig",
-  "masterclass_18.ig",
-  "masterclass_19.ig",
-  "masterclass_20.ig",
-  "masterclass_21.ig",
-  "masterclass_22.ig",
-  "masterclass_23.ig",
-  "masterclass_24.ig",
-  "masterclass_25.ig",
-  "masterclass_26.ig",
-  "masterclass_27.ig",
-  "masterclass_28.ig",
-  "masterclass_29.ig",
-  "masterclass_30.ig"
-];
-*/
 
 ispy.ig_data = null;
 
