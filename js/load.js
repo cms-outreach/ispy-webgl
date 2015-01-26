@@ -182,6 +182,8 @@ ispy.selectFile = function(filename) {
   xhr.onreadystatechange = function () {
     if (this.readyState === 4){
       $('#progress').modal('hide');
+      $('.progress-bar').attr('style', 'width:0%;');
+      $('.progress-bar').html('0%');
     }
   }
 
