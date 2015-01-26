@@ -3,8 +3,7 @@
 ispy.web_files = [
   "./data/4lepton.ig",
   "./data/Mu.ig",
-  "./data/Electron.ig",
-  "./data/masterclass_1.ig"
+  "./data/Electron.ig"
 ];
 
 ispy.ig_data = null;
