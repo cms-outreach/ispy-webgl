@@ -96,7 +96,7 @@ ispy.enableNextPrev = function() {
 
 ispy.loadEvent = function() {
   $("#event-loaded").html("");
-  $("#progress").modal("show");
+  $("#loading").modal("show");
 
   try {
     var event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
@@ -104,7 +104,7 @@ ispy.loadEvent = function() {
     alert(err);
   }
 
-  $("#progress").modal("hide");
+  $("#loading").modal("hide");
   ispy.addEvent(event);
   ispy.enableNextPrev();
 
@@ -187,6 +187,8 @@ ispy.loadLocalFiles = function() {
 ispy.selectFile = function(filename) {
   ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
 
+  $('#progress').modal('show');
+
   var xhr = new XMLHttpRequest();
   xhr.open("GET", filename, true);
   xhr.overrideMimeType("text/plain; charset=x-user-defined");
@@ -195,8 +197,24 @@ ispy.selectFile = function(filename) {
   var ecell = document.getElementById("browser-events").insertRow(0).insertCell(0);
   ecell.innerHTML = 'Loading events...';
 
+  xhr.onprogress = function(evt) {
+    if ( evt.lengthComputable ) {
+     var percentComplete = Math.round((evt.loaded / evt.total)*100);
+     $('.progress-bar').attr('style', 'width:'+percentComplete+'%;');
+     $('.progress-bar').html(percentComplete+'%');
+   }
+  }
+
+  xhr.onreadystatechange = function () {
+    if (this.readyState === 4){
+      $('#progress').modal('hide');
+      $('.progress-bar').attr('style', 'width:0%;');
+      $('.progress-bar').html('0%');
+    }
+  }
+
   xhr.onload = function() {
-    if (this.status == 200) {
+    if (this.status === 200) {
 
       var zip = JSZip(xhr.responseText);
       var event_list = [];

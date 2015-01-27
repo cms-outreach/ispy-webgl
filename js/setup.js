@@ -177,7 +177,7 @@ ispy.initDetector = function() {
       });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
-    $('#progress').modal('show');
+    $('#loading').modal('show');
 
     $.when(ispy.getScript("./geometry/eb.js"),
            ispy.getScript("./geometry/ee.js"),
@@ -190,7 +190,7 @@ ispy.initDetector = function() {
            ispy.getScript("./geometry/tec.js"),
            ispy.getScript("./geometry/tid.js"))
            .done(function() {
-            $('#progress').modal('hide');
+            $('#loading').modal('hide');
             ispy.addDetector();
           });
   }
