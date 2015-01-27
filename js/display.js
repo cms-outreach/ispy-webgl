@@ -362,8 +362,8 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0], opacity: 0.7, lineCaps: "square", linewidth: 2}, min_pt: 0.5},
 
-  "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
-  "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V1":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V2":{type: ispy.TEXT, on: false, group: "Provenance", name: "Event", fn: ispy.makeEvent},
 
   "DTRecHits_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
     fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 0.5, linewidth: 2}},
