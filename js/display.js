@@ -440,10 +440,10 @@ ispy.toggle = function(group, key) {
   // For provenance (for now, just event information)
   // we display as simple HTML so therefore not part of the scene
   if ( group === "Provenance" ) {
-    if ( ispy.disabled[key] ) {
-      $('#event-info').hide();
-    } else {
+    if ( ! ispy.disabled[key] ) {
       $('#event-info').show();
+    } else {
+      $('#event-info').hide();
     }
   }
 
@@ -782,6 +782,9 @@ ispy.addEvent = function(event) {
       break;
 
       case ispy.TEXT:
+        if ( ! visible ) {
+          $('#event-info').hide();
+        }
         descr.fn(data);
       break;
     }
