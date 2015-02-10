@@ -203,6 +203,39 @@ ispy.onMouseMove = function(e) {
 
 ispy.onMouseDown = function(e) {}
 
+document.addEventListener('keydown', function(e) {
+  e.preventDefault();
+
+  // Instead of a button, make output of 3D to JSON a "secret" key binding
+  // If shift + e then export
+  if ( e.which === 69 && e.shiftKey ) {
+    ispy.exportScene();
+  }
+
+  // up arrow
+  if ( e.which === 38 && e.shiftKey ) {
+    ispy.zoom(0.5);
+  }
+
+  // down
+  if ( e.which === 40 && e.shiftKey ) {
+    ispy.zoom(-0.5);
+  }
+
+  /*
+  // right
+  if ( e.which === 39 && e.shiftKey ) {
+    console.log('right');
+  }
+
+  // left
+  if ( e.which === 37 && e.shiftKey ) {
+    console.log('left');
+  }
+  */
+});
+
+
 ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
 ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
 
@@ -296,18 +329,18 @@ ispy.detector_description = {
    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
   "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeModelEcalBarrel, style: {color: [0, 1, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeEcal, style: {color: [0, 1, 1], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeEcal, style: {color: [0, 1, 1], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
   "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeEcal, style: {color: [0, 1, 1], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
