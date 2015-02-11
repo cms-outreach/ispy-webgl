@@ -660,13 +660,13 @@ ispy.makeRecHit_V2 = function(data, geometry, scale) {
 }
 
 ispy.makeDT = function(dt) {
-  return ispy.makeSolidBox(dt, 1);
-  //return ispy.makeWireframeBox(dt, 1);
+  //return ispy.makeSolidBox(dt, 1);
+  return ispy.makeWireframeBox(dt, 1);
 }
 
 ispy.makeCSC = function(csc) {
-  return ispy.makeSolidBox(csc, 1);
-  //return ispy.makeWireframeBox(csc, 1);
+  //return ispy.makeSolidBox(csc, 1);
+  return ispy.makeWireframeBox(csc, 1);
 }
 
 ispy.makeMuonChamber = function(chamber) {
