@@ -30,7 +30,7 @@ ispy.lookAtOrigin = function() {
   ispy.camera.lookAt(new THREE.Vector3(0,0,0));
 }
 
-ispy.setCameraHome = function() {
+ispy.initCamera = function() {
   var home_x = -18.1;
   var home_y = 8.6;
   var home_z = 14.0;
@@ -42,6 +42,10 @@ ispy.setCameraHome = function() {
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
+}
+
+ispy.resetControls = function() {
+  ispy.controls.reset();
 }
 
 ispy.setXY = function() {
@@ -267,8 +271,8 @@ ispy.addGroups = function() {
     html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
     html += n +"</td>";
 
-    html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-    html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
+    //html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
+    //html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
     html += "</tr>";
     group_table.append(html);
   });
@@ -329,18 +333,18 @@ ispy.detector_description = {
    fn: ispy.makeHcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeModelEcalBarrel, style: {color: [0.8, 1, 0], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeEcal, style: {color: [0.8, 1, 0], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.3, linewidth: 0.5}},
@@ -799,8 +803,6 @@ ispy.addEvent = function(event) {
         var material = new THREE.LineBasicMaterial({color:lcolor, transparent:transp,
                                                     linewidth:descr.style.linewidth,
                                                     opacity:descr.style.opacity});
-
-
 
         for ( var i = 0; i < data.length; i++ ) {
           var lines = descr.fn(data[i]);
