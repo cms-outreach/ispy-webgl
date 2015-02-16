@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9-masterclass2015-rc5";
+ispy.version = "0.9-masterclass2015-rc6";
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
@@ -48,7 +48,7 @@ ispy.init = function() {
   // width, height, fov, near, far, orthoNear, orthoFar
   var camera = new THREE.CombinedCamera(width, height, 70, 1, 100, 1, 100);
   ispy.camera = camera;
-  ispy.setCameraHome();
+  ispy.initCamera();
 
   var inset_scene = new THREE.Scene();
   ispy.inset_scene = inset_scene;

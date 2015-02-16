@@ -287,13 +287,3 @@ ispy.exportScene = function() {
     });
   });
 }
-
-// Instead of a button, make output of 3D to JSON a "secret" key binding
-document.addEventListener('keydown', function(e) {
-  e.preventDefault();
-
-  // If shift + e then export
-  if ( e.which === 69 && e.shiftKey ) {
-    ispy.exportScene();
-  }
-});
