@@ -24,6 +24,10 @@ ispy.animate = function() {
 
   ispy.render();
   ispy.stats.update();
+
+  if ( ispy.animating ) {
+    TWEEN.update();
+  }
 }
 
 ispy.lookAtOrigin = function() {
@@ -92,6 +96,29 @@ ispy.printImage = function() {
   ispy.get_image_data = true;
   ispy.render();
   window.open(ispy.image_data, "toDataURL() image", "width=800, height=400");
+}
+
+ispy.toggleAnimation = function() {
+  ispy.animating = !ispy.animating;
+
+  if ( ispy.animating ) {
+
+    var length = ispy.camera.position.length();
+    var xs = [ispy.camera.position.x, 0];
+    var ys = [0, 0];
+    var zs = [ispy.camera.position.z, length];
+
+    var tw1 = new TWEEN.Tween(ispy.camera.position, 1000)
+      .to({x:xs, y:ys, z:zs})
+      .easing(TWEEN.Easing.Sinusoidal.In);
+
+    var tw2 = new TWEEN.Tween(ispy.camera.position)
+      .to({x:0, y:0, z:0})
+      .easing(TWEEN.Easing.Sinusoidal.In);
+
+    tw1.chain(tw2);
+    tw1.start();
+  }
 }
 
 ispy.showAxes = function() {

@@ -159,6 +159,9 @@ ispy.init = function() {
 
   ispy.renderer.domElement.addEventListener('mousemove', ispy.onMouseMove, false);
   ispy.renderer.domElement.addEventListener('mousedown', ispy.onMouseDown, false);
+
+  // Are we running an animation?
+  ispy.animating = false;
 }
 
 ispy.getScript = function(scr) {
