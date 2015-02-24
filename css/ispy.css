@@ -38,6 +38,10 @@ body.white {
   color: black;
 }
 
+#event-text {
+  padding-left: 10px;
+}
+
 .bordered {
   border: thin solid gray;
 }
