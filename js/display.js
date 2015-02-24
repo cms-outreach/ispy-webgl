@@ -80,10 +80,14 @@ ispy.setYZ = function() {
 }
 
 ispy.setOrthographic = function() {
+  $('#perspective').toggleClass('active');
+  $('#orthographic').toggleClass('active');
   ispy.camera.toOrthographic();
 }
 
 ispy.setPerspective = function() {
+  $('#perspective').toggleClass('active');
+  $('#orthographic').toggleClass('active');
   ispy.camera.toPerspective();
 }
 
@@ -228,6 +232,11 @@ document.addEventListener('keydown', function(e) {
   // down
   if ( e.which === 40 && e.shiftKey ) {
     ispy.zoom(-0.5);
+  }
+
+  // shift+a to toggle animation
+  if ( e.which === 65 && e.shiftKey ) {
+    ispy.toggleAnimation();
   }
 
   /*

@@ -93,6 +93,10 @@ body.white {
   background-color: #dfdfdf;
 }
 
+.btn.active {
+  background-color: #bbb;
+}
+
 #treeview {
   height: 500px;
   overflow: scroll;

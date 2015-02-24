@@ -101,10 +101,10 @@
             </button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" onclick="ispy.setPerspective();" title="Perspective Projection">
+            <button type="button" id="perspective" class="btn btn-default active" onclick="ispy.setPerspective();" title="Perspective Projection">
               <img src="./graphics/perspective-projection.png" class="img-responsive"/>
             </button>
-            <button type="button" class="btn btn-default" onclick="ispy.setOrthographic();" title="Orthographic Projection">
+            <button type="button" id="orthographic" class="btn btn-default" onclick="ispy.setOrthographic();" title="Orthographic Projection">
               <img src="./graphics/orthographic-projection.png" class="img-responsive"/>
             </button>
           </div>
@@ -124,7 +124,7 @@
             </button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" onclick="ispy.toggleAnimation();" title="Start/Stop Animation">
+            <button type="button" id="animate" class="btn btn-default" onclick="ispy.toggleAnimation();" title="Start/Stop Animation">
               <i class="fa fa-film"></i>
             </button>
           </div>

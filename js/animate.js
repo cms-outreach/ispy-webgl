@@ -30,8 +30,9 @@ ispy.animation_script = {
 ispy.toggleAnimation = function() {
   ispy.animating = !ispy.animating;
 
-  if ( ispy.animating ) {
+  $('#animate').toggleClass('active');
 
+  if ( ispy.animating ) {
     var animation = ispy.animation_script;
 
     var length = ispy.camera.position.length();
@@ -87,7 +88,7 @@ ispy.toggleAnimation = function() {
         ispy.toggle("HCAL", "HBRecHits_V2");
         ispy.toggle("HCAL", "HERecHits_V2");
         ispy.toggle("PhysicsObjects", "GsfElectrons_V1");
-      })
+      });
 
     var pgeometry = new THREE.SphereGeometry(0.25,32,32);
     var pmaterial = new THREE.MeshBasicMaterial({color: 0xffff00});
