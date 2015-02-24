@@ -1,7 +1,38 @@
+// This is particular to the sequence below:
+// - Colliding bunch crossings
+// - Zoom into position inside detector
+// - Rotate around, turning off tracks halfway through rotation
+// It will be nice to generalize all this but it's good-enough for now.
+
+ispy.animation_script = {
+    "collision": {
+      "proton1": {
+        "pi" : {x:0, y:0, z:200.0},
+        "pf" : {x:0, y:0, z:-200.0}
+      },
+      "proton2": {
+        "pi": {x:0, y:0, z:-200.0},
+        "pf": {x:0, y:0, z:200.0}
+      },
+      "time": 2500
+    },
+    "zoom": {
+      "time": 2000
+    },
+    "rotation": {
+      "radius": 2.0,
+      "angle": 2*Math.PI,
+      "nsteps": 24,
+      "time": 5000
+    }
+}
+
 ispy.toggleAnimation = function() {
   ispy.animating = !ispy.animating;
 
   if ( ispy.animating ) {
+
+    var animation = ispy.animation_script;
 
     var length = ispy.camera.position.length();
     var xs = [ispy.camera.position.x, 0];
@@ -9,17 +40,17 @@ ispy.toggleAnimation = function() {
     var zs = [ispy.camera.position.z, length];
 
     var tw1 = new TWEEN.Tween(ispy.camera.position)
-      .to({x:xs, y:ys, z:zs}, 2000)
+      .to({x:xs, y:ys, z:zs}, animation.zoom.time)
       .easing(TWEEN.Easing.Sinusoidal.In);
 
-    var r = 2.0;
+    var r = animation.rotation.radius;
 
     var tw2 = new TWEEN.Tween(ispy.camera.position)
-      .to({x:0, y:0, z:r}, 2000)
+      .to({x:0, y:0, z:r}, animation.zoom.time)
       .easing(TWEEN.Easing.Sinusoidal.In);
 
-    var ns = 24;
-    var s = 2*Math.PI/ns;
+    var ns = animation.rotation.nsteps;
+    var s = animation.rotation.angle/ns;
     var cx = [];
     var cy = [];
     var cz = [];
@@ -29,22 +60,28 @@ ispy.toggleAnimation = function() {
       cz.push(r*Math.cos(s*i));
     }
 
-    var c1x = cx.slice(0,12);
-    var c1y = cy.slice(0,12);
-    var c1z = cz.slice(0,12);
+    var bs = 0;
+    var es = ns/2;
+
+    var c1x = cx.slice(0,es);
+    var c1y = cy.slice(0,es);
+    var c1z = cz.slice(0,es);
 
     var tw3 = new TWEEN.Tween(ispy.camera.position)
-      .to({x:c1x, y:c1y, z:c1z}, 2500);
+      .to({x:c1x, y:c1y, z:c1z}, animation.rotation.time);
 
     // Split the rotation in half and
     // turn off tracks and turn on electrons
 
-    var c2x = cx.slice(13,24);
-    var c2y = cy.slice(13,24);
-    var c2z = cz.slice(13,24);
+    bs = ns/2 + 1;
+    es = ns;
+
+    var c2x = cx.slice(bs, es);
+    var c2y = cy.slice(bs, es);
+    var c2z = cz.slice(bs, es);
 
     var tw4 = new TWEEN.Tween(ispy.camera.position)
-      .to({x:c2x, y:c2y, z:c2z}, 2500)
+      .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
       .onStart(function(){
         ispy.toggle("Tracking", "Tracks_V2");
         ispy.toggle("HCAL", "HBRecHits_V2");
@@ -56,24 +93,24 @@ ispy.toggleAnimation = function() {
     var pmaterial = new THREE.MeshBasicMaterial({color: 0xffff00});
 
     var proton1 = new THREE.Mesh(pgeometry, pmaterial);
-    proton1.position.x = 0.0;
-    proton1.position.y = 0.0;
-    proton1.position.z = 200.0;
+    proton1.position.x = animation.collision.proton1.pi.x;
+    proton1.position.y = animation.collision.proton1.pi.y;
+    proton1.position.z = animation.collision.proton1.pi.z;
 
     var proton2 = new THREE.Mesh(pgeometry, pmaterial);
-    proton2.position.x = 0.0;
-    proton2.position.y = 0.0;
-    proton2.position.z = -200.0;
+    proton2.position.x = animation.collision.proton2.pi.x;
+    proton2.position.y = animation.collision.proton2.pi.y;
+    proton2.position.z = animation.collision.proton2.pi.z;
 
     ispy.scene.add(proton1);
     ispy.scene.add(proton2);
 
     var c1 = new TWEEN.Tween(proton1.position)
-      .to({z:0.0}, 2000)
+      .to({z:0.0}, animation.collision.time)
       .easing(TWEEN.Easing.Back.In);
 
     var c2 = new TWEEN.Tween(proton2.position)
-      .to({z:0.0}, 2000)
+      .to({z:0.0}, animation.collision.time)
       .onComplete(function(){
         tw1.start();
 
@@ -86,13 +123,13 @@ ispy.toggleAnimation = function() {
       .easing(TWEEN.Easing.Back.In);
 
     var c3 = new TWEEN.Tween(proton1.position)
-      .to({z:-200.0}, 2000)
+      .to({z:animation.collision.proton1.pf.z}, animation.collision.time)
       .onComplete(function(){
         ispy.scene.remove(proton1);
       }).easing(TWEEN.Easing.Back.Out);
 
     var c4 = new TWEEN.Tween(proton2.position)
-      .to({z:200.0}, 2000)
+      .to({z:animation.collision.proton2.pf.z}, animation.collision.time)
       .onComplete(function(){
         ispy.scene.remove(proton2);
       }).easing(TWEEN.Easing.Back.Out);
