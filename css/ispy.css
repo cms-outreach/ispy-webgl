@@ -42,6 +42,11 @@ body.white {
   padding-left: 10px;
 }
 
+#cms-logo > img {
+  max-width: 60px;
+  max-height: 60px;
+}
+
 .bordered {
   border: thin solid gray;
 }
