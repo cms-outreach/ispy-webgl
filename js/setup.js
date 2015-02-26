@@ -5,6 +5,7 @@ ispy.version = "0.9";
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
 
+  /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
   } else {
@@ -22,6 +23,7 @@ ispy.hasWebGL = function() {
   } else {
     console.log('WebGLRenderingContext');
   }
+  */
 
   if ( canvas.getContext('webgl') || canvas.getContext('experimental-webgl') ) {
     if ( ! window.WebGLRenderingContext ) {
