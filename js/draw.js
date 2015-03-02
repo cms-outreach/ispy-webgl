@@ -18,7 +18,7 @@ ispy.makeDisc = function(ir, or, pos, slices) {
   }
 
   return [points, lines];
-}
+};
 
 ispy.makeCylinder = function(r, len, pos, slices, segments) {
   var lines = [];
@@ -43,7 +43,7 @@ ispy.makeCylinder = function(r, len, pos, slices, segments) {
   }
 
   return [points, lines];
-}
+};
 
 /*
 ispy.makeCylinder = function(rT, rB, height, rSeg, hSeg, openEnded) {
@@ -80,7 +80,7 @@ ispy.makeTube = function(ir, or, len, pos, slices, segments) {
   }
 
   return [points, lines];
-}
+};
 
 ispy.makeSolidBox = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -124,7 +124,7 @@ ispy.makeSolidBox = function(data, ci) {
   box.computeVertexNormals();
 
   return box;
-}
+};
 
 ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -189,7 +189,7 @@ ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   box.computeVertexNormals();
 
   geometry.merge(box);
-}
+};
 
 ispy.makeWireframeBox = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -222,7 +222,7 @@ ispy.makeWireframeBox = function(data, ci) {
   box.vertices.push(b4,f4);
 
   return box;
-}
+};
 
 ispy.makeWireFace = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -237,7 +237,7 @@ ispy.makeWireFace = function(data, ci) {
   box.vertices.push(f4,f1);
 
   return box;
-}
+};
 
 ispy.makeSolidFace = function(data, ci) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -251,11 +251,11 @@ ispy.makeSolidFace = function(data, ci) {
   rect.faces.push(new THREE.Face3(0,2,3));
 
   return rect;
-}
+};
 
 ispy.makeTrackerPiece = function(data) {
   return ispy.makeWireFace(data, 1);
-}
+};
 
 ispy.makeShapes = function(data) {
   points = data[0];
@@ -271,7 +271,7 @@ ispy.makeShapes = function(data) {
   }
 
   return line;
-}
+};
 
 ispy.makeModelTrackerBarrel = function(data) {
   var radii = [0.046, 0.07, 0.1,
@@ -282,7 +282,7 @@ ispy.makeModelTrackerBarrel = function(data) {
                  2.18, 2.18, 2.18, 2.18, 2.18, 2.18];
 
   var slices = 24;
-  var wfs = new Array();
+  var wfs = [];
 
   for (var i = 0; i < radii.length; i++) {
     var r = radii[i];
@@ -295,7 +295,7 @@ ispy.makeModelTrackerBarrel = function(data) {
   }
 
   return wfs;
-}
+};
 
 ispy.makeModelTrackerEndcap = function(data) {
   var ecradii =    [0.145, 0.145, 0.50, 0.47, 0.50, 0.47, 0.50, 0.47,
@@ -309,7 +309,7 @@ ispy.makeModelTrackerEndcap = function(data) {
                     2.20, 2.28, 2.40, 2.48, 2.60, 2.68];
 
   var slices = 24;
-  var wfs = new Array();
+  var wfs = [];
 
   for (var i = 0; i < ecradii.length; i++) {
     var ecro = ecradii[i];
@@ -320,7 +320,7 @@ ispy.makeModelTrackerEndcap = function(data) {
     wfs.push(ispy.makeDisc(ecri, ecro, -ecp, slices));
   }
   return wfs;
-}
+};
 
 ispy.makeModelEcalBarrel = function(data) {
   var hr = data[0];
@@ -363,20 +363,20 @@ ispy.makeModelEcalBarrel = function(data) {
   }
 
   return [[points, lines]];
-}
+};
 
 ispy.makeModelEcalEndcapMinus = function(data) {
   return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
-}
+};
 
 ispy.makeModelEcalEndcapPlus = function(data) {
   return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
-}
+};
 
 ispy.makeModelEcalPreshower = function(data) {
   return [ispy.makeDisc(0.4, 1.3, 3.025, 24), ispy.makeDisc(0.4, 1.3, 3.075, 24),
           ispy.makeDisc(0.4, 1.3, -3.025, 24), ispy.makeDisc(0.4, 1.3, -3.075, 24)];
-}
+};
 
 ispy.makeModelHcalBarrel = function(data) {
   var points = [];
@@ -433,25 +433,25 @@ ispy.makeModelHcalBarrel = function(data) {
   }
 
   return [[points, lines]];
-}
+};
 
 ispy.makeModelHcalForward = function(data) {
   return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2), ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
-}
+};
 
 ispy.makeModelHcalForwardPlus = function(data) {
   return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2)];
-}
+};
 
 ispy.makeModelHcalForwardMinus = function(data) {
   return [ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
-}
+};
 
 ispy.makeModelHcalOuter = function(data) {
   return [ispy.makeTube(3.9, 4.1, 3, -1.5, 48, 8), ispy.makeCylinder(4.2, 2.5, 1.5, 24, 7),
           ispy.makeCylinder(4.2, 3, 4.1, 24, 6), ispy.makeCylinder(4.2, -2.5, -1.5, 24, 7),
           ispy.makeCylinder(4.2, -3, -4.1, 24, 6)];
-}
+};
 
 ispy.makeModelHcalEndcap = function(data) {
   var points = [];
@@ -507,7 +507,7 @@ ispy.makeModelHcalEndcap = function(data) {
   }
 
   return [[points, lines]];
-}
+};
 
 ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
@@ -576,7 +576,7 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s2,material),
           new THREE.Line(s3,material),
           new THREE.Line(s4,material)];
-}
+};
 
 ispy.makeTrackPoints = function(data, extra, assoc, material) {
   if ( ! assoc ) {
@@ -601,7 +601,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, material) {
   }
 
   return lines;
-}
+};
 
 ispy.makeTracks = function(tracks, extras, assocs, material) {
   if ( ! assocs ) {
@@ -650,42 +650,42 @@ ispy.makeTracks = function(tracks, extras, assocs, material) {
   }
 
   return curves;
-}
+};
 
 ispy.makeRecHit_V2 = function(data, geometry, scale) {
   var energy = data[0];
   if ( energy > 0.5 ) { // make this a setting
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
-}
+};
 
 ispy.makeDT = function(dt) {
   //return ispy.makeSolidBox(dt, 1);
   return ispy.makeWireframeBox(dt, 1);
-}
+};
 
 ispy.makeCSC = function(csc) {
   //return ispy.makeSolidBox(csc, 1);
   return ispy.makeWireframeBox(csc, 1);
-}
+};
 
 ispy.makeMuonChamber = function(chamber) {
   return ispy.makeWireframeBox(chamber, 1);
-}
+};
 
 ispy.makeHcal = function(hb) {
   return ispy.makeWireframeBox(hb, 1);
-}
+};
 
 // Should either 1) use BufferGeometry or 2) use border positions to make wireframe
 // or 3) something else
 ispy.makeEcal = function(ecal) {
   return ispy.makeWireframeBox(ecal, 1);
-}
+};
 
 ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);
-}
+};
 
 ispy.makeMET = function(data, style) {
   /*
@@ -713,7 +713,7 @@ ispy.makeMET = function(data, style) {
   var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
 
   return met;
-}
+};
 
 ispy.makeJet = function(data, style) {
   var et = data[0];
@@ -755,10 +755,10 @@ ispy.makeJet = function(data, style) {
   material.side = THREE.DoubleSide;
 
   var jet = new THREE.Mesh(geometry, material);
-  jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct))
+  jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
 
   return jet;
-}
+};
 
 ispy.makePhoton = function(data) {
   /*
@@ -799,7 +799,7 @@ ispy.makePhoton = function(data) {
   photon.vertices.push(pt2);
 
   return [photon];
-}
+};
 
 ispy.makeDTRecHits = function(data) {
   /*
@@ -850,7 +850,7 @@ ispy.makeDTRecHits = function(data) {
   box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
 
   return box;
-}
+};
 
 ispy.makeRPCRecHits = function(data) {
   var u1 = new THREE.Vector3(data[0][0], data[0][1], data[0][2]);
@@ -873,22 +873,22 @@ ispy.makeRPCRecHits = function(data) {
   w.vertices.push(w2);
 
   return [u,v,w];
-}
+};
 
 ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
   return ispy.makeRPCRecHits(data, descr);
-}
+};
 
 ispy.makeDTRecSegments = function(data) {
   var geometry = new THREE.Geometry();
   geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
   geometry.vertices.push(new THREE.Vector3(data[2][0], data[2][1], data[2][2]));
   return [geometry];
-}
+};
 
 ispy.makeCSCSegments = function(data, geometry) {
   return ispy.makeDTRecSegments(data, geometry);
-}
+};
 
 ispy.makeCSCDigis = function(data, w, d, rotate) {
   var pos = new THREE.Vector3(data[0][0], data[0][1], data[0][2]);
@@ -931,7 +931,7 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
   box.applyMatrix(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
 
   return box;
-}
+};
 
 /*
 "CSCStripDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
@@ -940,11 +940,11 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 
 ispy.makeCSCWireDigis = function(data) {
   return ispy.makeCSCDigis(data, 0.02, 0.01, Math.PI*0.5);
-}
+};
 
 ispy.makeCSCStripDigis = function(data) {
   return ispy.makeCSCDigis(data, 0.01, 0.01, 0.0);
-}
+};
 
 ispy.makeEvent = function(data) {
   /*
@@ -963,4 +963,4 @@ ispy.makeEvent = function(data) {
   $('#event-text').html(et);
   var ei = $('#event-info');
   $('#display').append(ei);
-}
+};

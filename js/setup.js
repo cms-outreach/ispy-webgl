@@ -35,7 +35,7 @@ ispy.hasWebGL = function() {
   } else {
     return false;
   }
-}
+};
 
 ispy.init = function() {
   var display = document.getElementById('display');
@@ -139,7 +139,7 @@ ispy.init = function() {
     var obj_group = new THREE.Object3D();
     obj_group.name = g;
     ispy.scene.add(obj_group);
-  })
+  });
 
   $('#version').html("v"+ispy.version);
 
@@ -164,11 +164,11 @@ ispy.init = function() {
 
   // Are we running an animation?
   ispy.animating = false;
-}
+};
 
 ispy.getScript = function(scr) {
   return $.ajax({url: scr, dataType: "script", cache: true});
-}
+};
 
 ispy.initDetector = function() {
   // Loading and rendering the actual geometry when WebGL is available
@@ -199,4 +199,4 @@ ispy.initDetector = function() {
             ispy.addDetector();
           });
   }
-}
+};

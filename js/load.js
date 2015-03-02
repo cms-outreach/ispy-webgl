@@ -10,11 +10,11 @@ ispy.ig_data = null;
 
 ispy.openDialog = function(id) {
   $(id).modal('show');
-}
+};
 
 ispy.closeDialog = function(id) {
   $(id).modal('hide');
-}
+};
 
 ispy.hasFileAPI = function() {
   if ( window.FileReader ) {
@@ -26,19 +26,19 @@ ispy.hasFileAPI = function() {
     console.log("FileSystem", window.FileSystem);
     return false;
   }
-}
+};
 
 ispy.clearTable = function(id) {
   var tbl = document.getElementById(id);
   while (tbl.rows.length > 0) {
     tbl.deleteRow(0);
   }
-}
+};
 
 ispy.selectEvent = function(index) {
   $("#selected-event").html(ispy.event_list[index]);
   ispy.event_index = index;
-}
+};
 
 ispy.updateEventList = function() {
   ispy.clearTable("browser-events");
@@ -50,7 +50,7 @@ ispy.updateEventList = function() {
     var cell = row.insertCell(0);
     cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="ispy.selectEvent(\'' + i + '\');">' + e + '</a>';
   }
-}
+};
 
 ispy.enableNextPrev = function() {
   if ( ispy.event_index > 0 ) {
@@ -66,14 +66,15 @@ ispy.enableNextPrev = function() {
   else {
     $("#next-event-button").addClass("disabled");
   }
-}
+};
 
 ispy.loadEvent = function() {
   $("#event-loaded").html("");
   $("#loading").modal("show");
+  var event;
 
   try {
-    var event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
+    event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
   } catch(err) {
     alert(err);
   }
@@ -83,21 +84,21 @@ ispy.loadEvent = function() {
   ispy.enableNextPrev();
 
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
-}
+};
 
 ispy.nextEvent = function() {
   if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
     ispy.event_index++;
     ispy.loadEvent();
   }
-}
+};
 
 ispy.prevEvent = function() {
   if ( ispy.event_list && ispy.event_index > 0) {
     ispy.event_index--;
     ispy.loadEvent();
   }
-}
+};
 
 ispy.selectLocalFile = function(index) {
   var reader = new FileReader();
@@ -118,14 +119,14 @@ ispy.selectLocalFile = function(index) {
     ispy.event_index = 0;
     ispy.updateEventList();
     ispy.ig_data = zip;
-  }
+  };
 
   reader.onerror = function(e) {
     alert(e);
-  }
+  };
 
   reader.readAsArrayBuffer(ispy.local_files[index]);
-}
+};
 
 ispy.updateLocalFileList = function(list) {
   ispy.clearTable("browser-files");
@@ -138,7 +139,7 @@ ispy.updateLocalFileList = function(list) {
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectLocalFile(\'' + i + '\');">' + name + '</a>';
   }
-}
+};
 
 ispy.loadLocalFiles = function() {
   if (!ispy.hasFileAPI()) {
@@ -156,7 +157,7 @@ ispy.loadLocalFiles = function() {
   ispy.local_files = document.getElementById('local-files').files;
   ispy.updateLocalFileList(ispy.local_files);
   ispy.openDialog('#files');
-}
+};
 
 ispy.selectFile = function(filename) {
   ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
@@ -177,7 +178,7 @@ ispy.selectFile = function(filename) {
      $('.progress-bar').attr('style', 'width:'+percentComplete+'%;');
      $('.progress-bar').html(percentComplete+'%');
    }
-  }
+ };
 
   xhr.onreadystatechange = function () {
     if (this.readyState === 4){
@@ -185,7 +186,7 @@ ispy.selectFile = function(filename) {
       $('.progress-bar').attr('style', 'width:0%;');
       $('.progress-bar').html('0%');
     }
-  }
+  };
 
   xhr.onload = function() {
     if (this.status === 200) {
@@ -207,7 +208,7 @@ ispy.selectFile = function(filename) {
   };
 
   xhr.send();
-}
+};
 
 ispy.loadWebFiles = function() {
   ispy.clearTable("browser-files");
@@ -224,7 +225,7 @@ ispy.loadWebFiles = function() {
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
   }
-}
+};
 
 ispy.cleanupData = function(d) {
   // rm non-standard json bits
@@ -234,7 +235,7 @@ ispy.cleanupData = function(d) {
        .replace(/\'/g, "\"")
        .replace(/nan/g, "0");
   return d;
-}
+};
 
 ispy.exportString = function (output) {
   // This comes from three.js editor
@@ -242,7 +243,7 @@ ispy.exportString = function (output) {
   var objectURL = URL.createObjectURL(blob);
   window.open(objectURL, '_blank');
   window.focus();
-}
+};
 
 ispy.exportScene = function() {
   // Only export objects in the scene that are visible.
@@ -260,4 +261,4 @@ ispy.exportScene = function() {
       }
     });
   });
-}
+};

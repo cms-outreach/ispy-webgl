@@ -11,7 +11,7 @@ ispy.render = function() {
   if ( ispy.inset_renderer !== null ) {
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
   }
-}
+};
 
 ispy.animate = function() {
   requestAnimationFrame(ispy.animate);
@@ -28,11 +28,11 @@ ispy.animate = function() {
   if ( ispy.animating ) {
     TWEEN.update();
   }
-}
+};
 
 ispy.lookAtOrigin = function() {
   ispy.camera.lookAt(new THREE.Vector3(0,0,0));
-}
+};
 
 ispy.initCamera = function() {
   var home_x = -18.1;
@@ -46,11 +46,11 @@ ispy.initCamera = function() {
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
-}
+};
 
 ispy.resetControls = function() {
   ispy.controls.reset();
-}
+};
 
 ispy.setXY = function() {
   var length = ispy.camera.position.length();
@@ -59,7 +59,7 @@ ispy.setXY = function() {
   ispy.camera.position.z = length;
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
-}
+};
 
 ispy.setZX = function() {
   var length = ispy.camera.position.length();
@@ -68,7 +68,7 @@ ispy.setZX = function() {
   ispy.camera.position.z = 0;
   ispy.camera.up = new THREE.Vector3(1,0,0);
   ispy.lookAtOrigin();
-}
+};
 
 ispy.setYZ = function() {
   var length = ispy.camera.position.length();
@@ -77,30 +77,30 @@ ispy.setYZ = function() {
   ispy.camera.position.z = 0;
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
-}
+};
 
 ispy.setOrthographic = function() {
   $('#perspective').toggleClass('active');
   $('#orthographic').toggleClass('active');
   ispy.camera.toOrthographic();
-}
+};
 
 ispy.setPerspective = function() {
   $('#perspective').toggleClass('active');
   $('#orthographic').toggleClass('active');
   ispy.camera.toPerspective();
-}
+};
 
 ispy.zoom = function(step) {
   var zoom = ispy.camera.zoom;
   ispy.camera.setZoom(zoom+step);
-}
+};
 
 ispy.printImage = function() {
   ispy.get_image_data = true;
   ispy.render();
   window.open(ispy.image_data, "toDataURL() image", "width=800, height=400");
-}
+};
 
 ispy.showAxes = function() {
   ispy.show_axes = !ispy.show_axes;
@@ -109,7 +109,7 @@ ispy.showAxes = function() {
   } else {
     $('#axes').show();
   }
-}
+};
 
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
@@ -142,7 +142,7 @@ ispy.invertColors = function() {
 
   $('.modal-content').toggleClass('white').toggleClass('black');
   $('.modal-title').toggleClass('white').toggleClass('black');
-}
+};
 
 ispy.showStats = function() {
   ispy.show_stats = !ispy.show_stats;
@@ -152,7 +152,7 @@ ispy.showStats = function() {
   } else {
     $('#stats').hide();
   }
-}
+};
 
 ispy.updateRendererInfo = function() {
   var info = ispy.renderer.info;
@@ -168,7 +168,7 @@ ispy.updateRendererInfo = function() {
   }
 
   $("#renderer-info").html(html);
-}
+};
 
 ispy.onWindowResize = function() {
   var w = $('#display').innerWidth();
@@ -178,7 +178,7 @@ ispy.onWindowResize = function() {
   ispy.camera.updateProjectionMatrix();
   ispy.renderer.setSize(w,h);
   ispy.render();
-}
+};
 
 ispy.onMouseMove = function(e) {
   e.preventDefault();
@@ -211,9 +211,9 @@ ispy.onMouseMove = function(e) {
         ispy.intersected = null;
     }
   }
-}
+};
 
-ispy.onMouseDown = function(e) {}
+ispy.onMouseDown = function(e) {};
 
 document.addEventListener('keydown', function(e) {
   e.preventDefault();
@@ -267,7 +267,7 @@ ispy.toggleCollapse = function(g) {
 
   children.toggle();
   $('i.'+g).toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
-}
+};
 
 ispy.addGroups = function() {
   var group_table = $('#treeview table');
@@ -289,7 +289,7 @@ ispy.addGroups = function() {
     html += "</tr>";
     group_table.append(html);
   });
-}
+};
 
 ispy.POINT = 0;
 ispy.LINE = 1;
@@ -470,7 +470,7 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 2}},
 };
 
-ispy.disabled = new Array();
+ispy.disabled = [];
 
 for (var key in ispy.detector_description) {
   if ( ! ispy.detector_description[key].on ) {
@@ -502,7 +502,7 @@ ispy.toggle = function(group, key) {
       c.visible = !ispy.disabled[key];
     }
   });
-}
+};
 
 ispy.addSelectionRow = function(group, key, name, visible) {
   var dc = "Detector";
@@ -531,12 +531,12 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   html += "</tr>";
 
   $('#'+group).after(html);
-}
+};
 
 ispy.addDetector = function() {
   for ( var key in ispy.detector_description ) {
 
-      var data = ispy.detector["Collections"][key];
+      var data = ispy.detector.Collections[key];
       if ( ! data || data.length === 0 ) {
         continue;
       }
@@ -637,7 +637,7 @@ ispy.addDetector = function() {
         break;
       }
   }
-}
+};
 
 ispy.addEvent = function(event) {
   // remove all but the geometry from the
@@ -657,7 +657,7 @@ ispy.addEvent = function(event) {
   $("tr.Event").remove();
 
   for ( var key in ispy.event_description ) {
-    var data = event["Collections"][key];
+    var data = event.Collections[key];
     if ( ! data || data.length === 0 ) {
       continue;
     }
@@ -668,11 +668,11 @@ ispy.addEvent = function(event) {
     var assoc = null;
 
     if (descr.extra) {
-        extra = event["Collections"][descr.extra];
+        extra = event.Collections[descr.extra];
     }
 
     if (descr.assoc) {
-      assoc = event["Associations"][descr.assoc];
+      assoc = event.Associations[descr.assoc];
     }
 
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
@@ -795,7 +795,7 @@ ispy.addEvent = function(event) {
 
         for ( var i = 0; i < data.length; i++ ) {
           var shape = descr.fn(data[i], descr.style);
-          if ( shape != null ) {
+          if ( shape !== null ) {
             shape.name = key;
             shape.visible = visible;
             ispy.scene.getObjectByName(descr.group).add(shape);
@@ -834,11 +834,11 @@ ispy.addEvent = function(event) {
       break;
     }
   }
-}
+};
 
 ispy.displayCollection = function(key, name) {
-  var type = ispy.current_event['Types'][key];
-  var collection = ispy.current_event['Collections'][key];
+  var type = ispy.current_event.Types[key];
+  var collection = ispy.current_event.Collections[key];
 
   $('#collection-table').empty();
   $('#collection-table').append('<caption>' + name + '</caption>');
@@ -857,4 +857,4 @@ ispy.displayCollection = function(key, name) {
 
      $('#collection-table').append(row_content);
    }
-}
+};
