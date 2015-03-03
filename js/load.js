@@ -38,6 +38,7 @@ ispy.clearTable = function(id) {
 ispy.selectEvent = function(index) {
   $("#selected-event").html(ispy.event_list[index]);
   ispy.event_index = index;
+  $('#load-event').removeClass('disabled');
 };
 
 ispy.updateEventList = function() {
@@ -150,6 +151,8 @@ ispy.loadLocalFiles = function() {
     return;
   }
 
+  //$('#load-event').addClass('disabled');
+
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
   $('#selected-event').html("Selected event");
@@ -214,6 +217,7 @@ ispy.loadWebFiles = function() {
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
   $('#selected-event').html("Selected event");
+  $('#load-event').addClass('disabled');
 
   var tbl = document.getElementById("browser-files");
 
