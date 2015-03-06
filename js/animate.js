@@ -3,6 +3,7 @@
 // - Zoom into position inside detector
 // - Rotate around, turning off tracks halfway through rotation
 // It will be nice to generalize all this but it's good-enough for now.
+// This is reaching the limit of complexity with this setup. Use key frames!
 
 ispy.animation_script = {
     "collision": {
@@ -14,16 +15,31 @@ ispy.animation_script = {
         "pi": {x:0, y:0, z:-200.0},
         "pf": {x:0, y:0, z:200.0}
       },
-      "time": 2500
+      "time": 2500,
+      "objects": [
+        {"group":"Tracking", "key":"Tracks_V2"},
+        {"group":"ECAL", "key":"EBRecHits_V2"},
+        {"group":"ECAL", "key":"EERecHits_V2"},
+        {"group":"HCAL", "key":"HBRecHits_V2"},
+        {"group":"HCAL", "key":"HERecHits_V2"}
+      ]
     },
     "zoom": {
       "time": 2000
     },
+    // This rotation is actually split into two halves and the toggle
+    // on objects happens at PI
     "rotation": {
       "radius": 2.0,
       "angle": 2*Math.PI,
       "nsteps": 24,
-      "time": 5000
+      "time": 5000,
+      "objects": [
+        {"group":"Tracking", "key":"Tracks_V2"},
+        {"group":"HCAL", "key":"HBRecHits_V2"},
+        {"group":"HCAL", "key":"HERecHits_V2"},
+        {"group":"PhysicsObjects", "key":"GsfElectrons_V1"}
+      ]
     }
 }
 
@@ -84,10 +100,9 @@ ispy.toggleAnimation = function() {
     var tw4 = new TWEEN.Tween(ispy.camera.position)
       .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
       .onStart(function(){
-        ispy.toggle("Tracking", "Tracks_V2");
-        ispy.toggle("HCAL", "HBRecHits_V2");
-        ispy.toggle("HCAL", "HERecHits_V2");
-        ispy.toggle("PhysicsObjects", "GsfElectrons_V1");
+        animation.rotation.objects.forEach(function(o) {
+          ispy.toggle(o.group, o.key);
+        });
       });
 
     var pgeometry = new THREE.SphereGeometry(0.25,32,32);
@@ -114,12 +129,9 @@ ispy.toggleAnimation = function() {
       .to({z:0.0}, animation.collision.time)
       .onComplete(function(){
         tw1.start();
-
-        ispy.toggle("Tracking", "Tracks_V2");
-        ispy.toggle("ECAL", "EBRecHits_V2");
-        ispy.toggle("ECAL", "EERecHits_V2");
-        ispy.toggle("HCAL", "HBRecHits_V2");
-        ispy.toggle("HCAL", "HERecHits_V2");
+        animation.collision.objects.forEach(function(o) {
+          ispy.toggle(o.group, o.key);
+        });
       })
       .easing(TWEEN.Easing.Back.In);
 
