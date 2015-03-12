@@ -1,10 +1,11 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9-masterclass2015-rc6";
+ispy.version = "0.9-masterclass2015-rc7";
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
 
+  /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
   } else {
@@ -22,6 +23,7 @@ ispy.hasWebGL = function() {
   } else {
     console.log('WebGLRenderingContext');
   }
+  */
 
   if ( canvas.getContext('webgl') || canvas.getContext('experimental-webgl') ) {
     if ( ! window.WebGLRenderingContext ) {
@@ -98,9 +100,24 @@ ispy.init = function() {
   ispy.inverted_colors = false;
 
   // Make axes and labels XYZ -> RGB
-  var axes = new THREE.AxisHelper(4);
-  axes.material.linewidth = 5;
-  ispy.inset_scene.add(axes);
+  // VertexColors doesn't work with CanvasRenderer
+  // So use ArrowHelpers instead:
+
+  //var axes = new THREE.AxisHelper(4);
+  //axes.material.linewidth = 5;
+  //ispy.inset_scene.add(axes);
+
+  var origin = new THREE.Vector3(0,0,0);
+  var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
+  var gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
+  var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
+  rx.line.material.linewidth = 5;
+  gy.line.material.linewidth = 5;
+  bz.line.material.linewidth = 5;
+
+  ispy.inset_scene.add(rx);
+  ispy.inset_scene.add(gy);
+  ispy.inset_scene.add(bz);
   ispy.show_axes = true;
 
   //console.log(THREE.FontUtils);
