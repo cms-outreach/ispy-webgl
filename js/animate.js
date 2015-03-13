@@ -50,6 +50,7 @@ ispy.toggleAnimation = function() {
 
   if ( ispy.animating ) {
     var animation = ispy.animation_script;
+    var home = ispy.camera.position;
 
     var length = ispy.camera.position.length();
     var xs = [ispy.camera.position.x, 0];
@@ -105,6 +106,12 @@ ispy.toggleAnimation = function() {
         });
       });
 
+    var tw5 = new TWEEN.Tween(ispy.camera.position)
+      .to({x:home.x, y:home.y, z:home.z}, 5000)
+      .easing(TWEEN.Easing.Sinusoidal.In);
+
+    tw5.delay(1000);
+
     var pgeometry = new THREE.SphereGeometry(0.25,32,32);
     var pmaterial = new THREE.MeshBasicMaterial({color: 0xffff00});
 
@@ -153,6 +160,7 @@ ispy.toggleAnimation = function() {
     tw1.chain(tw2);
     tw2.chain(tw3);
     tw3.chain(tw4);
+    tw4.chain(tw5);
 
     c1.start();
     c2.start();
