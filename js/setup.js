@@ -90,6 +90,7 @@ ispy.init = function() {
   ispy.inset_renderer.alpha = 0.0;
 
   display.appendChild(ispy.renderer.domElement);
+  console.log(ispy.renderer.domElement);
   inset.appendChild(ispy.inset_renderer.domElement);
 
   ispy.stats = new Stats();
@@ -181,6 +182,10 @@ ispy.init = function() {
 
   // Are we running an animation?
   ispy.animating = false;
+
+  // Are we recording?
+  ispy.recording = false;
+  ispy.socket = io.connect('http://localhost:3000');
 };
 
 ispy.getScript = function(scr) {

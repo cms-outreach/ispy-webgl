@@ -28,6 +28,13 @@ ispy.animate = function() {
   if ( ispy.animating ) {
     TWEEN.update();
   }
+
+  if ( ispy.recording ) {
+    ispy.socket.emit('render-frame', {
+      frame: ispy.frame++,
+      file: ispy.renderer.domElement.toDataURL()
+    });
+  }
 };
 
 ispy.lookAtOrigin = function() {
@@ -237,6 +244,11 @@ document.addEventListener('keydown', function(e) {
   // shift+a to toggle animation
   if ( e.which === 65 && e.shiftKey ) {
     ispy.toggleAnimation();
+  }
+
+  // shift+r to record video
+  if ( e.which === 82 && e.shiftKey ) {
+    ispy.recordAnimation();
   }
 
   /*

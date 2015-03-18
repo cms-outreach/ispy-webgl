@@ -33,7 +33,7 @@ ispy.animation_script = {
       "radius": 2.0,
       "angle": 2*Math.PI,
       "nsteps": 24,
-      "time": 5000,
+      "time": 10000,
       "objects": [
         {"group":"Tracking", "key":"Tracks_V2"},
         {"group":"HCAL", "key":"HBRecHits_V2"},
@@ -165,4 +165,19 @@ ispy.toggleAnimation = function() {
     c1.start();
     c2.start();
   }
+}
+
+ispy.recordAnimation = function() {
+  $('#video').toggleClass('active');
+
+  if ( ! ispy.recording ) {
+    console.log('Start recording');
+    ispy.frame = 0;
+  }
+
+  if ( ispy.recording ) {
+    console.log('Stop recording');
+  }
+
+  ispy.recording = !ispy.recording;
 }

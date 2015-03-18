@@ -31,13 +31,12 @@
   <script src="./geometry/dt.js"></script>
   <script src="./geometry/csc.js"></script>
   <script src="./geometry/rpc.js"></script>
-  <!-- Don't load this anymore as we don't use the models for WebGL
-  <script src="./geometry/ecal.js"></script>
-  -->
 
   <script src="./js/load.js"></script>
   <script src="./js/draw.js"></script>
   <script src="./js/display.js"></script>
+
+  <script type="text/javascript" src="js/socket.io.js"></script>
 
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -120,12 +119,17 @@
           </div>
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.printImage();" title="Print Image to File">
-              <i class="fa fa-file-image-o"></i>
+              <i class="fa fa-camera"></i>
             </button>
           </div>
           <div class="btn-group" role="group">
             <button type="button" id="animate" class="btn btn-default" onclick="ispy.toggleAnimation();" title="Start/Stop Animation [Shift + A]">
               <i class="fa fa-film"></i>
+            </button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" id="video" class="btn btn-default" onclick="ispy.recordAnimation();" title="Start/Stop Recording [Shift + R]">
+              <i class="fa fa-video-camera"></i>
             </button>
           </div>
         </div>
