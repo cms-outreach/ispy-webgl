@@ -20,6 +20,8 @@
   <script src="./js/CanvasRenderer.js"></script>
   <script src="./js/helvetiker_regular.typeface.js"></script>
 
+  <script src="./js/OBJLoader.js"></script>
+
   <script src="./js/jszip.min.js"></script>
   <script src="./js/jquery.dataTables.min.js"></script>
   <script src="./js/dataTables.bootstrap.js"></script>
@@ -128,6 +130,14 @@
               <i class="fa fa-film"></i>
             </button>
           </div>
+          <!--
+          <div class="btn-group" role="group">
+            <input type="file" id="import" onchange="ispy.importModel();" multiple/>
+            <button type="button" class="btn btn-default" onclick="ispy.importModel();" title="Import 3D Model">
+              <i class="fa fa-download"></i>
+            </button>
+          </div>
+          -->
         </div>
       </div>
     </div>
@@ -154,6 +164,7 @@
       ispy.init();
       ispy.addGroups();
       ispy.initDetector();
+      ispy.importModel();
       ispy.animate();
 
       // need to debug why this doesn't work
@@ -267,7 +278,10 @@
           Invert colors: <input type='checkbox' onchange='ispy.invertColors();'>
         </p>
         <p>
-          Hide axes: <input type='checkbox' onchange='ispy.showAxes();'>
+          Hide/show axes: <input type='checkbox' onchange='ispy.showAxes();'>
+        </p>
+        <p>
+          Hide/show beam pipe: <input type='checkbox' onchange='ispy.toggleImports();'>
         </p>
         <p>
           Show display statistics: <input type='checkbox' onchange='ispy.showStats();'>

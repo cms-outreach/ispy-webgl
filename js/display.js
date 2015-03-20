@@ -120,7 +120,7 @@ ispy.invertColors = function() {
     ispy.renderer.setClearColor(0xffffff,0);
   }
 
-  // Yeeesh I really need to clean up thce class, ids, and css
+  // Yeeesh I really need to clean up the class, ids, and css
 
   $('body').toggleClass('white').toggleClass('black');
 
@@ -349,14 +349,14 @@ ispy.detector_description = {
     fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
@@ -500,6 +500,15 @@ ispy.toggle = function(group, key) {
   ispy.scene.getObjectByName(group).children.forEach(function(c) {
     if ( c.name === key ) {
       c.visible = !ispy.disabled[key];
+    }
+  });
+};
+
+ispy.toggleImports = function() {
+  ispy.show_imports = !ispy.show_imports;
+  ispy.scene.getObjectByName("Detector").children.forEach(function(c) {
+    if ( c.name === "Beam Pipe" ) {
+      c.visible = ispy.show_imports;
     }
   });
 };
