@@ -48,6 +48,13 @@ ispy.initCamera = function() {
   ispy.lookAtOrigin();
 };
 
+ispy.initLight = function() {
+  var intensity = 1.0;
+  ispy.light = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light.position.set(-1, 1, 0);
+  ispy.scene.getObjectByName("Detector").add(ispy.light);
+};
+
 ispy.resetControls = function() {
   ispy.controls.reset();
 };

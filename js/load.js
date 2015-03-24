@@ -271,20 +271,11 @@ ispy.exportScene = function() {
 // Eventually load obj files exported from SketchUp on-demand.
 // For now, just show beam pipe by default.
 ispy.importModel = function() {
-  var material = new THREE.MeshBasicMaterial({transparent:true, opacity:0.5});
-  material.color = new THREE.Color(0xcccccc);
 
-  $.ajax({url: './geometry/beampipe.obj', dataType: "text", cache: true})
-    .done(function(data) {
-      var object = new THREE.OBJLoader().parse(data);
-      object.name = "Beam Pipe";
-      object.traverse(function (child) {
-        if (child instanceof THREE.Mesh) {
-            child.material = material;
-          }
-        });
-
-      ispy.scene.getObjectByName("Detector").add(object);
-      ispy.show_imports = true;
+  var loader = new THREE.OBJMTLLoader();
+  loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
+    object.name = "Beam Pipe";
+    ispy.scene.getObjectByName("Detector").add(object);
+    ispy.show_imports = true;
   });
 };

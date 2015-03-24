@@ -20,7 +20,8 @@
   <script src="./js/CanvasRenderer.js"></script>
   <script src="./js/helvetiker_regular.typeface.js"></script>
 
-  <script src="./js/OBJLoader.js"></script>
+  <script src="./js/MTLLoader.js"></script>
+  <script src="./js/OBJMTLLoader.js"></script>
 
   <script src="./js/jszip.min.js"></script>
   <script src="./js/jquery.dataTables.min.js"></script>
@@ -163,6 +164,7 @@
     $(function() {
       ispy.init();
       ispy.addGroups();
+      ispy.initLight();
       ispy.initDetector();
       ispy.importModel();
       ispy.animate();
