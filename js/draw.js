@@ -687,6 +687,27 @@ ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);
 };
 
+ispy.makeTrackingRecHit = function(data,style) {
+  var geometry = new THREE.SphereGeometry(0.005,32,32);
+
+  var hcolor = new THREE.Color();
+  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+
+  var hit = new THREE.Mesh(geometry, material);
+  hit.position.x = data[0][0];
+  hit.position.y = data[0][1];
+  hit.position.y = data[0][2];
+
+  return hit;
+};
+
 ispy.makeMET = function(data, style) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
