@@ -17,7 +17,11 @@ ispy.animation_script = {
       },
       "time": 2500,
       "objects": [
+        {"group":"Detector", "key":"Beam Pipe"},
         {"group":"Tracking", "key":"Tracks_V2"},
+        {"group":"Tracking", "key":"Tracks_V3"},
+        {"group":"Muon", "key":"MuonChambers_V1"},
+        {"group":"PhysicsObjects", "key":"GlobalMuons_V1"},
         {"group":"ECAL", "key":"EBRecHits_V2"},
         {"group":"ECAL", "key":"EERecHits_V2"},
         {"group":"HCAL", "key":"HBRecHits_V2"},
@@ -36,8 +40,7 @@ ispy.animation_script = {
       "time": 5000,
       "objects": [
         {"group":"Tracking", "key":"Tracks_V2"},
-        {"group":"HCAL", "key":"HBRecHits_V2"},
-        {"group":"HCAL", "key":"HERecHits_V2"},
+        {"group":"Tracking", "key":"Tracks_V3"},
         {"group":"PhysicsObjects", "key":"GsfElectrons_V1"}
       ]
     }

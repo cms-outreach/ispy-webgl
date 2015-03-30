@@ -11,7 +11,10 @@ ispy.render = function() {
   if ( ispy.inset_renderer !== null ) {
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
   }
+};
 
+ispy.run = function() {
+  requestAnimationFrame(ispy.run);
   ispy.controls.update();
 
   ispy.inset_camera.up = ispy.camera.up;
@@ -19,16 +22,12 @@ ispy.render = function() {
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
+  ispy.render();
   ispy.stats.update();
 
   if ( ispy.animating ) {
     TWEEN.update();
   }
-};
-
-ispy.run = function() {
-  requestAnimationFrame(ispy.run);
-  ispy.render();
 };
 
 ispy.lookAtOrigin = function() {
@@ -360,18 +359,18 @@ ispy.detector_description = {
    fn: ispy.makeHcal, style: {color: [0.7, 0.7, 0], opacity: 0.5, linewidth: 1}},
 
   "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalBarrel3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
@@ -418,13 +417,13 @@ ispy.event_description = {
 
   "Tracks_V1": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1},
+    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
   "Tracks_V2": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1},
+    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
   "Tracks_V3": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1},
+    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
 
   //"TrackingRecHits_V1": {type:ispy.SHAPE, on:false, group:"Tracking", name: "Tracking Rec Hits",
   //  fn:ispy.makeTrackingRecHit, style: {color: [1, 1, 0], opacity: 0.5}},
@@ -481,7 +480,7 @@ ispy.event_description = {
 
   "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, min_pt: 0.5},
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, min_pt: 1},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}},
