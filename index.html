@@ -22,6 +22,7 @@
 
   <script src="./js/MTLLoader.js"></script>
   <script src="./js/OBJMTLLoader.js"></script>
+  <script src="./js/OBJLoader.js"></script>
 
   <script src="./js/jszip.min.js"></script>
   <script src="./js/jquery.dataTables.min.js"></script>
@@ -131,14 +132,11 @@
               <i class="fa fa-film"></i>
             </button>
           </div>
-          <!--
           <div class="btn-group" role="group">
-            <input type="file" id="import" onchange="ispy.importModel();" multiple/>
-            <button type="button" class="btn btn-default" onclick="ispy.importModel();" title="Import 3D Model">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#import-model" title="Import 3D Model">
               <i class="fa fa-download"></i>
             </button>
           </div>
-          -->
         </div>
       </div>
     </div>
@@ -166,7 +164,7 @@
       ispy.addGroups();
       ispy.initLight();
       ispy.initDetector();
-      ispy.importModel();
+      ispy.importBeampipe();
       ispy.run();
 
       // need to debug why this doesn't work
@@ -280,10 +278,7 @@
           Invert colors: <input type='checkbox' onchange='ispy.invertColors();'>
         </p>
         <p>
-          Hide/show axes: <input type='checkbox' onchange='ispy.showAxes();'>
-        </p>
-        <p>
-          Hide/show beam pipe: <input type='checkbox' onchange='ispy.toggleImports();'>
+          Hide axes: <input type='checkbox' onchange='ispy.showAxes();'>
         </p>
         <p>
           Show display statistics: <input type='checkbox' onchange='ispy.showStats();'>
@@ -319,6 +314,33 @@
         </p>
         <p>Contributors: M. Hategan, T. McCauley, P. Nguyen</p>
         <p>Reference: <a target="_blank" href="http://iopscience.iop.org/1742-6596/396/2/022022/">J.Phys.Conf.Ser. 396 (2012) 022022</a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="import-model" role="dialog" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content bordered black">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
+        <h4 class="modal-title black">Import 3D Model</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Select a 3D model to load.
+        </p>
+        <p>
+          Currently only .obj format is supported.
+          If an additional .mtl is available and loaded it will be used as well.
+        </p>
+        <p>
+          <i>Nota bene</i>: a large complicated 3D model may take minutes to load.
+        </p>
+        <input type="file" id="import-file" onchange="ispy.importModel();" multiple/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

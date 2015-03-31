@@ -207,7 +207,7 @@ ispy.onMouseMove = function(e) {
 
   var vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
   ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
-  var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("PhysicsObjects"), true);
+  var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
 
   if ( intersects.length > 0 ) {
     if ( ispy.intersected != intersects[0].object ) {
@@ -266,8 +266,8 @@ document.addEventListener('keydown', function(e) {
 });
 
 
-ispy.data_groups = ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"];
-ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics Objects" to view contents in table</caption>';
+ispy.data_groups = ["Detector", "Imported", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "Physics"];
+ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics" to view contents in table</caption>';
 
 ispy.toggleCollapse = function(g) {
   // If the objects under the group category have not been loaded then
@@ -286,10 +286,6 @@ ispy.addGroups = function() {
   var group_table = $('#treeview table');
   ispy.data_groups.forEach(function(g) {
     var n = g;
-    if ( g === "PhysicsObjects" ) {
-      n = "Physics Objects";
-    }
-
     var html = "<tr id='"+ g +"'>";
 
     html += "<td class='group black'><a class='expand' onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
@@ -458,30 +454,30 @@ ispy.event_description = {
   "MuonChambers_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.5, linewidth: 1}},
 
-  "METs_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Missing Et (Reco)",
+  "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
-  "Jets_V1": {type: ispy.SHAPE, on: false, group: "PhysicsObjects", name: "Jets",
+  "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets",
     fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}},
-  "Photons_V1": {type: ispy.LINE, on: false, group: "PhysicsObjects", name: "Photons (Reco)",
+  "Photons_V1": {type: ispy.LINE, on: false, group: "Physics", name: "Photons (Reco)",
      fn: ispy.makePhoton, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
 
-  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Global Muons (Reco)",
+  "GlobalMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics", name: "Global Muons (Reco)",
     extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}},
-  "StandaloneMuons_V1": {type: ispy.POLYLINE, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
+  "StandaloneMuons_V1": {type: ispy.POLYLINE, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
     extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}},
-  "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "PhysicsObjects", name: "Stand-alone Muons (Reco)",
+  "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
     extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}},
-  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "PhysicsObjects", name: "Tracker Muons (Reco)",
+  "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics", name: "Tracker Muons (Reco)",
     extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}},
 
-  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
+  "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, min_pt: 1},
-  "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "PhysicsObjects", name: "Electron Tracks (GSF)",
+  "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}},
 };
@@ -505,7 +501,7 @@ ispy.toggle = function(group, key) {
 
   // For provenance (for now, just event information)
   // we display as simple HTML so therefore not part of the scene
-  if ( group === "Provenance" ) {
+  if ( group === 'Provenance' ) {
     if ( ispy.disabled[key] ) {
       $('#event-info').hide();
     } else {
@@ -520,19 +516,12 @@ ispy.toggle = function(group, key) {
   });
 };
 
-ispy.toggleImports = function() {
-  ispy.show_imports = !ispy.show_imports;
-  ispy.scene.getObjectByName("Detector").children.forEach(function(c) {
-    if ( c.name === "Beam Pipe" ) {
-      c.visible = ispy.show_imports;
-    }
-  });
-};
-
 ispy.addSelectionRow = function(group, key, name, visible) {
-  var dc = "Detector";
-  if ( group != "Detector" ) {
-    dc = "Event";
+  var dc = 'Detector';
+  if ( group !== 'Detector' ) {
+    if ( group !== 'Imported' ) {
+      dc = 'Event'; // this means it gets cleared from the tree view when an event is loaded
+    }
   }
 
   var on = !ispy.disabled[key] ? "checked" : "";
@@ -544,7 +533,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
     cc = "white";
   }
 
-  if ( group != "Detector" ) {
+  if ( group !== 'Detector' && group !== 'Imported' ) {
     html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + ": " + name +"\");'>" + name + "</td>";
   } else {
     html += "<td class='collection "+ cc +"'>"+ name +"</td>";
@@ -668,8 +657,10 @@ ispy.addEvent = function(event) {
   // remove all but the geometry from the
   // scene before rendering
   ispy.scene.children.forEach(function(c) {
-    if ( c.name != "Detector" ) {
-      ispy.scene.getObjectByName(c.name).children.length = 0;
+    if ( c.name !== 'Detector' ) {
+      if ( c.name !== 'Imported' ) {
+        ispy.scene.getObjectByName(c.name).children.length = 0;
+      }
     }
   });
 
