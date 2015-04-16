@@ -151,7 +151,7 @@ ispy.loadLocalFiles = function() {
     return;
   }
 
-  //$('#load-event').addClass('disabled');
+  $('#load-event').addClass('disabled');
 
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
