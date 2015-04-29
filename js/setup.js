@@ -71,7 +71,7 @@ ispy.init = function() {
     renderer = new THREE.WebGLRenderer({antialias:true});
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 
-    ispy.renderer_name = "WebGLRenderer";
+    ispy.renderer_type = 'WebGLRenderer';
 
   } else {
     console.log('ispy: using canvas');
@@ -79,7 +79,7 @@ ispy.init = function() {
     renderer = new THREE.CanvasRenderer();
     inset_renderer = new THREE.CanvasRenderer();
 
-    ispy.renderer_name = "CanvasRenderer";
+    ispy.renderer_type = 'CanvasRenderer';
   }
 
   renderer.setSize(width, height);
@@ -121,8 +121,6 @@ ispy.init = function() {
   ispy.inset_scene.add(bz);
 
   ispy.show_axes = true;
-
-  //console.log(THREE.FontUtils);
 
   var x_geo = new THREE.TextGeometry('X', {size:0.75, height:0.1});
   var x_color = new THREE.Color(0xff0000);
@@ -192,12 +190,12 @@ ispy.initDetector = function() {
   // works well. With CanvasRenderer, not so well, so load and render
   // the geometry models.
 
-  if ( ispy.renderer_name === "CanvasRenderer" ) {
+  if ( ispy.renderer_type === 'CanvasRenderer' ) {
     ispy.getScript("./geometry/models.js")
       .done(function() {
         ispy.addDetector();
       });
-  } else if ( ispy.renderer_name === "WebGLRenderer" ) {
+  } else if ( ispy.renderer_type === 'WebGLRenderer' ) {
 
     $('#loading').modal('show');
 

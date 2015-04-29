@@ -170,7 +170,7 @@ ispy.showStats = function() {
 ispy.updateRendererInfo = function() {
   var info = ispy.renderer.info;
 
-  var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
+  var html = "<strong>"+ ispy.renderer_type + " info: </strong>";
   html += "<dl>";
 
   for ( var i in info ) {
@@ -181,6 +181,37 @@ ispy.updateRendererInfo = function() {
   }
 
   $("#renderer-info").html(html);
+};
+
+ispy.updateRenderer = function(type) {
+  console.log(type);
+
+  if ( type === ispy.renderer_type ) {
+    alert(type + ' is already in use');
+    return;
+  }
+
+  if ( type === 'WebGLRenderer' ) {
+    if ( ! ispy.hasWebGL() ) {
+      alert('WebGL is not available. Using CanvasRenderer.');
+      type = 'CanvasRenderer';
+    }
+  }
+
+  document.getElementById('display').removeChild(ispy.renderer.domElement);
+
+  var renderer = new THREE[type]({antialias:true});
+  renderer.setSize($('#display').innerWidth(), $('#display').innerHeight());
+
+  ispy.renderer = renderer;
+  ispy.renderer_type = type;
+
+  document.getElementById('display').appendChild(ispy.renderer.domElement);
+
+  var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  ispy.controls = controls;
+
+  ispy.updateRendererInfo();
 };
 
 ispy.onWindowResize = function() {
@@ -274,6 +305,7 @@ ispy.toggleCollapse = function(g) {
   // do not toggle the chevron. We don't want to have it in the wrong
   // state when the group is eventually populated
   var children = $('tr.'+g);
+
   if ( children.length === 0 ) {
     return;
   }
@@ -365,7 +397,7 @@ ispy.detector_description = {
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
@@ -509,11 +541,18 @@ ispy.toggle = function(group, key) {
     }
   }
 
+  console.log(group, key);
+  var found = false;
+
   ispy.scene.getObjectByName(group).children.forEach(function(c) {
     if ( c.name === key ) {
       c.visible = !ispy.disabled[key];
+      console.log(c.visible);
+      found = true;
     }
   });
+
+  console.log(key, found);
 };
 
 ispy.addSelectionRow = function(group, key, name, visible) {
@@ -521,6 +560,8 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   if ( group !== 'Detector' ) {
     if ( group !== 'Imported' ) {
       dc = 'Event'; // this means it gets cleared from the tree view when an event is loaded
+    } else {
+      dc = 'Imported';
     }
   }
 
