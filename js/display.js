@@ -93,20 +93,46 @@ ispy.setYZ = function() {
 };
 
 ispy.setOrthographic = function() {
-  $('#perspective').toggleClass('active');
-  $('#orthographic').toggleClass('active');
+  $('#perspective').removeClass('active');
+  $('#orthographic').addClass('active');
   ispy.camera.toOrthographic();
 };
 
 ispy.setPerspective = function() {
-  $('#perspective').toggleClass('active');
-  $('#orthographic').toggleClass('active');
+  $('#perspective').addClass('active');
+  $('#orthographic').removeClass('active');
   ispy.camera.toPerspective();
+
+  $('#3d').addClass('active');
+  $('#rphi').removeClass('active');
+  $('#rz').removeClass('active');
 };
 
 ispy.zoom = function(step) {
   var zoom = ispy.camera.zoom;
   ispy.camera.setZoom(zoom+step);
+};
+
+ispy.set3D = function() {
+  ispy.setPerspective();
+};
+
+ispy.setRPhi = function() {
+  $('#rphi').addClass('active');
+  $('#3d').removeClass('active');
+  $('#rz').removeClass('active');
+
+  ispy.setOrthographic();
+  ispy.setXY();
+};
+
+ispy.setRZ = function() {
+  $('#rz').addClass('active');
+  $('#3d').removeClass('active');
+  $('#rphi').removeClass('active');
+
+  ispy.setOrthographic();
+  ispy.setYZ();
 };
 
 ispy.printImage = function() {
