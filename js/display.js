@@ -521,6 +521,8 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   if ( group !== 'Detector' ) {
     if ( group !== 'Imported' ) {
       dc = 'Event'; // this means it gets cleared from the tree view when an event is loaded
+    } else {
+      dc = 'Imported';
     }
   }
 
