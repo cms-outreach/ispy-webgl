@@ -421,14 +421,14 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
 
-  //"TrackDets_V1": {type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
-  //  fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
-
+  "TrackDets_V1": {type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
   "TrackingRecHits_V1": {type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
     fn:ispy.makeTrackingRecHits, style: {color: [1, 1, 0], size: 0.05}},
-
   "SiStripClusters_V1": {type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
     fn: ispy.makeTrackingClusters, style:{color: [0.8, 0.2, 0.0], size: 0.05}},
+  "SiPixelClusters_V1": {type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
+    fn: ispy.makeTrackingClusters, style:{color: [1.0, 0.4, 0.0], size: 0.05}},
 
   "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
   "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
