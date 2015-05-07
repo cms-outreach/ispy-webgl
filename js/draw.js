@@ -687,6 +687,32 @@ ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);
 };
 
+ispy.makePointCloud = function(data, index) {
+  var geometry = new THREE.BufferGeometry();
+  var positions = new Float32Array(data.length*3);
+
+  for (var i = 0; i < data.length; i++) {
+    positions[i*3 + 0] = data[i][index][0];
+		positions[i*3 + 1] = data[i][index][1];
+		positions[i*3 + 2] = data[i][index][2];
+  }
+
+	geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.computeBoundingSphere();
+
+  return geometry;
+};
+
+ispy.makeTrackingRecHits = function(data) {
+  return ispy.makePointCloud(data,0);
+};
+
+ispy.makeTrackingClusters = function(data) {
+  return ispy.makePointCloud(data,1);
+};
+
+// This is very inefficient, use point cloud instead
+/*
 ispy.makeTrackingRecHit = function(data,style) {
   var geometry = new THREE.SphereGeometry(0.005,32,32);
 
@@ -703,10 +729,32 @@ ispy.makeTrackingRecHit = function(data,style) {
   var hit = new THREE.Mesh(geometry, material);
   hit.position.x = data[0][0];
   hit.position.y = data[0][1];
-  hit.position.y = data[0][2];
+  hit.position.z = data[0][2];
 
   return hit;
 };
+
+ispy.makeTrackCluster = function(data, style) {
+  var geometry = new THREE.TextGeometry('X', {size:0.05, height:0.01});
+
+  var hcolor = new THREE.Color();
+  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+
+  var cluster = new THREE.Mesh(geometry, material);
+  cluster.position.x = data[1][0];
+  cluster.position.y = data[1][1];
+  cluster.position.z = data[1][2];
+
+  return cluster;
+};
+*/
 
 ispy.makeMET = function(data, style) {
   /*

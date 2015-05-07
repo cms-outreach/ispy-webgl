@@ -421,8 +421,14 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
 
-  //"TrackingRecHits_V1": {type:ispy.SHAPE, on:false, group:"Tracking", name: "Tracking Rec Hits",
-  //  fn:ispy.makeTrackingRecHit, style: {color: [1, 1, 0], opacity: 0.5}},
+  //"TrackDets_V1": {type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
+  //  fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
+
+  "TrackingRecHits_V1": {type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
+    fn:ispy.makeTrackingRecHits, style: {color: [1, 1, 0], size: 0.05}},
+
+  "SiStripClusters_V1": {type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
+    fn: ispy.makeTrackingClusters, style:{color: [0.8, 0.2, 0.0], size: 0.05}},
 
   "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
   "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
@@ -809,6 +815,21 @@ ispy.addEvent = function(event) {
           t.visible = visible;
           ispy.scene.getObjectByName(descr.group).add(t);
         });
+      break;
+
+      case ispy.POINT:
+        // We make a buffer geometry, use a point cloud, and
+        // add to the scene.
+        var pcolor = new THREE.Color();
+        pcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var material = new THREE.PointCloudMaterial({color:pcolor, size:descr.style.size});
+        var geometry = descr.fn(data);
+        var points = new THREE.PointCloud(geometry, material);
+
+        points.name = key;
+        points.visible = visible;
+        ispy.scene.getObjectByName(descr.group).add(points);
       break;
 
       case ispy.SHAPE:
