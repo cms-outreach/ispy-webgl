@@ -7,6 +7,7 @@ ispy.web_files = [
 ];
 
 ispy.ig_data = null;
+ispy.ievent = 0;
 
 ispy.openDialog = function(id) {
   $(id).modal('show');
@@ -84,7 +85,9 @@ ispy.loadEvent = function() {
   ispy.addEvent(event);
   ispy.enableNextPrev();
 
-  $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index]);
+  var ievent = +ispy.event_index + 1; // JavaScript!
+
+  $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 };
 
 ispy.nextEvent = function() {

@@ -251,7 +251,6 @@ document.addEventListener('keydown', function(e) {
   if ( e.which === 65 && e.shiftKey ) {
     ispy.toggleAnimation();
   }
-
   /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
