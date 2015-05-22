@@ -171,7 +171,7 @@ ispy.init = function() {
   ispy.image_data = null;
 
   ispy.raycaster = new THREE.Raycaster();
-  ispy.raycaster.linePrecision = 0.01;
+  ispy.raycaster.linePrecision = 0.1; // Previously 0.01, but choosing the object was difficult
 
   ispy.mouse = new THREE.Vector2();
   ispy.intersected = null;
@@ -201,8 +201,9 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.js"),
-           ispy.getScript("./geometry/ee.js"),
+    // Use eb.min and ee.min at least while developing...
+    $.when(ispy.getScript("./geometry/eb.min.js"),
+           ispy.getScript("./geometry/ee.min.js"),
            ispy.getScript("./geometry/hb.js"),
            ispy.getScript("./geometry/ho.js"),
            ispy.getScript("./geometry/hehf.js"),
@@ -210,10 +211,13 @@ ispy.initDetector = function() {
            ispy.getScript("./geometry/tib.js"),
            ispy.getScript("./geometry/tob.js"),
            ispy.getScript("./geometry/tec.js"),
-           ispy.getScript("./geometry/tid.js"))
-           .done(function() {
-            $('#loading').modal('hide');
-            ispy.addDetector();
-          });
+           ispy.getScript("./geometry/tid.js")
+    ).done(function() {
+        $.when(
+          ispy.addDetector()
+        ).done(function() {
+          $('#loading').modal('hide');
+        });
+    });
   }
 };

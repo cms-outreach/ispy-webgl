@@ -196,6 +196,8 @@ ispy.onWindowResize = function() {
 ispy.onMouseMove = function(e) {
   e.preventDefault();
 
+  var container = $("canvas");
+
   var w = $('#display').innerWidth();
   var h = $('#display').innerHeight();
 
@@ -210,23 +212,31 @@ ispy.onMouseMove = function(e) {
   var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
 
   if ( intersects.length > 0 ) {
-    if ( ispy.intersected != intersects[0].object ) {
+    if ( ispy.intersected != intersects[0].object && intersects[0].object.visible) {
       if ( ispy.intersected ) {
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
       }
+      container.css('cursor','pointer');
       ispy.intersected = intersects[0].object;
       ispy.intersected.current_color = ispy.intersected.material.color.getHex();
       ispy.intersected.material.color.setHex(0xcccccc);
     }
   } else {
       if ( ispy.intersected ){
+        container.css('cursor','auto');
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
         ispy.intersected = null;
     }
   }
 };
 
-ispy.onMouseDown = function(e) {};
+ispy.onMouseDown = function(e) {
+
+  if(ispy.intersected){
+    console.log("ÄSSÄÄ :" + ispy.intersected.name);
+  }
+
+};
 
 document.addEventListener('keydown', function(e) {
   e.preventDefault();
@@ -357,14 +367,14 @@ ispy.detector_description = {
     fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel", // Don't load ECAL by default while developing..
     fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel", // Don't load ECAL by default while developing..
     fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
@@ -568,6 +578,7 @@ ispy.addDetector = function() {
 
       // If something is already disabled via the toggle then this
       // should override what comes from the description
+      // -- However it is not used in addSelectionRow()? - C
       var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
       ispy.addSelectionRow(descr.group, key, descr.name, visible);
 
