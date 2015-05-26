@@ -77,6 +77,7 @@ ispy.loadEvent = function() {
 
   try {
     event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
+    console.log(event);
   } catch(err) {
     alert(err);
   }

@@ -233,7 +233,7 @@ ispy.onMouseMove = function(e) {
 ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
-    console.log("ÄSSÄÄ :" + ispy.intersected.name);
+    console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
   }
 
 };
@@ -820,7 +820,9 @@ ispy.addEvent = function(event) {
                                                     opacity:descr.style.opacity});
 
         var tracks = descr.fn(data, extra, assoc, material);
+        console.log('tracks: ', tracks);
         tracks.forEach(function(t) {
+          console.log('track, pline: ', t);
           t.name = key;
           t.visible = visible;
           ispy.scene.getObjectByName(descr.group).add(t);
@@ -849,6 +851,7 @@ ispy.addEvent = function(event) {
           if ( shape !== null ) {
             shape.name = key;
             shape.visible = visible;
+            shape.userData.originalIndex = i;
             ispy.scene.getObjectByName(descr.group).add(shape);
           }
         }
@@ -876,6 +879,7 @@ ispy.addEvent = function(event) {
             line.name = key;
             line.visible = visible;
             ispy.scene.getObjectByName(descr.group).add(line);
+            // console.log('line i: ', l);
           });
         }
       break;
@@ -908,4 +912,19 @@ ispy.displayCollection = function(key, name) {
 
      $('#collection-table').append(row_content);
    }
+};
+
+ispy.displayEventObjectData = function(key){
+  var type = ispy.current_event.Types[key];
+  var collection = ispy.current_event.Collections[key];
+
+  var dataTableBody = $('#table-data-eventObject').find("tbody");
+  dataTableBody.empty();
+
+  for(var t in type){
+    var row_content = "";
+    dataTableBody.append(row_content);
+  }
+
+
 };
