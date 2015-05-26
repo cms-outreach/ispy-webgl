@@ -578,7 +578,7 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 };
 
-ispy.makeTrackPoints = function(data, extra, assoc, material) {
+ispy.makeTrackPoints = function(data, extra, assoc, style) {
   if ( ! assoc ) {
     throw "No association!";
   }
@@ -595,15 +595,29 @@ ispy.makeTrackPoints = function(data, extra, assoc, material) {
     muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
 
+  var tcolor = new THREE.Color();
+  tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
   var lines = [];
   for ( var k = 0; k < muons.length; k++ ) {
-    lines.push(new THREE.Line(muons[k], material));
+    lines.push(new THREE.Line(muons[k], new THREE.LineBasicMaterial({
+      color:tcolor,
+      transparent: transp,
+      linewidth:style.linewidth,
+      linecap:'butt',
+      opacity:style.opacity
+    })));
   }
 
   return lines;
 };
 
-ispy.makeTracks = function(tracks, extras, assocs, material) {
+ispy.makeTracks = function(tracks, extras, assocs, style) {
   if ( ! assocs ) {
     throw "No association!";
   }
@@ -612,6 +626,14 @@ ispy.makeTracks = function(tracks, extras, assocs, material) {
   var p1, d1, p2, d2;
   var distance, scale, curve;
   var curves = [];
+
+  var tcolor = new THREE.Color();
+  tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
 
   for ( var i = 0; i < assocs.length; i++ ) {
     ti = assocs[i][0][1];
@@ -646,7 +668,14 @@ ispy.makeTracks = function(tracks, extras, assocs, material) {
     var tg = new THREE.Geometry();
     tg.vertices = curve.getPoints(16);
 
-    curves.push(new THREE.Line(tg,material));
+
+    curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
+      color:tcolor,
+      transparent: transp,
+      linewidth:style.linewidth,
+      linecap:'butt',
+      opacity:style.opacity
+    })));
   }
 
   return curves;

@@ -191,6 +191,22 @@ body.white {
   background-color: white;
 }
 
+#tableview.black .table-hover tr:hover {
+  background-color: #777;
+}
+
+#tableview.white .table-hover tr:hover {
+  background-color: #dfdfdf;
+}
+
+#table-data-eventObject.black.table-hover>tbody>tr:hover {
+  background-color: #777;
+}
+
+#table-data-eventObject.white.table-hover>tbody>tr:hover {
+  background-color: #dfdfdf;
+}
+
 .modal-dialog button.close {
   color: red;
   text-shadow: none;

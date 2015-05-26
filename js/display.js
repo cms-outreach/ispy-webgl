@@ -155,6 +155,8 @@ ispy.invertColors = function() {
 
   $('.modal-content').toggleClass('white').toggleClass('black');
   $('.modal-title').toggleClass('white').toggleClass('black');
+
+  $('#table-data-eventObject').toggleClass('white').toggleClass('black');
 };
 
 ispy.showStats = function() {
@@ -234,6 +236,7 @@ ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
     console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
+    ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
   }
 
 };
@@ -805,26 +808,11 @@ ispy.addEvent = function(event) {
       case ispy.TRACK:
       case ispy.POLYLINE:
 
-        var tcolor = new THREE.Color();
-        tcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.LineBasicMaterial({color:tcolor,
-                                                    transparent: transp,
-                                                    linewidth:descr.style.linewidth,
-                                                    linecap:'butt',
-                                                    opacity:descr.style.opacity});
-
-        var tracks = descr.fn(data, extra, assoc, material);
-        console.log('tracks: ', tracks);
-        tracks.forEach(function(t) {
-          console.log('track, pline: ', t);
+        var tracks = descr.fn(data, extra, assoc, descr.style);
+        tracks.forEach(function(t, i) {
           t.name = key;
           t.visible = visible;
+          t.userData.originalIndex = i;
           ispy.scene.getObjectByName(descr.group).add(t);
         });
       break;
@@ -867,19 +855,19 @@ ispy.addEvent = function(event) {
           transp = true;
         }
 
-        var material = new THREE.LineBasicMaterial({color:lcolor, transparent:transp,
-                                                    linewidth:descr.style.linewidth,
-                                                    opacity:descr.style.opacity});
-
         for ( var i = 0; i < data.length; i++ ) {
           var lines = descr.fn(data[i]);
 
-          lines.forEach(function(l) {
-            var line = new THREE.Line(l, material);
+          lines.forEach(function(l, i) {
+            var line = new THREE.Line(l, new THREE.LineBasicMaterial({
+              color:lcolor, transparent:transp,
+              linewidth:descr.style.linewidth,
+              opacity:descr.style.opacity
+            }));
             line.name = key;
             line.visible = visible;
+            line.userData.originalIndex = i;
             ispy.scene.getObjectByName(descr.group).add(line);
-            // console.log('line i: ', l);
           });
         }
       break;
@@ -914,17 +902,19 @@ ispy.displayCollection = function(key, name) {
    }
 };
 
-ispy.displayEventObjectData = function(key){
+ispy.displayEventObjectData = function(key, objectUserData){
   var type = ispy.current_event.Types[key];
-  var collection = ispy.current_event.Collections[key];
+  var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
+
+  $('#title-data-EventObjects').empty().append(ispy.event_description[key].name);
 
   var dataTableBody = $('#table-data-eventObject').find("tbody");
   dataTableBody.empty();
 
   for(var t in type){
-    var row_content = "";
+    var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
     dataTableBody.append(row_content);
   }
 
-
+  $('#data-EventObjects').modal('show');
 };
