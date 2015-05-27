@@ -536,7 +536,7 @@ ispy.toggle = function(group, key) {
   });
 };
 
-ispy.addSelectionRow = function(group, key, name, visible) {
+ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
   var dc = 'Detector';
   if ( group !== 'Detector' ) {
     if ( group !== 'Imported' ) {
@@ -556,7 +556,7 @@ ispy.addSelectionRow = function(group, key, name, visible) {
   }
 
   if ( group !== 'Detector' && group !== 'Imported' ) {
-    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + ": " + name +"\");'>" + name + "</td>";
+    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + "</td>";
   } else {
     html += "<td class='collection "+ cc +"'>"+ name +"</td>";
   }
@@ -583,7 +583,7 @@ ispy.addDetector = function() {
       // should override what comes from the description
       // -- However it is not used in addSelectionRow()? - C
       var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
-      ispy.addSelectionRow(descr.group, key, descr.name, visible);
+      ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
 
       switch(descr.type) {
 
@@ -714,8 +714,9 @@ ispy.addEvent = function(event) {
       assoc = event.Associations[descr.assoc];
     }
 
+    var objectIds = [];
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
-    ispy.addSelectionRow(descr.group, key, descr.name, visible);
+
 
     switch(descr.type) {
 
@@ -813,6 +814,8 @@ ispy.addEvent = function(event) {
           t.name = key;
           t.visible = visible;
           t.userData.originalIndex = i;
+          t.userData.objectId = t.id;
+          objectIds.push(t.id);
           ispy.scene.getObjectByName(descr.group).add(t);
         });
       break;
@@ -840,6 +843,8 @@ ispy.addEvent = function(event) {
             shape.name = key;
             shape.visible = visible;
             shape.userData.originalIndex = i;
+            shape.userData.objectId = shape.id;
+            objectIds.push(shape.id);
             ispy.scene.getObjectByName(descr.group).add(shape);
           }
         }
@@ -867,6 +872,8 @@ ispy.addEvent = function(event) {
             line.name = key;
             line.visible = visible;
             line.userData.originalIndex = i;
+            line.userData.objectId = line.id;
+            objectIds.push(line.id);
             ispy.scene.getObjectByName(descr.group).add(line);
           });
         }
@@ -876,15 +883,19 @@ ispy.addEvent = function(event) {
         descr.fn(data);
       break;
     }
+
+    ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
+
   }
 };
 
-ispy.displayCollection = function(key, name) {
+
+ispy.displayCollection = function(key, group, name, objectIds) {
   var type = ispy.current_event.Types[key];
   var collection = ispy.current_event.Collections[key];
 
   $('#collection-table').empty();
-  $('#collection-table').append('<caption>' + name + '</caption>');
+  $('#collection-table').append('<caption>' + group + ': ' + name + '</caption>');
   $('#collection-table').append('<thead> <tr>');
 
    for ( var t in type ) {
@@ -892,7 +903,7 @@ ispy.displayCollection = function(key, name) {
    }
 
    for ( var c in collection ) {
-     var row_content = "<tr>";
+     var row_content = "<tr onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
      for ( v in collection[c] ) {
        row_content += "<td>"+collection[c][v]+"</td>";
@@ -900,6 +911,7 @@ ispy.displayCollection = function(key, name) {
 
      $('#collection-table').append(row_content);
    }
+
 };
 
 ispy.displayEventObjectData = function(key, objectUserData){
@@ -918,3 +930,33 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
   $('#data-EventObjects').modal('show');
 };
+
+ispy.highlightObject = function(objectId){
+
+  var selected = ispy.scene.getObjectById(Number(objectId), true);
+
+  if ( selected ) {
+    if ( ispy.highlighted != selected && selected.visible) {
+      if ( ispy.highlighted ) {
+        ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
+      }
+        ispy.highlighted = selected;
+        ispy.highlighted.current_color = ispy.highlighted.material.color.getHex();
+        ispy.highlighted.material.color.setHex(0xcccccc);
+    }
+  }
+};
+
+ispy.unHighlightObject = function(){
+  if ( ispy.highlighted ){
+    ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
+    ispy.highlighted = null;
+  }
+};
+
+/*
+$(function(){
+
+
+});
+*/
