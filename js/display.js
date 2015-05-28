@@ -217,15 +217,18 @@ ispy.onMouseMove = function(e) {
     if ( ispy.intersected != intersects[0].object && intersects[0].object.visible) {
       if ( ispy.intersected ) {
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
       }
       container.css('cursor','pointer');
       ispy.intersected = intersects[0].object;
+      ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
       ispy.intersected.current_color = ispy.intersected.material.color.getHex();
       ispy.intersected.material.color.setHex(0xcccccc);
     }
   } else {
       if ( ispy.intersected ){
         container.css('cursor','auto');
+        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
         ispy.intersected = null;
     }
@@ -891,6 +894,7 @@ ispy.addEvent = function(event) {
 
 
 ispy.displayCollection = function(key, group, name, objectIds) {
+  ispy.currentCollection = key;
   var type = ispy.current_event.Types[key];
   var collection = ispy.current_event.Collections[key];
 
@@ -929,6 +933,22 @@ ispy.displayEventObjectData = function(key, objectUserData){
   }
 
   $('#data-EventObjects').modal('show');
+};
+
+ispy.highlightTableRow = function(key, objectUserData, doEffect){
+  if((ispy.currentCollection == key && doEffect) || !doEffect){
+    var collectionTable = $('#collection-table');
+    var row = collectionTable.find('tbody').find('tr').eq(objectUserData.originalIndex);
+    if(row){
+      if(doEffect){
+        var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
+        row.css("background-color", color);
+        row.scrollintoview();
+      }else{
+        row.removeAttr("style");
+      }
+    }
+  }
 };
 
 ispy.highlightObject = function(objectId){
