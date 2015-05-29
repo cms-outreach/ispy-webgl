@@ -213,23 +213,39 @@ ispy.onMouseMove = function(e) {
   ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
   var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
 
-  if ( intersects.length > 0 ) {
-    if ( ispy.intersected != intersects[0].object && intersects[0].object.visible) {
+  // Make sure invisible objects in front won't interfere:
+  var i = 0; while(i < intersects.length && !intersects[i].object.visible) ++i;
+  if ( intersects[i] ) {
+
+    if ( ispy.intersected != intersects[i].object) {
       if ( ispy.intersected ) {
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+        // Check METs
+        if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
+          ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, false);
+        }else {
+          ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+        }
       }
       container.css('cursor','pointer');
-      ispy.intersected = intersects[0].object;
-      ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
-      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
+      ispy.intersected = intersects[i].object;
+      // Check METs
+      if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
+        ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, true);
+      }else {
+        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+      }      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
       ispy.intersected.material.color.setHex(0xcccccc);
     }
   } else {
       if ( ispy.intersected ){
         container.css('cursor','auto');
-        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+        // Check METs
+        if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
+          ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, false);
+        }else {
+          ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+        }        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
         ispy.intersected = null;
     }
   }
@@ -238,8 +254,14 @@ ispy.onMouseMove = function(e) {
 ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
+    console.log(ispy.scene, ispy.scene.getObjectByName(""));
     console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
-    ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
+    // METs ruin eeeeeverything...
+    if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
+      ispy.displayEventObjectData(ispy.intersected.parent.name, ispy.intersected.parent.userData);
+    }else{
+      ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
+    }
   }
 
 };
@@ -846,8 +868,10 @@ ispy.addEvent = function(event) {
             shape.name = key;
             shape.visible = visible;
             shape.userData.originalIndex = i;
-            shape.userData.objectId = shape.id;
-            objectIds.push(shape.id);
+            // METs ruin everything. :(
+            var shapeId = key === "METs_V1" ? shape.id + 1 : shape.id;
+            shape.userData.objectId = shapeId;
+            objectIds.push(shapeId);
             ispy.scene.getObjectByName(descr.group).add(shape);
           }
         }
@@ -937,8 +961,7 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect){
   if((ispy.currentCollection == key && doEffect) || !doEffect){
-    var collectionTable = $('#collection-table');
-    var row = collectionTable.find('tbody').find('tr').eq(objectUserData.originalIndex);
+    var row = $('#collection-table').find('tbody').find('tr').eq(objectUserData.originalIndex);
     if(row){
       if(doEffect){
         var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
@@ -955,20 +978,20 @@ ispy.highlightObject = function(objectId){
 
   var selected = ispy.scene.getObjectById(Number(objectId), true);
 
-  if ( selected ) {
-    if ( ispy.highlighted != selected && selected.visible) {
-      if ( ispy.highlighted ) {
+  if(selected){
+    if(ispy.highlighted != selected && selected.visible){
+      if(ispy.highlighted){
         ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
       }
-        ispy.highlighted = selected;
-        ispy.highlighted.current_color = ispy.highlighted.material.color.getHex();
-        ispy.highlighted.material.color.setHex(0xcccccc);
+      ispy.highlighted = selected;
+      ispy.highlighted.current_color = ispy.highlighted.material.color.getHex();
+      ispy.highlighted.material.color.setHex(0xcccccc);
     }
   }
 };
 
 ispy.unHighlightObject = function(){
-  if ( ispy.highlighted ){
+  if(ispy.highlighted){
     ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
     ispy.highlighted = null;
   }
