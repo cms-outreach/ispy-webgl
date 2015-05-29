@@ -219,38 +219,34 @@ ispy.onMouseMove = function(e) {
 
   // Make sure invisible objects in front won't interfere:
   var i = 0; while(i < intersects.length && !intersects[i].object.visible) ++i;
-  if ( intersects[i] ) {
+  // For METs checking purpose:
+  var highlightable = null;
 
+  if ( intersects[i] ) {
     if ( ispy.intersected != intersects[i].object) {
       if ( ispy.intersected ) {
         ispy.intersected.material.color.setHex(ispy.intersected.current_color);
         // Check METs
-        if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
-          ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, false);
-        }else {
-          ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-        }
+        highlightable = ispy.checkForMETs(ispy.intersected);
+        ispy.highlightTableRow(highlightable.name, highlightable.userData, false);
       }
       container.css('cursor','pointer');
       ispy.intersected = intersects[i].object;
       // Check METs
-      if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
-        ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, true);
-      }else {
-        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
-      }      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
+      highlightable = ispy.checkForMETs(ispy.intersected);
+      ispy.highlightTableRow(highlightable.name, highlightable.userData, true);
+      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
       ispy.intersected.material.color.setHex(0xcccccc);
     }
   } else {
-      if ( ispy.intersected ){
-        container.css('cursor','auto');
-        // Check METs
-        if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
-          ispy.highlightTableRow(ispy.intersected.parent.name, ispy.intersected.parent.userData, false);
-        }else {
-          ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-        }        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-        ispy.intersected = null;
+    if ( ispy.intersected ){
+      container.css('cursor','auto');
+      // Check METs
+      highlightable = ispy.checkForMETs(ispy.intersected);
+      ispy.highlightTableRow(highlightable.name, highlightable.userData, false);
+
+      ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+      ispy.intersected = null;
     }
   }
 };
@@ -259,14 +255,18 @@ ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
     console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
-    // METs ruin eeeeeverything...
-    if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
-      ispy.displayEventObjectData(ispy.intersected.parent.name, ispy.intersected.parent.userData);
-    }else{
-      ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
-    }
+    var displayable = ispy.checkForMETs(ispy.intersected);
+    ispy.displayEventObjectData(displayable.name, displayable.userData);
   }
 
+};
+
+ispy.checkForMETs = function(intersected){
+  if(intersected.name === "" && intersected.parent.name === "METs_V1"){
+    return intersected.parent;
+  }else{
+    return intersected;
+  }
 };
 
 document.addEventListener('keydown', function(e) {
@@ -431,7 +431,7 @@ ispy.detector_description = {
   "PixelEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (+)",
     fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
   "PixelBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
-    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
+    fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}}
 };
 
 ispy.event_description = {
@@ -527,7 +527,7 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, min_pt: 1},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}},
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}}
 };
 
 ispy.disabled = [];
@@ -742,6 +742,9 @@ ispy.addEvent = function(event) {
       assoc = event.Associations[descr.assoc];
     }
 
+    // objectIds contain the ids of 'Physics' THREE objects. Ids are
+    // used when displaying event data in table-view so that we are
+    // able to connect the data somehow with THREE objects.
     var objectIds = [];
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
@@ -841,8 +844,9 @@ ispy.addEvent = function(event) {
         tracks.forEach(function(t, i) {
           t.name = key;
           t.visible = visible;
+          // originalIndex works as a link between the original
+          // data and THREE objects:
           t.userData.originalIndex = i;
-          t.userData.objectId = t.id;
           objectIds.push(t.id);
           ispy.scene.getObjectByName(descr.group).add(t);
         });
@@ -870,10 +874,14 @@ ispy.addEvent = function(event) {
           if ( shape !== null ) {
             shape.name = key;
             shape.visible = visible;
+            // originalIndex works as a link between the original
+            // data and THREE objects:
             shape.userData.originalIndex = i;
-            // METs ruin everything. :(
+            // METs ruin everything. :( If shape is MET (i.e. shape
+            // is arrowHelper object) it consists of two child objects.
+            // Of those children only "line" is visible and clickable
+            // --> save its id for picking use.
             var shapeId = key === "METs_V1" ? shape.id + 1 : shape.id;
-            shape.userData.objectId = shapeId;
             objectIds.push(shapeId);
             ispy.scene.getObjectByName(descr.group).add(shape);
           }
@@ -901,8 +909,9 @@ ispy.addEvent = function(event) {
             }));
             line.name = key;
             line.visible = visible;
+            // originalIndex works as a link between the original
+            // data and THREE objects:
             line.userData.originalIndex = i;
-            line.userData.objectId = line.id;
             objectIds.push(line.id);
             ispy.scene.getObjectByName(descr.group).add(line);
           });
