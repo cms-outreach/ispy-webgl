@@ -203,8 +203,12 @@ ispy.onMouseMove = function(e) {
   var w = $('#display').innerWidth();
   var h = $('#display').innerHeight();
 
-  var offsetX = $('#display').offset().left;
-  var offsetY = $('#display').offset().top;
+  var doc = document.documentElement;
+  var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+  var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+
+  var offsetX = $('#display').offset().left - left;
+  var offsetY = $('#display').offset().top - top;
 
   ispy.mouse.x = ((e.clientX-offsetX) / w)*2 - 1;
   ispy.mouse.y = -((e.clientY-offsetY) / h)*2 +1;
@@ -254,7 +258,6 @@ ispy.onMouseMove = function(e) {
 ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
-    console.log(ispy.scene, ispy.scene.getObjectByName(""));
     console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
     // METs ruin eeeeeverything...
     if(ispy.intersected.name === "" && ispy.intersected.parent.name === "METs_V1"){
@@ -890,7 +893,7 @@ ispy.addEvent = function(event) {
         for ( var i = 0; i < data.length; i++ ) {
           var lines = descr.fn(data[i]);
 
-          lines.forEach(function(l, i) {
+          lines.forEach(function(l) {
             var line = new THREE.Line(l, new THREE.LineBasicMaterial({
               color:lcolor, transparent:transp,
               linewidth:descr.style.linewidth,
