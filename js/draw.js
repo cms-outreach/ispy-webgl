@@ -803,13 +803,24 @@ ispy.makeMET = function(data, style) {
 
   var color = new THREE.Color();
   color.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  // dir, origin, length, hex, headLength, headWidth
   var origin = new THREE.Vector3(0,0,0);
   var length = pt*0.1;
 
-  var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
+  // Hmmm. This doesn't seem to render anymore and also makes picking complicated
+  // since it consists of 2 children (the line and the head). Let's just draw
+  // a line and forget the arrow head. This is what's actually done in iSpy "classique",
+  // albeit a dashed line.
+  
+  // dir, origin, length, hex, headLength, headWidth
+  //var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
+  //return met;
 
+  var geometry = new THREE.Geometry();
+  dir.setLength(length);
+  geometry.vertices.push(origin, dir);
+
+  var material = new THREE.LineBasicMaterial({color:color, linewidth:4});
+  var met = new THREE.Line(geometry,material);
   return met;
 };
 
