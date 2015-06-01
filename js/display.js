@@ -254,7 +254,6 @@ ispy.onMouseMove = function(e) {
 ispy.onMouseDown = function(e) {
 
   if(ispy.intersected){
-    console.log("ÄSSÄÄ: " + ispy.intersected.name, ispy.intersected);
     var displayable = ispy.checkForMETs(ispy.intersected);
     ispy.displayEventObjectData(displayable.name, displayable.userData);
   }

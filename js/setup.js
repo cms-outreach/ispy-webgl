@@ -201,9 +201,8 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    // Use eb.min and ee.min at least while developing...
-    $.when(ispy.getScript("./geometry/eb.min.js"),
-           ispy.getScript("./geometry/ee.min.js"),
+    $.when(ispy.getScript("./geometry/eb.js"),
+           ispy.getScript("./geometry/ee.js"),
            ispy.getScript("./geometry/hb.js"),
            ispy.getScript("./geometry/ho.js"),
            ispy.getScript("./geometry/hehf.js"),
