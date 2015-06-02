@@ -477,6 +477,8 @@ ispy.event_description = {
     fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
   "CSCSegments_V2": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
     fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
+  "CSCSegments_V3": {type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
+    fn: ispy.makeCSCSegments, style: {color: [1, 0.6, 1, 1], opacity: 1.0, linewidth: 3}},
 
   "MuonChambers_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.5, linewidth: 1}},
