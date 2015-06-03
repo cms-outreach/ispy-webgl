@@ -1,5 +1,3 @@
-
-
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
 
