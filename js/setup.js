@@ -1,6 +1,4 @@
-var ispy = ispy || {};
-ispy.detector = {"Collections":{}};
-ispy.version = "0.9";
+
 
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
@@ -35,6 +33,24 @@ ispy.hasWebGL = function() {
   } else {
     return false;
   }
+};
+
+ispy.lookAtOrigin = function() {
+  ispy.camera.lookAt(new THREE.Vector3(0,0,0));
+};
+
+ispy.initCamera = function() {
+  var home_x = -18.1;
+  var home_y = 8.6;
+  var home_z = 14.0;
+
+  ispy.camera.position.x = home_x*0.6;
+  ispy.camera.position.y = home_y*0.6;
+  ispy.camera.position.z = home_z*0.6;
+
+  ispy.camera.setZoom(1);
+  ispy.camera.up = new THREE.Vector3(0,1,0);
+  ispy.lookAtOrigin();
 };
 
 ispy.init = function() {
@@ -183,6 +199,21 @@ ispy.init = function() {
   ispy.animating = false;
 };
 
+
+ispy.initLight = function() {
+  var intensity = 1.0;
+  var length = 15.0;
+
+  ispy.light1 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light1.position.set(-length, length, length);
+  ispy.scene.getObjectByName("Detector").add(ispy.light1);
+
+  ispy.light2 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light2.position.set(length, -length, -length);
+  ispy.scene.getObjectByName("Detector").add(ispy.light2);
+};
+
+
 ispy.getScript = function(scr) {
   return $.ajax({url: scr, dataType: "script", cache: true});
 };
@@ -218,5 +249,37 @@ ispy.initDetector = function() {
           $('#loading').modal('hide');
         });
     });
+  }
+};
+
+ispy.render = function() {
+  if ( ispy.renderer !== null ) {
+    ispy.renderer.render(ispy.scene, ispy.camera);
+
+    if ( ispy.get_image_data ){
+      ispy.image_data = ispy.renderer.domElement.toDataURL();
+      ispy.get_image_data = false;
+    }
+  }
+
+  if ( ispy.inset_renderer !== null ) {
+    ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
+  }
+};
+
+ispy.run = function() {
+  requestAnimationFrame(ispy.run);
+  ispy.controls.update();
+
+  ispy.inset_camera.up = ispy.camera.up;
+  ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
+  ispy.inset_camera.position.setLength(10);
+  ispy.inset_camera.lookAt(ispy.inset_scene.position);
+
+  ispy.render();
+  ispy.stats.update();
+
+  if ( ispy.animating ) {
+    TWEEN.update();
   }
 };
