@@ -121,6 +121,7 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 	$('#treeview, #tableview, #toolbar').hide();
 
 	function setOrientationControls(e) {
+	  alert('orientation!')
 	  if ( !e.alpha ) {
 	    return;
 	  }
