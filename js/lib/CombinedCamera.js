@@ -110,12 +110,18 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 		ispy.stereo = true
 		$('#display')[0].addEventListener('click', ispy.camera.toStereo, false);
 
+		// Fake stereo event info by doubling the html
+		info = $('#event-info tr').html()
+		$('#event-text').toggleClass('stereo-mode')
+		ispy.non_stereo_event_info_html = info
+		$('#event-info tr').html(info + info)
+
 		ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
 		ispy.controls.autoForward = true
 		ispy.controls.connect();
 		ispy.controls.update();
 
-		ispy.camera.position.x = 5;
+		ispy.camera.position.x = 0;
 		ispy.camera.position.y = 0;
 		ispy.camera.position.z = 0;
 
@@ -125,9 +131,12 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 		ispy.controls = ispy.non_stereo_controls
 		ispy.stereo = false
 
+		info = $('#event-info tr').html(ispy.non_stereo_event_info_html)
 
+		$('#display')[0].removeEventListener('click', ispy.camera.toStereo, false);
 
 		ispy.initCamera()
+		ispy.onWindowResize();
 	}
 }
 
