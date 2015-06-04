@@ -120,28 +120,14 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 
 	$('#treeview, #tableview, #toolbar').hide();
 
-	function fullscreen() {
-	  if (container.requestFullscreen) {
-	    container.requestFullscreen();
-	  } else if (container.msRequestFullscreen) {
-	    container.msRequestFullscreen();
-	  } else if (container.mozRequestFullScreen) {
-	    container.mozRequestFullScreen();
-	  } else if (container.webkitRequestFullscreen) {
-	    container.webkitRequestFullscreen();
-	    }
-	}
-
-	fullscreen()
-
 	function setOrientationControls(e) {
 	  if ( !e.alpha ) {
 	    return;
 	  }
 
-	  controls = new THREE.DeviceOrientationControls(ispy.camera, true);
-	  controls.connect();
-	  controls.update();
+	  ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+	  ispy.controls.connect();
+	  ispy.controls.update();
 	  // element.addEventListener('click', fullscreen, false);
 	  window.removeEventListener('deviceorientation', setOrientationControls, true);
 	}
