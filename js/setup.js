@@ -274,6 +274,7 @@ ispy.run = function() {
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
+  ispy.camera.updateProjectionMatrix();
   ispy.render();
   ispy.stats.update();
 
