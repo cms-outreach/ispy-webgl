@@ -105,16 +105,7 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 	ispy.non_stereo_renderer = ispy.renderer;
 
 	ispy.renderer = new THREE.StereoEffect(ispy.renderer);
-
-	d = $('#display').css({
-		'width' : window.innerWidth + 'px',
-		'height' : window.innerHeight + 'px',
-		'position': 'absolute',
-		'left': '0px',
-		'top': '0px'
-	})[0]
-	d.height = window.innerHeight;
-	d.width = window.innerWidth;
+	ispy.stereo = true
 
 	ispy.onWindowResize();
 
