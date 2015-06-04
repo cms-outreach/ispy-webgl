@@ -269,12 +269,19 @@ ispy.run = function() {
   requestAnimationFrame(ispy.run);
   ispy.controls.update();
 
+  var width = $('#display')[0].offsetWidth;
+  var height = $('#display')[0].offsetHeight;
+
+  ispy.camera.aspect = width / height;
+  ispy.camera.updateProjectionMatrix();
+  ispy.renderer.setSize(width, height);
+
+
   ispy.inset_camera.up = ispy.camera.up;
   ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
-  ispy.camera.updateProjectionMatrix();
   ispy.render();
   ispy.stats.update();
 
