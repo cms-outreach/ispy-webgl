@@ -121,10 +121,10 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 	$('#treeview, #tableview, #toolbar').hide();
 
 	function setOrientationControls(e) {
-	  alert('orientation!')
 	  if ( !e.alpha ) {
 	    return;
 	  }
+	  alert('orientation!')
 
 	  ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
 	  ispy.controls.connect();
