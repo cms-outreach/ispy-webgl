@@ -111,8 +111,8 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 		$('#display')[0].addEventListener('click', ispy.camera.toStereo, false);
 
 		// Fake stereo event info by doubling the html
-		info = $('#event-info tr').html()
 		$('#event-text').toggleClass('stereo-mode')
+		info = $('#event-info tr').html()
 		ispy.non_stereo_event_info_html = info
 		$('#event-info tr').html(info + info)
 
@@ -132,6 +132,7 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 		ispy.stereo = false
 
 		info = $('#event-info tr').html(ispy.non_stereo_event_info_html)
+		$('#event-text').toggleClass('stereo-mode')
 
 		$('#display')[0].removeEventListener('click', ispy.camera.toStereo, false);
 
