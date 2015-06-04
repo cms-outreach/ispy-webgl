@@ -278,7 +278,7 @@ ispy.run = function() {
 
 
   ispy.inset_camera.up = ispy.camera.up;
-  ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
+  // ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 

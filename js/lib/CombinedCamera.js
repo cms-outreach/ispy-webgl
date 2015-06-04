@@ -128,8 +128,10 @@ function setOrientationControls(e) {
   if ( !e.alpha ) {
     return;
   }
+  // alert('test')
 
   ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+  
   ispy.controls.connect();
   ispy.controls.update();
   // element.addEventListener('click', fullscreen, false);
