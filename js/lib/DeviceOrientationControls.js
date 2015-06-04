@@ -57,7 +57,7 @@ THREE.DeviceOrientationControls = function(object) {
 
   this.freeze = true;
 
-  this.movementSpeed = 1.0;
+  this.movementSpeed = 0.5;
   this.rollSpeed = 0.005;
   this.autoAlign = true;
   this.autoForward = false;
@@ -138,6 +138,13 @@ THREE.DeviceOrientationControls = function(object) {
           .setLength(this.movementSpeed / 50); // TODO: why 50 :S
 
         this.object.position.add(tempVector3);
+        console.log(this.object.position.length());
+
+        if (this.object.position.length() > 10) {
+          // tempVector3.multiplyScalar(5);
+          // this.object.position.sub(tempVector3);
+          this.object.position.set(0, 0, 0)
+        }
 
       }
 
