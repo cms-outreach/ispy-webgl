@@ -31,15 +31,24 @@ ispy.setYZ = function() {
 };
 
 ispy.setOrthographic = function() {
-  $('#perspective').toggleClass('active');
-  $('#orthographic').toggleClass('active');
+  $('#perspective').removeClass('active');
+  $('#orthographic').addClass('active');
+  $('#stereo').removeClass('active');
   ispy.camera.toOrthographic();
 };
 
 ispy.setPerspective = function() {
-  $('#perspective').toggleClass('active');
-  $('#orthographic').toggleClass('active');
+  $('#perspective').addClass('active');
+  $('#orthographic').removeClass('active');
+  $('#stereo').removeClass('active');
   ispy.camera.toPerspective();
+};
+
+ispy.setStereo = function() {
+  $('#perspective').removeClass('active');
+  $('#orthographic').removeClass('active');
+  $('#stereo').addClass('active');
+  ispy.camera.toStereo();
 };
 
 ispy.zoom = function(step) {

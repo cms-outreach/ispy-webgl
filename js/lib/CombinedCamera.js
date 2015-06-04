@@ -100,6 +100,26 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 
 };
 
+THREE.CombinedCamera.prototype.toStereo = function () {
+	// Save the normal renderer for later!
+	ispy.non_stereo_renderer = ispy.renderer
+
+	ispy.renderer = new THREE.StereoEffect(ispy.renderer)
+	ispy.render()
+
+	d = $('#display').css({
+		'width' : window.innerWidth + 'px',
+		'height' : window.innerHeight + 'px',
+		'position': 'absolute',
+		'left': '0px',
+		'top': '0px'
+	})[0]
+	d.height = window.innerHeight
+	d.width = window.innerWidth
+
+	$('#treeview, #tableview, #toolbar').hide()
+}
+
 
 THREE.CombinedCamera.prototype.setSize = function( width, height ) {
 
