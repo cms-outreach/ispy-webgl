@@ -120,6 +120,20 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 
 	$('#treeview, #tableview, #toolbar').hide();
 
+	function fullscreen() {
+	  if (container.requestFullscreen) {
+	    container.requestFullscreen();
+	  } else if (container.msRequestFullscreen) {
+	    container.msRequestFullscreen();
+	  } else if (container.mozRequestFullScreen) {
+	    container.mozRequestFullScreen();
+	  } else if (container.webkitRequestFullscreen) {
+	    container.webkitRequestFullscreen();
+	    }
+	}
+
+	fullscreen()
+
 	function setOrientationControls(e) {
 	  if ( !e.alpha ) {
 	    return;
