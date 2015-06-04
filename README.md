@@ -12,6 +12,6 @@ For more information on the input data format:
 
 http://cms-outreach.github.io/ispy
 
-Contributors: Mihael Hategan, Carita Logren, Thomas McCauley, Phong Nguyen
+Contributors: Mihael Hategan, Carita Logrén, Thomas McCauley, Phong Nguyen
 
 (Older) Reference: J.Phys.Conf.Ser. 396 (2012) 022022 http://iopscience.iop.org/1742-6596/396/2/022022
