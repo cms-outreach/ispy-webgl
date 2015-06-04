@@ -101,31 +101,46 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 };
 
 THREE.CombinedCamera.prototype.toStereo = function () {
-	// Save the normal renderer for later!
-	ispy.non_stereo_renderer = ispy.renderer;
+	if (!ispy.stereo) {
+		// Save the normal renderer for later!
+		ispy.non_stereo_renderer = ispy.renderer;
+		ispy.non_stereo_controls = ispy.controls;
 
-	ispy.renderer = new THREE.StereoEffect(ispy.renderer);
-	ispy.stereo = true
+		ispy.renderer = new THREE.StereoEffect(ispy.renderer);
+		ispy.stereo = true
+		$('#display')[0].addEventListener('click', ispy.camera.toStereo, false);
 
-	ispy.onWindowResize();
+		ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+		ispy.controls.autoForward = true
+		ispy.controls.connect();
+		ispy.controls.update();
 
-	$('#treeview, #tableview, #toolbar').hide();
+		ispy.camera.position.x = 5;
+		ispy.camera.position.y = 0;
+		ispy.camera.position.z = 0;
 
-	
+		ispy.onWindowResize();
+	} else {
+		ispy.renderer = ispy.non_stereo_renderer
+		ispy.controls = ispy.non_stereo_controls
+		ispy.stereo = false
 
+
+
+		ispy.initCamera()
+	}
 }
 
 function setOrientationControls(e) {
   if ( !e.alpha ) {
     return;
   }
-  // alert('test')
 
-  ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
-  
-  ispy.controls.connect();
-  ispy.controls.update();
-  // element.addEventListener('click', fullscreen, false);
+  // ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+  // ispy.controls.autoForward = true
+  // ispy.controls.connect();
+  // ispy.controls.update();
+
   window.removeEventListener('deviceorientation', setOrientationControls, true);
 }
 

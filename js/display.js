@@ -92,6 +92,15 @@ ispy.onWindowResize = function() {
     })[0]
     d.height = window.innerHeight;
     d.width = window.innerWidth;
+  } else {
+      
+    d = $('#display').css({
+      'width' : 'auto',
+      'height' : 'auto',
+      'position': 'static',
+    })[0]
+    d.height = $('#display').innerWidth();
+    d.width = $('#display').innerHeight();
   }
 
   var w = $('#display').innerWidth();

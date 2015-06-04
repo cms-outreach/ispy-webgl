@@ -278,12 +278,14 @@ ispy.run = function() {
     ispy.renderer.setSize(width, height);
 
   } else {
-    ispy.inset_camera.up = ispy.camera.up;
-    ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
-    ispy.inset_camera.position.setLength(10);
-    ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
   }
+
+  ispy.inset_camera.up = ispy.camera.up;
+  ispy.inset_camera.quarternion = ispy.camera.quaternion
+  ispy.inset_camera.position.setLength(10);
+  ispy.inset_camera.lookAt(ispy.inset_scene.position);
+
   ispy.render();
   ispy.stats.update();
 

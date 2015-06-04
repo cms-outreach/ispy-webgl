@@ -17,7 +17,7 @@ body.white {
   position: absolute;
   left: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1001;
   background-color: transparent;
 }
 
