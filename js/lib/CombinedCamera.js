@@ -120,22 +120,23 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 
 	$('#treeview, #tableview, #toolbar').hide();
 
-	function setOrientationControls(e) {
-	  if ( !e.alpha ) {
-	    return;
-	  }
-
-	  ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
-	  ispy.controls.connect();
-	  ispy.controls.update();
-	  // element.addEventListener('click', fullscreen, false);
-	  window.removeEventListener('deviceorientation', setOrientationControls, true);
-	}
-
-	window.addEventListener('deviceorientation', setOrientationControls, true);
+	
 
 }
 
+function setOrientationControls(e) {
+  if ( !e.alpha ) {
+    return;
+  }
+
+  ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+  ispy.controls.connect();
+  ispy.controls.update();
+  // element.addEventListener('click', fullscreen, false);
+  window.removeEventListener('deviceorientation', setOrientationControls, true);
+}
+
+window.addEventListener('deviceorientation', setOrientationControls, true);
 
 THREE.CombinedCamera.prototype.setSize = function( width, height ) {
 
