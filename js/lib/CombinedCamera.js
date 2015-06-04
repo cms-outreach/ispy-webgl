@@ -102,10 +102,9 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 
 THREE.CombinedCamera.prototype.toStereo = function () {
 	// Save the normal renderer for later!
-	ispy.non_stereo_renderer = ispy.renderer
+	ispy.non_stereo_renderer = ispy.renderer;
 
-	ispy.renderer = new THREE.StereoEffect(ispy.renderer)
-	ispy.render()
+	ispy.renderer = new THREE.StereoEffect(ispy.renderer);
 
 	d = $('#display').css({
 		'width' : window.innerWidth + 'px',
@@ -114,10 +113,27 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 		'left': '0px',
 		'top': '0px'
 	})[0]
-	d.height = window.innerHeight
-	d.width = window.innerWidth
+	d.height = window.innerHeight;
+	d.width = window.innerWidth;
 
-	$('#treeview, #tableview, #toolbar').hide()
+	ispy.onWindowResize();
+
+	$('#treeview, #tableview, #toolbar').hide();
+
+	function setOrientationControls(e) {
+	  if ( !e.alpha ) {
+	    return;
+	  }
+
+	  controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+	  controls.connect();
+	  controls.update();
+	  // element.addEventListener('click', fullscreen, false);
+	  window.removeEventListener('deviceorientation', setOrientationControls, true);
+	}
+
+	window.addEventListener('deviceorientation', setOrientationControls, true);
+
 }
 
 
