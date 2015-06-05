@@ -84,7 +84,8 @@ THREE.DeviceOrientationControls = function(object) {
   var euler = new THREE.Euler();
   var q0 = new THREE.Quaternion(); // - PI/2 around the x-axis
   var q1 = new THREE.Quaternion(- Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
-
+  
+  var panning = new THREE.Vector3(0, 0, 0);
 
   this.update = (function(delta) {
 
@@ -132,12 +133,27 @@ THREE.DeviceOrientationControls = function(object) {
 
       if (this.autoForward) {
 
-        tempVector3
+        panning
           .set(0, 0, -1)
           .applyQuaternion(this.object.quaternion, 'ZXY')
-          .setLength(this.movementSpeed / 50); // TODO: why 50 :S
+          .setLength((this.gamma + (Math.PI / 2)) / 10); // TODO: why 50 :S
 
-        this.object.position.add(tempVector3);
+        panning.y = 0;
+        // this.object.position.add(ispy.velocity);
+
+        // panning.x = - this.beta / 10;
+        // panning.z = (this.gamma + (Math.PI / 2)) / 10;
+        // panning.applyQuaternion(this.object.quaternion, 'ZXY')
+        // console.log(this.alpha, this.beta, this.gamma)
+        // if (this.alpha > 1.23) { 
+        //   //Pan right
+        //   panning.x = 0.1
+        // } else if (this.alpha < 1.1) {
+        //   //Pan left
+        //   panning.x = -0.1
+        // }
+
+        this.object.position.add(panning)
 
         if (this.object.position.length() > 10) {
           this.object.position.set(0, 0, 0)

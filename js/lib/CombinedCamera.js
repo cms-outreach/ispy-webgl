@@ -100,6 +100,21 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 
 };
 
+var acc_error = new THREE.Vector3(0, 0, 0)
+var previous_acc = new THREE.Vector3(0, 0, 0)
+var acc_error_set = false
+
+function a (event) {
+  // if (!acc_error_set) {
+  //   acc_error.set(event.acceleration.x, event.acceleration.y, event.acceleration.z);
+  //   acc_error_set = true;
+  // }
+  
+  
+
+  // ispy.velocity.add(ispy.acceleration);
+}
+
 THREE.CombinedCamera.prototype.toStereo = function () {
 	if (!ispy.stereo) {
 		// Save the normal renderer for later!
@@ -108,6 +123,9 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 
 		ispy.renderer = new THREE.StereoEffect(ispy.renderer);
 		ispy.stereo = true
+
+		// window.addEventListener('devicemotion', a)
+
 		$('#display')[0].addEventListener('click', ispy.camera.toStereo, false);
 
 		// Fake stereo event info by doubling the html
@@ -127,16 +145,17 @@ THREE.CombinedCamera.prototype.toStereo = function () {
 
 		ispy.onWindowResize();
 	} else {
-		ispy.renderer = ispy.non_stereo_renderer
-		ispy.controls = ispy.non_stereo_controls
-		ispy.stereo = false
+		ispy.renderer = ispy.non_stereo_renderer;
+		ispy.controls = ispy.non_stereo_controls;
+		ispy.stereo = false;
 
-		info = $('#event-info tr').html(ispy.non_stereo_event_info_html)
-		$('#event-text').toggleClass('stereo-mode')
+		info = $('#event-info tr').html(ispy.non_stereo_event_info_html);
+		$('#event-text').toggleClass('stereo-mode');
 
 		$('#display')[0].removeEventListener('click', ispy.camera.toStereo, false);
 
-		ispy.initCamera()
+		ispy.setPerspective()
+		ispy.initCamera();
 		ispy.onWindowResize();
 	}
 }

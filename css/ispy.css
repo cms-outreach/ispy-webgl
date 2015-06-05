@@ -55,7 +55,7 @@ body.white {
 }
 
 .bordered {
-  border: thin solid gray;
+  outline: thin solid gray;
 }
 
 #titlebar {

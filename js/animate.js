@@ -49,6 +49,8 @@ ispy.animation_script = {
 ispy.toggleAnimation = function() {
   ispy.animating = !ispy.animating;
 
+  // ispy.controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+
   $('#animate').toggleClass('active');
 
   if ( ispy.animating ) {
@@ -128,17 +130,21 @@ ispy.toggleAnimation = function() {
     proton2.position.y = animation.collision.proton2.pi.y;
     proton2.position.z = animation.collision.proton2.pi.z;
 
-    ispy.scene.add(proton1);
-    ispy.scene.add(proton2);
 
     var c1 = new TWEEN.Tween(proton1.position)
       .to({z:0.0}, animation.collision.time)
+      .onStart(function(){
+        ispy.scene.add(proton1);
+      })
       .easing(TWEEN.Easing.Back.In);
 
     var c2 = new TWEEN.Tween(proton2.position)
       .to({z:0.0}, animation.collision.time)
+      .onStart(function(){
+        ispy.scene.add(proton2);
+      })
       .onComplete(function(){
-        tw1.start();
+        // tw1.start();
         animation.collision.objects.forEach(function(o) {
           ispy.toggle(o.group, o.key);
         });
@@ -160,10 +166,14 @@ ispy.toggleAnimation = function() {
     c1.chain(c3);
     c2.chain(c4);
 
-    tw1.chain(tw2);
-    tw2.chain(tw3);
-    tw3.chain(tw4);
-    tw4.chain(tw5);
+    c3.chain(c1);
+    c4.chain(c2);
+
+
+    // tw1.chain(tw2);
+    // tw2.chain(tw3);
+    // tw3.chain(tw4);
+    // tw4.chain(tw5);
 
     c1.start();
     c2.start();

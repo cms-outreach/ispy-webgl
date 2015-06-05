@@ -66,6 +66,9 @@ ispy.init = function() {
   ispy.camera = camera;
   ispy.initCamera();
 
+  ispy.velocity = new THREE.Vector3(0, 0, 0);
+  ispy.acceleration = new THREE.Vector3(0, 0, 0);
+
   var inset_scene = new THREE.Scene();
   ispy.inset_scene = inset_scene;
 
@@ -265,7 +268,8 @@ ispy.render = function() {
   }
 };
 
-ispy.run = function() {
+ispy.previous_timestamp = 0.0;
+ispy.run = function(timestamp) {
   requestAnimationFrame(ispy.run);
   ispy.controls.update();
 
@@ -292,4 +296,8 @@ ispy.run = function() {
   if ( ispy.animating ) {
     TWEEN.update();
   }
+
+  ispy.delta = timestamp - ispy.previous_timestamp;
+
+  ispy.previous_timestamp = timestamp
 };
