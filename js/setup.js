@@ -230,8 +230,8 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.js"),
-           ispy.getScript("./geometry/ee.js"),
+    $.when(ispy.getScript("./geometry/eb.min.js.gz"),
+           ispy.getScript("./geometry/ee.min.js.gz"),
            ispy.getScript("./geometry/hb.js"),
            ispy.getScript("./geometry/ho.js"),
            ispy.getScript("./geometry/hehf.js"),
