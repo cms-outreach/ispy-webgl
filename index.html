@@ -52,6 +52,14 @@
   <script src="js/tree-view.js"></script>
   <script src="js/display.js"></script>
 
+  <!-- http://ushiroad.com/mjpeg/js/lib/mjbuilder.js
+   See also http://ushiroad.com/mjpeg/
+   Unfortunately doesn't seem to be maintained, so here's
+   one update to use Blob()
+   -->
+  <script src="mjbuilder.js"></script>
+  <script src="js/record.js"></script>
+
   <script src="js/ispy.js"></script>
 
 
@@ -142,6 +150,11 @@
           <div class="btn-group" role="group">
             <button type="button" id="animate" class="btn btn-default" onclick="ispy.toggleAnimation();" title="Start/Stop Animation [Shift + A]">
               <i class="fa fa-film"></i>
+            </button>
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" id="record" class="btn btn-default" onclick="ispy.toggleRecording();" title="Start/Stop Recording">
+              <i class="fa fa-video-camera"></i>
             </button>
           </div>
           <div class="btn-group" role="group">

@@ -1,6 +1,6 @@
 
 // ----------- MODALS: settings
-
+/*
     if ( ispy.get_image_data ){
       ispy.image_data = ispy.renderer.domElement.toDataURL();
       ispy.get_image_data = false;
@@ -11,6 +11,7 @@
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
   }
 };
+*/
 
 ispy.run = function() {
     // Left to run at max speed I get almost 60fps on a Macbook Pro running Chrome.
@@ -33,6 +34,9 @@ ispy.run = function() {
 
   if ( ispy.animating ) {
     TWEEN.update();
+  }
+  if ( ispy.recording ) {
+    ispy.recordFrame();
   }
 };
 
