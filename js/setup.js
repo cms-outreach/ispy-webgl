@@ -195,6 +195,9 @@ ispy.init = function() {
 
   // Are we running an animation?
   ispy.animating = false;
+
+  // Set max framerate. Best to put here?
+  ispy.framerate = 30;
 };
 
 
@@ -266,10 +269,9 @@ ispy.render = function() {
 };
 
 ispy.run = function() {
-  var fps = 30; // make this configurable from settings
-    setTimeout( function() {
-      requestAnimationFrame(ispy.run);
-    }, 1000 / fps );
+  setTimeout( function() {
+    requestAnimationFrame(ispy.run);
+  }, 1000 / ispy.framerate );
 
   ispy.controls.update();
   ispy.stats.update();
