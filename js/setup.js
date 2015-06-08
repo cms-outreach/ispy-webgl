@@ -230,8 +230,8 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.min.js.gz"),
-           ispy.getScript("./geometry/ee.min.js.gz"),
+    $.when(ispy.getScript("./geometry/eb.js"),
+           ispy.getScript("./geometry/ee.js"),
            ispy.getScript("./geometry/hb.js"),
            ispy.getScript("./geometry/ho.js"),
            ispy.getScript("./geometry/hehf.js"),
@@ -266,8 +266,13 @@ ispy.render = function() {
 };
 
 ispy.run = function() {
-  requestAnimationFrame(ispy.run);
+  var fps = 30; // make this configurable from settings
+    setTimeout( function() {
+      requestAnimationFrame(ispy.run);
+    }, 1000 / fps );
+
   ispy.controls.update();
+  ispy.stats.update();
 
   ispy.inset_camera.up = ispy.camera.up;
   ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
@@ -275,7 +280,6 @@ ispy.run = function() {
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
   ispy.render();
-  ispy.stats.update();
 
   if ( ispy.animating ) {
     TWEEN.update();
