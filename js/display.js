@@ -183,23 +183,49 @@ ispy.displayCollection = function(key, group, name, objectIds) {
   var type = ispy.current_event.Types[key];
   var collection = ispy.current_event.Collections[key];
 
-  $('#collection-table').empty();
-  $('#collection-table').append('<caption>' + group + ': ' + name + '</caption>');
-  $('#collection-table').append('<thead> <tr>');
+  var collectionTable = $('#collection-table');
 
-   for ( var t in type ) {
-     $("#collection-table thead > tr").append($('<th class="group">').text(type[t][0]));
-   }
+  collectionTable.empty();
+  collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
+  collectionTable.append('<thead> <tr>');
+  var collectionTableHead = collectionTable.find('thead').find('tr');
 
-   for ( var c in collection ) {
-     var row_content = "<tr onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+  for ( var t in type ) {
+    var dataSort = type[t][1] === "double" ? "float" : type[t][1];
+    collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
+  }
 
-     for ( v in collection[c] ) {
-       row_content += "<td>"+collection[c][v]+"</td>";
-     }
+  var index = 0;
+  for ( var c in collection ) {
+    var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
-     $('#collection-table').append(row_content);
-   }
+    for ( v in collection[c] ) {
+      row_content += "<td>"+collection[c][v]+"</td>";
+    }
+
+    collectionTable.append(row_content);
+  }
+
+  collectionTable.stupidtable({
+    "v3d":function(a,b){
+
+      var aV3 = a.split(",");
+      var bV3 = b.split(",");
+
+      if(aV3.length === 3 && bV3.length === 3){
+
+        var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
+        var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
+
+        return aLength - bLength;
+      }
+      return 1;
+    }
+  }).bind('aftertablesort', function(event, data){
+    collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
+    var newClass = "fa fa-sort-" + data.direction;
+    collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
+  });
 
 };
 
@@ -222,7 +248,8 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect){
   if((ispy.currentCollection == key && doEffect) || !doEffect){
-    var row = $('#collection-table').find('tbody').find('tr').eq(objectUserData.originalIndex);
+    var selector = "#" + key.concat(objectUserData.originalIndex);
+    var row = $(selector);
     if(row){
       if(doEffect){
         var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
@@ -260,7 +287,6 @@ ispy.unHighlightObject = function(){
 
 /*
 $(function(){
-
 
 });
 */
