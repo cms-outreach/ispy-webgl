@@ -209,23 +209,17 @@ ispy.displayCollection = function(key, group, name, objectIds) {
   collectionTable.stupidtable({
     "v3d":function(a,b){
 
-      var pattern = "^[-+]?[0-9]*\.?[0-9]+[,][-+]?[0-9]*\.?[0-9]+[,][-+]?[0-9]*\.?[0-9]+$";
-      var re = new RegExp(pattern);
+      var aV3 = a.split(",");
+      var bV3 = b.split(",");
 
-      var aRe = re.exec(a);
-      var bRe = re.exec(b);
-
-      if(aRe && bRe){
-
-        var aV3 = aRe[0].split(",");
-        var bV3 = bRe[0].split(",");
+      if(aV3.length === 3 && bV3.length === 3){
 
         var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
         var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
 
         return aLength - bLength;
       }
-      return -1;
+      return 1;
     }
   }).bind('aftertablesort', function(event, data){
     collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
