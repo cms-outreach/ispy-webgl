@@ -51,6 +51,11 @@ ispy.initCamera = function() {
   ispy.lookAtOrigin();
 };
 
+ispy.setFramerate = function(fr) {
+  ispy.framerate = fr;
+  $('#fr').html(fr);
+};
+
 ispy.init = function() {
   var display = document.getElementById('display');
   var inset = document.getElementById('axes');
@@ -196,8 +201,7 @@ ispy.init = function() {
   // Are we running an animation?
   ispy.animating = false;
 
-  // Set max framerate. Best to put here?
-  ispy.framerate = 30;
+  ispy.setFramerate(30);
 };
 
 

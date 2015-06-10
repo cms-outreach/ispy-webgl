@@ -3,7 +3,6 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
@@ -11,7 +10,6 @@
   <script src="js/lib/jquery.scrollintoview.min.js"></script>
   <script src="js/lib/stupidtable.min.js"></script>
   <script src="js/lib/bootstrap.min.js"></script>
-  <script src="js/lib/bootstrap-slider.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
   <script src="js/lib/three.min.js"></script>
   <script src="js/lib/tween.min.js"></script>
@@ -286,6 +284,10 @@
         </p>
         <p>
           Show display statistics: <input type='checkbox' onchange='ispy.showStats();'>
+        </p>
+        <p>
+          Set maximum frame rate: <span id='fr'></span> fps
+          <input type='range' min='1' max='60' value='30' id='fps-slider' step='1' oninput='ispy.setFramerate(value);'>
         </p>
         <div id="renderer-info"></div>
       </div>

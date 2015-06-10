@@ -12,6 +12,10 @@ body.white {
   left: 0;
 }
 
+#fps-slider {
+  width: 200px;
+}
+
 #axes  {
   border: none;
   position: absolute;
