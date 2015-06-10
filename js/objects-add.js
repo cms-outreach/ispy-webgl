@@ -214,9 +214,12 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDBOX:
 
-        var rangeMin = 0.5, rangeMax = undefined;
+        var range = {};
+        range.selector = 0;
+        range.min = 0.5;
+        range.max = undefined;
 
-        ispy.addScaleSolidBox(key, data, descr, visible, rangeMin, rangeMax);
+        ispy.addScaleSolidBox(key, data, descr, visible, range);
 
         break;
 
@@ -252,8 +255,13 @@ ispy.addEvent = function(event) {
 
       case ispy.SHAPE:
 
-        var rangeMin = key === "METs_V1" ? 1.0 : 5.0, rangeMax = undefined;
-        ispy.addShape(key, data, descr, visible, objectIds, rangeMin, rangeMax);
+        // Select which attribute to use in range selection
+        // and the min and max values for it:
+        var range = {};
+        range.selector = 0;
+        range.min = key === "METs_V1" ? 1.0 : 5.0;
+        range.max = undefined;
+        ispy.addShape(key, data, descr, visible, objectIds, range);
 
         break;
 
@@ -302,7 +310,7 @@ ispy.removeObject = function(key){
 };
 
 
-ispy.addScaleSolidBox = function(key, data, descr, visible, rangeMin, rangeMax){
+ispy.addScaleSolidBox = function(key, data, descr, visible, range){
 
   var mcolor = new THREE.Color();
   mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
@@ -318,7 +326,7 @@ ispy.addScaleSolidBox = function(key, data, descr, visible, rangeMin, rangeMax){
   var boxes = new THREE.Geometry();
 
   for ( var i = 0; i < data.length; i++ ) {
-    descr.fn(data[i], boxes, descr.scale, rangeMin, rangeMax);
+    descr.fn(data[i], boxes, descr.scale, range);
   }
 
   var meshes = new THREE.Mesh(boxes, material);
@@ -328,9 +336,9 @@ ispy.addScaleSolidBox = function(key, data, descr, visible, rangeMin, rangeMax){
   ispy.scene.getObjectByName(descr.group).add(meshes);
 };
 
-ispy.addShape = function(key, data, descr, visible, objectIds, rangeMin, rangeMax){
+ispy.addShape = function(key, data, descr, visible, objectIds, range){
   for ( var i = 0; i < data.length; i++ ) {
-    var shape = descr.fn(data[i], descr.style, rangeMin, rangeMax);
+    var shape = descr.fn(data[i], descr.style, range);
     if ( shape !== null ) {
       shape.name = key;
       shape.visible = visible;
