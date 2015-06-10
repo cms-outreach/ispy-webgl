@@ -216,7 +216,7 @@ ispy.addEvent = function(event) {
 
         var rangeMin = 0.5, rangeMax = undefined;
 
-        ispy.addScaleSolidBox(data, descr, visible, rangeMin, rangeMax);
+        ispy.addScaleSolidBox(key, data, descr, visible, rangeMin, rangeMax);
 
         break;
 
@@ -252,18 +252,9 @@ ispy.addEvent = function(event) {
 
       case ispy.SHAPE:
 
-        for ( var i = 0; i < data.length; i++ ) {
-          var shape = descr.fn(data[i], descr.style);
-          if ( shape !== null ) {
-            shape.name = key;
-            shape.visible = visible;
-            // originalIndex works as a link between the original
-            // data and THREE objects:
-            shape.userData.originalIndex = i;
-            objectIds.push(shape.id);
-            ispy.scene.getObjectByName(descr.group).add(shape);
-          }
-        }
+        var rangeMin = key === "METs_V1" ? 1.0 : 5.0, rangeMax = undefined;
+        ispy.addShape(key, data, descr, visible, objectIds, rangeMin, rangeMax);
+
         break;
 
       case ispy.LINE:
@@ -311,7 +302,7 @@ ispy.removeObject = function(key){
 };
 
 
-ispy.addScaleSolidBox = function(data, descr, visible, rangeMin, rangeMax){
+ispy.addScaleSolidBox = function(key, data, descr, visible, rangeMin, rangeMax){
 
   var mcolor = new THREE.Color();
   mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
@@ -334,7 +325,20 @@ ispy.addScaleSolidBox = function(data, descr, visible, rangeMin, rangeMax){
   meshes.name = key;
   meshes.visible = visible;
 
-  console.log('meshes', meshes);
-
   ispy.scene.getObjectByName(descr.group).add(meshes);
+};
+
+ispy.addShape = function(key, data, descr, visible, objectIds, rangeMin, rangeMax){
+  for ( var i = 0; i < data.length; i++ ) {
+    var shape = descr.fn(data[i], descr.style, rangeMin, rangeMax);
+    if ( shape !== null ) {
+      shape.name = key;
+      shape.visible = visible;
+      // originalIndex works as a link between the original
+      // data and THREE objects:
+      shape.userData.originalIndex = i;
+      objectIds.push(shape.id);
+      ispy.scene.getObjectByName(descr.group).add(shape);
+    }
+  }
 };

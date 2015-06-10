@@ -683,8 +683,8 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
 
 ispy.makeRecHit_V2 = function(data, geometry, scale, rangeMin, rangeMax) {
   var energy = data[0];
-  if ((rangeMin == undefined || energy > rangeMin) &&
-      (rangeMax == undefined || energy < rangeMax)){
+  if ((rangeMin === undefined || energy > rangeMin) &&
+      (rangeMax === undefined || energy < rangeMax)){
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
 };
@@ -786,13 +786,14 @@ ispy.makeTrackCluster = function(data, style) {
 };
 */
 
-ispy.makeMET = function(data, style) {
+ispy.makeMET = function(data, style, rangeMin, rangeMax) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
   */
   var pt = data[1];
 
-  if ( pt < 1.0 ) { //make this a setting
+  if ((rangeMin !== undefined || pt < rangeMin) &&
+      (rangeMax !== undefined || pt > rangeMax)){
     return null;
   }
 
@@ -825,10 +826,15 @@ ispy.makeMET = function(data, style) {
   return met;
 };
 
-ispy.makeJet = function(data, style) {
+ispy.makeJet = function(data, style, rangeMin, rangeMax) {
   var et = data[0];
 
   if ( et < 5.0 ) { //make this a setting
+    return null;
+  }
+
+  if ((rangeMin !== undefined || et < rangeMin) &&
+    (rangeMax !== undefined || et > rangeMax)){
     return null;
   }
 
