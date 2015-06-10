@@ -144,7 +144,7 @@ ispy.addEvent = function(event) {
       assoc = event.Associations[descr.assoc];
     }
 
-    // objectIds contain the ids of 'Physics' THREE objects. Ids are
+    // objectIds contains the ids of 'Physics' THREE objects. Ids are
     // used when displaying event data in table-view so that we are
     // able to connect the data somehow with THREE objects.
     var objectIds = [];
@@ -214,28 +214,9 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDBOX:
 
-        var mcolor = new THREE.Color();
-        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var rangeMin = 0.5, rangeMax = undefined;
 
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-        var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
-          opacity:descr.style.opacity});
-        material.side = THREE.DoubleSide;
-
-        var boxes = new THREE.Geometry();
-
-        for ( var i = 0; i < data.length; i++ ) {
-          descr.fn(data[i], boxes, descr.scale);
-        }
-
-        var meshes = new THREE.Mesh(boxes, material);
-        meshes.name = key;
-        meshes.visible = visible;
-
-        ispy.scene.getObjectByName(descr.group).add(meshes);
+        ispy.addScaleSolidBox(data, descr, visible, rangeMin, rangeMax);
 
         break;
 
@@ -323,4 +304,37 @@ ispy.addEvent = function(event) {
     ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
   }
+};
+
+ispy.removeObject = function(key){
+  ispy.scene.remove(ispy.scene.getObjectByName(key));
+};
+
+
+ispy.addScaleSolidBox = function(data, descr, visible, rangeMin, rangeMax){
+
+  var mcolor = new THREE.Color();
+  mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+  var transp = false;
+  if ( descr.style.opacity < 1.0 ) {
+    transp = true;
+  }
+  var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
+    opacity:descr.style.opacity});
+  material.side = THREE.DoubleSide;
+
+  var boxes = new THREE.Geometry();
+
+  for ( var i = 0; i < data.length; i++ ) {
+    descr.fn(data[i], boxes, descr.scale, rangeMin, rangeMax);
+  }
+
+  var meshes = new THREE.Mesh(boxes, material);
+  meshes.name = key;
+  meshes.visible = visible;
+
+  console.log('meshes', meshes);
+
+  ispy.scene.getObjectByName(descr.group).add(meshes);
 };

@@ -681,9 +681,10 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
   return curves;
 };
 
-ispy.makeRecHit_V2 = function(data, geometry, scale) {
+ispy.makeRecHit_V2 = function(data, geometry, scale, rangeMin, rangeMax) {
   var energy = data[0];
-  if ( energy > 0.5 ) { // make this a setting
+  if ((rangeMin == undefined || energy > rangeMin) &&
+      (rangeMax == undefined || energy < rangeMax)){
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
 };
