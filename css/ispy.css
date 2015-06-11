@@ -207,6 +207,14 @@ body.white {
   background-color: #dfdfdf;
 }
 
+#tableview.black .table-hover tr.selected {
+  background-color:#aaa;
+}
+
+#tableview.white .table-hover tr.selected {
+  background-color:#ccc;
+}
+
 .modal-dialog button.close {
   color: red;
   text-shadow: none;

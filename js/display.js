@@ -222,9 +222,27 @@ ispy.displayCollection = function(key, group, name, objectIds) {
       return 1;
     }
   }).bind('aftertablesort', function(event, data){
+
+    collectionTable.find('tbody').find('tr').off({
+      'mousedown': ispy.tableOnMouseDown,
+      'mouseover': ispy.tableOnMouseOver,
+      'mouseleave': ispy.tableOnMouseLeave
+    });
+
     collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
     var newClass = "fa fa-sort-" + data.direction;
     collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
+
+    collectionTable.find('tbody').find('tr').removeClass('selected');
+
+    ispy.tableMouseDown = false;
+    ispy.tablePrevRow = null;
+    collectionTable.find('tbody').find('tr').on({
+      'mousedown': ispy.tableOnMouseDown,
+      'mouseover': ispy.tableOnMouseOver,
+      'mouseleave': ispy.tableOnMouseLeave
+    });
+    $(document).bind('mouseup', ispy.documentOnMouseUp);
   });
 
 };
@@ -283,6 +301,46 @@ ispy.unHighlightObject = function(){
     ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
     ispy.highlighted = null;
   }
+};
+
+ispy.tableOnMouseDown = function(){
+  // remove all previous selections:
+  var hadClass = $(this).hasClass("selected");
+  $('#collection-table').find('tbody').find('tr').removeClass('selected');
+  if(!hadClass){
+    ispy.tableMouseDown = true;
+    $(this).addClass('selected');
+  }
+  return false; // prevent text selection
+};
+
+ispy.tableOnMouseOver = function(){
+  if (ispy.tableMouseDown) {
+    if ((($(this).prevAll('.selected').length || ($(this).hasClass('selected') && $(this).nextAll('.selected').length)) &&
+      $(this).nextAll(ispy.tablePrevRow).length) || // If we arrive to this row again from below...
+      (($(this).nextAll('.selected').length || ($(this).hasClass('selected') && $(this).prevAll('.selected').length)) &&
+      $(this).prevAll(ispy.tablePrevRow).length)) { // ...or from above...
+      $(ispy.tablePrevRow).removeClass('selected'); // ...deselect the row we came from.
+    }
+    if ($(this).prevAll('.selected').length && $(this).prevAll(ispy.tablePrevRow).length) { // If we arrive to this row as new from above...
+      $(this).prevUntil('.selected').addClass('selected'); // ...select all the rows between this and previous selected...
+      $(this).addClass("selected"); // ...and select this.
+    } else if ($(this).nextAll('.selected').length && $(this).nextAll(ispy.tablePrevRow).length) { // If we arrive to this row as new from below...
+      $(this).nextUntil('.selected').addClass('selected'); // ...select all the rows between this and previous selected...
+      $(this).addClass("selected"); // ...and select this.
+    }
+  }
+};
+
+ispy.tableOnMouseLeave = function(){
+  if (ispy.tableMouseDown) {
+    ispy.tablePrevRow = '#' + $(this).prop('id');
+  }
+};
+
+ispy.documentOnMouseUp = function(){
+  ispy.tableMouseDown = false;
+  ispy.tablePrevRow = null;
 };
 
 /*
