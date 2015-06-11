@@ -10,6 +10,14 @@ ispy.showAxes = function() {
   }
 };
 
+ispy.showInfo = function() {
+  if ( $('#show-info').is(':checked') ) {
+    $('.info').css('visibility', 'visible');
+  } else {
+    $('.info').css('visibility', 'hidden');
+  }
+}
+
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 

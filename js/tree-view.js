@@ -5,12 +5,14 @@ ispy.addGroups = function() {
     var html = "<tr id='"+ g +"'>";
 
     html += "<td class='group black'><a class='expand' onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
-    //html += "<td class='group black'><a class='expand' href='#'>";
     html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
     html += n +"</td>";
 
-    //html += "<td class='group black'><a href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-    //html += "<i class='info glyphicon glyphicon-info-sign'></i></a></td>";
+    // These are the information dialogs for the public. For now, by default, keep them hidden.
+    // They can be turned on in the settings dialog.
+    html += "<td class='group black'><a class='info' href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
+    html += "<i class='glyphicon glyphicon-info-sign'></i></a></td>";
+
     html += "</tr>";
     group_table.append(html);
   });

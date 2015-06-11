@@ -25,6 +25,10 @@ body.white {
   background-color: transparent;
 }
 
+.info {
+  visibility: collapse;
+}
+
 #event-info {
   position: absolute;
   top:0;
