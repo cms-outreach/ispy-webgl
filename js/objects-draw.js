@@ -683,8 +683,8 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
 
 ispy.makeRecHit_V2 = function(data, geometry, scale, range) {
   var attr = data[range.selector];
-  if ((range.min === undefined || attr > (range.min - 1e-9)) &&
-      (range.max === undefined || attr < (range.max + 1e-9))){
+  if ((!range.min || attr > (range.min - 1e-9)) &&
+      (!range.max || attr < (range.max + 1e-9))){
     var energy = data[0];
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
@@ -794,8 +794,8 @@ ispy.makeMET = function(data, style, range) {
 
   var attr = data[range.selector];
 
-  if ((range.min !== undefined && attr < range.min) &&
-      (range.max !== undefined && attr > range.max)){
+  if ((range.min && attr < range.min) ||
+      (range.max && attr > range.max)){
     return null;
   }
 
@@ -833,8 +833,8 @@ ispy.makeJet = function(data, style, range) {
 
   var attr = data[range.selector];
 
-  if ((range.min !== undefined && attr < range.min) &&
-    (range.max !== undefined && attr > range.max)){
+  if ((range.min && attr < range.min) ||
+    (range.max && attr > range.max)){
     return null;
   }
 

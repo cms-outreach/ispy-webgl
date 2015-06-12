@@ -185,6 +185,14 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
   var collectionTable = $('#collection-table');
 
+  collectionTable.unbind('aftertablesort');
+
+  collectionTable.find('tbody').find('tr').off({
+    'mousedown': ispy.tableOnMouseDown,
+    'mouseover': ispy.tableOnMouseOver,
+    'mouseleave': ispy.tableOnMouseLeave
+  });
+
   collectionTable.empty();
   collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
   collectionTable.append('<thead> <tr>');
@@ -206,6 +214,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTable.append(row_content);
   }
 
+  var howmanytimes = 0;
+
   collectionTable.stupidtable({
     "v3d":function(a,b){
 
@@ -223,26 +233,43 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     }
   }).bind('aftertablesort', function(event, data){
 
+    console.log('howmenitimessssh', howmanytimes++, key);
+
+    collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
+    var newClass = "fa fa-sort-" + data.direction;
+    collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
+
     collectionTable.find('tbody').find('tr').off({
       'mousedown': ispy.tableOnMouseDown,
       'mouseover': ispy.tableOnMouseOver,
       'mouseleave': ispy.tableOnMouseLeave
     });
 
-    collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
-    var newClass = "fa fa-sort-" + data.direction;
-    collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
-
     collectionTable.find('tbody').find('tr').removeClass('selected');
 
     ispy.tableMouseDown = false;
     ispy.tablePrevRow = null;
-    collectionTable.find('tbody').find('tr').on({
-      'mousedown': ispy.tableOnMouseDown,
-      'mouseover': ispy.tableOnMouseOver,
-      'mouseleave': ispy.tableOnMouseLeave
-    });
-    $(document).bind('mouseup', ispy.documentOnMouseUp);
+
+    if(((ispy.event_description[key].group === "ECAL") ||
+        (ispy.event_description[key].group === "HCAL") ||
+        (ispy.event_description[key].group === "Physics")) &&
+      (collectionTableHead.find('th').eq(data.column).attr('data-sort') !== "v3d") &&
+      (collectionTableHead.find('th').eq(data.column).attr('data-sort') !== "string")){
+
+
+      //// In case of re-sort we don't want to show the old sort's range.
+      // ispy.showRangeFromTable(key, data.column, data.direction);
+
+      collectionTable.find('tbody').find('tr').on({
+        'mousedown': ispy.tableOnMouseDown,
+        'mouseover': ispy.tableOnMouseOver,
+        'mouseleave': ispy.tableOnMouseLeave
+      }, {
+        key: key,
+        column: data.column,
+        direction: data.direction
+      });
+    }
   });
 
 };
@@ -303,18 +330,23 @@ ispy.unHighlightObject = function(){
   }
 };
 
-ispy.tableOnMouseDown = function(){
+ispy.tableOnMouseDown = function(event){
   // remove all previous selections:
   var hadClass = $(this).hasClass("selected");
-  $('#collection-table').find('tbody').find('tr').removeClass('selected');
+  var collectionTable = $('#collection-table');
+  collectionTable.find('tbody').find('tr').removeClass('selected');
   if(!hadClass){
     ispy.tableMouseDown = true;
     $(this).addClass('selected');
   }
+  // If a single (or no) element has been selected,
+  // ispy.tableOnMouseOver is not called --> call
+  // ispy.showRangeFromTable from this function:
+  ispy.showRangeFromTable(event.data.key, event.data.column, event.data.direction);
   return false; // prevent text selection
 };
 
-ispy.tableOnMouseOver = function(){
+ispy.tableOnMouseOver = function(event){
   if (ispy.tableMouseDown) {
     if ((($(this).prevAll('.selected').length || ($(this).hasClass('selected') && $(this).nextAll('.selected').length)) &&
       $(this).nextAll(ispy.tablePrevRow).length) || // If we arrive to this row again from below...
@@ -329,6 +361,8 @@ ispy.tableOnMouseOver = function(){
       $(this).nextUntil('.selected').addClass('selected'); // ...select all the rows between this and previous selected...
       $(this).addClass("selected"); // ...and select this.
     }
+
+    ispy.showRangeFromTable(event.data.key, event.data.column, event.data.direction);
   }
 };
 
@@ -343,8 +377,27 @@ ispy.documentOnMouseUp = function(){
   ispy.tablePrevRow = null;
 };
 
-/*
-$(function(){
+ispy.showRangeFromTable = function(key, column, direction){ // If no row has been selected, default range is shown
+  var collectionTable = $('#collection-table');
 
+  var range = {};
+  range.selector = column;
+
+  var limits = {
+    first: collectionTable.find('tbody').find('tr.selected').eq(0).find('td').eq(column).text(),
+    last: collectionTable.find('tbody').find('tr.selected').eq(-1).find('td').eq(column).text()
+  };
+
+  range.min = direction === 'asc' ? parseFloat(limits.first) : parseFloat(limits.last);
+  range.max = direction === 'asc' ? parseFloat(limits.last) : parseFloat(limits.first);
+
+  console.log(range.min, range.max);
+
+  ispy.removeObject(key);
+  ispy.addObject(key, range);
+};
+
+
+$(function(){
+  $(document).on('mouseup',ispy.documentOnMouseUp);
 });
-*/
