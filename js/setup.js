@@ -37,6 +37,11 @@ ispy.lookAtOrigin = function() {
   ispy.camera.lookAt(new THREE.Vector3(0,0,0));
 };
 
+ispy.setFramerate = function(fr) {
+  ispy.framerate = fr;
+  $('#fr').html(fr);
+};
+
 ispy.initCamera = function() {
   var home_x = -18.1;
   var home_y = 8.6;
@@ -49,11 +54,6 @@ ispy.initCamera = function() {
   ispy.camera.setZoom(1);
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
-};
-
-ispy.setFramerate = function(fr) {
-  ispy.framerate = fr;
-  $('#fr').html(fr);
 };
 
 ispy.init = function() {
@@ -128,6 +128,7 @@ ispy.init = function() {
   });
 
   ispy.inverted_colors = false;
+  $('#invert-colors').prop('checked', false);
 
   var origin = new THREE.Vector3(0,0,0);
   var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
@@ -210,6 +211,7 @@ ispy.init = function() {
   ispy.animating = false;
 
   ispy.setFramerate(30);
+  $('#fps-slider').prop('value', ispy.framerate); // for FF
 
   // Info dialogs are hidden by default (see ispy.css)
   // FF keeps state on reload so force here
