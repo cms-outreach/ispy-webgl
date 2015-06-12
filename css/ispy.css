@@ -248,6 +248,7 @@ body.white {
   background-color: white;
 }
 
+/*
 .modal-title.black {
   background-color: #202020;
 }
@@ -255,6 +256,7 @@ body.white {
 .modal-title.white {
   background-color: #cccccc;
 }
+*/
 
 #files .modal-body {
   max-height: 300px;
