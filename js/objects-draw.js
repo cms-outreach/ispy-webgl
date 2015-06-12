@@ -712,6 +712,7 @@ ispy.makeEcal = function(ecal) {
   return ispy.makeWireframeBox(ecal, 1);
 };
 
+
 ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);
 };
@@ -810,7 +811,7 @@ ispy.makeMET = function(data, style) {
   // since it consists of 2 children (the line and the head). Let's just draw
   // a line and forget the arrow head. This is what's actually done in iSpy "classique",
   // albeit a dashed line.
-  
+
   // dir, origin, length, hex, headLength, headWidth
   //var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
   //return met;

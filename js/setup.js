@@ -113,18 +113,21 @@ ispy.init = function() {
 
   ispy.stats = new Stats();
   display.appendChild(ispy.stats.domElement);
+
+  // On page load hide the stats
   $('#stats').hide();
-  ispy.show_stats = false;
+  // FF keeps the check state on reload so force an "uncheck"
+  $('#show-stats').prop('checked', false);
+
+  $('#show-stats').change(function() {
+    if ( this.checked ) { // if checked then show
+      $('#stats').show();
+    } else {
+      $('#stats').hide();
+    }
+  });
 
   ispy.inverted_colors = false;
-
-  // Make axes and labels XYZ -> RGB
-  // VertexColors doesn't work with CanvasRenderer
-  // So use ArrowHelpers instead:
-
-  //var axes = new THREE.AxisHelper(4);
-  //axes.material.linewidth = 5;
-  //ispy.inset_scene.add(axes);
 
   var origin = new THREE.Vector3(0,0,0);
   var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
@@ -139,9 +142,14 @@ ispy.init = function() {
   ispy.inset_scene.add(gy);
   ispy.inset_scene.add(bz);
 
-  ispy.show_axes = true;
-
-  //console.log(THREE.FontUtils);
+  $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
+  $('#show-axes').change(function() {
+    if ( this.checked ) { // if checked then hide axes
+      $('#axes').hide();
+    } else {
+      $('#axes').show();
+    }
+  });
 
   var x_geo = new THREE.TextGeometry('X', {size:0.75, height:0.1});
   var x_color = new THREE.Color(0xff0000);
@@ -202,6 +210,18 @@ ispy.init = function() {
   ispy.animating = false;
 
   ispy.setFramerate(30);
+
+  // Info dialogs are hidden by default (see ispy.css)
+  // FF keeps state on reload so force here
+  $('#show-info').prop('checked', false);
+
+  $('#show-info').change(function() {
+    if ( this.checked ) { // if checked then already visible, so turn off
+      $('.info').css('visibility', 'visible');
+    } else {
+      $('.info').css('visibility', 'hidden');
+    }
+  });
 };
 
 

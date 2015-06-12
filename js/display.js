@@ -1,23 +1,6 @@
 
 // ----------- MODALS: settings
 
-ispy.showAxes = function() {
-  ispy.show_axes = !ispy.show_axes;
-  if (!ispy.show_axes) {
-    $('#axes').hide();
-  } else {
-    $('#axes').show();
-  }
-};
-
-ispy.showInfo = function() {
-  if ( $('#show-info').is(':checked') ) {
-    $('.info').css('visibility', 'visible');
-  } else {
-    $('.info').css('visibility', 'hidden');
-  }
-}
-
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 
@@ -51,16 +34,6 @@ ispy.invertColors = function() {
   $('.modal-title').toggleClass('white').toggleClass('black');
 
   $('#table-data-eventObject').toggleClass('white').toggleClass('black');
-};
-
-ispy.showStats = function() {
-  ispy.show_stats = !ispy.show_stats;
-
-  if ( ispy.show_stats ) {
-    $('#stats').show();
-  } else {
-    $('#stats').hide();
-  }
 };
 
 // ---------------------------------
