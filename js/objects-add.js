@@ -129,6 +129,11 @@ ispy.addEvent = function(event) {
     }
   });
 
+  // Clear the object_ids:
+  for ( var key in ispy.object_ids){
+    ispy.object_ids[key] = [];
+  }
+
   ispy.current_event = event;
   // Clear table from last event and show default caption
   $('#collection-table').empty();
@@ -156,12 +161,7 @@ ispy.addEvent = function(event) {
       assoc = event.Associations[descr.assoc];
     }
 
-    // objectIds contains the ids of 'Physics' THREE objects. Ids are
-    // used when displaying event data in table-view so that we are
-    // able to connect the data somehow with THREE objects.
-    var objectIds = [];
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
-
 
     switch(descr.type) {
 
@@ -234,6 +234,7 @@ ispy.addEvent = function(event) {
       case ispy.TRACK:
       case ispy.POLYLINE:
 
+        var objectIds = [];
         var tracks = descr.fn(data, extra, assoc, descr.style);
         tracks.forEach(function(t, i) {
           t.name = key;
@@ -241,9 +242,13 @@ ispy.addEvent = function(event) {
           // originalIndex works as a link between the original
           // data and THREE objects:
           t.userData.originalIndex = i;
+
           objectIds.push(t.id);
           ispy.scene.getObjectByName(descr.group).add(t);
         });
+        if(descr.group === "Physics"){
+          ispy.object_ids[key] = objectIds;
+        }
         break;
 
       case ispy.POINT:
@@ -266,7 +271,7 @@ ispy.addEvent = function(event) {
         // Select which attribute to use in range selection
         // and the min and max values for it:
         var range = {};
-        ispy.addShape(key, objectIds, range);
+        ispy.addShape(key, range);
 
         break;
 
@@ -275,6 +280,7 @@ ispy.addEvent = function(event) {
         var lcolor = new THREE.Color();
         lcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
 
+        var objectIds = [];
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
           transp = true;
@@ -297,6 +303,10 @@ ispy.addEvent = function(event) {
             objectIds.push(line.id);
             ispy.scene.getObjectByName(descr.group).add(line);
           });
+
+        }
+        if(descr.group === "Physics"){
+          ispy.object_ids[key] = objectIds;
         }
         break;
 
@@ -305,7 +315,7 @@ ispy.addEvent = function(event) {
         break;
     }
 
-    ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
+    ispy.addSelectionRow(descr.group, key, descr.name, visible);
 
   }
 };
@@ -316,7 +326,7 @@ ispy.addObject = function(key, range){
       ispy.addScaleSolidBox(key, range);
       break;
     case ispy.SHAPE:
-      ispy.addShape(key, [], range);
+      ispy.addShape(key, range);
       break;
   }
 };
@@ -354,7 +364,7 @@ ispy.addScaleSolidBox = function(key, range){
   ispy.scene.getObjectByName(descr.group).add(meshes);
 };
 
-ispy.addShape = function(key, objectIds, range){
+ispy.addShape = function(key, range){
   var data = ispy.current_event.Collections[key];
   var descr = ispy.event_description[key];
   var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
@@ -363,6 +373,7 @@ ispy.addShape = function(key, objectIds, range){
     range.min = key === "METs_V1" ? 1.0 : 5.0;
     range.max = undefined;
   }
+  var objectIds = [];
   for ( var i = 0; i < data.length; i++ ) {
     var shape = descr.fn(data[i], descr.style, range);
     if ( shape !== null ) {
@@ -376,8 +387,8 @@ ispy.addShape = function(key, objectIds, range){
     } else {
       objectIds.push(undefined);
     }
-
-    // TODO: range selector breaks object picking!
-
+  }
+  if(descr.group === "Physics"){
+    ispy.object_ids[key] = objectIds;
   }
 };

@@ -178,7 +178,7 @@ document.addEventListener('keydown', function(e) {
   */
 });
 
-ispy.displayCollection = function(key, group, name, objectIds) {
+ispy.displayCollection = function(key, group, name) {
   ispy.currentCollection = key;
   var type = ispy.current_event.Types[key];
   var collection = ispy.current_event.Collections[key];
@@ -205,7 +205,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
   var index = 0;
   for ( var c in collection ) {
-    var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+    var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='' onmouseout='ispy.unHighlightObject()'>";
 
     for ( v in collection[c] ) {
       row_content += "<td>"+collection[c][v]+"</td>";
@@ -213,6 +213,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
     collectionTable.append(row_content);
   }
+
+  ispy.updateTablePicking(key);
 
   var howmanytimes = 0;
 
@@ -233,6 +235,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     }
   }).bind('aftertablesort', function(event, data){
 
+    // Why is this event triggered multiple times per sort?
+    // (Check console while sorting different data sets.)
     console.log('howmenitimessssh', howmanytimes++, key);
 
     collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
@@ -293,8 +297,8 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect){
   if((ispy.currentCollection == key && doEffect) || !doEffect){
-    var selector = "#" + key.concat(objectUserData.originalIndex);
-    var row = $(selector);
+    var domId = "#" + key.concat(objectUserData.originalIndex);
+    var row = $(domId);
     if(row){
       if(doEffect){
         var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
@@ -391,12 +395,24 @@ ispy.showRangeFromTable = function(key, column, direction){ // If no row has bee
   range.min = direction === 'asc' ? parseFloat(limits.first) : parseFloat(limits.last);
   range.max = direction === 'asc' ? parseFloat(limits.last) : parseFloat(limits.first);
 
-  console.log(range.min, range.max);
-
   ispy.removeObject(key);
   ispy.addObject(key, range);
+
+  // Picking is based on object_ids. These will be different after
+  // two previous functions --> update the new id:s to the table:
+  ispy.updateTablePicking(key);
 };
 
+ispy.updateTablePicking = function(key){
+  if(ispy.event_description[key].group === "Physics") {
+    console.log(ispy.object_ids[key]);
+    var domId;
+    for(var i = 0; i < ispy.object_ids[key].length; ++i){
+      domId = "#" + key.concat(i);
+      $(domId).attr('onmouseenter', 'ispy.highlightObject("' + ispy.object_ids[key][i] + '")');
+    }
+  }
+};
 
 $(function(){
   $(document).on('mouseup',ispy.documentOnMouseUp);

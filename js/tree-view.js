@@ -53,7 +53,7 @@ ispy.toggle = function(group, key) {
   });
 };
 
-ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
+ispy.addSelectionRow = function(group, key, name, visible) {
   var dc = 'Detector';
   if ( group !== 'Detector' ) {
     if ( group !== 'Imported' ) {
@@ -73,7 +73,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
   }
 
   if ( group !== 'Detector' && group !== 'Imported' ) {
-    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + "</td>";
+    html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\")'>" + name + "</td>";
   } else {
     html += "<td class='collection "+ cc +"'>"+ name +"</td>";
   }
