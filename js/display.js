@@ -216,8 +216,6 @@ ispy.displayCollection = function(key, group, name) {
 
   ispy.updateTablePicking(key);
 
-  var howmanytimes = 0;
-
   collectionTable.stupidtable({
     "v3d":function(a,b){
 
@@ -236,8 +234,6 @@ ispy.displayCollection = function(key, group, name) {
   }).bind('aftertablesort', function(event, data){
 
     // Why is this event triggered multiple times per sort?
-    // (Check console while sorting different data sets.)
-    console.log('howmenitimessssh', howmanytimes++, key);
 
     collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
     var newClass = "fa fa-sort-" + data.direction;
@@ -254,15 +250,9 @@ ispy.displayCollection = function(key, group, name) {
     ispy.tableMouseDown = false;
     ispy.tablePrevRow = null;
 
-    if(((ispy.event_description[key].group === "ECAL") ||
-        (ispy.event_description[key].group === "HCAL") ||
-        (ispy.event_description[key].group === "Physics")) &&
+    if(ispy.object_has_range[key] &&
       (collectionTableHead.find('th').eq(data.column).attr('data-sort') !== "v3d") &&
       (collectionTableHead.find('th').eq(data.column).attr('data-sort') !== "string")){
-
-
-      //// In case of re-sort we don't want to show the old sort's range.
-      // ispy.showRangeFromTable(key, data.column, data.direction);
 
       collectionTable.find('tbody').find('tr').on({
         'mousedown': ispy.tableOnMouseDown,
@@ -405,7 +395,13 @@ ispy.showRangeFromTable = function(key, column, direction){ // If no row has bee
 
 ispy.updateTablePicking = function(key){
   if(ispy.event_description[key].group === "Physics") {
-    console.log(ispy.object_ids[key]);
+    // Object ids appear in ispy.object_ids in the same order
+    // as they do "naturally" (e.g. before possible sorting).
+    // This function places the correct id in the correct row,
+    // the row being determined by the original index of the
+    // id in the array, which is - for a very obvious reason -
+    // the same as the original index of the object, which
+    // in turn is used while creating the id of the row.
     var domId;
     for(var i = 0; i < ispy.object_ids[key].length; ++i){
       domId = "#" + key.concat(i);
