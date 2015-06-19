@@ -3,7 +3,6 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/bootstrap-slider.min.css">
   <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
@@ -11,7 +10,6 @@
   <script src="js/lib/jquery.scrollintoview.min.js"></script>
   <script src="js/lib/stupidtable.min.js"></script>
   <script src="js/lib/bootstrap.min.js"></script>
-  <script src="js/lib/bootstrap-slider.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
   <script src="js/lib/three.min.js"></script>
   <script src="js/lib/tween.min.js"></script>
@@ -280,13 +278,20 @@
       </div>
       <div class="modal-body">
         <p>
-          Invert colors: <input type='checkbox' onchange='ispy.invertColors();'>
+          Invert colors: <input id='invert-colors' type='checkbox' onchange='ispy.invertColors();'>
         </p>
         <p>
-          Hide axes: <input type='checkbox' onchange='ispy.showAxes();'>
+          Hide axes: <input id='show-axes' type='checkbox'>
         </p>
         <p>
-          Show display statistics: <input type='checkbox' onchange='ispy.showStats();'>
+          Show information dialogs: <input id='show-info' type='checkbox'>
+        </p>
+        <p>
+          Show display statistics: <input id='show-stats' type='checkbox'>
+        </p>
+        <p>
+          Set maximum frame rate: <span id='fr'></span> fps
+          <input type='range' min='1' max='60' value='30' id='fps-slider' step='1' oninput='ispy.setFramerate(value);'>
         </p>
         <div id="renderer-info"></div>
       </div>
@@ -356,7 +361,7 @@
   </div>
 </div>
 
-<!-- Template me! ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "PhysicsObjects"] -->
+<!-- Template me! ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "Physics"] -->
 
 <div id="info-Detector" role="dialog" class="modal">
   <div class="modal-dialog">
@@ -376,17 +381,37 @@
           <dt>HCAL Barrel:</dt>
           <dd>Central hadronic calorimeter; measures energy of hadrons</dd>
           <dt>HCAL Endcap:</dt>
-          <dd>Hadronic calorimeters at either end of CMS for measurements close to the beam axis</dd>
+          <dd>Hadronic calorimeters at either end of CMS, close to the beam axis</dd>
           <dt>HCAL Outer:</dt>
-          <dd>Final HCAL layer just outside the solenoid magnet</dd>
+          <dd>Hadronic calorimeter layer just outside the solenoid magnet</dd>
           <dt>HCAL Forward:</dt>
           <dd>Hadronic calorimeters farther down and very close to the beam axis</dd>
           <dt>Drift Tubes (DT):</dt>
-          <dd>Main large central muon chambers outside the solenoid and HCAL Outer using ionization of gas to record muon hits</dd>
+          <dd>Central muon chambers outside the solenoid and HCAL Outer</dd>
           <dt>Cathode Strip Chambers (CSC):</dt>
           <dd>Forward muon detectors</dd>
           <dt>Resistive Place Chambers (RPC):</dt>
           <dd>Solid state muon detectors</dd>
+        </dl>
+          <p>Want to know more? Go <a href='http://cms.web.cern.ch/news/cms-detector-design' target='_blank'>here</a>.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+</div>
+
+<div id="info-Imported" role="dialog" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content bordered black">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
+        <h4 class="modal-title black">Imported</h4>
+      </div>
+      <div class="modal-body">
+        <dl>
+          Imported geometry models such the beam pipe.
         </dl>
       </div>
       <div class="modal-footer">
@@ -406,7 +431,7 @@
       <div class="modal-body">
         <dl>
           <dt>Event:</dt>
-          <dd>Each event is dstinguished by a run number, event number, luminosity section, and time stamp</dd>
+          <dd>Each event is distinguished by a run number, event number, luminosity section, and time stamp</dd>
         </dl>
       </div>
       <div class="modal-footer">
@@ -426,13 +451,7 @@
       <div class="modal-body">
           <dl>
             <dt>Tracks (reco.):</dt>
-            <dd>All reconstructed particle tracks in the tracker</dd>
-            <dt>Clusters (Si Pixels):</dt>
-            <dd>Recorded events in the innermost part of the tracker</dd>
-            <dt>Clusters (Si Strips):</dt>
-            <dd>Recorded events in the tracker</dd>
-            <dt>Rec. Hits (Tracking):</dt>
-            <dd>All particle hits in the tracker</dd>
+            <dd>Reconstructed particle tracks in the tracker</dd>
           </dl>
       </div>
       <div class="modal-footer">
@@ -447,7 +466,7 @@
     <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">ECAL</h4>
+        <h4 class="modal-title black">ECAL: Electromagnetic calorimeter</h4>
       </div>
       <div class="modal-body">
         <dl>
@@ -471,7 +490,7 @@
     <div class="modal-content bordered black">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">HCAL</h4>
+        <h4 class="modal-title black">HCAL: Hadronic calorimeter</h4>
       </div>
       <div class="modal-body">
         <dl>
@@ -522,7 +541,7 @@
   </div>
 </div>
 
-<div id="info-PhysicsObjects" role="dialog" class="modal">
+<div id="info-Physics" role="dialog" class="modal">
   <div class="modal-dialog">
     <div class="modal-content bordered black">
       <div class="modal-header">
@@ -541,12 +560,8 @@
           <dd>Reconstructed muon track segments in muon chambers</dd>
           <dt>Global Muons (Reco):</dt>
           <dd>Reconstructed complete muon tracks, combining tracker and stand-alone muons</dd>
-        <!--
-          <dt>Calorimeter energy towers:</dt>
-          <dd>Histogram "towers" to indicate energy deposits in calorimeters summed over the trajectories</dd>
-        -->
           <dt>Jets:</dt>
-          <dd>Collimated groups of particles</dd>
+          <dd>Collimated streams of particles</dd>
           <dt>MET:</dt>
           <dd>Missing transverse energy</dd>
         </dl>
