@@ -152,7 +152,7 @@ ispy.addEvent = function(event) {
     if(descr.type === ispy.TEXT){
       descr.fn(data);
     } else {
-      ispy.addObject(key, {})
+      ispy.addObject(key)
     }
 
     ispy.addSelectionRow(descr.group, key, descr.name, visible);
@@ -160,7 +160,12 @@ ispy.addEvent = function(event) {
   }
 };
 
+
 ispy.addObject = function(key, range){
+
+  // To enable calling the function with only one parameter:
+  range = typeof range !== 'undefined' ? range : {};
+
   switch(ispy.event_description[key].type){
     case ispy.BOX:
       ispy.addBox(key);

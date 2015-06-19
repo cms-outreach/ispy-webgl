@@ -5,6 +5,7 @@ ispy.displayCollection = function(key, group, name) {
 
   var collectionTable = $('#collection-table');
 
+  // This is not completely unbinding the trigger??
   collectionTable.unbind('aftertablesort');
 
   collectionTable.find('tbody').find('tr').off({
@@ -19,6 +20,10 @@ ispy.displayCollection = function(key, group, name) {
   var collectionTableHead = collectionTable.find('thead').find('tr');
 
   var dataSort, has_range;
+
+  // Variable 'rangeables' contains boolean for every column
+  // in the current table; value being true if the values of
+  // the column can be used as range selector, false otherwise.
   var rangeables = [];
   for ( var t in type ) {
     dataSort = type[t][1] === "double" ? "float" : type[t][1];
@@ -38,6 +43,7 @@ ispy.displayCollection = function(key, group, name) {
     collectionTable.append(row_content);
   }
 
+  // Set up the picking
   ispy.updateTablePicking(key);
 
   collectionTable.stupidtable({
@@ -63,6 +69,7 @@ ispy.displayCollection = function(key, group, name) {
     var newClass = "i-sorted fa fa-sort-" + data.direction;
     collectionTableHead.find('th').eq(data.column).find('i').eq(0).removeClass().addClass(newClass);
 
+    // In case the table was sorted by something non-rangeable.....
     collectionTable.find('tbody').find('tr').off({
       'mousedown': ispy.tableOnMouseDown,
       'mouseover': ispy.tableOnMouseOver,

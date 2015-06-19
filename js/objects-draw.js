@@ -578,7 +578,6 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 };
 
-// TODO
 ispy.makeTrackPoints = function(data, extra, assoc, style, range) {
   if ( ! assoc ) {
     throw "No association!";
@@ -624,6 +623,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, range) {
         opacity: style.opacity
       })));
     } else {
+      // Prevent disarraying object ids:
       lines.push(undefined);
     }
   }
@@ -631,7 +631,6 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, range) {
   return lines;
 };
 
-// TODO
 ispy.makeTracks = function(tracks, extras, assocs, style, range) {
   if ( ! assocs ) {
     throw "No association!";
@@ -696,6 +695,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, range) {
         opacity:style.opacity
       })));
     } else {
+      // Prevent disarraying object ids:
       curves.push(undefined);
     }
   }
@@ -898,7 +898,6 @@ ispy.makeJet = function(data, style, range) {
   return jet;
 };
 
-// TODO
 ispy.makePhoton = function(data, range) {
 
   var attr = data[range.selector];
