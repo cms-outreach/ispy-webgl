@@ -100,6 +100,80 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 
 };
 
+var acc_error = new THREE.Vector3(0, 0, 0)
+var previous_acc = new THREE.Vector3(0, 0, 0)
+var acc_error_set = false
+
+function a (event) {
+  // if (!acc_error_set) {
+  //   acc_error.set(event.acceleration.x, event.acceleration.y, event.acceleration.z);
+  //   acc_error_set = true;
+  // }
+  
+  
+
+  // ispy.velocity.add(ispy.acceleration);
+}
+
+THREE.CombinedCamera.prototype.toStereo = function () {
+	if (!ispy.stereo) {
+		// Save the normal renderer for later!
+		ispy.non_stereo_renderer = ispy.renderer;
+		ispy.non_stereo_controls = ispy.controls;
+
+		ispy.renderer = new THREE.StereoEffect(ispy.renderer);
+		ispy.stereo = true
+
+		// window.addEventListener('devicemotion', a)
+
+		$('#display')[0].addEventListener('click', ispy.camera.toStereo, false);
+
+		// Fake stereo event info by doubling the html
+		$('#event-text').toggleClass('stereo-mode')
+		info = $('#event-info tr').html()
+		ispy.non_stereo_event_info_html = info
+		$('#event-info tr').html(info + info)
+
+		ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+		ispy.controls.autoForward = true
+		ispy.controls.connect();
+		ispy.controls.update();
+
+		ispy.camera.position.x = 0;
+		ispy.camera.position.y = 0;
+		ispy.camera.position.z = 0;
+
+		ispy.onWindowResize();
+	} else {
+		ispy.renderer = ispy.non_stereo_renderer;
+		ispy.controls = ispy.non_stereo_controls;
+		ispy.stereo = false;
+
+		info = $('#event-info tr').html(ispy.non_stereo_event_info_html);
+		$('#event-text').toggleClass('stereo-mode');
+
+		$('#display')[0].removeEventListener('click', ispy.camera.toStereo, false);
+
+		ispy.setPerspective()
+		ispy.initCamera();
+		ispy.onWindowResize();
+	}
+}
+
+function setOrientationControls(e) {
+  if ( !e.alpha ) {
+    return;
+  }
+
+  // ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+  // ispy.controls.autoForward = true
+  // ispy.controls.connect();
+  // ispy.controls.update();
+
+  window.removeEventListener('deviceorientation', setOrientationControls, true);
+}
+
+window.addEventListener('deviceorientation', setOrientationControls, true);
 
 THREE.CombinedCamera.prototype.setSize = function( width, height ) {
 

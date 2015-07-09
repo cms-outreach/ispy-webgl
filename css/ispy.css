@@ -21,7 +21,7 @@ body.white {
   position: absolute;
   left: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1001;
   background-color: transparent;
 }
 
@@ -33,6 +33,7 @@ body.white {
   position: absolute;
   top:0;
   left:0;
+  z-index: 1002;
   padding-top: 10px;
   padding-left: 10px;
   display: block;
@@ -50,13 +51,19 @@ body.white {
   padding-left: 10px;
 }
 
+#event-text.stereo-mode { 
+  width: 50%; 
+  font-size: 6pt;
+  opacity: 0.5;
+}
+
 #cms-logo > img {
   max-width: 60px;
   max-height: 60px;
 }
 
 .bordered {
-  border: thin solid gray;
+  outline: thin solid gray;
 }
 
 #titlebar {
