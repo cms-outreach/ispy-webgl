@@ -71,6 +71,9 @@ ispy.init = function() {
   ispy.camera = camera;
   ispy.initCamera();
 
+  ispy.velocity = new THREE.Vector3(0, 0, 0);
+  ispy.acceleration = new THREE.Vector3(0, 0, 0);
+
   var inset_scene = new THREE.Scene();
   ispy.inset_scene = inset_scene;
 
@@ -88,6 +91,7 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
+    //renderer = new THREE.StereoEffect(new THREE.WebGLRenderer({antialias:true}));
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 
     ispy.renderer_name = "WebGLRenderer";
@@ -302,8 +306,17 @@ ispy.run = function() {
   ispy.controls.update();
   ispy.stats.update();
 
+  if (ispy.stereo) {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    ispy.camera.aspect = width / height;
+    ispy.camera.updateProjectionMatrix();
+    ispy.renderer.setSize(width, height);
+  }
+
   ispy.inset_camera.up = ispy.camera.up;
-  ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
+  ispy.inset_camera.quarternion = ispy.camera.quaternion
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
