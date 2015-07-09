@@ -51,26 +51,25 @@ ispy.toStereo = function () {
     ispy.non_stereo_controls = ispy.controls;
 
     ispy.renderer = new THREE.StereoEffect(ispy.renderer);
-    ispy.stereo = true
-
-    // window.addEventListener('devicemotion', a)
+    ispy.stereo = true;
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
     // Fake stereo event info by doubling the html
-    $('#event-text').toggleClass('stereo-mode')
-    info = $('#event-info tr').html()
-    ispy.non_stereo_event_info_html = info
-    $('#event-info tr').html(info + info)
+    $('#event-text').toggleClass('stereo-mode');
+    info = $('#event-info tr').html();
+    ispy.non_stereo_event_info_html = info;
+    $('#event-info tr').html(info + info);
 
     ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
-    ispy.controls.autoForward = true
+    ispy.controls.autoForward = true;
     ispy.controls.connect();
     ispy.controls.update();
 
-    ispy.camera.position.x = 0;
-    ispy.camera.position.y = 0;
-    ispy.camera.position.z = 0;
+    ispy.camera.position.x = 2;
+    ispy.camera.position.y = 2;
+    ispy.camera.position.z = -10;
+    ispy.lookAtOrigin();
 
     ispy.onWindowResize();
   } else {
@@ -83,7 +82,7 @@ ispy.toStereo = function () {
 
     $('#display')[0].removeEventListener('click', ispy.toStereo, false);
 
-    ispy.setPerspective()
+    ispy.setPerspective();
     ispy.initCamera();
     ispy.onWindowResize();
   }

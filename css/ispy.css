@@ -51,8 +51,8 @@ body.white {
   padding-left: 10px;
 }
 
-#event-text.stereo-mode { 
-  width: 50%; 
+#event-text.stereo-mode {
+  width: 50%;
   font-size: 6pt;
   opacity: 0.5;
 }
@@ -63,7 +63,7 @@ body.white {
 }
 
 .bordered {
-  outline: thin solid gray;
+  border: thin solid gray;
 }
 
 #titlebar {

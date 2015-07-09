@@ -91,6 +91,7 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
+    //renderer = new THREE.StereoEffect(new THREE.WebGLRenderer({antialias:true}));
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 
     ispy.renderer_name = "WebGLRenderer";
@@ -262,8 +263,8 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.min.js"),
-           ispy.getScript("./geometry/ee.min.js"),
+    $.when(ispy.getScript("./geometry/eb.js"),
+           ispy.getScript("./geometry/ee.js"),
            ispy.getScript("./geometry/hb.js"),
            ispy.getScript("./geometry/ho.js"),
            ispy.getScript("./geometry/hehf.js"),
@@ -312,7 +313,6 @@ ispy.run = function() {
     ispy.camera.aspect = width / height;
     ispy.camera.updateProjectionMatrix();
     ispy.renderer.setSize(width, height);
-
   }
 
   ispy.inset_camera.up = ispy.camera.up;
