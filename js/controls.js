@@ -47,11 +47,15 @@ ispy.setPerspective = function() {
 ispy.toStereo = function () {
   if (!ispy.stereo) {
     // Save the normal renderer for later!
-    ispy.non_stereo_renderer = ispy.renderer;
-    ispy.non_stereo_controls = ispy.controls;
+    // We want to make a "deep" copy, otherwise some properties
+    // don't get set when we return from stero
+    ispy.non_stereo_renderer = Object.assign({}, ispy.renderer);
+    ispy.non_stereo_controls = Object.assign({}, ispy.controls);
 
     ispy.renderer = new THREE.StereoEffect(ispy.renderer);
     ispy.stereo = true;
+
+    $('#axes').hide();
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
@@ -79,6 +83,8 @@ ispy.toStereo = function () {
 
     info = $('#event-info tr').html(ispy.non_stereo_event_info_html);
     $('#event-text').toggleClass('stereo-mode');
+
+    $('#axes').show();
 
     $('#display')[0].removeEventListener('click', ispy.toStereo, false);
 
