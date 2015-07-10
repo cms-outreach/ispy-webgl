@@ -147,7 +147,6 @@ ispy.exportScene = function() {
 
 ispy.exportModel = function() {
   var exporter = new THREE.OBJExporter();
-
   ispy.scene.children.forEach(function(c) {
      ispy.exportString(exporter.parse(c), c.name+'.obj');
   })
