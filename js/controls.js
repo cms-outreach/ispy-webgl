@@ -115,3 +115,40 @@ ispy.printImage = function() {
   ispy.render();
   window.open(ispy.image_data, "toDataURL() image", "width=800, height=400");
 };
+
+ispy.exportString = function(output, filename) {
+  // This comes from three.js editor
+  var blob = new Blob([output], {type: 'text/plain'});
+  var objectURL = URL.createObjectURL(blob);
+
+  // Use this to output to file:
+  var link = document.createElement('a');
+  link.href = objectURL;
+  link.download = filename || 'data.txt';
+  link.target = '_blank';
+  link.click();
+
+  // Use this to output to tab:
+  //window.open(objectURL, '_blank');
+  //window.focus();
+};
+
+ispy.exportScene = function() {
+  // The scene is actually made up of several objects,
+  // one each for major category: e.g. Detector, ECAL, Physics, etc.
+  // This exports a json file for each whether visible or not.
+  ispy.scene.children.forEach(function(c) {
+    var output = c.toJSON();
+    output = JSON.stringify( output, null, '\t' );
+    output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+    ispy.exportString(output, c.name+'.json');
+  });
+};
+
+ispy.exportModel = function() {
+  var exporter = new THREE.OBJExporter();
+
+  ispy.scene.children.forEach(function(c) {
+     ispy.exportString(exporter.parse(c), c.name+'.obj');
+  })
+}
