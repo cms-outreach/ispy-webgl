@@ -61,8 +61,8 @@ ispy.updateRendererInfo = function() {
 
 
 ispy.onWindowResize = function() {
-  if (ispy.stereo) { 
-      
+  if (ispy.stereo) {
+
     d = $('#display').css({
       'width' : window.innerWidth + 'px',
       'height' : window.innerHeight + 'px',
@@ -73,7 +73,7 @@ ispy.onWindowResize = function() {
     })[0]
     d.height = window.innerHeight;
     d.width = window.innerWidth;
-  } else {  
+  } else {
     $('#display').removeAttr('style')
   }
 

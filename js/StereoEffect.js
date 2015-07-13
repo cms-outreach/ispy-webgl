@@ -13,8 +13,7 @@ THREE.StereoEffect = function ( renderer ) {
 	/*
 	 * Distance to the non-parallax or projection plane
 	 */
-	this.focalLength = 10;
-
+	this.focalLength = 4;
 	this.separation = this.focalLength / 30;
 
 	this.domElement = renderer.domElement
@@ -53,7 +52,7 @@ THREE.StereoEffect = function ( renderer ) {
 		scene.updateMatrixWorld();
 
 		if ( camera.parent === undefined ) camera.updateMatrixWorld();
-	
+
 		camera.matrixWorld.decompose( _position, _quaternion, _scale );
 
 		// Stereo frustum calculation

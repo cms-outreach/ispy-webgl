@@ -227,6 +227,8 @@ ispy.init = function() {
       $('.info').css('visibility', 'hidden');
     }
   });
+
+  ispy.stereo = false;
 };
 
 
@@ -284,7 +286,11 @@ ispy.initDetector = function() {
 
 ispy.render = function() {
   if ( ispy.renderer !== null ) {
-    ispy.renderer.render(ispy.scene, ispy.camera);
+    if ( ispy.stereo ) {
+      ispy.stereo_renderer.render(ispy.scene, ispy.camera);
+    } else {
+      ispy.renderer.render(ispy.scene, ispy.camera);
+    }
 
     if ( ispy.get_image_data ){
       ispy.image_data = ispy.renderer.domElement.toDataURL();
@@ -302,17 +308,18 @@ ispy.run = function() {
     requestAnimationFrame(ispy.run);
   }, 1000 / ispy.framerate );
 
-  ispy.controls.update();
   ispy.stats.update();
 
-  if (ispy.stereo) {
+  if ( ispy.stereo ) {
+    ispy.do_controls.update();
     var width = window.innerWidth;
     var height = window.innerHeight;
 
     ispy.camera.aspect = width / height;
     ispy.camera.updateProjectionMatrix();
-    ispy.renderer.setSize(width, height);
+    ispy.stereo_renderer.setSize(width, height);
   } else {
+    ispy.controls.update();
     ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
   }
 

@@ -46,29 +46,19 @@ ispy.setPerspective = function() {
 
 ispy.toStereo = function () {
   if (!ispy.stereo) {
-    // Save the normal renderer for later!
-    // We want to make a "deep" copy, otherwise some properties
-    // don't get set when we return from stero
-    ispy.non_stereo_renderer = Object.assign({}, ispy.renderer);
-    ispy.non_stereo_controls = Object.assign({}, ispy.controls);
-
-    ispy.renderer = new THREE.StereoEffect(ispy.renderer);
     ispy.stereo = true;
 
+    ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
+    ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+
     $('#axes').hide();
+    $('#event-info').hide();
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
-    // Fake stereo event info by doubling the html
-    $('#event-text').toggleClass('stereo-mode');
-    info = $('#event-info tr').html();
-    ispy.non_stereo_event_info_html = info;
-    $('#event-info tr').html(info + info);
-
-    ispy.controls = new THREE.DeviceOrientationControls(ispy.camera, true);
-    ispy.controls.autoForward = true;
-    ispy.controls.connect();
-    ispy.controls.update();
+    ispy.do_controls.autoForward = true;
+    ispy.do_controls.connect();
+    ispy.do_controls.update();
 
     ispy.camera.position.x = 2;
     ispy.camera.position.y = 2;
@@ -77,14 +67,10 @@ ispy.toStereo = function () {
 
     ispy.onWindowResize();
   } else {
-    ispy.renderer = ispy.non_stereo_renderer;
-    ispy.controls = ispy.non_stereo_controls;
     ispy.stereo = false;
 
-    info = $('#event-info tr').html(ispy.non_stereo_event_info_html);
-    $('#event-text').toggleClass('stereo-mode');
-
     $('#axes').show();
+    $('#event-info').show();
 
     $('#display')[0].removeEventListener('click', ispy.toStereo, false);
 
