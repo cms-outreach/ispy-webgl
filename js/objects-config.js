@@ -101,13 +101,13 @@ ispy.event_description = {
 
   "Tracks_V1": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, min_pt: 1.},
   "Tracks_V2": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, min_pt: 1.},
   "Tracks_V3": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0.7, 0.1], opacity: 0.7, lineCaps: "square", linewidth: 3}, min_pt: 1.},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, min_pt: 1.},
 
   "TrackDets_V1": {type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
     fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
@@ -154,7 +154,9 @@ ispy.event_description = {
 
   "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}},
-  "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets",
+  "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Reco)",
+    fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}},
+  "PFJets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",
     fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}},
   "Photons_V1": {type: ispy.LINE, on: false, group: "Physics", name: "Photons (Reco)",
     fn: ispy.makePhoton, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
