@@ -206,6 +206,14 @@ body.white {
   background-color: white;
 }
 
+#tableview.black .table-hover tr.selected {
+  background-color:#aaa;
+}
+
+#tableview.white .table-hover tr.selected {
+  background-color:#ccc;
+}
+
 #tableview.black .table-hover tr:hover {
   background-color: #777;
 }

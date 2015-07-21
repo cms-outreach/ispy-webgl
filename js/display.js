@@ -58,7 +58,26 @@ ispy.updateRendererInfo = function() {
 
 // ---------------------------------
 
+// ----------- MODALS: picked object
 
+ispy.displayEventObjectData = function(key, objectUserData){
+  var type = ispy.current_event.Types[key];
+  var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
+
+  $('#title-data-EventObjects').empty().append(ispy.event_description[key].name);
+
+  var dataTableBody = $('#table-data-eventObject').find("tbody");
+  dataTableBody.empty();
+
+  for(var t in type){
+    var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
+    dataTableBody.append(row_content);
+  }
+
+  $('#data-EventObjects').modal('show');
+};
+
+// ---------------------------------
 
 ispy.onWindowResize = function() {
   if (ispy.stereo) {
@@ -175,90 +194,6 @@ document.addEventListener('keydown', function(e) {
   */
 });
 
-ispy.displayCollection = function(key, group, name, objectIds) {
-  ispy.currentCollection = key;
-  var type = ispy.current_event.Types[key];
-  var collection = ispy.current_event.Collections[key];
-
-  var collectionTable = $('#collection-table');
-
-  collectionTable.empty();
-  collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
-  collectionTable.append('<thead> <tr>');
-  var collectionTableHead = collectionTable.find('thead').find('tr');
-
-  for ( var t in type ) {
-    var dataSort = type[t][1] === "double" ? "float" : type[t][1];
-    collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
-  }
-
-  var index = 0;
-  for ( var c in collection ) {
-    var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
-
-    for ( v in collection[c] ) {
-      row_content += "<td>"+collection[c][v]+"</td>";
-    }
-
-    collectionTable.append(row_content);
-  }
-
-  collectionTable.stupidtable({
-    "v3d":function(a,b){
-
-      var aV3 = a.split(",");
-      var bV3 = b.split(",");
-
-      if(aV3.length === 3 && bV3.length === 3){
-
-        var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
-        var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
-
-        return aLength - bLength;
-      }
-      return 1;
-    }
-  }).bind('aftertablesort', function(event, data){
-    collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
-    var newClass = "fa fa-sort-" + data.direction;
-    collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
-  });
-
-};
-
-ispy.displayEventObjectData = function(key, objectUserData){
-  var type = ispy.current_event.Types[key];
-  var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
-
-  $('#title-data-EventObjects').empty().append(ispy.event_description[key].name);
-
-  var dataTableBody = $('#table-data-eventObject').find("tbody");
-  dataTableBody.empty();
-
-  for(var t in type){
-    var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
-    dataTableBody.append(row_content);
-  }
-
-  $('#data-EventObjects').modal('show');
-};
-
-ispy.highlightTableRow = function(key, objectUserData, doEffect){
-  if((ispy.currentCollection == key && doEffect) || !doEffect){
-    var selector = "#" + key.concat(objectUserData.originalIndex);
-    var row = $(selector);
-    if(row){
-      if(doEffect){
-        var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
-        row.css("background-color", color);
-        row.scrollintoview();
-      }else{
-        row.removeAttr("style");
-      }
-    }
-  }
-};
-
 ispy.highlightObject = function(objectId){
 
   var selected = ispy.scene.getObjectById(Number(objectId), true);
@@ -282,8 +217,11 @@ ispy.unHighlightObject = function(){
   }
 };
 
-/*
-$(function(){
+ispy.documentOnMouseUp = function(){
+  ispy.tableMouseDown = false;
+  ispy.tablePrevRow = null;
+};
 
+$(function(){
+  $(document).on('mouseup',ispy.documentOnMouseUp);
 });
-*/

@@ -578,21 +578,30 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 };
 
-ispy.makeTrackPoints = function(data, extra, assoc, style) {
+ispy.makeTrackPoints = function(data, extra, assoc, style, range) {
   if ( ! assoc ) {
     throw "No association!";
   }
 
   var muons = [];
   for ( var i = 0; i < data.length; i++ ) {
-    muons[i] = new THREE.Geometry();
+    var attr = data[i][range.selector];
+
+    if ((range.min && attr < range.min - 1e-9) ||
+      (range.max && attr > range.max + 1e-9)){
+      muons[i] = undefined;
+    } else {
+      muons[i] = new THREE.Geometry();
+    }
   }
 
   var mi = 0;
   for ( var j = 0; j < assoc.length; j++ ) {
     mi = assoc[j][0][1];
     pi = assoc[j][1][1];
-    muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
+    if(muons[mi]){
+      muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
+    }
   }
 
   var tcolor = new THREE.Color();
@@ -605,19 +614,24 @@ ispy.makeTrackPoints = function(data, extra, assoc, style) {
 
   var lines = [];
   for ( var k = 0; k < muons.length; k++ ) {
-    lines.push(new THREE.Line(muons[k], new THREE.LineBasicMaterial({
-      color:tcolor,
-      transparent: transp,
-      linewidth:style.linewidth,
-      linecap:'butt',
-      opacity:style.opacity
-    })));
+    if(muons[k]) {
+      lines.push(new THREE.Line(muons[k], new THREE.LineBasicMaterial({
+        color: tcolor,
+        transparent: transp,
+        linewidth: style.linewidth,
+        linecap: 'butt',
+        opacity: style.opacity
+      })));
+    } else {
+      // Prevent disarraying object ids:
+      lines.push(undefined);
+    }
   }
 
   return lines;
 };
 
-ispy.makeTracks = function(tracks, extras, assocs, style) {
+ispy.makeTracks = function(tracks, extras, assocs, style, range) {
   if ( ! assocs ) {
     throw "No association!";
   }
@@ -636,54 +650,64 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
   }
 
   for ( var i = 0; i < assocs.length; i++ ) {
-    ti = assocs[i][0][1];
-    ei = assocs[i][1][1];
+    var attr = tracks[i][range.selector];
 
-    p1 = new THREE.Vector3(extras[ei][0][0],extras[ei][0][1],extras[ei][0][2]);
-    d1 = new THREE.Vector3(extras[ei][1][0],extras[ei][1][1],extras[ei][1][2]);
-    d1.normalize();
+    if ((!range.min || attr > range.min - 1e-9) &&
+      (!range.max || attr < range.max + 1e-9)){
+      ti = assocs[i][0][1];
+      ei = assocs[i][1][1];
 
-    p2 = new THREE.Vector3(extras[ei][2][0],extras[ei][2][1],extras[ei][2][2]);
-    d2 = new THREE.Vector3(extras[ei][3][0],extras[ei][3][1],extras[ei][3][2]);
-    d2.normalize();
+      p1 = new THREE.Vector3(extras[ei][0][0],extras[ei][0][1],extras[ei][0][2]);
+      d1 = new THREE.Vector3(extras[ei][1][0],extras[ei][1][1],extras[ei][1][2]);
+      d1.normalize();
 
-    // What's all this then?
-    // Well, we know the beginning and end points of the track as well
-    // as the directions at each of those points. This in-principle gives
-    // us the 4 control points needed for a cubic bezier spline.
-    // The control points from the directions are determined by moving along 0.25
-    // of the distance between the beginning and end points of the track.
-    // This 0.25 is nothing more than a fudge factor that reproduces closely-enough
-    // the NURBS-based drawing of tracks done in iSpy. At some point it may be nice
-    // to implement the NURBS-based drawing but I value my sanity.
+      p2 = new THREE.Vector3(extras[ei][2][0],extras[ei][2][1],extras[ei][2][2]);
+      d2 = new THREE.Vector3(extras[ei][3][0],extras[ei][3][1],extras[ei][3][2]);
+      d2.normalize();
 
-    distance = p1.distanceTo(p2);
-    scale = distance*0.25;
+      // What's all this then?
+      // Well, we know the beginning and end points of the track as well
+      // as the directions at each of those points. This in-principle gives
+      // us the 4 control points needed for a cubic bezier spline.
+      // The control points from the directions are determined by moving along 0.25
+      // of the distance between the beginning and end points of the track.
+      // This 0.25 is nothing more than a fudge factor that reproduces closely-enough
+      // the NURBS-based drawing of tracks done in iSpy. At some point it may be nice
+      // to implement the NURBS-based drawing but I value my sanity.
 
-    p3 = new THREE.Vector3(p1.x+scale*d1.x, p1.y+scale*d1.y, p1.z+scale*d1.z);
-    p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
+      distance = p1.distanceTo(p2);
+      scale = distance*0.25;
 
-    curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
+      p3 = new THREE.Vector3(p1.x+scale*d1.x, p1.y+scale*d1.y, p1.z+scale*d1.z);
+      p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
 
-    var tg = new THREE.Geometry();
-    tg.vertices = curve.getPoints(16);
+      curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
+
+      var tg = new THREE.Geometry();
+      tg.vertices = curve.getPoints(16);
 
 
-    curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
-      color:tcolor,
-      transparent: transp,
-      linewidth:style.linewidth,
-      linecap:'butt',
-      opacity:style.opacity
-    })));
+      curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
+        color:tcolor,
+        transparent: transp,
+        linewidth:style.linewidth,
+        linecap:'butt',
+        opacity:style.opacity
+      })));
+    } else {
+      // Prevent disarraying object ids:
+      curves.push(undefined);
+    }
   }
 
   return curves;
 };
 
-ispy.makeRecHit_V2 = function(data, geometry, scale) {
-  var energy = data[0];
-  if ( energy > 0.5 ) { // make this a setting
+ispy.makeRecHit_V2 = function(data, geometry, scale, range) {
+  var attr = data[range.selector];
+  if ((!range.min || attr > (range.min - 1e-9)) &&
+      (!range.max || attr < (range.max + 1e-9))){
+    var energy = data[0];
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
 };
@@ -786,16 +810,19 @@ ispy.makeTrackCluster = function(data, style) {
 };
 */
 
-ispy.makeMET = function(data, style) {
+ispy.makeMET = function(data, style, range) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
   */
-  var pt = data[1];
 
-  if ( pt < 1.0 ) { //make this a setting
+  var attr = data[range.selector];
+
+  if ((range.min && attr < range.min) ||
+      (range.max && attr > range.max)){
     return null;
   }
 
+  var pt = data[1];
   var px = data[2];
   var py = data[3];
 
@@ -825,10 +852,12 @@ ispy.makeMET = function(data, style) {
   return met;
 };
 
-ispy.makeJet = function(data, style) {
-  var et = data[0];
+ispy.makeJet = function(data, style, range) {
 
-  if ( et < 5.0 ) { //make this a setting
+  var attr = data[range.selector];
+
+  if ((range.min && attr < range.min) ||
+    (range.max && attr > range.max)){
     return null;
   }
 
@@ -870,7 +899,15 @@ ispy.makeJet = function(data, style) {
   return jet;
 };
 
-ispy.makePhoton = function(data) {
+ispy.makePhoton = function(data, range) {
+
+  var attr = data[range.selector];
+
+  if ((range.min && attr < range.min - 1e-9) ||
+    (range.max && attr > range.max + 1e-9)){
+    return null;
+  }
+
   /*
      Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
      "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
