@@ -1,9 +1,9 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "./data/4lepton.ig",
-  "./data/Mu.ig",
-  "./data/Electron.ig"
+  "../data/4lepton.ig",
+  ".//data/Mu.ig",
+  "../data/Electron.ig"
 ];
 
 ispy.ig_data = null;
@@ -365,7 +365,7 @@ ispy.importModel = function() {
 
 ispy.importBeampipe = function() {
   var loader = new THREE.OBJMTLLoader();
-  loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
+  loader.load('../geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
     object.name = 'Beam Pipe';
     object.visible = true;
     ispy.disabled[object.name] = false;

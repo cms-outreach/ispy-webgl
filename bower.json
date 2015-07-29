@@ -1,0 +1,13 @@
+{
+  "name":"ispy-webgl",
+  "repository": {
+    "type":"git",
+    "url":"https://github.com/cms-outreach/ispy-webgl"
+  }
+	"description":"A browser-based event display for the CMS Experiment at the LHC, CERN",
+  "version": "0.9.4-invenio.1",
+  "ignore": [
+    "*.md",
+    "LICENSE"
+  ]
+}

@@ -256,7 +256,7 @@ ispy.initDetector = function() {
   // the geometry models.
 
   if ( ispy.renderer_name === "CanvasRenderer" ) {
-    ispy.getScript("./geometry/models.js")
+    ispy.getScript("../geometry/models.js")
       .done(function() {
         ispy.addDetector();
       });
@@ -264,16 +264,16 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.js"),
-           ispy.getScript("./geometry/ee.js"),
-           ispy.getScript("./geometry/hb.js"),
-           ispy.getScript("./geometry/ho.js"),
-           ispy.getScript("./geometry/hehf.js"),
-           ispy.getScript("./geometry/pixel.js"),
-           ispy.getScript("./geometry/tib.js"),
-           ispy.getScript("./geometry/tob.js"),
-           ispy.getScript("./geometry/tec.js"),
-           ispy.getScript("./geometry/tid.js")
+    $.when(ispy.getScript("../geometry/eb.js"),
+           ispy.getScript("../geometry/ee.js"),
+           ispy.getScript("../geometry/hb.js"),
+           ispy.getScript("../geometry/ho.js"),
+           ispy.getScript("../geometry/hehf.js"),
+           ispy.getScript("../geometry/pixel.js"),
+           ispy.getScript("../geometry/tib.js"),
+           ispy.getScript("../geometry/tob.js"),
+           ispy.getScript("../geometry/tec.js"),
+           ispy.getScript("../geometry/tid.js")
     ).done(function() {
         $.when(
           ispy.addDetector()
