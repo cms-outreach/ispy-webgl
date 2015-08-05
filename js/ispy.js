@@ -7,5 +7,6 @@ $(function() {
   ispy.importBeampipe();
   ispy.run();
 
+  console.log("Event object configuration:");
   console.log(ispy.event_description);
 });

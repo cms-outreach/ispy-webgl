@@ -228,7 +228,7 @@ ispy.addEvent = function(event) {
         var boxes = new THREE.Geometry();
 
         for ( var i = 0; i < data.length; i++ ) {
-          descr.fn(data[i], boxes, descr.scale);
+          descr.fn(data[i], boxes, descr.scale, descr.selection);
         }
 
         var meshes = new THREE.Mesh(boxes, material);
@@ -242,7 +242,7 @@ ispy.addEvent = function(event) {
       case ispy.TRACK:
       case ispy.POLYLINE:
 
-        var tracks = descr.fn(data, extra, assoc, descr.style);
+        var tracks = descr.fn(data, extra, assoc, descr.style, descr.selection);
         tracks.forEach(function(t, i) {
           t.name = key;
           t.visible = visible;
@@ -272,7 +272,7 @@ ispy.addEvent = function(event) {
       case ispy.SHAPE:
 
         for ( var i = 0; i < data.length; i++ ) {
-          var shape = descr.fn(data[i], descr.style);
+          var shape = descr.fn(data[i], descr.style, descr.selection);
           if ( shape !== null ) {
             shape.name = key;
             shape.visible = visible;

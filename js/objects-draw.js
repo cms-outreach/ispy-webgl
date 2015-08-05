@@ -578,7 +578,7 @@ ispy.makeScaledWireframeBox = function(data, material, ci, scale) {
           new THREE.Line(s4,material)];
 };
 
-ispy.makeTrackPoints = function(data, extra, assoc, style) {
+ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   if ( ! assoc ) {
     throw "No association!";
   }
@@ -617,7 +617,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style) {
   return lines;
 };
 
-ispy.makeTracks = function(tracks, extras, assocs, style) {
+ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   if ( ! assocs ) {
     throw "No association!";
   }
@@ -636,6 +636,11 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
   }
 
   for ( var i = 0; i < assocs.length; i++ ) {
+    var pt = tracks[i][selection.index];
+    if ( pt < selection.min_pt ) {
+      continue;
+    }
+
     ti = assocs[i][0][1];
     ei = assocs[i][1][1];
 
@@ -668,7 +673,6 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
     var tg = new THREE.Geometry();
     tg.vertices = curve.getPoints(16);
 
-
     curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
       color:tcolor,
       transparent: transp,
@@ -681,9 +685,9 @@ ispy.makeTracks = function(tracks, extras, assocs, style) {
   return curves;
 };
 
-ispy.makeRecHit_V2 = function(data, geometry, scale) {
+ispy.makeRecHit_V2 = function(data, geometry, scale, selection) {
   var energy = data[0];
-  if ( energy > 0.5 ) { // make this a setting
+  if ( energy > selection.min_energy ) {
     return ispy.makeScaledSolidBox(data, geometry, 5, scale*energy);
   }
 };
@@ -786,13 +790,13 @@ ispy.makeTrackCluster = function(data, style) {
 };
 */
 
-ispy.makeMET = function(data, style) {
+ispy.makeMET = function(data, style, selection) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
   */
   var pt = data[1];
 
-  if ( pt < 1.0 ) { //make this a setting
+  if ( pt < selection.min_pt ) {
     return null;
   }
 
@@ -825,10 +829,10 @@ ispy.makeMET = function(data, style) {
   return met;
 };
 
-ispy.makeJet = function(data, style) {
+ispy.makeJet = function(data, style, selection) {
   var et = data[0];
 
-  if ( et < 5.0 ) { //make this a setting
+  if ( et < selection.min_et ) { 
     return null;
   }
 
