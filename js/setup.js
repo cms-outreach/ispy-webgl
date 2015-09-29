@@ -311,7 +311,7 @@ ispy.run = function() {
   ispy.stats.update();
 
   if ( ispy.stereo ) {
-    ispy.do_controls.update();
+    //ispy.do_controls.update();
     var width = window.innerWidth;
     var height = window.innerHeight;
 

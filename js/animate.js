@@ -131,6 +131,30 @@ ispy.toggleAnimation = function() {
     ispy.scene.add(proton1);
     ispy.scene.add(proton2);
 
+    // We assume for now that one has loaded an event and want to
+    // animate. Once this is enabled toggle off these
+    // objects. We should really explicitly turn things on and off
+    // to avoid weird toggle states but this is fine for testing.
+    var turnoffs = [
+      {"group":"Tracking", "key":"Tracks_V2"},
+      {"group":"Tracking", "key":"Tracks_V3"},
+      {"group":"Muon", "key":"MuonChambers_V1"},
+      {"group":"Muon", "key":"CSCRecHit2Ds_V2"},
+      {"group":"Muon", "key":"CSCSegments_V1"},
+      {"group":"Muon", "key":"DTRecSegment4D_V1"},
+      {"group":"Muon", "key":"RPCRecHits_V1"},
+      {"group":"Physics", "key":"GlobalMuons_V1"},
+      {"group":"Physics", "key":"TrackerMuons_V1"},
+      {"group":"ECAL", "key":"EBRecHits_V2"},
+      {"group":"ECAL", "key":"EERecHits_V2"},
+      {"group":"HCAL", "key":"HBRecHits_V2"},
+      {"group":"HCAL", "key":"HERecHits_V2"}
+    ];
+
+    turnoffs.forEach(function(o) {
+      ispy.toggle(o.group, o.key);
+    });
+
     var c1 = new TWEEN.Tween(proton1.position)
       .to({z:0.0}, animation.collision.time)
       .easing(TWEEN.Easing.Back.In);
