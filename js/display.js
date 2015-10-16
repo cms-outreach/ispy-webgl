@@ -139,6 +139,9 @@ ispy.onMouseDown = function(e) {
   }
 };
 
+ispy.increment = 0.1;
+ispy.separation = 4/30;
+
 document.addEventListener('keydown', function(e) {
   e.preventDefault();
 
@@ -163,6 +166,33 @@ document.addEventListener('keydown', function(e) {
     ispy.toggleAnimation();
     console.log('shift a');
   }
+
+  // For 3D camera separation:
+  if ( e.which === 38 ) { // up arrow
+    console.log('up');
+    // increase the increment
+    ispy.increment *= 1.1;
+    console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+  }
+
+  if ( e.which === 40 ) { // down arrow
+    console.log('down');
+    ispy.increment *= 0.9;
+    console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+  }
+
+  if ( e.which === 39 ) { // right arrow
+    console.log('right');
+    ispy.separation += ispy.increment;
+    console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+  }
+
+  if ( e.which === 37 ) { // left arrow
+    console.log('left');
+    ispy.separation -= ispy.increment;
+    console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+  }
+
   /*
   // right
   if ( e.which === 39 && e.shiftKey ) {

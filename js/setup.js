@@ -318,6 +318,7 @@ ispy.run = function() {
     ispy.camera.aspect = width / height;
     ispy.camera.updateProjectionMatrix();
     ispy.stereo_renderer.setSize(width, height);
+
   } else {
     ispy.controls.update();
     ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);

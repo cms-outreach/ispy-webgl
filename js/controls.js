@@ -49,7 +49,7 @@ ispy.toStereo = function () {
     ispy.stereo = true;
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
-    ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera, true);
+    //ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera, true);
 
     $('#axes').hide();
     $('#event-info').hide();
@@ -57,8 +57,8 @@ ispy.toStereo = function () {
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
     //ispy.do_controls.autoForward = true;
-    ispy.do_controls.connect();
-    ispy.do_controls.update();
+    //ispy.do_controls.connect();
+    //ispy.do_controls.update();
 
     var home_x = -18.1;
     var home_y = 8.6;

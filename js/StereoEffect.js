@@ -15,6 +15,8 @@ THREE.StereoEffect = function ( renderer ) {
 	 */
 	this.focalLength = 4;
 	this.separation = this.focalLength / 30;
+	//this.separation = ispy.separation;
+	console.log('Initial camera separation: ', this.separation);
 
 	this.domElement = renderer.domElement
 
@@ -44,10 +46,12 @@ THREE.StereoEffect = function ( renderer ) {
 		_height = height;
 
 		renderer.setSize( width, height );
-
 	};
 
 	this.render = function ( scene, camera ) {
+
+		//console.log('ispy.separation :', ispy.separation);
+		this.separation = ispy.separation;
 
 		scene.updateMatrixWorld();
 
