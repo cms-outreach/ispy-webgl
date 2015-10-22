@@ -173,24 +173,28 @@ document.addEventListener('keydown', function(e) {
     // increase the increment
     ispy.increment *= 1.1;
     console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+    $('#camera-info').html('Increment: ' + ispy.increment + ' Separation: ' + ispy.separation);
   }
 
   if ( e.which === 40 ) { // down arrow
     console.log('down');
     ispy.increment *= 0.9;
     console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+    $('#camera-info').html('Increment: ' + ispy.increment + ' Separation: ' + ispy.separation);
   }
 
   if ( e.which === 39 ) { // right arrow
     console.log('right');
     ispy.separation += ispy.increment;
     console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+    $('#camera-info').html('Increment: ' + ispy.increment + ' Separation: ' + ispy.separation);
   }
 
   if ( e.which === 37 ) { // left arrow
     console.log('left');
     ispy.separation -= ispy.increment;
     console.log('Increment: ', ispy.increment, ' Separation: ', ispy.separation);
+    $('#camera-info').html('Increment: ' + ispy.increment + ' Separation: ' + ispy.separation);
   }
 
   /*

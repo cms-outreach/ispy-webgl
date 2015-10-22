@@ -53,6 +53,7 @@ ispy.toStereo = function () {
 
     $('#axes').hide();
     $('#event-info').hide();
+    $('#camera-info').show();
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
@@ -76,6 +77,7 @@ ispy.toStereo = function () {
 
     $('#axes').show();
     $('#event-info').show();
+    $('#camera-info').hide();
 
     $('#display')[0].removeEventListener('click', ispy.toStereo, false);
 

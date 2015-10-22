@@ -57,6 +57,16 @@ body.white {
   opacity: 0.5;
 }
 
+#camera-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1002;
+  padding-top: 10px;
+  padding-left: 10px;
+  display: block;
+}
+
 #cms-logo > img {
   max-width: 60px;
   max-height: 60px;

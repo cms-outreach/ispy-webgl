@@ -17,6 +17,7 @@ THREE.StereoEffect = function ( renderer ) {
 	this.separation = this.focalLength / 30;
 	//this.separation = ispy.separation;
 	console.log('Initial camera separation: ', this.separation);
+	$('#camera-info').html('Initial camera separation: ' + this.separation);
 
 	this.domElement = renderer.domElement
 
