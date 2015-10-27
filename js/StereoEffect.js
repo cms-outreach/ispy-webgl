@@ -107,7 +107,8 @@ THREE.StereoEffect = function ( renderer ) {
 		_cameraR.quaternion.copy( _quaternion );
 		_cameraR.translateX( this.separation / 2.0 );
 
-		//
+		_cameraL.lookAt(new THREE.Vector3(0,0,0));
+		_cameraR.lookAt(new THREE.Vector3(0,0,0));
 
 		renderer.setViewport( 0, 0, _width * 2, _height );
 		renderer.clear();
@@ -117,7 +118,6 @@ THREE.StereoEffect = function ( renderer ) {
 
 		renderer.setViewport( _width, 0, _width, _height );
 		renderer.render( scene, _cameraR );
-
 	};
 
 };

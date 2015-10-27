@@ -52,10 +52,12 @@ ispy.toggleAnimation = function() {
   $('#animate').toggleClass('active');
 
   if ( ispy.animating ) {
+
     var animation = ispy.animation_script;
     var home = ispy.camera.position;
 
     var length = ispy.camera.position.length();
+
     var xs = [ispy.camera.position.x, 0];
     var ys = [0, 0];
     var zs = [ispy.camera.position.z, length];

@@ -70,7 +70,6 @@ ispy.toStereo = function () {
     ispy.camera.position.z = home_z*0.6;
 
     ispy.lookAtOrigin();
-
     ispy.onWindowResize();
   } else {
     ispy.stereo = false;
