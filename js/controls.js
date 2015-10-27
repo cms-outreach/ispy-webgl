@@ -61,13 +61,13 @@ ispy.toStereo = function () {
     //ispy.do_controls.connect();
     //ispy.do_controls.update();
 
-    var home_x = -18.1;
-    var home_y = 8.6;
-    var home_z = 14.0;
+    //var home_x = -18.1;
+    //var home_y = 8.6;
+    //var home_z = 14.0;
 
-    ispy.camera.position.x = home_x*0.6;
-    ispy.camera.position.y = home_y*0.6;
-    ispy.camera.position.z = home_z*0.6;
+    //ispy.camera.position.x = home_x*0.6;
+    //ispy.camera.position.y = home_y*0.6;
+    //ispy.camera.position.z = home_z*0.6;
 
     ispy.lookAtOrigin();
     ispy.onWindowResize();
