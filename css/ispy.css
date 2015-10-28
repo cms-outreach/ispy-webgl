@@ -270,7 +270,7 @@ body.white {
   overflow-y: scroll;
 }
 
-#selected-event {
+#selected-event, #selected-obj {
   border: 1px solid #ccc;
   width: 100%;
   text-align: left;
@@ -281,43 +281,43 @@ body.white {
   padding-top: 10px;
 }
 
-#browser-table.white {
+#browser-table.white, #obj-table.white {
   background-color: white;
   color: black;
 }
 
-#browser-table.black {
+#browser-table.black, #obj-table.black {
   background-color: black;
   color: white;
 }
 
-#browser-table th.black {
+#browser-table th.black, #obj-table th.black {
   background-color: #202020;
   color: white;
 }
 
-#browser-table th.white {
+#browser-table th.white, #obj-table th.white {
   background-color: #cccccc;
   color: black;
 }
 
-#browser-table.black td {
+#browser-table.black td, #obj-table.black td {
   background-color: #303030;
 }
 
-#browser-table.white td {
+#browser-table.white td, #obj-table.white td {
   background-color: white;
 }
 
-#browser-table.black td > a {
+#browser-table.black td > a, #obj-table.black td > a {
   color: white;
 }
 
-#browser-table.white td > a {
+#browser-table.white td > a, #obj-table.white td > a {
   color: black;
 }
 
-#browser-files td {
+#browser-files td, #obj-files td {
   border: 0;
 }
 

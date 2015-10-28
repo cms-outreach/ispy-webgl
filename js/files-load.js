@@ -6,6 +6,13 @@ ispy.web_files = [
   "./data/Electron.ig"
 ];
 
+ispy.obj_files = [
+  "./geometry/muon-barrel.obj",
+  "./geometry/muon-endcap-minus.obj",
+  "./geometry/muon-endcap-plus.obj",
+  "./geometry/hf.obj"
+];
+
 ispy.ig_data = null;
 ispy.ievent = 0;
 
@@ -249,6 +256,26 @@ ispy.cleanupData = function(d) {
 
 // This pattern is starting to appear in several places.
 // I should consolidate them into something more elegant than below.
+
+ispy.loadObjFiles = function() {
+  console.log('load obj files');
+
+  ispy.clearTable('obj-files');
+
+  $('#selected-obj').html("Selected event");
+  $('#load-obj').addClass('disabled');
+
+  var tbl = document.getElementById('obj-files');
+
+  for (var i = 0; i < ispy.obj_files.length; i++) {
+    var e = ispy.obj_files[i];
+    var name = e.split('/')[2];
+    var row = tbl.insertRow(tbl.rows.length);
+    var cell = row.insertCell(0);
+    var cls = "file";
+    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + e + '\');">' + name + '</a>';
+  }
+};
 
 ispy.readOBJ = function(file, cb) {
   var reader = new FileReader();

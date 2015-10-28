@@ -30,6 +30,10 @@ ispy.invertColors = function() {
   $('#browser-table th').toggleClass('white').toggleClass('black');
   $('#browser-files').toggleClass('white').toggleClass('black');
 
+  $('#obj-table').toggleClass('white').toggleClass('black');
+  $('#obj-table th').toggleClass('white').toggleClass('black');
+  $('#obj-files').toggleClass('white').toggleClass('black');
+
   $('.modal-content').toggleClass('white').toggleClass('black');
   $('.modal-title').toggleClass('white').toggleClass('black');
 

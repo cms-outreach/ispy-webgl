@@ -389,10 +389,45 @@
         <p>
           <i>Nota bene</i>: a large complicated 3D model may take minutes to load.
         </p>
-        <input type="file" id="import-file" onchange="ispy.importModel();" multiple/>
+        <table>
+          <p><button type="button" class="btn btn-default" onclick="ispy.openDialog('#geometry-files'); ispy.loadObjFiles(); $('#import-model').modal('hide');">Open file(s) from the Web</button></p>
+          <p>
+            Open local file(s): <input type="file" id="import-file" onchange="ispy.importModel();" multiple/>
+          </p>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="geometry-files" role="dialog" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content bordered black">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
+        <h4 class="modal-title black">Open Model</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table black" width="100%" id="obj-table">
+          <tr>
+            <th class="browser-header bordered black" width="100%">Files</th>
+          </tr>
+          <tr>
+            <td class="bordered">
+              <table class="table table-hover black" id="obj-files"></table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <div class="bordered" id="selected-obj"> </div>
+        <div id="event-buttons">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="load-obj" class="btn btn-default disabled" onclick="$('#geometry-files').modal('hide');">Load</button>
+        </div>
       </div>
     </div>
   </div>
