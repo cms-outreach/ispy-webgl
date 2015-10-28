@@ -258,8 +258,6 @@ ispy.cleanupData = function(d) {
 // I should consolidate them into something more elegant than below.
 
 ispy.loadObjFiles = function() {
-  console.log('load obj files');
-
   ispy.clearTable('obj-files');
 
   $('#selected-obj').html("Selected event");
@@ -273,7 +271,7 @@ ispy.loadObjFiles = function() {
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
     var cls = "file";
-    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + e + '\');">' + name + '</a>';
+    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + name + '\');">' + name + '</a>';
   }
 };
 
@@ -350,6 +348,14 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 }
 
 ispy.importModel = function() {
+  if (!ispy.hasFileAPI()) {
+    var err_msg = "Sorry. You seeem to be using a browser that does not support FileReader API. ";
+    err_msg += "Please try with Chrome (6.0+), Firefox (3.6+), Safari (6.0+), or IE (10+). ";
+    err_msg += "Alternatively, open a file from the web. ";
+    alert(err_msg);
+    return;
+  }
+
   var files = document.getElementById('import-file').files;
   var extension, file_name;
 
@@ -391,6 +397,37 @@ ispy.importModel = function() {
     alert('For now, this application supports either loading one .obj file or loading an .obj file and a corresponding .mtl file!');
     return;
   }
+};
+
+ispy.selectObj = function(obj_file) {
+  $('#selected-obj').html(obj_file);
+  $('#load-obj').removeClass('disabled');
+  ispy.selected_obj = obj_file;
+};
+
+ispy.loadSelectedObj = function() {
+  // When loading from the web load the mtl file as well
+  var mtl_file = ispy.selected_obj.split('.')[0]+'.mtl';
+
+  var loader = new THREE.OBJMTLLoader();
+  loader.load('./geometry/'+ispy.selected_obj, './geometry/'+mtl_file,
+    function(object) {
+      object.name = ispy.selected_obj;
+      object.visible = true;
+      ispy.disabled[object.name] = false;
+
+      ispy.scene.getObjectByName("Imported").add(object);
+      ispy.addSelectionRow("Imported", object.name, object.name, true);
+
+      $('#loading').modal('hide');
+    },
+    function(xhr) {
+      $('#loading').modal('show');
+      //console.log((xhr.loaded/xhr.total*100) + '% loaded');
+    },
+    function(xhr) {
+      alert('Yikes! An error occurred');
+    })
 };
 
 ispy.importBeampipe = function() {
