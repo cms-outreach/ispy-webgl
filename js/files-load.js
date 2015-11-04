@@ -268,6 +268,12 @@ ispy.readOBJ = function(file, cb) {
 ispy.loadOBJ = function(contents, name) {
   var object = new THREE.OBJLoader().parse(contents);
   object.name = name;
+
+  object.children.forEach(function(c) {
+    c.material.transparency = true;
+    c.material.opacity = ispy.importTransparency;
+  });
+
   ispy.scene.getObjectByName("Imported").add(object);
   ispy.addSelectionRow("Imported", object.name, object.name, true);
 };
@@ -305,6 +311,8 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 
           if (material) {
             object.material = material;
+            object.material.transparent = true;
+            object.material.opacity = ispy.importTransparency;
           }
         }
       }
@@ -314,6 +322,11 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
     object.name = name;
     object.visible = true;
     ispy.disabled[name] = false;
+
+    //object.children.forEach(function(c) {
+    //  c.material.transparent = true;
+    //  c.material.opacity = t;
+    //})
 
     ispy.scene.getObjectByName("Imported").add(object);
     ispy.addSelectionRow("Imported", name, name, true);

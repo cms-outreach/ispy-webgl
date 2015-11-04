@@ -216,6 +216,10 @@ ispy.init = function() {
   ispy.setFramerate(30);
   $('#fps-slider').prop('value', ispy.framerate); // for FF
 
+  ispy.importTransparency = 1.0;
+  $('#transparency-slider').prop('value', ispy.importTransparency);
+  $('#trspy').html(ispy.importTransparency);
+
   // Info dialogs are hidden by default (see ispy.css)
   // FF keeps state on reload so force here
   $('#show-info').prop('checked', false);
@@ -234,14 +238,17 @@ ispy.init = function() {
 
 ispy.initLight = function() {
   var intensity = 1.0;
-  var length = 15.0;
+  var length = 75.0;
 
   ispy.light1 = new THREE.DirectionalLight(0xffffff, intensity);
   ispy.light1.position.set(-length, length, length);
+  ispy.light1.castShadow = true;
   ispy.scene.getObjectByName("Detector").add(ispy.light1);
+
 
   ispy.light2 = new THREE.DirectionalLight(0xffffff, intensity);
   ispy.light2.position.set(length, -length, -length);
+  ispy.light2.castShadow = true;
   ispy.scene.getObjectByName("Detector").add(ispy.light2);
 };
 

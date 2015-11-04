@@ -14,7 +14,8 @@ THREE.StereoEffect = function ( renderer ) {
 	 * Distance to the non-parallax or projection plane
 	 */
 	this.focalLength = 4;
-	this.separation = this.focalLength / 30;
+	//this.separation = this.focalLength / 30;
+	this.separation = 0.5;
 	//this.separation = ispy.separation;
 	console.log('Initial camera separation: ', this.separation);
 	$('#camera-info').html('Initial camera separation: ' + this.separation);

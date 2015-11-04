@@ -140,7 +140,7 @@ ispy.onMouseDown = function(e) {
 };
 
 ispy.increment = 0.1;
-ispy.separation = 4/30;
+ispy.separation = 0.5;
 
 document.addEventListener('keydown', function(e) {
   e.preventDefault();
@@ -209,6 +209,20 @@ document.addEventListener('keydown', function(e) {
   }
   */
 });
+
+ispy.setTransparency = function(t) {
+  ispy.importTransparency = t;
+  $('#trspy').html(t);
+
+  var imported = ispy.scene.getObjectByName('Imported');
+
+  imported.children.forEach(function(obj) {
+    obj.children.forEach(function(c) {
+      c.material.transparent = true;
+      c.material.opacity = t;
+    })
+  })
+}
 
 ispy.displayCollection = function(key, group, name, objectIds) {
   ispy.currentCollection = key;
