@@ -216,6 +216,10 @@ ispy.init = function() {
   ispy.setFramerate(30);
   $('#fps-slider').prop('value', ispy.framerate); // for FF
 
+  ispy.importTransparency = 1.0;
+  $('#transparency-slider').prop('value', ispy.importTransparency);
+  $('#trspy').html(ispy.importTransparency);
+
   // Info dialogs are hidden by default (see ispy.css)
   // FF keeps state on reload so force here
   $('#show-info').prop('checked', false);

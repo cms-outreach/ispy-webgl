@@ -40,6 +40,20 @@ ispy.invertColors = function() {
   $('#table-data-eventObject').toggleClass('white').toggleClass('black');
 };
 
+ispy.setTransparency = function(t) {
+  ispy.importTransparency = t;
+  $('#trspy').html(t);
+
+  var imported = ispy.scene.getObjectByName('Imported');
+
+  imported.children.forEach(function(obj) {
+    obj.children.forEach(function(c) {
+      c.material.transparent = true;
+      c.material.opacity = t;
+    })
+  })
+};
+
 // ---------------------------------
 
 // ----------- MODALS: info
