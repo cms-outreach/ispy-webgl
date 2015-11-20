@@ -1,9 +1,29 @@
-// For now, hard-code some examples files here for testing
-// the "files from the web"
 ispy.web_files = [
-  "../data/4lepton.ig",
-  ".//data/Mu.ig",
-  "../data/Electron.ig"
+  "/record/600/files/BTau.ig",
+  "/record/601/files/EGMonitor.ig",
+  "/record/602/files/Electron.ig",
+  "/record/603/files/Jet.ig",
+  "/record/604/files/JetMETTauMonitor.ig",
+  "/record/605/files/METFwd.ig",
+  "/record/606/files/Mu.ig",
+  "/record/607/files/MuMonitor.ig",
+  "/record/608/files/MuOnia.ig",
+  "/record/609/files/MultiJet.ig",
+  "/record/610/files/Photon.ig",
+  "/record/611/files/Commissioning.ig",
+  "/record/612/files/MinimumBias.ig",
+  "/record/613/files/ZeroBias.ig",
+  "/record/300/files/4lepton.ig",
+  "/record/300/files/diphoton.ig",
+  "/record/301/files/dimuon-Jpsi_0.ig",
+  "/record/302/files/dielectron-Jpsi_0.ig",
+  "/record/303/files/dimuon_0.ig",
+  "/record/304/files/dielectron_0.ig",
+  "/record/305/files/dielectron-Upsilon_0.ig",
+  "/record/306/files/Zee_0.ig",
+  "/record/307/files/Zmumu_0.ig",
+  "/record/308/files/Wenu_0.ig",
+  "/record/309/files/Wmunu_0.ig"
 ];
 
 ispy.ig_data = null;
@@ -170,7 +190,7 @@ ispy.loadLocalFiles = function() {
 };
 
 ispy.selectFile = function(filename) {
-  ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
+  ispy.file_name = filename.split("/")[4];  // of course this isn't a general case for files
 
   $('#progress').modal('show');
 
