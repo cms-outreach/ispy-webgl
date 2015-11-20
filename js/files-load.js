@@ -253,7 +253,7 @@ ispy.loadWebFiles = function() {
 
   for (var i = 0; i < ispy.web_files.length; i++) {
     var e = ispy.web_files[i];
-    var name = e.split("/")[2];
+    var name = e.split("/")[4];
     var row = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(0);
     var cls = "file";
