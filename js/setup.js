@@ -262,6 +262,9 @@ ispy.initDetector = function() {
       });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
+    ispy.addDetector();
+
+  /*
     $('#loading').modal('show');
 
     $.when(ispy.getScript("../geometry/eb.js"),
@@ -281,6 +284,7 @@ ispy.initDetector = function() {
           $('#loading').modal('hide');
         });
     });
+  */
   }
 };
 
