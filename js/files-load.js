@@ -110,19 +110,23 @@ ispy.selectLocalFile = function(index) {
 
   reader.onload = function(e) {
     var data = e.target.result;
-    var zip = new JSZip(data);
-    var event_list = [];
 
-    $.each(zip.files, function(index, zipEntry){
-      if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
-        event_list.push(zipEntry.name);
-      }
+    require(['vendors/jszip/dist/jszip.min'], function(JSZip) {
+
+      var zip = new JSZip(data);
+      var event_list = [];
+
+      $.each(zip.files, function(index, zipEntry){
+        if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+          event_list.push(zipEntry.name);
+        }
+      });
+
+      ispy.event_list = event_list;
+      ispy.event_index = 0;
+      ispy.updateEventList();
+      ispy.ig_data = zip;
     });
-
-    ispy.event_list = event_list;
-    ispy.event_index = 0;
-    ispy.updateEventList();
-    ispy.ig_data = zip;
   };
 
   reader.onerror = function(e) {
@@ -197,19 +201,22 @@ ispy.selectFile = function(filename) {
   xhr.onload = function() {
     if (this.status === 200) {
 
-      var zip = JSZip(xhr.responseText);
-      var event_list = [];
+      require(['vendors/jszip/dist/jszip.min'], function(JSZip) {
 
-      $.each(zip.files, function(index, zipEntry){
-        if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
-          event_list.push(zipEntry.name);
-        }
+        var zip = JSZip(xhr.responseText);
+        var event_list = [];
+
+        $.each(zip.files, function(index, zipEntry){
+          if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+            event_list.push(zipEntry.name);
+          }
+        });
+
+        ispy.event_list = event_list;
+        ispy.event_index = 0;
+        ispy.updateEventList();
+        ispy.ig_data = zip;
       });
-
-      ispy.event_list = event_list;
-      ispy.event_index = 0;
-      ispy.updateEventList();
-      ispy.ig_data = zip;
     }
   };
 
