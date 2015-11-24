@@ -294,8 +294,7 @@ ispy.loadUrl = function(url) {
   };
 
   xhr.send();
-  };
-}
+};
 
 ispy.cleanupData = function(d) {
   // rm non-standard json bits
