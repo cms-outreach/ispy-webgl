@@ -1,6 +1,7 @@
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
 
+  return false;
   /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
@@ -250,41 +251,11 @@ ispy.getScript = function(scr) {
 };
 
 ispy.initDetector = function() {
-  // Loading and rendering the actual geometry when WebGL is available
-  // works well. With CanvasRenderer, not so well, so load and render
-  // the geometry models.
-
-  if ( ispy.renderer_name === "CanvasRenderer" ) {
-    ispy.getScript("../geometry/models.js")
-      .done(function() {
-        ispy.addDetector();
-      });
-  } else if ( ispy.renderer_name === "WebGLRenderer" ) {
-
-    ispy.addDetector();
-
-  /*
-    $('#loading').modal('show');
-
-    $.when(ispy.getScript("../geometry/eb.js"),
-           ispy.getScript("../geometry/ee.js"),
-           ispy.getScript("../geometry/hb.js"),
-           ispy.getScript("../geometry/ho.js"),
-           ispy.getScript("../geometry/hehf.js"),
-           ispy.getScript("../geometry/pixel.js"),
-           ispy.getScript("../geometry/tib.js"),
-           ispy.getScript("../geometry/tob.js"),
-           ispy.getScript("../geometry/tec.js"),
-           ispy.getScript("../geometry/tid.js")
-    ).done(function() {
-        $.when(
-          ispy.addDetector()
-        ).done(function() {
-          $('#loading').modal('hide');
-        });
-    });
-  */
-  }
+  // For us with invenio the geometry comes from the bundles
+  // so regardless of the renderer we want to add the detector.
+  // Now, what gets added to the detector description depends
+  // not on what's loaded but which renderer we have
+  ispy.addDetector();
 };
 
 ispy.render = function() {
