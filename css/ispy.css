@@ -26,7 +26,7 @@ body.white {
 }
 
 .info {
-  visibility: collapse;
+  visibility: visible;
 }
 
 #event-info {
