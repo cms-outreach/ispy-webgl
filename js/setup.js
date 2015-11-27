@@ -1,7 +1,5 @@
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
-
-  return false;
   /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
@@ -255,6 +253,13 @@ ispy.initDetector = function() {
   // so regardless of the renderer we want to add the detector.
   // Now, what gets added to the detector description depends
   // not on what's loaded but which renderer we have
+
+  if ( ispy.renderer_name === "CanvasRenderer" ) {
+    ispy.configModels();
+  } else if ( ispy.renderer_name === "WebGLRenderer" ) {
+    ispy.configGeometry();
+  }
+
   ispy.addDetector();
 };
 

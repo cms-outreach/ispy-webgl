@@ -3,7 +3,7 @@
 // Hmmm, IIRC objects are unordered. However, at least Chrome and Firefox fetch things in
 // the reverse order than specified here. Therefore e.g. Tracker appears at the top of
 // row of the tree view and CSC at the bottom. Which is what we want.
-
+/*
 ispy.detector_description = {
   "RPCMinusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
     fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
@@ -16,10 +16,23 @@ ispy.detector_description = {
   "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
     fn: ispy.makeDT, style: {color: [0.8, 0.4, 0], opacity: 0.5, linewidth: 1}}
 };
+*/
 
-if ( ispy.renderer_name === "CanvasRenderer" ) {
-  $.extend(ispy.detector_description, {
-    "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
+ispy.disabled = [];
+
+ispy.configModels = function() {
+  ispy.detector_description =  {
+    "RPCMinusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "RPCPlusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (+)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "RPCBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
+      fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0.1], opacity: 0.5, linewidth: 1}},
+    "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
+      fn: ispy.makeDT, style: {color: [0.8, 0.4, 0], opacity: 0.5, linewidth: 1}},
+    "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: Boolean(false), group: "Detector", name: "HCAL Forward (-)",
       fn: ispy.makeModelHcalForwardMinus, style: {color: [0.7, 0.7, 0], opacity: 0.5, linewidth: 1}},
     "HcalForwardPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (+)",
       fn: ispy.makeModelHcalForwardPlus, style: {color: [0.7, 0.7, 0], opacity: 0.5, linewidth: 1}},
@@ -30,20 +43,37 @@ if ( ispy.renderer_name === "CanvasRenderer" ) {
     "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
       fn: ispy.makeModelHcalBarrel, style: {color: [0.7, 0.7, 0], opacity: 0.5, linewidth: 1}},
     "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
-      fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
+      fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
     "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
-      fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
+      fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
     "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
-      fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
+      fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.5, linewidth: 0.5}},
     "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
       fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
     "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
       fn: ispy.makeModelTrackerBarrel, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}}
-    }
-  );
+    };
 
-} else if ( ispy.renderer_name === "WebGLRenderer" ) {
-  $.extend(ispy.detector_description, {
+  for (var key in ispy.detector_description) {
+    if ( ! ispy.detector_description[key].on ) {
+      ispy.disabled[key] = true;
+    }
+  }
+};
+
+ispy.configGeometry = function() {
+  ispy.detector_description = {
+    "RPCMinusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "RPCPlusEndcap3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (+)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "RPCBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
+      fn: ispy.makeRPC, style: {color: [0.6, 0.8, 0], opacity: 0.5, linewidth: 1}},
+    "CSC3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
+      fn: ispy.makeCSC, style: {color: [0.6, 0.7, 0.1], opacity: 0.5, linewidth: 1}},
+    "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
+      fn: ispy.makeDT, style: {color: [0.8, 0.4, 0], opacity: 0.5, linewidth: 1}},
+
     "HcalForwardMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (-)",
       fn: ispy.makeHcal, style: {color: [0.7, 0.7, 0], opacity: 0.5, linewidth: 1}},
     "HcalForwardPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (+)",
@@ -83,9 +113,14 @@ if ( ispy.renderer_name === "CanvasRenderer" ) {
       fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
     "PixelBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
       fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}}
+    };
+
+  for (var key in ispy.detector_description) {
+    if ( ! ispy.detector_description[key].on ) {
+        ispy.disabled[key] = true;
     }
-  );
-}
+  }
+};
 
 ispy.event_description = {
   "EERecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "Endcap Rec. Hits",
@@ -186,14 +221,6 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}}
 };
-
-ispy.disabled = [];
-
-for (var key in ispy.detector_description) {
-  if ( ! ispy.detector_description[key].on ) {
-    ispy.disabled[key] = true;
-  }
-}
 
 for (var key in ispy.event_description) {
   if ( ! ispy.event_description[key].on ) {
