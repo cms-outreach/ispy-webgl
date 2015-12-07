@@ -226,6 +226,40 @@ ispy.addEvent = function(event) {
         material.side = THREE.DoubleSide;
 
         var boxes = new THREE.Geometry();
+        var maxEnergy = 5.0;
+
+        for ( var j = 0; j < data.length; j++ ) {
+          var energy = data[j][0];
+          if ( energy > maxEnergy )
+            maxEnergy = energy;
+        }
+
+        for ( var i = 0; i < data.length; i++ ) {
+          descr.fn(data[i], boxes, maxEnergy, descr.selection);
+        }
+
+        var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
+        meshes.visible = visible;
+
+        ispy.scene.getObjectByName(descr.group).add(meshes);
+
+        break;
+
+      case ispy.SCALEDSOLIDTOWER:
+
+        var mcolor = new THREE.Color();
+        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+        var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
+          opacity:descr.style.opacity});
+        material.side = THREE.DoubleSide;
+
+        var boxes = new THREE.Geometry();
 
         for ( var i = 0; i < data.length; i++ ) {
           descr.fn(data[i], boxes, descr.scale, descr.selection);
