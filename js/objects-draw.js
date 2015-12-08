@@ -677,6 +677,11 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   var mi = 0;
   for ( var j = 0; j < assoc.length; j++ ) {
     mi = assoc[j][0][1];
+
+    if ( data[mi][selection.index] < selection.min_pt ) {
+      continue;
+    }
+    
     pi = assoc[j][1][1];
     muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
