@@ -227,6 +227,8 @@ ispy.init = function() {
   });
 
   ispy.stereo = false;
+
+  $('#display').append($('#event-info'));
 };
 
 
