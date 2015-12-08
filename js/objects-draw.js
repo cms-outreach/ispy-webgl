@@ -785,6 +785,13 @@ ispy.makeHRecHit_V2 = function(data, geometry, scale, selection) {
   }
 };
 
+ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
+  var energy = data[0];
+  if ( energy > selection.min_energy ) {
+    return ispy.makeScaledSolidBox(data, geometry, 5, 0.05*scale);
+  }
+};
+
 ispy.makeDT = function(dt) {
   //return ispy.makeSolidBox(dt, 1);
   return ispy.makeWireframeBox(dt, 1);

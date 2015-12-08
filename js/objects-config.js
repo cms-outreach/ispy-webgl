@@ -90,6 +90,9 @@ ispy.event_description = {
   "EBRecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Barrel Rec. Hits",
     fn: ispy.makeERecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, selection: {"min_energy": 0.5}},
 
+  "HGCEERecHits_V1": {type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "HGC EE Rec. Hits",
+    fn: ispy.makeHGCRecHit, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, selection: {"min_energy": 0.01}},
+
   "HFRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
     fn: ispy.makeHRecHit_V2, style: {color: [0.6, 1, 1], opacity: 0.5, linewidth: 0.5}, selection: {"min_energy": 3.0}},
   "HORecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
@@ -98,6 +101,11 @@ ispy.event_description = {
     fn: ispy.makeHRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, selection: {"min_energy": 1.0}},
   "HBRecHits_V2": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
     fn: ispy.makeHRecHit_V2, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, selection: {"min_energy": 1.0}},
+
+  "HGCHEBRecHits_V1": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "HGC HE Back Rec. Hits",
+    fn: ispy.makeHGCRecHit, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, selection: {"min_energy": 0.01}},
+  "HGCHEFRecHits_V1": {type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "HGC HE Front Rec. Hits",
+    fn: ispy.makeHGCRecHit, style: {color: [0.2, 0.7, 1], opacity: 0.5, linewidth: 0.5}, selection: {"min_energy": 0.01}},
 
   "Tracks_V1": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
