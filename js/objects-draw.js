@@ -1189,8 +1189,6 @@ ispy.makeEvent = function(data) {
   var ei = data[0];
   var run = ei[0], event = ei[1], ls = ei[2], time = ei[5];
 
-  $('#cms-logo').html("<img src='./graphics/cms-color-medium.png'></img>");
-
   var et = "CMS Experiment at the LHC, CERN<br>";
   et += "Data recorded: " + time + "</br>";
   et += "Run / Event / LS: " + run + " / " + event + " / " + ls + "</br>";
