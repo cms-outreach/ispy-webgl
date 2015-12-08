@@ -187,7 +187,10 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}}
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
+
+  "Vertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (reco)",
+    fn:ispy.makeVertex, style: {color: [1, 0.4, 0], opacity: 0.9}}
 };
 
 ispy.disabled = [];

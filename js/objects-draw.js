@@ -771,6 +771,27 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   return curves;
 };
 
+ispy.makeVertex = function(data,style) {
+  var geometry = new THREE.SphereGeometry(0.0025,32,32);
+
+  var hcolor = new THREE.Color();
+  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+
+  var vertex = new THREE.Mesh(geometry, material);
+  vertex.position.x = data[2][0];
+  vertex.position.y = data[2][1];
+  vertex.position.z = data[2][2];
+
+  return vertex;
+};
+
 ispy.makeERecHit_V2 = function(data, geometry, scale, selection) {
   var energy = data[0];
   if ( energy > selection.min_energy ) {
