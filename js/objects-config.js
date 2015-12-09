@@ -86,7 +86,7 @@ ispy.event_description = {
   "EERecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Endcap Rec. Hits",
     fn: ispy.makeERecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, selection: {"min_energy": 0.5}},
   "ESRecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Preshower Rec. Hits",
-    fn: ispy.makeERecHit_V2, style: {color: [1, 0.2, 0], opacity: 0.5, linewidth: 1}, scale: 0.05, selection: {"min_energy": 0.5}},
+    fn: ispy.makeERecHit_V2, style: {color: [1, 0.6, 0], opacity: 0.5, linewidth: 1}, scale: 100.0, selection: {"min_energy": 0.0005}},
   "EBRecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Barrel Rec. Hits",
     fn: ispy.makeERecHit_V2, style: {color: [0.1, 1.0, 0.1], opacity: 0.5, linewidth: 1}, scale: 0.05, selection: {"min_energy": 0.5}},
 
