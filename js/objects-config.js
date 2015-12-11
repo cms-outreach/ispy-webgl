@@ -46,15 +46,15 @@ ispy.detector_description = {
     fn: ispy.makeModelEcalEndcapMinus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
   "EcalEndcapPlus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (+)",
     fn: ispy.makeModelEcalEndcapPlus, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel", // Don't load ECAL by default while developing..
+  "EcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeModelEcalBarrel, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.1, linewidth: 0.1}},
   "EcalEndcapPlus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
-  "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel", // Don't load ECAL by default while developing..
-    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.3, linewidth: 0.5}},
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.1, linewidth: 0.1}},
+  "EcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "ECAL Barrel",
+    fn: ispy.makeEcal, style: {color: [0.5, 0.8, 1], opacity: 0.1, linewidth: 0.1}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},

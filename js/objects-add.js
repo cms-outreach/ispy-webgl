@@ -28,7 +28,7 @@ ispy.addDetector = function() {
         }
 
         var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
-          linewidth:descr.style.linewidth,
+          linewidth:descr.style.linewidth, depthWrite: false,
           opacity:descr.style.opacity});
 
         var geometry = new THREE.Geometry();
@@ -86,7 +86,7 @@ ispy.addDetector = function() {
         }
 
         var material = new THREE.LineBasicMaterial({color:mcolor,transparent: transp,
-          linewidth: descr.style.linewidth,
+          linewidth: descr.style.linewidth, depthWrite: false,
           opacity:descr.style.opacity});
 
         for ( var i = 0; i < data.length; i++ ) {
