@@ -16,16 +16,25 @@ ispy.animation_script = {
         "pf": {x:0, y:0, z:200.0}
       },
       "time": 2500,
-      "objects": [
-        {"group":"Imported", "key":"Beam Pipe"},
-        {"group":"Tracking", "key":"Tracks_V2"},
-        {"group":"Tracking", "key":"Tracks_V3"},
-        {"group":"Muon", "key":"MuonChambers_V1"},
-        {"group":"Physics", "key":"GlobalMuons_V1"},
-        {"group":"ECAL", "key":"EBRecHits_V2"},
-        {"group":"ECAL", "key":"EERecHits_V2"},
-        {"group":"HCAL", "key":"HBRecHits_V2"},
-        {"group":"HCAL", "key":"HERecHits_V2"}
+      "before_objects": [ // What gets turned off/on at before the collision
+        {"group":"Imported", "key":"Beam Pipe", "show":true},
+      ],
+      "before_groups": [
+        {"group":"Tracking", "show":false},
+        {"group":"Muon", "show":false},
+        {"group":"Physics", "show":false},
+        {"group":"ECAL", "show":false},
+        {"group":"HCAL", "show":false}
+      ],
+      "after_objects": [ // What gets turned on/off after the collision
+        {"group":"Tracking", "key":"Tracks_V1", "show":true},
+        {"group":"Tracking", "key":"Tracks_V2", "show":true},
+        {"group":"Imported", "key":"Beam Pipe", "show":false},
+      ],
+      "after_groups": [
+        {"group":"Muon", "show":true},
+        {"group":"ECAL", "show":true},
+        {"group":"HCAL", "show":true}
       ]
     },
     "zoom": {
@@ -39,9 +48,8 @@ ispy.animation_script = {
       "nsteps": 24,
       "time": 5000,
       "objects": [
-        {"group":"Tracking", "key":"Tracks_V2"},
-        {"group":"Tracking", "key":"Tracks_V3"},
-        {"group":"Physics", "key":"GsfElectrons_V1"}
+        {"group":"Tracking", "key":"Tracks_V2", "show":false},
+        {"group":"Tracking", "key":"Tracks_V3", "show":false}
       ]
     }
 }
@@ -53,6 +61,7 @@ ispy.toggleAnimation = function() {
 
   if ( ispy.animating ) {
     var animation = ispy.animation_script;
+    ispy.resetControls();
     var home = ispy.camera.position;
 
     var length = ispy.camera.position.length();
@@ -92,7 +101,7 @@ ispy.toggleAnimation = function() {
       .to({x:c1x, y:c1y, z:c1z}, animation.rotation.time);
 
     // Split the rotation in half and
-    // turn off tracks and turn on electrons
+    // turn off tracks and turn on electrons/muons/jets
 
     bs = ns/2 + 1;
     es = ns;
@@ -133,15 +142,26 @@ ispy.toggleAnimation = function() {
 
     var c1 = new TWEEN.Tween(proton1.position)
       .to({z:0.0}, animation.collision.time)
+      .onStart(function(){
+        animation.collision.before_objects.forEach(function(o){
+          ispy.showObject(o.group,o.key,o.show);
+        });
+        animation.collision.before_groups.forEach(function(g){
+          ispy.showGroup(g.group,g.show);
+        });
+      })
       .easing(TWEEN.Easing.Back.In);
 
     var c2 = new TWEEN.Tween(proton2.position)
       .to({z:0.0}, animation.collision.time)
       .onComplete(function(){
         tw1.start();
-        animation.collision.objects.forEach(function(o) {
-          ispy.toggle(o.group, o.key);
-        });
+          animation.collision.after_objects.forEach(function(o) {
+            ispy.showObject(o.group, o.key, o.show);
+          });
+          animation.collision.after_groups.forEach(function(g) {
+            ispy.showGroup(g.group, g.show);
+          });
       })
       .easing(TWEEN.Easing.Back.In);
 

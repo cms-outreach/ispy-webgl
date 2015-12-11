@@ -55,6 +55,21 @@ ispy.toggle = function(group, key) {
   });
 };
 
+// In some cases (e.g. animation) we want to explicitly turn somethings on/off
+ispy.showObject = function(group, key, show) {
+  ispy.scene.getObjectByName(group).children.forEach(function(c) {
+    if ( c.name === key ) {
+      c.visible = show;
+    }
+  });
+};
+
+ispy.showGroup = function(group, show) {
+  ispy.scene.getObjectByName(group).children.forEach(function(c) {
+    c.visible = show;
+  });
+};
+
 ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
   var dc = 'Detector';
   if ( group !== 'Detector' ) {
