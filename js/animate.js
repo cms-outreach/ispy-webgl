@@ -16,25 +16,47 @@ ispy.animation_script = {
         "pf": {x:0, y:0, z:200.0}
       },
       "time": 2500,
-      "before_objects": [ // What gets turned off/on at before the collision
-        {"group":"Imported", "key":"Beam Pipe", "show":true},
-      ],
-      "before_groups": [
-        {"group":"Tracking", "show":false},
-        {"group":"Muon", "show":false},
-        {"group":"Physics", "show":false},
-        {"group":"ECAL", "show":false},
-        {"group":"HCAL", "show":false}
+      "before_objects": [ // What gets turned off/on before the collision
+        {group:"Imported", key:"Beam Pipe", show:true},
+        {group:"Tracking", key:"Tracks_V1", show:false},
+        {group:"Tracking", key:"Tracks_V2", show:false},
+        {group:"Tracking", key:"Tracks_V3", show:false},
+        {group:"ECAL", key: "EERecHits_V2", show:false},
+        {group:"ECAL", key:"EBRecHits_V2", show:false},
+        {group:"HCAL", key:"HERecHits_V2", show:false},
+        {group:"HCAL", key:"HBRecHits_V2", show:false},
+        {group:"Muon", key:"DTRecSegment4D_V1", show:false},
+        {group:"Muon", key:"RPCRecHits_V1", show:false},
+        {group:"Muon", key:"CSCRecHit2Ds_V2", show:false},
+        {group:"Muon", key:"CSCSegments_V1", show:false},
+        {group:"Muon", key:"CSCSegments_V2", show:false},
+        {group:"Muon", key:"CSCSegments_V3", show:false},
+        {group:"Muon", key:"MuonChambers_V1", show:false},
+        {group:"Physics", key:"GlobalMuons_V1", show:false},
+        {group:"Physics", key:"TrackerMuons_V1", show:false},
+        {group:"Physics", key:"GsfElectrons_V1", show:false},
+        {group:"Physics", key:"GsfElectrons_V2", show:false}
       ],
       "after_objects": [ // What gets turned on/off after the collision
-        {"group":"Tracking", "key":"Tracks_V1", "show":true},
-        {"group":"Tracking", "key":"Tracks_V2", "show":true},
-        {"group":"Imported", "key":"Beam Pipe", "show":false},
-      ],
-      "after_groups": [
-        {"group":"Muon", "show":true},
-        {"group":"ECAL", "show":true},
-        {"group":"HCAL", "show":true}
+        {group:"Tracking", key:"Tracks_V1", show:true},
+        {group:"Tracking", key:"Tracks_V2", show:true},
+        {group:"Tracking", key:"Tracks_V3", show:true},
+        {group:"ECAL", key: "EERecHits_V2", show:true},
+        {group:"ECAL", key:"EBRecHits_V2", show:true},
+        {group:"HCAL", key:"HERecHits_V2", show:true},
+        {group:"HCAL", key:"HBRecHits_V2", show:true},
+        {group:"Muon", key:"DTRecSegment4D_V1", show:true},
+        {group:"Muon", key:"RPCRecHits_V1", show:true},
+        {group:"Muon", key:"CSCRecHit2Ds_V2", show:true},
+        {group:"Muon", key:"CSCSegments_V1", show:true},
+        {group:"Muon", key:"CSCSegments_V2", show:true},
+        {group:"Muon", key:"CSCSegments_V3", show:true},
+        {group:"Muon", key:"MuonChambers_V1", show:true},
+        {group:"Physics", key:"GlobalMuons_V1", show:true},
+        {group:"Physics", key:"TrackerMuons_V1", show:true},
+        {group:"Physics", key:"GsfElectrons_V1", show:true},
+        {group:"Physics", key:"GsfElectrons_V2", show:true},
+        {group:"Imported", key:"Beam Pipe", show:false}
       ]
     },
     "zoom": {
@@ -47,7 +69,8 @@ ispy.animation_script = {
       "angle": 2*Math.PI,
       "nsteps": 24,
       "time": 5000,
-      "objects": [
+      "objects": [ // What to turn on/off at the middle of the rotation
+        {"group":"Tracking", "key":"Tracks_V1", "show":false},
         {"group":"Tracking", "key":"Tracks_V2", "show":false},
         {"group":"Tracking", "key":"Tracks_V3", "show":false}
       ]
@@ -69,13 +92,13 @@ ispy.toggleAnimation = function() {
     var ys = [0, 0];
     var zs = [ispy.camera.position.z, length];
 
-    var tw1 = new TWEEN.Tween(ispy.camera.position)
+    var zoom1 = new TWEEN.Tween(ispy.camera.position)
       .to({x:xs, y:ys, z:zs}, animation.zoom.time)
       .easing(TWEEN.Easing.Sinusoidal.In);
 
     var r = animation.rotation.radius;
 
-    var tw2 = new TWEEN.Tween(ispy.camera.position)
+    var zoom2 = new TWEEN.Tween(ispy.camera.position)
       .to({x:0, y:0, z:r}, animation.zoom.time)
       .easing(TWEEN.Easing.Sinusoidal.In);
 
@@ -97,7 +120,7 @@ ispy.toggleAnimation = function() {
     var c1y = cy.slice(0,es);
     var c1z = cz.slice(0,es);
 
-    var tw3 = new TWEEN.Tween(ispy.camera.position)
+    var rotation1 = new TWEEN.Tween(ispy.camera.position)
       .to({x:c1x, y:c1y, z:c1z}, animation.rotation.time);
 
     // Split the rotation in half and
@@ -110,19 +133,22 @@ ispy.toggleAnimation = function() {
     var c2y = cy.slice(bs, es);
     var c2z = cz.slice(bs, es);
 
-    var tw4 = new TWEEN.Tween(ispy.camera.position)
+    var rotation2 = new TWEEN.Tween(ispy.camera.position)
       .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
       .onStart(function(){
         animation.rotation.objects.forEach(function(o) {
-          ispy.toggle(o.group, o.key);
+          ispy.showObject(o.group, o.key, o.show);
         });
       });
 
-    var tw5 = new TWEEN.Tween(ispy.camera.position)
+    var zoom3 = new TWEEN.Tween(ispy.camera.position)
       .to({x:home.x, y:home.y, z:home.z}, 5000)
+      .onComplete(function() {
+        $('#animate').removeClass('active');
+      })
       .easing(TWEEN.Easing.Sinusoidal.In);
 
-    tw5.delay(1000);
+    zoom3.delay(1000);
 
     var pgeometry = new THREE.SphereGeometry(0.25,32,32);
     var pmaterial = new THREE.MeshBasicMaterial({color: 0xffff00});
@@ -146,21 +172,15 @@ ispy.toggleAnimation = function() {
         animation.collision.before_objects.forEach(function(o){
           ispy.showObject(o.group,o.key,o.show);
         });
-        animation.collision.before_groups.forEach(function(g){
-          ispy.showGroup(g.group,g.show);
-        });
       })
       .easing(TWEEN.Easing.Back.In);
 
     var c2 = new TWEEN.Tween(proton2.position)
       .to({z:0.0}, animation.collision.time)
       .onComplete(function(){
-        tw1.start();
+        zoom1.start();
           animation.collision.after_objects.forEach(function(o) {
             ispy.showObject(o.group, o.key, o.show);
-          });
-          animation.collision.after_groups.forEach(function(g) {
-            ispy.showGroup(g.group, g.show);
           });
       })
       .easing(TWEEN.Easing.Back.In);
@@ -180,10 +200,10 @@ ispy.toggleAnimation = function() {
     c1.chain(c3);
     c2.chain(c4);
 
-    tw1.chain(tw2);
-    tw2.chain(tw3);
-    tw3.chain(tw4);
-    tw4.chain(tw5);
+    zoom1.chain(zoom2);
+    zoom2.chain(rotation1);
+    rotation1.chain(rotation2);
+    rotation2.chain(zoom3);
 
     c1.start();
     c2.start();

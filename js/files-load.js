@@ -448,11 +448,11 @@ ispy.loadSelectedObj = function() {
 ispy.importBeampipe = function() {
   var loader = new THREE.OBJMTLLoader();
   loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
-    object.name = 'Beam Pipe';
+    object.name = 'BeamPipe';
     object.visible = true;
     ispy.disabled[object.name] = false;
 
-    ispy.scene.getObjectByName("Imported").add(object);
-    ispy.addSelectionRow("Imported", object.name, object.name, true);
+    ispy.scene.getObjectByName('Imported').add(object);
+    ispy.addSelectionRow('Imported', object.name, 'Beam Pipe', true);
   });
 };

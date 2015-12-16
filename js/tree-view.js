@@ -18,8 +18,6 @@ ispy.addGroups = function() {
   });
 };
 
-
-
 ispy.toggleCollapse = function(g) {
   // If the objects under the group category have not been loaded then
   // do not toggle the chevron. We don't want to have it in the wrong
@@ -56,17 +54,14 @@ ispy.toggle = function(group, key) {
 };
 
 // In some cases (e.g. animation) we want to explicitly turn somethings on/off
+// It would probably be nice to: do this by group, support wildcards, etc.
 ispy.showObject = function(group, key, show) {
   ispy.scene.getObjectByName(group).children.forEach(function(c) {
     if ( c.name === key ) {
       c.visible = show;
+      ispy.disabled[key] = !show;
+      $('#'+key).prop('checked', show);
     }
-  });
-};
-
-ispy.showGroup = function(group, show) {
-  ispy.scene.getObjectByName(group).children.forEach(function(c) {
-    c.visible = show;
   });
 };
 
@@ -96,7 +91,8 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
   }
 
   html += "<td class='collection'>";
-  html += "<input type='checkbox' " + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
+  //html += "<input type='checkbox' " + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
+  html += "<input type='checkbox' id='"+key+"'" + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
   html += "</td>";
   html += "</tr>";
 
