@@ -67,7 +67,7 @@ ispy.init = function() {
   var height = $('#display').innerHeight();
 
   // width, height, fov, near, far, orthoNear, orthoFar
-  var camera = new THREE.CombinedCamera(width, height, 70, 0.1, 100, 0.1, 100);
+  var camera = new THREE.CombinedCamera(width, height, 75, 0.1, 100, 0.1, 100);
   ispy.camera = camera;
   ispy.initCamera();
 
