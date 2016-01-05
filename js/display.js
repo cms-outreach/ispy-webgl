@@ -162,9 +162,10 @@ document.addEventListener('keydown', function(e) {
 
   // Instead of a button, make output of 3D to JSON a "secret" key binding
   // If shift + e then export
-  if ( e.which === 69 && e.shiftKey ) {
-    ispy.exportScene();
-  }
+  // hide this for masterclasses
+  //if ( e.which === 69 && e.shiftKey ) {
+  //  ispy.exportScene();
+  //}
 
   // up arrow
   if ( e.which === 38 && e.shiftKey ) {
@@ -176,10 +177,14 @@ document.addEventListener('keydown', function(e) {
     ispy.zoom(-0.5);
   }
 
+  /*
+  hide this for masterclasses
+
   // shift+a to toggle animation
   if ( e.which === 65 && e.shiftKey ) {
     ispy.toggleAnimation();
   }
+  */
   /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
