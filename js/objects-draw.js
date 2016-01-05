@@ -1186,6 +1186,11 @@ ispy.makeCSCStripDigis = function(data) {
   return ispy.makeCSCDigis(data, 0.01, 0.01, 0.0);
 };
 
+ispy.makeCSCLCTDigis = function(data) {
+  return ispy.makePointCloud(data,0);
+};
+
+
 ispy.makeEvent = function(data) {
   /*
   "Event_V2": [["run", "int"],["event", "int"],["ls", "int"],["orbit", "int"],["bx", "int"],["time", "string"],["localtime", "string"]]
