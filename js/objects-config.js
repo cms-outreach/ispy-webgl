@@ -169,6 +169,8 @@ ispy.event_description = {
     fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}, selection: {"min_et": 10.0}},
   "PFJets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",
     fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}, selection: {"min_et": 10.0}},
+  "GenJets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Sim)",
+    fn: ispy.makeJet, style: {color: [1, 0.75, 0], opacity: 0.8}, selection: {"min_et": 10.0}},
   "Photons_V1": {type: ispy.LINE, on: false, group: "Physics", name: "Photons (Reco)",
     fn: ispy.makePhoton, style: {color: [0.8, 0.8, 0], opacity: 1.0, linewidth: 2}},
 
@@ -193,7 +195,9 @@ ispy.event_description = {
     fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
 
   "Vertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (reco)",
-    fn:ispy.makeVertex, style: {color: [1, 0.4, 0], opacity: 0.9}}
+    fn:ispy.makeVertex, style: {color: [1, 0.4, 0], opacity: 0.9}},
+  "SimVertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (sim)",
+    fn:ispy.makeSimVertex, style: {color: [0.8, 0.2, 0], opacity: 0.9}}
 };
 
 ispy.disabled = [];

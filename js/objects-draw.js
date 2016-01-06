@@ -797,6 +797,30 @@ ispy.makeVertex = function(data,style) {
   return vertex;
 };
 
+ispy.makeSimVertex = function(data, style) {
+  if ( data[1] !== -1 )
+    return null;
+
+  var geometry = new THREE.SphereGeometry(0.005,32,32);
+
+  var hcolor = new THREE.Color();
+  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+
+  var vertex = new THREE.Mesh(geometry, material);
+  vertex.position.x = data[0][0];
+  vertex.position.y = data[0][1];
+  vertex.position.z = data[0][2];
+
+  return vertex;
+};
+
 ispy.makeERecHit_V2 = function(data, geometry, scale, selection) {
   var energy = data[0];
   if ( energy > selection.min_energy ) {
