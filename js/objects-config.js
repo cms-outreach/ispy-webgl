@@ -144,7 +144,7 @@ ispy.event_description = {
     fn: ispy.makeCSCWireDigis, style: {color: [1.0, 0.6, 1.0], opacity: 0.5, linewidth: 1}},
 
   "CSCLCTDigis_V1": {type: ispy.POINT, on: false, group: "Muon", name: "CSC LCT Digis",
-    fn: ispy.makeCSCLCTDigis, style: {color: [0.0, 1.0, 1.0], size: 0.05}},
+    fn: ispy.makeCSCLCTDigis, style: {color: [0.0, 1.0, 1.0], size: 0.15}},
 
   /* this only exists in my test file
    "MatchingCSCs_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching CSCs",
