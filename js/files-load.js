@@ -1,6 +1,21 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
+  "./data/masterclass_1.ig",
+  "./data/masterclass_2.ig",
+  "./data/masterclass_3.ig",
+  "./data/masterclass_4.ig",
+  "./data/masterclass_5.ig",
+  "./data/masterclass_6.ig",
+  "./data/masterclass_7.ig",
+  "./data/masterclass_8.ig",
+  "./data/masterclass_9.ig",
+  "./data/masterclass_10.ig",
+  "./data/masterclass_11.ig",
+  "./data/masterclass_12.ig",
+  "./data/masterclass_13.ig",
+  "./data/masterclass_14.ig",
+  "./data/masterclass_15.ig",
   "./data/masterclass_16.ig",
   "./data/masterclass_17.ig",
   "./data/masterclass_18.ig",
