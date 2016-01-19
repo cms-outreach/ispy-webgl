@@ -949,9 +949,8 @@ ispy.makeMET = function(data, style, selection) {
   var geometry = new THREE.Geometry();
   dir.setLength(length);
   geometry.vertices.push(origin, dir);
-
-  var material = new THREE.LineBasicMaterial({color:color, linewidth:4});
-  var met = new THREE.Line(geometry,material);
+  geometry.computeLineDistances(); // This is needed in order for dashed line to work
+  var met = new THREE.Line(geometry, new THREE.LineDashedMaterial({color: color, scale: 10, dashSize:2, gapSize:1, linewidth: style.linewidth }));
   return met;
 };
 

@@ -161,7 +161,7 @@ ispy.event_description = {
     fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.5, linewidth: 1}},
 
   "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
-    fn: ispy.makeMET, style: {color: [1, 1, 0], opacity: 1.0}, selection: {"min_pt": 10.0}},
+    fn: ispy.makeMET, style: {color: [1, 0.5, 1], linewidth: 4}, selection: {"min_pt": 10.0}},
   "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Reco)",
     fn: ispy.makeJet, style: {color: [1, 1, 0], opacity: 0.3}, selection: {"min_et": 10.0}},
   "PFJets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",

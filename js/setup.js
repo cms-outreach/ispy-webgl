@@ -1,6 +1,6 @@
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
-
+  
   /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
