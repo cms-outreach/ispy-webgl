@@ -71,7 +71,7 @@ ispy.clearTable = function(id) {
 };
 
 ispy.selectEvent = function(index) {
-  $("#selected-event").html(ispy.event_list[index]);
+  $("#selected-event").html(ispy.file_name+': '+ispy.event_list[index]);
   ispy.event_index = index;
   $('#load-event').removeClass('disabled');
 };
@@ -203,9 +203,11 @@ ispy.loadLocalFiles = function() {
 };
 
 ispy.selectFile = function(filename) {
-  console.log(ispy.file_name, filename)
+  ispy.clearTable("browser-events");
+  $('#selected-event').html("Choose an event from Events and then Load");
 
-  ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
+  var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
+  ispy.file_name = new_file_name;
 
   $('#progress').modal('show');
 
@@ -256,8 +258,8 @@ ispy.selectFile = function(filename) {
 };
 
 ispy.loadWebFiles = function() {
-  ispy.clearTable("browser-files");
-  ispy.clearTable("browser-events");
+  //ispy.clearTable("browser-files");
+  //ispy.clearTable("browser-events");
 
   //$('#selected-event').html("Selected event");
   $('#selected-event').html("Choose an event from Events and then Load");
