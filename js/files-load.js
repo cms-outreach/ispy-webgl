@@ -203,6 +203,8 @@ ispy.loadLocalFiles = function() {
 };
 
 ispy.selectFile = function(filename) {
+  console.log(ispy.file_name, filename)
+
   ispy.file_name = filename.split("/")[2];  // of course this isn't a general case for files
 
   $('#progress').modal('show');
@@ -256,6 +258,7 @@ ispy.selectFile = function(filename) {
 ispy.loadWebFiles = function() {
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
+
   //$('#selected-event').html("Selected event");
   $('#selected-event').html("Choose an event from Events and then Load");
   $('#load-event').addClass('disabled');
