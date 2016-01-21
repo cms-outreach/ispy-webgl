@@ -816,7 +816,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 
     var tg = new THREE.Geometry();
-    tg.vertices = curve.getPoints(16);
+    tg.vertices = curve.getPoints(32);
 
     curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
       color:tcolor,
