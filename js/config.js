@@ -15,3 +15,4 @@ ispy.TRACK = 8;
 ispy.POLYLINE = 9;
 ispy.SHAPE = 10;
 ispy.TEXT = 11;
+ispy.BUFFERBOX = 12;

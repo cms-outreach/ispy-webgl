@@ -126,6 +126,60 @@ ispy.makeSolidBox = function(data, ci) {
   return box;
 };
 
+ispy.makeBufferBoxes = function(data, ci) {
+  var geometry = new THREE.BufferGeometry();
+  /*
+    4 corners needed to define a box,
+    2 together to form a pair
+    (using LinePieces to avoid spurious connecting lines),
+    3 components each for the corner (x,y,z),
+    3 sets of pairs to define the box
+    (one for front, one for back, and one for sides)
+  */
+  var nvs = 4*2*3*3;
+  var vertices = new Float32Array(data.length*nvs);
+
+  // Since we draw the Lines that make the box with LinePieces
+  // we want to add pairs of vertices. These are then connected.
+  // The pairing starts as 0-1, 1-2, 2-3, 3-0, etc.
+  for ( var i = 0; i < data.length; i++ ) {
+    var f1 = data[i][ci];
+    var f2 = data[i][ci+1];
+    var f3 = data[i][ci+2];
+    var f4 = data[i][ci+3];
+
+    var b1 = data[i][ci+4];
+    var b2 = data[i][ci+5];
+    var b3 = data[i][ci+6];
+    var b4 = data[i][ci+7];
+
+    var pairs = [
+      f1,f2,
+      f2,f3,
+      f3,f4,
+      f4,f1,
+      b1,b2,
+      b2,b3,
+      b3,b4,
+      b4,b1,
+      b1,f1,
+      b3,f3,
+      b2,f2,
+      b4,f4
+    ];
+
+    for ( var j = 0; j < pairs.length; j++ ) {
+      vertices[i*nvs + j*3 + 0] = pairs[j][0];
+      vertices[i*nvs + j*3 + 1] = pairs[j][1];
+      vertices[i*nvs + j*3 + 2] = pairs[j][2];
+    }
+  }
+
+  geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+  return geometry;
+};
+
 ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
   var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
   var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
@@ -860,12 +914,10 @@ ispy.makeHcal = function(hb) {
   return ispy.makeWireframeBox(hb, 1);
 };
 
-// Should either 1) use BufferGeometry or 2) use border positions to make wireframe
-// or 3) something else
 ispy.makeEcal = function(ecal) {
-  return ispy.makeWireframeBox(ecal, 1);
+  //return ispy.makeWireframeBox(ecal, 1);
+  return ispy.makeBufferBoxes(ecal,1);
 };
-
 
 ispy.makeRPC = function(rpc) {
   return ispy.makeWireFace(rpc, 1);

@@ -76,6 +76,28 @@ ispy.addDetector = function() {
 
         break;
 
+      case ispy.BUFFERBOX:
+        var bcolor = new THREE.Color();
+        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+
+        var transp = false;
+        if ( descr.style.opacity < 1.0 ) {
+          transp = true;
+        }
+
+        var material = new THREE.LineBasicMaterial({color:bcolor,transparent: transp,
+          linewidth: descr.style.linewidth, depthWrite: false,
+          opacity:descr.style.opacity});
+
+        var geometry = descr.fn(data);
+
+        var mesh = new THREE.Line(geometry, material, THREE.LinePieces);
+        mesh.name = key;
+        mesh.visible = visible;
+        ispy.scene.getObjectByName(descr.group).add(mesh);
+
+        break;
+
       case ispy.MODEL:
         var mcolor = new THREE.Color();
         mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
