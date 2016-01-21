@@ -60,7 +60,7 @@ ispy.animation_script = {
       ]
     },
     "zoom": {
-      "time": 2000
+      "time": 5000
     },
     // This rotation is actually split into two halves and the toggle
     // on objects happens at PI
