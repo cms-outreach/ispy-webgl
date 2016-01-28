@@ -6,12 +6,8 @@ ispy.invertColors = function() {
 
   if ( !ispy.inverted_colors ) {
     ispy.renderer.setClearColor(0x000000,1);
-    console.log("black");
-    console.log(ispy.renderer.getClearColor());
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
-    console.log("white");
-    console.log(ispy.renderer.getClearColor());
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
