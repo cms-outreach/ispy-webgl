@@ -1,13 +1,35 @@
 
 // ----------- MODALS: settings
 
+ispy.altColor = function() {
+
+};
+
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 
   if ( !ispy.inverted_colors ) {
     ispy.renderer.setClearColor(0x000000,1);
+
+    for ( var k in ispy.event_description ) {
+      var obj = ispy.event_description[k];
+      if ( obj.style.altColor !== undefined ) {
+        ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
+          c.material.color = new THREE.Color(obj.style.color[0], obj.style.color[1], obj.style.color[2]);
+        })
+      }
+    }
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
+
+    for ( var k in ispy.event_description ) {
+      var obj = ispy.event_description[k];
+      if ( obj.style.altColor !== undefined ) {
+        ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
+          c.material.color = new THREE.Color(obj.style.altColor[0], obj.style.altColor[1], obj.style.altColor[2]);
+        })
+      }
+    }
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
