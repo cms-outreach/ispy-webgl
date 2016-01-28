@@ -719,7 +719,11 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   var curves = [];
 
   var tcolor = new THREE.Color();
-  tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  if ( ispy.inverted_colors ) {
+    tcolor.setRGB(style.altColor[0], style.altColor[1], style.altColor[2]);
+  } else {
+    tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  }
 
   var transp = false;
   if ( style.opacity < 1.0 ) {

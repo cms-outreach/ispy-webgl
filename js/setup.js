@@ -1,6 +1,6 @@
 ispy.hasWebGL = function() {
   var canvas = document.createElement('canvas');
-  
+
   /*
   if ( ! canvas.getContext('webgl') ) {
     console.log('no webgl');
@@ -132,6 +132,7 @@ ispy.init = function() {
 
   ispy.inverted_colors = false;
   $('#invert-colors').prop('checked', false);
+  ispy.renderer.setClearColor(0x000000,1);
 
   var origin = new THREE.Vector3(0,0,0);
   var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);

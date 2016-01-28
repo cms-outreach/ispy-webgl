@@ -109,13 +109,16 @@ ispy.event_description = {
 
   "Tracks_V1": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, selection: {"min_pt": 0.5, index: 2}},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], altColor: [1, 0.5, 0], opacity: 0.9, lineCaps: "square", linewidth: 3},
+    selection: {"min_pt": 0.5, index: 2}},
   "Tracks_V2": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, selection: {"min_pt": 0.5, "index": 2}},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], altColor: [1, 0.5, 0], opacity: 0.9, lineCaps: "square", linewidth: 3},
+    selection: {"min_pt": 0.5, "index": 2}},
   "Tracks_V3": {type: ispy.TRACK, on: true, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 1, 0], opacity: 0.9, lineCaps: "square", linewidth: 3}, selection: {"min_pt": 0.5, "index": 2}},
+    fn: ispy.makeTracks, style: {color: [1, 1, 0], altColor: [1, 0.5, 0], opacity: 0.9, lineCaps: "square", linewidth: 3},
+    selection: {"min_pt": 0.5, "index": 2}},
 
   "TrackDets_V1": {type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
     fn: ispy.makeTrackerPiece, style: {color: [1, 1, 0], opacity: 0.5, linewidth: 1}},
@@ -126,8 +129,8 @@ ispy.event_description = {
   "SiPixelClusters_V1": {type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
     fn: ispy.makeTrackingClusters, style:{color: [1.0, 0.4, 0.0], size: 0.05}},
 
-  "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
-  "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent},
+  "Event_V1":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}},
+  "Event_V2":{type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}},
 
   "DTRecHits_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
     fn: ispy.makeDTRecHits, style: {color: [0, 1, 0], opacity: 0.5, linewidth: 2}},
