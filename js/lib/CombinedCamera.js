@@ -61,8 +61,9 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 	var near = this.cameraP.near;
 	var far = this.cameraP.far;
 
-	// tpm: midway i.e. divide by 2 is too far. 1/8 is better
-	var hyperfocus = ( near + far ) / 8;
+	// The size that we set is the mid plane of the viewing frustum
+
+	var hyperfocus = ( near + far ) / 2;
 
 	var halfHeight = Math.tan( fov * Math.PI / 180 / 2 ) * hyperfocus;
 	var planeHeight = 2 * halfHeight;

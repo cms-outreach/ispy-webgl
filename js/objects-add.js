@@ -37,7 +37,7 @@ ispy.addDetector = function() {
           geometry.merge(box);
         }
 
-        var line = new THREE.Line(geometry, material, THREE.LinePieces);
+        var line = new THREE.LineSegments(geometry, material);
         line.name = key;
         line.visible = visible;
         ispy.scene.getObjectByName(descr.group).add(line);
@@ -75,7 +75,7 @@ ispy.addDetector = function() {
 
         var geometry = descr.fn(data);
 
-        var mesh = new THREE.Line(geometry, material, THREE.LinePieces);
+        var mesh = new THREE.LineSegments(geometry, material);
         mesh.name = key;
         mesh.visible = visible;
         ispy.scene.getObjectByName(descr.group).add(mesh);
@@ -93,7 +93,7 @@ ispy.addDetector = function() {
 
           for ( var j = 0; j < models.length; j++ ) {
             var shape = ispy.makeShapes(models[j]);
-            var line = new THREE.Line(shape, material, THREE.LinePieces);
+            var line = new THREE.LineSegments(shape, material);
             line.name = key;
             line.visible = visible;
             ispy.scene.getObjectByName(descr.group).add(line);
@@ -181,7 +181,7 @@ ispy.addEvent = function(event) {
           geometry.merge(box);
         }
 
-        var line = new THREE.Line(geometry, material, THREE.LinePieces);
+        var line = new THREE.LineSegments(geometry, material);
         line.name = key;
         line.visible = visible;
         ispy.scene.getObjectByName(descr.group).add(line);

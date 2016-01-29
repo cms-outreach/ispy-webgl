@@ -91,7 +91,9 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
     ispy.renderer_name = "WebGLRenderer";
 
@@ -139,9 +141,9 @@ ispy.init = function() {
   var gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
   var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
 
-  rx.line.material.linewidth = 5;
-  gy.line.material.linewidth = 5;
-  bz.line.material.linewidth = 5;
+  rx.line.material.linewidth = 2.5;
+  gy.line.material.linewidth = 2.5;
+  bz.line.material.linewidth = 2.5;
 
   ispy.inset_scene.add(rx);
   ispy.inset_scene.add(gy);
