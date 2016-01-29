@@ -147,10 +147,10 @@ ispy.event_description = {
     fn: ispy.makeDTRecHits, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 2}},
 
   "DTRecSegment4D_V1": {type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-    fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", opacity: 1.0, linewidth: 3}},
+    fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 1.0, linewidth: 3}},
 
   "RPCRecHits_V1": {type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-    fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", opacity: 1.0, linewidth: 3}},
+    fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)", opacity: 1.0, linewidth: 3}},
 
   "CSCStripDigis_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Strip Digis",
     fn: ispy.makeCSCStripDigis, style: {color: "rgb(100%, 20%, 100%)", opacity: 0.5, linewidth: 1}},

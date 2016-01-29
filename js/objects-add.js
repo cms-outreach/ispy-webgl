@@ -15,18 +15,18 @@ ispy.addDetector = function() {
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
     ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
 
+    var ocolor = new THREE.Color(descr.style.color);
+
+    var transp = false;
+    if ( descr.style.opacity < 1.0 ) {
+      transp = true;
+    }
+
     switch(descr.type) {
 
       case ispy.BOX:
 
-        var bcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
+        var material = new THREE.LineBasicMaterial({color:ocolor, transparent: transp,
           linewidth:descr.style.linewidth, depthWrite: false,
           opacity:descr.style.opacity});
 
@@ -46,14 +46,7 @@ ispy.addDetector = function() {
 
       case ispy.SOLIDBOX:
 
-        var bcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.MeshBasicMaterial({color:bcolor,
+        var material = new THREE.MeshBasicMaterial({color:ocolor,
           transparent: transp,
           linewidth: descr.style.linewidth,
           opacity:descr.style.opacity});
@@ -75,14 +68,8 @@ ispy.addDetector = function() {
         break;
 
       case ispy.BUFFERBOX:
-        var bcolor = new THREE.Color(descr.style.color);
 
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.LineBasicMaterial({color:bcolor,transparent: transp,
+        var material = new THREE.LineBasicMaterial({color:ocolor,transparent: transp,
           linewidth: descr.style.linewidth, depthWrite: false,
           opacity:descr.style.opacity});
 
@@ -96,14 +83,8 @@ ispy.addDetector = function() {
         break;
 
       case ispy.MODEL:
-        var mcolor = new THREE.Color(descr.style.color);
 
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.LineBasicMaterial({color:mcolor,transparent: transp,
+        var material = new THREE.LineBasicMaterial({color:ocolor,transparent: transp,
           linewidth: descr.style.linewidth, depthWrite: false,
           opacity:descr.style.opacity});
 
@@ -168,19 +149,28 @@ ispy.addEvent = function(event) {
     var objectIds = [];
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
+    var ocolor = null;
+
+    if ( descr.style.color !== undefined ) {
+      ocolor = new THREE.Color();
+
+      if ( ispy.inverted_colors && descr.style.altColor !== undefined ) {
+        ocolor.setStyle(descr.style.altColor);
+      } else {
+        ocolor.setStyle(descr.style.color);
+      }
+
+      var transp = false;
+      if ( descr.style.opacity < 1.0 ) {
+        transp = true;
+      }
+    }
 
     switch(descr.type) {
 
       case ispy.BOX:
 
-        var bcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.LineBasicMaterial({color:bcolor, transparent: transp,
+        var material = new THREE.LineBasicMaterial({color:ocolor, transparent: transp,
           linewidth:descr.style.linewidth,
           opacity:descr.style.opacity});
 
@@ -200,14 +190,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SOLIDBOX:
 
-        var bcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
-        var material = new THREE.MeshBasicMaterial({color:bcolor,
+        var material = new THREE.MeshBasicMaterial({color:ocolor,
           transparent: transp,
           linewidth: descr.style.linewidth,
           opacity:descr.style.opacity});
@@ -230,13 +213,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDBOX:
 
-        var mcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-        var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
+        var material = new THREE.MeshBasicMaterial({color:ocolor, transparent: transp,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -263,13 +240,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDTOWER:
 
-        var mcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-        var material = new THREE.MeshBasicMaterial({color:mcolor, transparent: transp,
+        var material = new THREE.MeshBasicMaterial({color:ocolor, transparent: transp,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -305,8 +276,7 @@ ispy.addEvent = function(event) {
       case ispy.POINT:
         // We make a buffer geometry, use a point cloud, and
         // add to the scene.
-        var pcolor = new THREE.Color(descr.style.color);
-        var material = new THREE.PointCloudMaterial({color:pcolor, size:descr.style.size});
+        var material = new THREE.PointCloudMaterial({color:ocolor, size:descr.style.size});
         var geometry = descr.fn(data);
         var points = new THREE.PointCloud(geometry, material);
 
@@ -333,19 +303,12 @@ ispy.addEvent = function(event) {
 
       case ispy.LINE:
 
-        var lcolor = new THREE.Color(descr.style.color);
-
-        var transp = false;
-        if ( descr.style.opacity < 1.0 ) {
-          transp = true;
-        }
-
         for ( var i = 0; i < data.length; i++ ) {
           var lines = descr.fn(data[i]);
 
           lines.forEach(function(l) {
             var line = new THREE.Line(l, new THREE.LineBasicMaterial({
-              color:lcolor, transparent:transp,
+              color:ocolor, transparent:transp,
               linewidth:descr.style.linewidth,
               opacity:descr.style.opacity
             }));
