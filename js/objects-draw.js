@@ -740,7 +740,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
 
-  var tcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
+  var tcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -773,9 +773,9 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
   var tcolor = new THREE.Color();
   if ( ispy.inverted_colors ) {
-    tcolor.setRGB(style.altColor[0], style.altColor[1], style.altColor[2]);
+    tcolor.setStyle(style.altColor);
   } else {
-    tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+    tcolor.setStyle(style.color);
   }
 
   var transp = false;
@@ -836,7 +836,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 ispy.makeVertex = function(data,style) {
   var geometry = new THREE.SphereGeometry(0.0025,32,32);
 
-  var hcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
+  var hcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -858,7 +858,7 @@ ispy.makeSimVertex = function(data, style) {
     return null;
 
   var geometry = new THREE.SphereGeometry(0.005,32,32);
-  var hcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
+  var hcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -963,7 +963,7 @@ ispy.makeMET = function(data, style, selection) {
   var dir = new THREE.Vector3(px,py,0);
   dir.normalize();
 
-  var color = new THREE.Color(style.color[0], style.color[1], style.color[2]);
+  var color = new THREE.Color(style.color);
   var origin = new THREE.Vector3(0,0,0);
   var length = pt*0.1;
 
@@ -1013,7 +1013,7 @@ ispy.makeJet = function(data, style, selection) {
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
   geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
-  var jcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
+  var jcolor = new THREE.Color(style.color);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {

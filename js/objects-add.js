@@ -19,8 +19,7 @@ ispy.addDetector = function() {
 
       case ispy.BOX:
 
-        var bcolor = new THREE.Color();
-        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var bcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -47,8 +46,7 @@ ispy.addDetector = function() {
 
       case ispy.SOLIDBOX:
 
-        var bcolor = new THREE.Color();
-        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var bcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -77,8 +75,7 @@ ispy.addDetector = function() {
         break;
 
       case ispy.BUFFERBOX:
-        var bcolor = new THREE.Color();
-        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var bcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -99,8 +96,7 @@ ispy.addDetector = function() {
         break;
 
       case ispy.MODEL:
-        var mcolor = new THREE.Color();
-        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var mcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -177,8 +173,7 @@ ispy.addEvent = function(event) {
 
       case ispy.BOX:
 
-        var bcolor = new THREE.Color();
-        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var bcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -205,8 +200,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SOLIDBOX:
 
-        var bcolor = new THREE.Color();
-        bcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var bcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -236,8 +230,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDBOX:
 
-        var mcolor = new THREE.Color();
-        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var mcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -270,8 +263,7 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDTOWER:
 
-        var mcolor = new THREE.Color();
-        mcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var mcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {
@@ -313,9 +305,7 @@ ispy.addEvent = function(event) {
       case ispy.POINT:
         // We make a buffer geometry, use a point cloud, and
         // add to the scene.
-        var pcolor = new THREE.Color();
-        pcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
-
+        var pcolor = new THREE.Color(descr.style.color);
         var material = new THREE.PointCloudMaterial({color:pcolor, size:descr.style.size});
         var geometry = descr.fn(data);
         var points = new THREE.PointCloud(geometry, material);
@@ -343,8 +333,7 @@ ispy.addEvent = function(event) {
 
       case ispy.LINE:
 
-        var lcolor = new THREE.Color();
-        lcolor.setRGB(descr.style.color[0], descr.style.color[1], descr.style.color[2]);
+        var lcolor = new THREE.Color(descr.style.color);
 
         var transp = false;
         if ( descr.style.opacity < 1.0 ) {

@@ -15,7 +15,7 @@ ispy.invertColors = function() {
       var obj = ispy.event_description[k];
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          c.material.color = new THREE.Color(obj.style.color[0], obj.style.color[1], obj.style.color[2]);
+          c.material.color.setStyle(obj.style.color);
         })
       }
     }
@@ -26,7 +26,7 @@ ispy.invertColors = function() {
       var obj = ispy.event_description[k];
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          c.material.color = new THREE.Color(obj.style.altColor[0], obj.style.altColor[1], obj.style.altColor[2]);
+          c.material.color.setStyle(obj.style.altColor);
         })
       }
     }
