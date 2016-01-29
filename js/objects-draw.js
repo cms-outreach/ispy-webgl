@@ -740,8 +740,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
   }
 
-  var tcolor = new THREE.Color();
-  tcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var tcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -837,8 +836,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 ispy.makeVertex = function(data,style) {
   var geometry = new THREE.SphereGeometry(0.0025,32,32);
 
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var hcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -860,9 +858,7 @@ ispy.makeSimVertex = function(data, style) {
     return null;
 
   var geometry = new THREE.SphereGeometry(0.005,32,32);
-
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var hcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
@@ -951,51 +947,6 @@ ispy.makeTrackingClusters = function(data) {
   return ispy.makePointCloud(data,1);
 };
 
-// This is very inefficient, use point cloud instead
-/*
-ispy.makeTrackingRecHit = function(data,style) {
-  var geometry = new THREE.SphereGeometry(0.005,32,32);
-
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-
-  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
-
-  var hit = new THREE.Mesh(geometry, material);
-  hit.position.x = data[0][0];
-  hit.position.y = data[0][1];
-  hit.position.z = data[0][2];
-
-  return hit;
-};
-
-ispy.makeTrackCluster = function(data, style) {
-  var geometry = new THREE.TextGeometry('X', {size:0.05, height:0.01});
-
-  var hcolor = new THREE.Color();
-  hcolor.setRGB(style.color[0], style.color[1], style.color[2]);
-
-  var transp = false;
-  if ( style.opacity < 1.0 ) {
-    transp = true;
-  }
-
-  var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
-
-  var cluster = new THREE.Mesh(geometry, material);
-  cluster.position.x = data[1][0];
-  cluster.position.y = data[1][1];
-  cluster.position.z = data[1][2];
-
-  return cluster;
-};
-*/
-
 ispy.makeMET = function(data, style, selection) {
   /*
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
@@ -1012,8 +963,7 @@ ispy.makeMET = function(data, style, selection) {
   var dir = new THREE.Vector3(px,py,0);
   dir.normalize();
 
-  var color = new THREE.Color();
-  color.setRGB(style.color[0], style.color[1], style.color[2]);
+  var color = new THREE.Color(style.color[0], style.color[1], style.color[2]);
   var origin = new THREE.Vector3(0,0,0);
   var length = pt*0.1;
 
@@ -1063,8 +1013,7 @@ ispy.makeJet = function(data, style, selection) {
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
   geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
-  var jcolor = new THREE.Color();
-  jcolor.setRGB(style.color[0], style.color[1], style.color[2]);
+  var jcolor = new THREE.Color(style.color[0], style.color[1], style.color[2]);
 
   var transp = false;
   if ( style.opacity < 1.0 ) {
