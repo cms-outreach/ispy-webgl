@@ -91,9 +91,7 @@ ispy.init = function() {
     console.log('ispy: using webgl');
 
     renderer = new THREE.WebGLRenderer({antialias:true});
-    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-    inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
     ispy.renderer_name = "WebGLRenderer";
 
@@ -102,9 +100,13 @@ ispy.init = function() {
 
     renderer = new THREE.CanvasRenderer();
     inset_renderer = new THREE.CanvasRenderer();
+    inset_renderer.setClearColor(0x000000,0); // otherwise inset canvas does not change when selected
 
     ispy.renderer_name = "CanvasRenderer";
   }
+
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
   renderer.setSize(width, height);
   inset_renderer.setSize(inset_width, inset_height);
@@ -134,7 +136,6 @@ ispy.init = function() {
 
   ispy.inverted_colors = false;
   $('#invert-colors').prop('checked', false);
-  ispy.renderer.setClearColor(0x000000,1);
 
   var origin = new THREE.Vector3(0,0,0);
   var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
