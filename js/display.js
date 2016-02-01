@@ -10,7 +10,6 @@ ispy.invertColors = function() {
 
   if ( !ispy.inverted_colors ) {
     ispy.renderer.setClearColor(0x000000,1);
-    console.log('black', ispy.renderer.getClearColor());
 
     for ( var k in ispy.event_description ) {
       var obj = ispy.event_description[k];
@@ -24,7 +23,6 @@ ispy.invertColors = function() {
     }
   } else {
     ispy.renderer.setClearColor(0xffffff,1);
-    console.log('white', ispy.renderer.getClearColor());
 
     for ( var k in ispy.event_description ) {
       var obj = ispy.event_description[k];
