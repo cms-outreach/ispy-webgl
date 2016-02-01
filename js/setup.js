@@ -183,6 +183,8 @@ ispy.init = function() {
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
   var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  controls.rotateSpeed = 3.0;
+  controls.zoomSpeed = 0.5;
   ispy.controls = controls;
 
   // Add a parent object for each group

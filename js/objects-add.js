@@ -46,9 +46,9 @@ ispy.addDetector = function() {
 
       case ispy.SOLIDBOX:
 
-        var material = new THREE.MeshBasicMaterial({color:ocolor,
+        var material = new THREE.MeshBasicMaterial({
+          color:ocolor,
           transparent: transp,
-          linewidth: descr.style.linewidth,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -190,9 +190,9 @@ ispy.addEvent = function(event) {
 
       case ispy.SOLIDBOX:
 
-        var material = new THREE.MeshBasicMaterial({color:ocolor,
+        var material = new THREE.MeshBasicMaterial({
+          color:ocolor,
           transparent: transp,
-          linewidth: descr.style.linewidth,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -213,7 +213,8 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDBOX:
 
-        var material = new THREE.MeshBasicMaterial({color:ocolor, transparent: transp,
+        var material = new THREE.MeshBasicMaterial({
+          color:ocolor, transparent: transp,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -240,7 +241,8 @@ ispy.addEvent = function(event) {
 
       case ispy.SCALEDSOLIDTOWER:
 
-        var material = new THREE.MeshBasicMaterial({color:ocolor, transparent: transp,
+        var material = new THREE.MeshBasicMaterial({
+          color:ocolor, transparent: transp,
           opacity:descr.style.opacity});
         material.side = THREE.DoubleSide;
 
@@ -276,9 +278,9 @@ ispy.addEvent = function(event) {
       case ispy.POINT:
         // We make a buffer geometry, use a point cloud, and
         // add to the scene.
-        var material = new THREE.PointCloudMaterial({color:ocolor, size:descr.style.size});
+        var material = new THREE.PointsMaterial({color:ocolor, size:descr.style.size});
         var geometry = descr.fn(data);
-        var points = new THREE.PointCloud(geometry, material);
+        var points = new THREE.Points(geometry, material);
 
         points.name = key;
         points.visible = visible;
