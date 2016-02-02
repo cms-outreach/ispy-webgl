@@ -49,6 +49,11 @@ ispy.toStereo = function () {
     ispy.stereo = true;
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
+    ispy.stereo_renderer.focalLength = 4;
+    ispy.stereo_renderer.eyeSeparation = ispy.stereo_renderer.focalLength/30;
+
+    console.log(ispy.stereo_renderer.eyeSeparation);
+
     ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera, true);
 
     $('#axes').hide();
