@@ -1,10 +1,6 @@
 
 // ----------- MODALS: settings
 
-ispy.altColor = function() {
-
-};
-
 ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 
