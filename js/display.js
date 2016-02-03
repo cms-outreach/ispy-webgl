@@ -86,10 +86,15 @@ ispy.updateRendererInfo = function() {
   var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
   html += "<dl>";
 
-  for ( var i in info ) {
-    html += "<dt><strong>"+ i +"</strong></dt>";
-    for ( var j in info[i] ) {
-      html += "<dd>" + j + ": " + info[i][j] + "</dd>";
+  html += "<dt><strong> render </strong></dt>";
+  for ( var prop in info.render ) {
+    html += "<dd>" + prop + ": " + info.render[prop] + "</dd>";
+  }
+
+  if ( info.memory ) {
+    html += "<dt><strong> memory </strong></dt>";
+    for ( var prop in info.memory ) {
+      html += "<dd>" + prop + ": " + info.memory[prop] + "</dd>";
     }
   }
 
