@@ -196,6 +196,7 @@ ispy.init = function() {
   });
 
   $('#version').html("v"+ispy.version);
+  $('#threejs').html("r"+THREE.REVISION);
 
   window.addEventListener('resize', ispy.onWindowResize, false);
 
