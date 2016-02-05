@@ -15,6 +15,11 @@ ispy.addDetector = function() {
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
     ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
 
+    var obj = new THREE.Object3D();
+    obj.name = key;
+    obj.visible = visible;
+    ispy.scene.getObjectByName(descr.group).add(obj);
+
     var ocolor = new THREE.Color(descr.style.color);
 
     var transp = false;
@@ -38,9 +43,7 @@ ispy.addDetector = function() {
         }
 
         var line = new THREE.LineSegments(geometry, material);
-        line.name = key;
-        line.visible = visible;
-        ispy.scene.getObjectByName(descr.group).add(line);
+        ispy.scene.getObjectByName(key).add(line);
 
         break;
 
@@ -60,10 +63,7 @@ ispy.addDetector = function() {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
-        meshes.name = key;
-        meshes.visible = visible;
-
-        ispy.scene.getObjectByName(descr.group).add(meshes);
+        ispy.scene.getObjectByName(key).add(meshes);
 
         break;
 
@@ -76,9 +76,7 @@ ispy.addDetector = function() {
         var geometry = descr.fn(data);
 
         var mesh = new THREE.LineSegments(geometry, material);
-        mesh.name = key;
-        mesh.visible = visible;
-        ispy.scene.getObjectByName(descr.group).add(mesh);
+        ispy.scene.getObjectByName(key).add(mesh);
 
         break;
 
@@ -94,9 +92,7 @@ ispy.addDetector = function() {
           for ( var j = 0; j < models.length; j++ ) {
             var shape = ispy.makeShapes(models[j]);
             var line = new THREE.LineSegments(shape, material);
-            line.name = key;
-            line.visible = visible;
-            ispy.scene.getObjectByName(descr.group).add(line);
+            ispy.scene.getObjectByName(key).add(line);
           }
         }
 
@@ -149,6 +145,11 @@ ispy.addEvent = function(event) {
     var objectIds = [];
     var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
+    var obj = new THREE.Object3D();
+    obj.name = key;
+    obj.visible = visible;
+    ispy.scene.getObjectByName(descr.group).add(obj);
+
     var ocolor = null;
 
     if ( descr.style.color !== undefined ) {
@@ -182,9 +183,7 @@ ispy.addEvent = function(event) {
         }
 
         var line = new THREE.LineSegments(geometry, material);
-        line.name = key;
-        line.visible = visible;
-        ispy.scene.getObjectByName(descr.group).add(line);
+        ispy.scene.getObjectByName(key).add(line);
 
         break;
 
@@ -204,10 +203,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
-        meshes.name = key;
-        meshes.visible = visible;
-
-        ispy.scene.getObjectByName(descr.group).add(meshes);
+        ispy.scene.getObjectByName(key).add(meshes);
 
         break;
 
@@ -232,10 +228,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
-        meshes.name = key;
-        meshes.visible = visible;
-
-        ispy.scene.getObjectByName(descr.group).add(meshes);
+        ispy.scene.getObjectByName(key).add(meshes);
 
         break;
 
@@ -253,10 +246,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
-        meshes.name = key;
-        meshes.visible = visible;
-
-        ispy.scene.getObjectByName(descr.group).add(meshes);
+        ispy.scene.getObjectByName(key).add(meshes);
 
         break;
 
@@ -265,13 +255,11 @@ ispy.addEvent = function(event) {
 
         var tracks = descr.fn(data, extra, assoc, descr.style, descr.selection);
         tracks.forEach(function(t, i) {
-          t.name = key;
-          t.visible = visible;
           // originalIndex works as a link between the original
           // data and THREE objects:
           t.userData.originalIndex = i;
           objectIds.push(t.id);
-          ispy.scene.getObjectByName(descr.group).add(t);
+          ispy.scene.getObjectByName(key).add(t);
         });
         break;
 
@@ -281,10 +269,7 @@ ispy.addEvent = function(event) {
         var material = new THREE.PointsMaterial({color:ocolor, size:descr.style.size});
         var geometry = descr.fn(data);
         var points = new THREE.Points(geometry, material);
-
-        points.name = key;
-        points.visible = visible;
-        ispy.scene.getObjectByName(descr.group).add(points);
+        ispy.scene.getObjectByName(key).add(points);
         break;
 
       case ispy.SHAPE:
@@ -292,13 +277,11 @@ ispy.addEvent = function(event) {
         for ( var i = 0; i < data.length; i++ ) {
           var shape = descr.fn(data[i], descr.style, descr.selection);
           if ( shape !== null ) {
-            shape.name = key;
-            shape.visible = visible;
             // originalIndex works as a link between the original
             // data and THREE objects:
             shape.userData.originalIndex = i;
             objectIds.push(shape.id);
-            ispy.scene.getObjectByName(descr.group).add(shape);
+            ispy.scene.getObjectByName(key).add(shape);
           }
         }
         break;
@@ -314,13 +297,11 @@ ispy.addEvent = function(event) {
               linewidth:descr.style.linewidth,
               opacity:descr.style.opacity
             }));
-            line.name = key;
-            line.visible = visible;
             // originalIndex works as a link between the original
             // data and THREE objects:
             line.userData.originalIndex = i;
             objectIds.push(line.id);
-            ispy.scene.getObjectByName(descr.group).add(line);
+            ispy.scene.getObjectByName(key).add(line);
           });
         }
         break;

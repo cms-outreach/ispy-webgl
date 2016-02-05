@@ -17,46 +17,46 @@ ispy.animation_script = {
       },
       "time": 2500,
       "before_objects": [ // What gets turned off/on before the collision
-        {group:"Imported", key:"Beam Pipe", show:true},
-        {group:"Tracking", key:"Tracks_V1", show:false},
-        {group:"Tracking", key:"Tracks_V2", show:false},
-        {group:"Tracking", key:"Tracks_V3", show:false},
-        {group:"ECAL", key: "EERecHits_V2", show:false},
-        {group:"ECAL", key:"EBRecHits_V2", show:false},
-        {group:"HCAL", key:"HERecHits_V2", show:false},
-        {group:"HCAL", key:"HBRecHits_V2", show:false},
-        {group:"Muon", key:"DTRecSegment4D_V1", show:false},
-        {group:"Muon", key:"RPCRecHits_V1", show:false},
-        {group:"Muon", key:"CSCRecHit2Ds_V2", show:false},
-        {group:"Muon", key:"CSCSegments_V1", show:false},
-        {group:"Muon", key:"CSCSegments_V2", show:false},
-        {group:"Muon", key:"CSCSegments_V3", show:false},
-        {group:"Muon", key:"MuonChambers_V1", show:false},
-        {group:"Physics", key:"GlobalMuons_V1", show:false},
-        {group:"Physics", key:"TrackerMuons_V1", show:false},
-        {group:"Physics", key:"GsfElectrons_V1", show:false},
-        {group:"Physics", key:"GsfElectrons_V2", show:false}
+        {key:"BeamPipe", show:true},
+        {key:"Tracks_V1", show:false},
+        {key:"Tracks_V2", show:false},
+        {key:"Tracks_V3", show:false},
+        {key:"EERecHits_V2", show:false},
+        {key:"EBRecHits_V2", show:false},
+        {key:"HERecHits_V2", show:false},
+        {key:"HBRecHits_V2", show:false},
+        {key:"DTRecSegment4D_V1", show:false},
+        {key:"RPCRecHits_V1", show:false},
+        {key:"CSCRecHit2Ds_V2", show:false},
+        {key:"CSCSegments_V1", show:false},
+        {key:"CSCSegments_V2", show:false},
+        {key:"CSCSegments_V3", show:false},
+        {key:"MuonChambers_V1", show:false},
+        {key:"GlobalMuons_V1", show:false},
+        {key:"TrackerMuons_V1", show:false},
+        {key:"GsfElectrons_V1", show:false},
+        {key:"GsfElectrons_V2", show:false}
       ],
       "after_objects": [ // What gets turned on/off after the collision
-        {group:"Tracking", key:"Tracks_V1", show:true},
-        {group:"Tracking", key:"Tracks_V2", show:true},
-        {group:"Tracking", key:"Tracks_V3", show:true},
-        {group:"ECAL", key: "EERecHits_V2", show:true},
-        {group:"ECAL", key:"EBRecHits_V2", show:true},
-        {group:"HCAL", key:"HERecHits_V2", show:true},
-        {group:"HCAL", key:"HBRecHits_V2", show:true},
-        {group:"Muon", key:"DTRecSegment4D_V1", show:true},
-        {group:"Muon", key:"RPCRecHits_V1", show:true},
-        {group:"Muon", key:"CSCRecHit2Ds_V2", show:true},
-        {group:"Muon", key:"CSCSegments_V1", show:true},
-        {group:"Muon", key:"CSCSegments_V2", show:true},
-        {group:"Muon", key:"CSCSegments_V3", show:true},
-        {group:"Muon", key:"MuonChambers_V1", show:true},
-        {group:"Physics", key:"GlobalMuons_V1", show:true},
-        {group:"Physics", key:"TrackerMuons_V1", show:true},
-        {group:"Physics", key:"GsfElectrons_V1", show:true},
-        {group:"Physics", key:"GsfElectrons_V2", show:true},
-        {group:"Imported", key:"Beam Pipe", show:false}
+        {key:"Tracks_V1", show:true},
+        {key:"Tracks_V2", show:true},
+        {key:"Tracks_V3", show:true},
+        {key: "EERecHits_V2", show:true},
+        {key:"EBRecHits_V2", show:true},
+        {key:"HERecHits_V2", show:true},
+        {key:"HBRecHits_V2", show:true},
+        {key:"DTRecSegment4D_V1", show:true},
+        {key:"RPCRecHits_V1", show:true},
+        {key:"CSCRecHit2Ds_V2", show:true},
+        {key:"CSCSegments_V1", show:true},
+        {key:"CSCSegments_V2", show:true},
+        {key:"CSCSegments_V3", show:true},
+        {key:"MuonChambers_V1", show:true},
+        {key:"GlobalMuons_V1", show:true},
+        {key:"TrackerMuons_V1", show:true},
+        {key:"GsfElectrons_V1", show:true},
+        {key:"GsfElectrons_V2", show:true},
+        {key:"Beam Pipe", show:false}
       ]
     },
     "zoom": {
@@ -137,7 +137,7 @@ ispy.toggleAnimation = function() {
       .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
       .onStart(function(){
         animation.rotation.objects.forEach(function(o) {
-          ispy.showObject(o.group, o.key, o.show);
+          ispy.showObject(o.key, o.show);
         });
       });
 
@@ -170,7 +170,7 @@ ispy.toggleAnimation = function() {
       .to({z:0.0}, animation.collision.time)
       .onStart(function(){
         animation.collision.before_objects.forEach(function(o){
-          ispy.showObject(o.group,o.key,o.show);
+          ispy.showObject(o.key,o.show);
         });
       })
       .easing(TWEEN.Easing.Back.In);
@@ -180,7 +180,7 @@ ispy.toggleAnimation = function() {
       .onComplete(function(){
         zoom1.start();
           animation.collision.after_objects.forEach(function(o) {
-            ispy.showObject(o.group, o.key, o.show);
+            ispy.showObject(o.key, o.show);
           });
       })
       .easing(TWEEN.Easing.Back.In);

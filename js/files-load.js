@@ -448,6 +448,7 @@ ispy.loadSelectedObj = function() {
 
 ispy.importBeampipe = function() {
   var loader = new THREE.OBJMTLLoader();
+
   loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
     object.name = 'BeamPipe';
     object.visible = true;

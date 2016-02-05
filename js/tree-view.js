@@ -31,14 +31,12 @@ ispy.toggleCollapse = function(g) {
   $('i.'+g).toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
 };
 
-
-
-ispy.toggle = function(group, key) {
+ispy.toggle = function(key) {
   ispy.disabled[key] = !ispy.disabled[key];
 
-  // For provenance (for now, just event information)
-  // we display as simple HTML so therefore not part of the scene
-  if ( group === 'Provenance' ) {
+  // For event information we display as simple HTML
+  // so therefore not part of the scene
+  if ( key === 'Event_V1' || key === 'Event_V2' ) {
     if ( ispy.disabled[key] ) {
       $('#event-info').hide();
     } else {
@@ -46,23 +44,19 @@ ispy.toggle = function(group, key) {
     }
   }
 
-  ispy.scene.getObjectByName(group).children.forEach(function(c) {
-    if ( c.name === key ) {
-      c.visible = !ispy.disabled[key];
-    }
-  });
+  ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
 };
 
 // In some cases (e.g. animation) we want to explicitly turn somethings on/off
 // It would probably be nice to: do this by group, support wildcards, etc.
-ispy.showObject = function(group, key, show) {
-  ispy.scene.getObjectByName(group).children.forEach(function(c) {
-    if ( c.name === key ) {
-      c.visible = show;
-      ispy.disabled[key] = !show;
-      $('#'+key).prop('checked', show);
-    }
-  });
+ispy.showObject = function(key, show) {
+  var obj = ispy.scene.getObjectByName(key);
+  if ( obj !== undefined ) {
+    console.log(key, show);
+    obj.visible = show;
+    ispy.disabled[key] = !show;
+    $('#'+key).prop('checked', show);
+  }
 };
 
 ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
@@ -91,8 +85,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
   }
 
   html += "<td class='collection'>";
-  //html += "<input type='checkbox' " + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
-  html += "<input type='checkbox' id='"+key+"'" + on + " onchange='ispy.toggle(\""+ group + "\",\"" + key + "\");'>";
+  html += "<input type='checkbox' id='"+key+"'" + on + " onchange='ispy.toggle(\"" + key + "\");'>";
   html += "</td>";
   html += "</tr>";
 
