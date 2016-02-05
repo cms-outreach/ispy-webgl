@@ -183,6 +183,7 @@ ispy.addEvent = function(event) {
         }
 
         var line = new THREE.LineSegments(geometry, material);
+        line.name = key;
         ispy.scene.getObjectByName(key).add(line);
 
         break;
@@ -203,6 +204,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
         ispy.scene.getObjectByName(key).add(meshes);
 
         break;
@@ -228,6 +230,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
         ispy.scene.getObjectByName(key).add(meshes);
 
         break;
@@ -246,6 +249,7 @@ ispy.addEvent = function(event) {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
         ispy.scene.getObjectByName(key).add(meshes);
 
         break;
@@ -255,6 +259,9 @@ ispy.addEvent = function(event) {
 
         var tracks = descr.fn(data, extra, assoc, descr.style, descr.selection);
         tracks.forEach(function(t, i) {
+          // for event info we want each of the children to have the
+          // same name as the parent. this is so clicking on an object works
+          t.name = key;
           // originalIndex works as a link between the original
           // data and THREE objects:
           t.userData.originalIndex = i;
@@ -269,6 +276,7 @@ ispy.addEvent = function(event) {
         var material = new THREE.PointsMaterial({color:ocolor, size:descr.style.size});
         var geometry = descr.fn(data);
         var points = new THREE.Points(geometry, material);
+        points.name = key;
         ispy.scene.getObjectByName(key).add(points);
         break;
 
@@ -277,6 +285,7 @@ ispy.addEvent = function(event) {
         for ( var i = 0; i < data.length; i++ ) {
           var shape = descr.fn(data[i], descr.style, descr.selection);
           if ( shape !== null ) {
+            shape.name = key;
             // originalIndex works as a link between the original
             // data and THREE objects:
             shape.userData.originalIndex = i;
@@ -297,6 +306,7 @@ ispy.addEvent = function(event) {
               linewidth:descr.style.linewidth,
               opacity:descr.style.opacity
             }));
+            line.name = key;
             // originalIndex works as a link between the original
             // data and THREE objects:
             line.userData.originalIndex = i;
