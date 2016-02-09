@@ -90,7 +90,7 @@ ispy.init = function() {
   if ( ispy.hasWebGL() ) {
     console.log('ispy: using webgl');
 
-    renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
     inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 
     ispy.renderer_name = "WebGLRenderer";
@@ -98,9 +98,8 @@ ispy.init = function() {
   } else {
     console.log('ispy: using canvas');
 
-    renderer = new THREE.CanvasRenderer();
-    inset_renderer = new THREE.CanvasRenderer();
-    inset_renderer.setClearColor(0x000000,0); // otherwise inset canvas does not change when selected
+    renderer = new THREE.CanvasRenderer({alpha:true});
+    inset_renderer = new THREE.CanvasRenderer({alpha:true});
 
     ispy.renderer_name = "CanvasRenderer";
   }
