@@ -897,8 +897,8 @@ ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
 };
 
 ispy.makeDT = function(dt) {
-  //return ispy.makeSolidBox(dt, 1);
-  return ispy.makeWireframeBox(dt, 1);
+  return ispy.makeSolidBox(dt, 1);
+  //return ispy.makeWireframeBox(dt, 1);
 };
 
 ispy.makeCSC = function(csc) {

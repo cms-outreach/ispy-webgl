@@ -43,6 +43,7 @@ ispy.addDetector = function() {
         }
 
         var line = new THREE.LineSegments(geometry, material);
+        line.name = key;
         ispy.scene.getObjectByName(key).add(line);
 
         break;
@@ -63,6 +64,7 @@ ispy.addDetector = function() {
         }
 
         var meshes = new THREE.Mesh(boxes, material);
+        meshes.name = key;
         ispy.scene.getObjectByName(key).add(meshes);
 
         break;
@@ -76,6 +78,7 @@ ispy.addDetector = function() {
         var geometry = descr.fn(data);
 
         var mesh = new THREE.LineSegments(geometry, material);
+        mesh.name = key;
         ispy.scene.getObjectByName(key).add(mesh);
 
         break;
@@ -92,6 +95,7 @@ ispy.addDetector = function() {
           for ( var j = 0; j < models.length; j++ ) {
             var shape = ispy.makeShapes(models[j]);
             var line = new THREE.LineSegments(shape, material);
+            line.name = key;
             ispy.scene.getObjectByName(key).add(line);
           }
         }

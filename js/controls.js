@@ -137,7 +137,14 @@ ispy.exportScene = function() {
 
 ispy.exportModel = function() {
   var exporter = new THREE.OBJExporter();
-  ispy.scene.children.forEach(function(c) {
-     ispy.exportString(exporter.parse(c), c.name+'.obj');
-  })
+
+  ispy.scene.children.forEach(function(c){
+    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+      c.children.forEach(function(o) {
+        if ( o.visible ) {
+          ispy.exportString(exporter.parse(o), o.name+'.obj');
+        }
+      });
+    }
+  });
 }

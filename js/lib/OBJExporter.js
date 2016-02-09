@@ -26,6 +26,9 @@ THREE.OBJExporter.prototype = {
 
 			if ( geometry instanceof THREE.Geometry ) {
 
+				// tpm
+				// see https://github.com/mrdoob/three.js/issues/7761
+				// rather than play around too much I made sure meshes are named
 				output += 'o ' + mesh.name + '\n';
 
 				var vertices = geometry.vertices;

@@ -250,13 +250,19 @@ ispy.initLight = function() {
   var intensity = 1.0;
   var length = 15.0;
 
+  var lights = new THREE.Object3D();
+  lights.name = 'Lights';
+  ispy.scene.add(lights);
+
   ispy.light1 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light1.name = 'Light1';
   ispy.light1.position.set(-length, length, length);
-  ispy.scene.getObjectByName("Detector").add(ispy.light1);
+  ispy.scene.getObjectByName('Lights').add(ispy.light1);
 
   ispy.light2 = new THREE.DirectionalLight(0xffffff, intensity);
+  ispy.light2.name = 'Light2';
   ispy.light2.position.set(length, -length, -length);
-  ispy.scene.getObjectByName("Detector").add(ispy.light2);
+  ispy.scene.getObjectByName('Lights').add(ispy.light2);
 };
 
 
