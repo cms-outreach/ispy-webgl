@@ -111,7 +111,9 @@ ispy.addEvent = function(event) {
   ispy.scene.children.forEach(function(c) {
     if ( c.name !== 'Detector' ) {
       if ( c.name !== 'Imported' ) {
-        ispy.scene.getObjectByName(c.name).children.length = 0;
+        if ( c.name !== 'Lights') {
+          ispy.scene.getObjectByName(c.name).children.length = 0;
+        }
       }
     }
   });
