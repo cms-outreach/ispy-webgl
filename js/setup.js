@@ -56,6 +56,32 @@ ispy.initCamera = function() {
   ispy.lookAtOrigin();
 };
 
+ispy.useRenderer = function(type) {
+  var width = document.getElementById('display').clientWidth;
+  var height = document.getElementById('display').clientHeight;
+
+  var renderer = new THREE[type]({antialias:true, alpha:true});
+  var inset_renderer = new THREE[type]({antialias:true, alpha:true});
+
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+  inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+
+  if ( type === 'SVGRenderer' ) {
+    renderer.setClearColor(0x000000,0);
+    inset_renderer.setClearColor(0x000000,0);
+  }
+
+  renderer.setSize(width, height);
+  inset_renderer.setSize(height/5, height/5);
+
+  ispy.renderer = renderer;
+  ispy.renderer_name = type;
+  ispy.inset_renderer = inset_renderer;
+
+  document.getElementById('display').appendChild(ispy.renderer.domElement);
+  document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
+};
+
 ispy.init = function() {
   var display = document.getElementById('display');
   var inset = document.getElementById('axes');
@@ -63,8 +89,8 @@ ispy.init = function() {
   var scene = new THREE.Scene();
   ispy.scene = scene;
 
-  var width = $('#display').innerWidth();
-  var height = $('#display').innerHeight();
+  var width = display.clientWidth;
+  var height = display.clientHeight;
 
   // width, height, fov, near, far, orthoNear, orthoFar
   var camera = new THREE.CombinedCamera(width, height, 75, 0.1, 100, 0.1, 100);
@@ -88,34 +114,10 @@ ispy.init = function() {
   var inset_renderer;
 
   if ( ispy.hasWebGL() ) {
-    console.log('ispy: using webgl');
-
-    renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-    inset_renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-
-    ispy.renderer_name = "WebGLRenderer";
-
+    ispy.useRenderer('WebGLRenderer', width, height);
   } else {
-    console.log('ispy: using canvas');
-
-    renderer = new THREE.CanvasRenderer({alpha:true});
-    inset_renderer = new THREE.CanvasRenderer({alpha:true});
-
-    ispy.renderer_name = "CanvasRenderer";
+    ispy.useRenderer('CanvasRenderer', width, height);
   }
-
-  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-
-  renderer.setSize(width, height);
-  inset_renderer.setSize(inset_width, inset_height);
-
-  ispy.renderer = renderer;
-  ispy.inset_renderer = inset_renderer;
-  ispy.inset_renderer.alpha = 0.0;
-
-  display.appendChild(ispy.renderer.domElement);
-  inset.appendChild(ispy.inset_renderer.domElement);
 
   ispy.stats = new Stats();
   display.appendChild(ispy.stats.domElement);

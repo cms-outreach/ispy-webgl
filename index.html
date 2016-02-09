@@ -20,6 +20,7 @@
 
   <script src="js/lib/Projector.js"></script>
   <script src="js/lib/CanvasRenderer.js"></script>
+  <script src="js/lib/SVGRenderer.js"></script>
 
   <script src="js/lib/TextGeometry.js"></script>
   <script src="js/lib/FontUtils.js"></script>
@@ -310,6 +311,18 @@
         <p>
           Set imported geometry transparency: <span id='trspy'></span>
           <input type='range' min='0.0' max='1.0' value='1.0' id='transparency-slider' step='0.05' oninput='ispy.setTransparency(value);'>
+        </p>
+        <p>
+          <div class="btn-group">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+              Select renderer <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#" onclick="ispy.updateRenderer('WebGLRenderer');">WebGLRenderer</a></li>
+              <li><a href="#" onclick="ispy.updateRenderer('CanvasRenderer');">CanvasRenderer</a></li>
+              <li><a href="#" onclick="ispy.updateRenderer('SVGRenderer');">SVGRenderer</a></li>
+            </ul>
+          </div>
         </p>
         <div id="renderer-info"></div>
       </div>
