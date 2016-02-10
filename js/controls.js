@@ -44,6 +44,46 @@ ispy.setPerspective = function() {
   ispy.camera.toPerspective();
 };
 
+ispy.enterFullscreen = function() {
+  var container = document.getElementById('ispy');
+
+  if ( container.requestFullscreen ) {
+    container.requestFullscreen();
+  } else if ( container.msRequestFullscreen ) {
+    container.msRequestFullscreen();
+  } else if ( container.mozRequestFullScreen ) {
+    container.mozRequestFullScreen();
+  } else if ( container.webkitRequestFullscreen ) {
+    container.webkitRequestFullscreen();
+  } else {
+    alert('Cannot go to full screen!');
+  }
+};
+
+ispy.exitFullscreen = function() {
+  if ( document.exitFullscreen ) {
+    document.exitFullscreen();
+  } else if ( document.msExitFullscreen ) {
+    document.msExitFullscreen();
+  } else if ( document.mozCancelFullScreen ) {
+    document.mozCancelFullScreen();
+  } else if ( document.webkitExitFullscreen ) {
+    document.webkitExitFullscreen();
+  } else {
+    alert('Cannot exit full screen. Try Esc?');
+  }
+};
+
+ispy.toggleFullscreen = function() {
+  $('#enterFullscreen').toggleClass('active');
+  $('#exitFullscreen').toggleClass('active');
+};
+
+document.addEventListener('webkitfullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('mozfullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('fullscreenchange', ispy.toggleFullscreen, false);
+document.addEventListener('MSFullscreenChange', ispy.toggleFullscreen, false);
+
 ispy.toStereo = function () {
   if (!ispy.stereo) {
     ispy.stereo = true;
@@ -93,6 +133,7 @@ ispy.setStereo = function() {
   $('#orthographic').removeClass('active');
   $('#stereo').addClass('active');
   ispy.toStereo();
+  ispy.enterFullscreen();
 };
 
 ispy.zoom = function(step) {
