@@ -120,7 +120,15 @@ ispy.onWindowResize = function() {
   var w = $('#display').innerWidth();
   var h = $('#display').innerHeight();
 
-  ispy.camera.aspect	= w/h;
+  if ( ispy.camera.inPerspectiveMode ) {
+    ispy.camera.cameraP.aspect = w/h;
+  } else {
+    ispy.camera.cameraO.left = -w/2;
+    ispy.camera.cameraO.right = w/2;
+    ispy.camera.cameraO.top = h/2;
+    ispy.camera.cameraO.bottom = -h/2;
+  }
+
   ispy.camera.updateProjectionMatrix();
   ispy.renderer.setSize(w,h);
   ispy.render();
