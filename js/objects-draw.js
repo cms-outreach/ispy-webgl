@@ -506,11 +506,11 @@ ispy.makeModelEcalBarrel = function(data) {
 };
 
 ispy.makeModelEcalEndcapMinus = function(data) {
-  return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
+  return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
 };
 
 ispy.makeModelEcalEndcapPlus = function(data) {
-  return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
+  return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
 };
 
 ispy.makeModelEcalPreshower = function(data) {
