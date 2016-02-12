@@ -139,7 +139,7 @@ ispy.onWindowResize = function() {
     d.height = window.innerHeight;
     d.width = window.innerWidth;
   } else {
-    $('#display').removeAttr('style')
+    $('#display').removeAttr('style');
   }
 
   var w = $('#display').innerWidth();
@@ -147,9 +147,8 @@ ispy.onWindowResize = function() {
 
   if ( ispy.camera.inPerspectiveMode ) {
     ispy.camera.cameraP.aspect = w/h;
-  } else {
 
-    ispy.camera.camera0.aspect = w/h;
+  } else {
     ispy.camera.cameraO.left = -w/2;
     ispy.camera.cameraO.right = w/2;
     ispy.camera.cameraO.top = h/2;
