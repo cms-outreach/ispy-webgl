@@ -5,6 +5,8 @@ ispy.invertColors = function() {
   ispy.inverted_colors = !ispy.inverted_colors;
 
   if ( !ispy.inverted_colors ) {
+    ispy.renderer.setClearColor(0x000000,1);
+
     for ( var k in ispy.event_description ) {
       var obj = ispy.event_description[k];
       if ( obj.style.altColor !== undefined ) {
@@ -16,6 +18,8 @@ ispy.invertColors = function() {
       }
     }
   } else {
+    ispy.renderer.setClearColor(0xffffff,1);
+
     for ( var k in ispy.event_description ) {
       var obj = ispy.event_description[k];
       if ( obj.style.altColor !== undefined ) {
