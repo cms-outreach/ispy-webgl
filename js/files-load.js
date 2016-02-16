@@ -1,4 +1,24 @@
 ispy.web_files = [
+  "/record/614/files/BTau.ig",
+  "/record/615/files/DoubleElectron.ig",
+  "/record/616/files/DoubleMu.ig",
+  "/record/617/files/ElectronHad.ig",
+  "/record/618/files/HT.ig",
+  "/record/619/files/Jet.ig",
+  "/record/620/files/MET.ig",
+  "/record/621/files/METBTag.ig",
+  "/record/622/files/MinimumBias.ig",
+  "/record/623/files/MuEG.ig",
+  "/record/624/files/MuHad.ig",
+  "/record/625/files/MultiJet.ig",
+  "/record/626/files/MuOnia.ig",
+  "/record/627/files/Photon.ig",
+  "/record/628/files/PhotonHad.ig",
+  "/record/629/files/SingleElectron.ig",
+  "/record/630/files/SingleMu.ig",
+  "/record/631/files/Tau.ig",
+  "/record/632/files/TauPlusX.ig",
+
   "/record/600/files/BTau.ig",
   "/record/601/files/EGMonitor.ig",
   "/record/602/files/Electron.ig",
@@ -13,6 +33,7 @@ ispy.web_files = [
   "/record/611/files/Commissioning.ig",
   "/record/612/files/MinimumBias.ig",
   "/record/613/files/ZeroBias.ig",
+
   "/record/300/files/4lepton.ig",
   "/record/300/files/diphoton.ig",
   "/record/301/files/dimuon-Jpsi_0.ig",
@@ -25,6 +46,15 @@ ispy.web_files = [
   "/record/308/files/Wenu_0.ig",
   "/record/309/files/Wmunu_0.ig"
 ];
+
+// This is a bit kludgy but good-enough for now.
+// Perhaps should use ranges but since we are hard-coding the files
+// here and have control of them: my conscience is clear (just).
+ispy.wfs = {
+  '2011A' : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+  '2010B' : [18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],
+  'Education' : [33,34,35,36,37,38,39,40,41,42,43]
+};
 
 ispy.ig_data = null;
 ispy.ievent = 0;
@@ -243,6 +273,7 @@ ispy.selectFile = function(filename) {
   xhr.send();
 };
 
+/*
 ispy.loadWebFiles = function() {
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
@@ -258,6 +289,39 @@ ispy.loadWebFiles = function() {
     var cell = row.insertCell(0);
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
+  }
+};
+*/
+
+ispy.showWebFiles = function(dir_name) {
+  $('#browser-dirs').hide();
+  var tbl = document.getElementById("browser-files");
+  var files = ispy.wfs[dir_name];
+  tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDirs();"> ../ </a>';
+
+  for (var i = 0; i < files.length; i++) {
+    var e = files[i];
+    var name = ispy.web_files[e].split("/")[4];
+    var cls = "file";
+    tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a id="browser-file-' + e + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
+  }
+  $('#browser-files').show();
+};
+
+ispy.showWebDirs = function() {
+  ispy.clearTable('browser-files');
+  $('#selected-event').html("Selected event");
+  $('#load-event').addClass('disabled');
+  $('#browser-files').hide();
+  $('#browser-dirs').show();
+};
+
+ispy.loadWebDirs = function() {
+  ispy.clearTable('browser-files');
+  $('#selected-event').html("Selected event");
+  var tbl = document.getElementById("browser-dirs");
+  for ( var d in ispy.wfs ) {
+    tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebFiles(\'' + d + '\');">' + d + '/' + '</a>';
   }
 };
 
