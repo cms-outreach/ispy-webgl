@@ -124,8 +124,8 @@ ispy.loadEvent = function() {
 
   $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 
-  console.log(ispy.current_event.Types);
-  console.log(ispy.current_event.Collections.Products_V1);
+  //console.log(ispy.current_event.Types);
+  //console.log(ispy.current_event.Collections.Products_V1);
 };
 
 ispy.nextEvent = function() {

@@ -180,17 +180,17 @@ ispy.event_description = {
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}},
   "StandaloneMuons_V2": {type: ispy.TRACK, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
     extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
-    fn: ispy.makeTracks, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
+    fn: ispy.makeTracks, style: {color: [1, 0, 0], altColor: [1, 0, 0], opacity: 1.0, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
   "TrackerMuons_V1": {type: ispy.POLYLINE, on: true, group: "Physics", name: "Tracker Muons (Reco)",
     extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
     fn: ispy.makeTrackPoints, style: {color: [1, 0, 0], opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}},
 
   "GsfElectrons_V1": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], altColor: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
   "GsfElectrons_V2": {type: ispy.TRACK, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
+    fn: ispy.makeTracks, style: {color: [0.1, 1.0, 0.1], altColor: [0.1, 1.0, 0.1], opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}},
 
   "Vertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (reco)",
     fn:ispy.makeVertex, style: {color: [1, 0.4, 0], opacity: 0.9}}
