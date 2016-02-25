@@ -17,6 +17,8 @@ ispy.obj_files = [
 
 ispy.ig_data = null;
 ispy.ievent = 0;
+ispy.isGeometry = false;
+ispy.loaded_local = false;
 
 ispy.openDialog = function(id) {
   $(id).modal('show');
@@ -91,15 +93,26 @@ ispy.loadEvent = function() {
   }
 
   $("#loading").modal("hide");
-  ispy.addEvent(event);
-  ispy.enableNextPrev();
 
-  var ievent = +ispy.event_index + 1; // JavaScript!
+  if ( ispy.isGeometry ) {
 
-  $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+    $.extend(ispy.detector, event);
+    ispy.addDetector();
+    ispy.isGeometry = false;
 
-  console.log(ispy.current_event.Types);
-  console.log(ispy.current_event.Collections.Products_V1);
+  } else {
+
+    ispy.addEvent(event);
+    ispy.enableNextPrev();
+
+    var ievent = +ispy.event_index + 1; // JavaScript!
+
+    $("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+
+    console.log(ispy.current_event.Types);
+    console.log(ispy.current_event.Collections.Products_V1);
+
+  }
 };
 
 ispy.nextEvent = function() {
@@ -126,7 +139,10 @@ ispy.selectLocalFile = function(index) {
     var event_list = [];
 
     $.each(zip.files, function(index, zipEntry){
-      if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+      if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+        if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
+          ispy.isGeometry = true;
+        }
         event_list.push(zipEntry.name);
       }
     });
@@ -174,6 +190,7 @@ ispy.loadLocalFiles = function() {
 
   ispy.local_files = document.getElementById('local-files').files;
   ispy.updateLocalFileList(ispy.local_files);
+  ispy.loaded_local = true;
   ispy.openDialog('#files');
 };
 
@@ -216,7 +233,7 @@ ispy.selectFile = function(filename) {
       var event_list = [];
 
       $.each(zip.files, function(index, zipEntry){
-        if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+        if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
           event_list.push(zipEntry.name);
         }
       });
@@ -245,6 +262,23 @@ ispy.loadWebFiles = function() {
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
   }
+};
+
+ispy.showWebFiles = function() {
+  ispy.openDialog('#files');
+
+  if ( ispy.loaded_local === true ) {
+    // If we have previously opened a local file then
+    // we don't want its contents appearing
+    // in the web files dialog
+    ispy.clearTable("browser-files");
+    ispy.clearTable("browser-events");
+    ispy.loaded_local = false;
+
+    ispy.loadWebFiles();
+  }
+
+  $('#open-files').modal('hide');
 };
 
 ispy.cleanupData = function(d) {
