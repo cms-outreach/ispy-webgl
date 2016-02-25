@@ -263,6 +263,11 @@ ispy.initLight = function() {
   ispy.scene.getObjectByName('Lights').add(ispy.light2);
 };
 
+ispy.getJSON = function(scr) {
+  return $.ajax({url: scr, dataType: "json", cache: true}).success(function(data) {
+    $.extend(true, ispy.detector, data);
+  });
+};
 
 ispy.getScript = function(scr) {
   return $.ajax({url: scr, dataType: "script", cache: true});
@@ -282,23 +287,22 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(ispy.getScript("./geometry/eb.js"),
-           ispy.getScript("./geometry/ee.js"),
-           ispy.getScript("./geometry/hb.js"),
-           ispy.getScript("./geometry/ho.js"),
-           ispy.getScript("./geometry/hehf.js"),
-           ispy.getScript("./geometry/pixel.js"),
-           ispy.getScript("./geometry/tib.js"),
-           ispy.getScript("./geometry/tob.js"),
-           ispy.getScript("./geometry/tec.js"),
-           ispy.getScript("./geometry/tid.js")
-    ).done(function() {
-        $.when(
-          ispy.addDetector()
-        ).done(function() {
+    $.when(
+        ispy.getJSON('./geometry/eb.json'),
+        ispy.getJSON('./geometry/ee.json'),
+        ispy.getJSON('./geometry/hb.json'),
+        ispy.getJSON('./geometry/ho.json'),
+        ispy.getJSON('./geometry/hehf.json'),
+        ispy.getJSON('./geometry/pixel.json'),
+        ispy.getJSON('./geometry/tec.json'),
+        ispy.getJSON('./geometry/tib.json'),
+        ispy.getJSON('./geometry/tid.json'),
+        ispy.getJSON('./geometry/tob.json')
+        ).done(function(){
+        $.when(ispy.addDetector()).done(function() {
           $('#loading').modal('hide');
-        });
-    });
+        })
+      });
   }
 };
 
