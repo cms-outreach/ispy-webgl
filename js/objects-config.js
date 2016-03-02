@@ -213,6 +213,8 @@ ispy.event_description = {
 
   "METs_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
     fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2}, selection: {"min_pt": 10.0}},
+  "PFMETs_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (PF)",
+    fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2}, selection: {"min_pt": 10.0}},
   "Jets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Reco)",
     fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}},
   "PFJets_V1": {type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",

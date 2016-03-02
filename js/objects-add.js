@@ -51,6 +51,7 @@ ispy.addDetector = function() {
 
         var line = new THREE.LineSegments(geometry, material);
         line.name = key;
+        line.renderOrder = 1;
         ispy.scene.getObjectByName(key).add(line);
 
         break;
@@ -72,6 +73,7 @@ ispy.addDetector = function() {
 
         var meshes = new THREE.Mesh(boxes, material);
         meshes.name = key;
+        meshes.renderOrder = 1;
         ispy.scene.getObjectByName(key).add(meshes);
 
         break;
@@ -86,6 +88,7 @@ ispy.addDetector = function() {
 
         var mesh = new THREE.LineSegments(geometry, material);
         mesh.name = key;
+        mesh.renderOrder = 1;
         ispy.scene.getObjectByName(key).add(mesh);
 
         break;
@@ -103,6 +106,7 @@ ispy.addDetector = function() {
             var shape = ispy.makeShapes(models[j]);
             var line = new THREE.LineSegments(shape, material);
             line.name = key;
+            line.renderOrder = 1;
             ispy.scene.getObjectByName(key).add(line);
           }
         }
