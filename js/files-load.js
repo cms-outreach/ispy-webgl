@@ -12,6 +12,8 @@ ispy.obj_files = [
   "./geometry/muon-barrel.obj",
   "./geometry/muon-endcap-minus.obj",
   "./geometry/muon-endcap-plus.obj",
+  "./geometry/muon-rphi-minus.obj",
+  "./geometry/muon-rphi-plus.obj",
   "./geometry/hf.obj"
 ];
 
