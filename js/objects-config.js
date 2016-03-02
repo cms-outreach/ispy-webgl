@@ -15,6 +15,8 @@ ispy.detector_description = {
     fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 0.5}},
   "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
     fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 0.5}},
+  "DTsRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Drift Tubes RPhi",
+    fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 0.5}},
 
   "HcalForwardMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Forward (-)",
     fn: ispy.makeModelHcalForwardMinus, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
@@ -29,6 +31,8 @@ ispy.detector_description = {
     fn: ispy.makeModelHcalOuter, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
   "HcalOuter3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
+  "HcalOuterRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer RPhi",
+    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
 
   "HcalEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Endcaps",
     fn: ispy.makeModelHcalEndcap, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
@@ -40,6 +44,8 @@ ispy.detector_description = {
   "HcalBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Barrel",
     fn: ispy.makeModelHcalBarrel, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
   "HcalBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
+    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
+  "HcalBarrelRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Barrel RPhi",
     fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
 
   "EcalEndcapMinus3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "ECAL Endcap (-)",
@@ -55,12 +61,17 @@ ispy.detector_description = {
     fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.05}},
   "EcalBarrel3D_V1": {type: ispy.BUFFERBOX, on: false, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.05}},
+  "EcalBarrelRPhi_V1": {type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Barrel RPhi",
+    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.75, linewidth: 0.1}},
 
   "TrackerEndcap3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Endcaps",
     fn: ispy.makeModelTrackerEndcap, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
     opacity: 0.5, linewidth: 0.5}},
   "TrackerBarrel3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "Tracker Barrels",
     fn: ispy.makeModelTrackerBarrel, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
+    opacity: 0.5, linewidth: 0.5}},
+  "TrackerRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name:"Tracker RPhi",
+    fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
     opacity: 0.5, linewidth: 0.5}},
 
   "SiStripTECMinus3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Tracker Endcap (-)",
