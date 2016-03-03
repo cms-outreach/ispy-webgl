@@ -218,7 +218,6 @@ ispy.onMouseDown = function(e) {
 };
 
 document.addEventListener('keydown', function(e) {
-  e.preventDefault();
 
   // Instead of a button, make output of 3D to JSON a "secret" key binding
   // If shift + e then export
