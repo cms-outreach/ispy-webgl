@@ -18,6 +18,9 @@ THREE.OBJExporter.prototype = {
 
 		var faceVertexKeys = [ "a", "b", "c" ];
 
+		var name;
+		var nLineVertices = 0;
+
 		var parseMesh = function ( mesh ) {
 
 			var nbVertex = 0;
@@ -171,17 +174,25 @@ THREE.OBJExporter.prototype = {
 
 				}
 
+				// If the line has the same name as the last one (i.e. they are in the same file)
+				// then we increment the line index start.
+				if ( line.name !== name ) {
+					nLineVertices = 0;
+				}
+				name = line.name;
+
 				if ( type === 'Line' ) {
 
 					output += 'l ';
 
 					for ( var j = 1, m = vertices.length; j <= m; j++ ) {
-
-						output += j + ' ';
+						var n = j + nLineVertices;
+						output += n + ' ';
 
 					}
 
 					output += '\n';
+					nLineVertices += vertices.length;
 
 				}
 

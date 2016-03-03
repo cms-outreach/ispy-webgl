@@ -154,6 +154,8 @@ ispy.exportString = function(output, filename) {
 
   // Use this to output to file:
   var link = document.createElement('a');
+  link.style.display = 'none';
+  document.body.appendChild( link );
   link.href = objectURL;
   link.download = filename || 'data.txt';
   link.target = '_blank';
