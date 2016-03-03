@@ -84,6 +84,10 @@ document.addEventListener('mozfullscreenchange', ispy.toggleFullscreen, false);
 document.addEventListener('fullscreenchange', ispy.toggleFullscreen, false);
 document.addEventListener('MSFullscreenChange', ispy.toggleFullscreen, false);
 
+ispy.reload = function() {
+  location.reload();
+};
+
 ispy.toStereo = function () {
   if (!ispy.stereo) {
     ispy.stereo = true;
