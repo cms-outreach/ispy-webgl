@@ -875,6 +875,16 @@ ispy.makeSimVertex = function(data, style) {
   return vertex;
 };
 
+ispy.makeCaloClusters = function(data) {
+};
+
+ispy.makeEcalDigi = function(data, geometry, scale, selection) {
+  var energy = data[0];
+  if ( energy > selection.min_energy ) {
+    return ispy.makeScaledSolidTower(data, geometry, 15, scale*energy);
+  }
+};
+
 ispy.makeERecHit_V2 = function(data, geometry, scale, selection) {
   var energy = data[0];
   if ( energy > selection.min_energy ) {

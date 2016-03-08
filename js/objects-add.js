@@ -188,7 +188,8 @@ ispy.addEvent = function(event) {
 
       case ispy.BOX:
 
-        var material = new THREE.LineBasicMaterial({color:ocolor, transparent: transp,
+        var material = new THREE.LineBasicMaterial({
+          color:ocolor, transparent: transp,
           linewidth:descr.style.linewidth,
           opacity:descr.style.opacity});
 

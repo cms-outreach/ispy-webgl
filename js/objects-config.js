@@ -128,6 +128,14 @@ ispy.detector_description = {
 };
 
 ispy.event_description = {
+  "SuperClusters_V1": {type: ispy.BOX, on: false, group: "ECAL", name: "SuperClusters",
+    extra: "RecHitFractions_V1", assoc: "SuperClusterRecHitFractions_V1",
+    fn: ispy.makeCaloClusters, style: {color: "rgb(100%, 20%, 0%)", opacity: 1.0, linewidth: 1.0}},
+
+  "EEDigis_V1": {type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Endcap Digis",
+    fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5}, scale: 1.0, selection: {"min_energy": 0.8}},
+  "EBDigis_V1": {type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Barrel Digis",
+    fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5}, scale: 1.0, selection: {"min_energy": 0.25}},
   "EERecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Endcap Rec. Hits",
     fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5}, scale: 0.05, selection: {"min_energy": 0.5}},
   "ESRecHits_V2": {type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Preshower Rec. Hits",
@@ -244,9 +252,9 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
     fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 1.5}, selection: {"min_pt":1.0, "index":0}},
 
-  "Vertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (reco)",
+  "Vertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Reco)",
     fn:ispy.makeVertex, style: {color: "rgb(100%, 40%, 0%)", opacity: 0.9}},
-  "SimVertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (sim)",
+  "SimVertices_V1": {type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",
     fn:ispy.makeSimVertex, style: {color: "rgb(80%, 20%, 0%)", opacity: 0.9}}
 };
 
