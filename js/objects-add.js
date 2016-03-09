@@ -272,23 +272,23 @@ ispy.addEvent = function(event) {
 
         break;
 
-      case ispy.TRACK:
-      case ispy.POLYLINE:
+      case ispy.ASSOC:
 
-        var tracks = descr.fn(data, extra, assoc, descr.style, descr.selection);
-        tracks.forEach(function(t, i) {
+        var objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
+        objs.forEach(function(o, i) {
           // for event info we want each of the children to have the
           // same name as the parent. this is so clicking on an object works
-          t.name = key;
+          o.name = key;
           // originalIndex works as a link between the original
           // data and THREE objects:
-          t.userData.originalIndex = i;
-          objectIds.push(t.id);
-          ispy.scene.getObjectByName(key).add(t);
+          o.userData.originalIndex = i;
+          objectIds.push(o.id);
+          ispy.scene.getObjectByName(key).add(o);
         });
         break;
 
       case ispy.POINT:
+
         // We make a buffer geometry, use a point cloud, and
         // add to the scene.
         var material = new THREE.PointsMaterial({color:ocolor, size:descr.style.size});

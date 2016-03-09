@@ -875,7 +875,36 @@ ispy.makeSimVertex = function(data, style) {
   return vertex;
 };
 
-ispy.makeCaloClusters = function(data) {
+ispy.makeCaloClusters = function(data, extra, assoc, style, selection) {
+  if ( ! assoc ) {
+    throw "No association!";
+  }
+
+  var ri = 0;
+  var boxes = [];
+  for ( var j = 0; j < assoc.length; j++ ) {
+    ri = assoc[j][1][1];
+    boxes[j] = ispy.makeSolidFace(extra[ri], 2);
+  }
+
+  var ccolor = new THREE.Color(style.color);
+
+  var transp = false;
+  if ( style.opacity < 1.0 ) {
+    transp = true;
+  }
+
+  var clusters = [];
+  for ( var k = 0; k < boxes.length; k++ ) {
+    clusters.push(new THREE.Mesh(boxes[k], new THREE.MeshBasicMaterial({
+      color:ccolor,
+      transparent: transp,
+      opacity:style.opacity,
+      side: THREE.DoubleSide
+    })));
+  }
+
+  return clusters;
 };
 
 ispy.makeEcalDigi = function(data, geometry, scale, selection) {
