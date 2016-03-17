@@ -133,6 +133,16 @@ ispy.init = function() {
     }
   });
 
+  $('#show-logo').prop('checked', true);
+
+  $('#show-logo').change(function() {
+    if ( this.checked ) {
+      $('#cms-logo').show();
+    } else {
+      $('#cms-logo').hide();
+    }
+  });
+
   ispy.inverted_colors = false;
   $('#invert-colors').prop('checked', false);
 

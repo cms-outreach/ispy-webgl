@@ -38,9 +38,9 @@ ispy.toggle = function(key) {
   // so therefore not part of the scene
   if ( key === 'Event_V1' || key === 'Event_V2' ) {
     if ( ispy.disabled[key] ) {
-      $('#event-info').hide();
+      $('#event-text').hide();
     } else {
-      $('#event-info').show();
+      $('#event-text').show();
     }
   }
 
