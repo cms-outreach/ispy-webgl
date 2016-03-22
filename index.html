@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>iSpy WebGL by cms-outreach</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>iSpy WebGL</h1>
+        <p>Browser-based event display for the CMS experiment at the LHC, using WebGL.</p>
+
+        <p class="view"><a href="https://github.com/cms-outreach/ispy-webgl">View the Project on GitHub <small>cms-outreach/ispy-webgl</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/cms-outreach/ispy-webgl/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/cms-outreach/ispy-webgl/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/cms-outreach/ispy-webgl">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="what-is-this" class="anchor" href="#what-is-this" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is this?</h1>
+
+<p>iSpy WebGL is an event display used for the CMS experiment at the LHC using WebGL (via <a href="http://threejs.org">three.js</a>) It reads in an ig file which contains event and geometry information.</p>
+
+<p><img src="https://cds.cern.ch/record/2139792/files/diphoton1_v2.png?subformat=icon-1440" alt="Example display"></p>
+
+<h1>
+<a id="what-is-an-ig-file" class="anchor" href="#what-is-an-ig-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is an ig file?</h1>
+
+<p>A .ig file is a zip archive (unzippable via unzip or similar) containing one file per event. Each event file uses a relational database-like structure, described using JSON.</p>
+
+<h2>
+<a id="ig-file-format" class="anchor" href="#ig-file-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ig-file format:</h2>
+
+<p>ig files have a flat directory structure with a separate directory per run (run directory). Each run directory contains one or more files describing a given event (ig event file) each. The associated run number and the event number are, respectively, the file name for the run directory and for the ig event file.</p>
+
+<p>The ig-event-file format is a valid JSON or python dictionary. The format defines three categories of objects: types, collections and associations-sets.</p>
+
+<p>Syntax:</p>
+
+<p>ig-event-file ::= { 'Types': type-descriptions, 'Collections': collections, 'Associations': association-sets }</p>
+
+<h3>
+<a id="types" class="anchor" href="#types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Types</h3>
+
+<p>Types are a mapping of a type-name and its associated type-description. The type-description defines the types of the objects that are to be found in the Collection which uses the same string as the type-name to be identified. The attributes (i.e. columns) of a Collection are defined by an attribute name and an attribute type. The former is just a string label, while the second one define the kind of object which is stored in the attribute, all of which have a C++ equivalent. Possible attribute types include:</p>
+
+<ul>
+<li>simple numeric types: <em>int</em>, <em>long</em>, and <em>double</em>, which map to their C++ equivalents.</li>
+<li>text-like elements: <em>string</em>, which map to <code>std::string</code>
+</li>
+<li>vector like quantities: <em>v2d</em>, <em>v3d</em>, <em>v4d</em> which map to <code>IgV2d</code>, <code>IgV3d</code>, <code>IgV4d</code>.</li>
+</ul>
+
+<p>Syntax:</p>
+
+<p>type-descriptions ::= { type-description, ... }</p>
+
+<p>type-description ::= "type-name": [attributes-description, ...]</p>
+
+<p>type-name ::= string-literal</p>
+
+<p>attribute-description ::= ["attribute-name", "attribute-type"]</p>
+
+<p>attribute-name ::= string-literal</p>
+
+<p>string-literal ::= [A-Za-z_][A-Za-z_/0-9]*</p>
+
+<p>attribute-type ::= int OR long OR double OR string OR v2d OR v3d OR v4d</p>
+
+<h3>
+<a id="collections" class="anchor" href="#collections" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Collections</h3>
+
+<p>Collections are arrays of rows, identified by a collection-name. The collection-name is a string-literal which matches one of the type-names defined in types. Rows are arrays of values, where the type of the value matches the attribute-type of the attribute-description with the same position in the type-description which has its type-name matching the collection name.</p>
+
+<p>This is the actual data contained in a file.</p>
+
+<p>Syntax:</p>
+
+<p>collections ::= {collection, ... }</p>
+
+<p>collection ::= "type-name": [row, ...]</p>
+
+<p>row ::= [ value, ...]</p>
+
+<p>value ::= string-literal OR numeric-literal OR vector-literal</p>
+
+<p>numeric-literal ::= [0-9]+[.]<em>[0-9]</em></p>
+
+<p>vector-literal ::= [numeric-literal, numeric-literal, ...]</p>
+
+<h3>
+<a id="association-sets" class="anchor" href="#association-sets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Association sets</h3>
+
+<p>An association defines a relationship between two rows found in any (possibly the same) collections. They are uniquely identified by two couples of numbers, the first one uniquely identifying the left object of the association, the other identifying the right object. The first element of this couple of numbers is the so called collection id while the second one is called object id. The collection id is the index of the collection type within the Types table, while the object id is the index of the object within the collection. Such a couple of numbers is called object reference. An association-set is an array of associations which share some common meaning decided by the writer of the ig-file.</p>
+
+<p>Syntax:</p>
+
+<p>associations-sets ::= { association-set, ... }</p>
+
+<p>association-set ::= "association-set-name": [association, ...]</p>
+
+<p>association ::= [left-object, right-object]</p>
+
+<p>left-object ::= object-reference</p>
+
+<p>right-object ::= object-reference</p>
+
+<p>object-reference ::= [collection-id, object-id]</p>
+
+<p>collection-id ::= index-literal</p>
+
+<p>object-id ::= index-literal</p>
+
+<p>index-literal ::= [0-9]+</p>
+
+<h3>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
+
+<p>Here is a simple example of what an ig file looks like.</p>
+
+<pre><code>{
+ "Types": {"Tracks_V1": [["x", "double"],["y", "double"],["z", "double"],
+                         ["px", "double"],["py","double"],["pz", "double"]],
+           "Clusters_V1": [["x", "double"],["y", "double"],["z", "double"],
+                           ["e", "double"]]
+          },
+ "Collections": {"Tracks_V1": [[0, 0, 0, 0, 0, 0],
+                               [1, 1, 1, 1, 1, 1],
+                               [2, 2, 2, 2, 2, 2],
+                               [3, 3, 3, 3, 3, 3],
+                               [4, 4, 4, 4, 4, 4],
+                               [5, 5, 5, 5, 5, 5],
+                               [6, 6, 6, 6, 6, 6],
+                               [7, 7, 7, 7, 7, 7],
+                               [8, 8, 8, 8, 8, 8],
+                               [9, 9, 9, 9, 9, 9]],
+                 "Clusters_V1": [[0, 0, 0, 0],
+                                 [1, 1, 1, 1],
+                                 [2, 2, 2, 2],
+                                 [3, 3, 3, 3],
+                                 [4, 4, 4, 4],
+                                 [5, 5, 5, 5],
+                                 [6, 6, 6, 6],
+                                 [7, 7, 7, 7],
+                                 [8, 8, 8, 8],
+                                 [9, 9, 9, 9]]
+                 },
+ "Associations": {"TrackClusters_V1": [[[0, 0], [1, 0]],
+                                       [[0, 1], [1, 1]],
+                                       [[0, 2], [1, 2]],
+                                       [[0, 3], [1, 3]],
+                                       [[0, 4], [1, 4]],
+                                       [[0, 5], [1, 5]],
+                                       [[0, 6], [1, 6]],
+                                       [[0, 7], [1, 7]],
+                                       [[0, 8], [1, 8]],
+                                       [[0, 9], [1, 9]]],
+                  "TrackClusters2_V1": [[[0, 0], [1, 0]],
+                                        [[0, 1], [1, 0]],
+                                        [[0, 2], [1, 0]],
+                                        [[0, 3], [1, 0]],
+                                        [[0, 4], [1, 0]],
+                                        [[0, 5], [1, 0]],
+                                        [[0, 6], [1, 0]],
+                                        [[0, 7], [1, 0]],
+                                        [[0, 8], [1, 0]],
+                                        [[0, 9], [1, 0]]]
+                  }
+}
+</code></pre>
+
+<h3>
+<a id="apis" class="anchor" href="#apis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>APIs</h3>
+
+<p>APIs for ig files can be found on github:</p>
+
+<ul>
+<li>
+<a href="https://github.com/tpmccauley/igfiles">C++</a>
+</li>
+<li>
+<a href="https://github.com/tpmccauley/pyig">python</a>
+</li>
+</ul>
+
+<h1>
+<a id="how-do-i-make-my-own-ig-files" class="anchor" href="#how-do-i-make-my-own-ig-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How do I make my own ig files?</h1>
+
+<p>See an example <a href="https://github.com/cms-outreach/ispy-analyzers/blob/Run2010B/README.md">here.</a></p>
+
+<h1>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributors:</h1>
+
+<h2>
+<a id="ispy-webgl" class="anchor" href="#ispy-webgl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iSpy WebGL</h2>
+
+<p>L. Barnard, M. Hategan, C. Logren, P. Nguyen, T. McCauley, M. Saunby</p>
+
+<h2>
+<a id="ispy" class="anchor" href="#ispy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iSpy</h2>
+
+<p>Thanks to all contributors to the old <a href="https://github.com/cms-outreach/ispy">iSpy</a> desktop application: G. Alverson, G. Eulisse, S. Muzaffar, I. Osborne, L. Taylor, L. Tuura. </p>
+
+<h1>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h1>
+
+<p><a href="mailto:ispy-developers@cern.ch"></a><a href="mailto:ispy-developers@cern.ch">ispy-developers@cern.ch</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/cms-outreach">cms-outreach</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
