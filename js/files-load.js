@@ -219,7 +219,8 @@ ispy.loadLocalFiles = function() {
   ispy.openDialog('#files');
 };
 
-ispy.selectFile = function(filename) {
+ispy.selectFile = function(index) {
+  var filename = ispy.web_files[index];
   ispy.file_name = filename.split("/")[4];  // of course this isn't a general case for files
 
   $('#progress').modal('show');
