@@ -66,8 +66,13 @@ ispy.useRenderer = function(type) {
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
-  renderer.setClearColor(0x000000,1);
-  inset_renderer.setClearColor(0x000000,0);
+  if ( ispy.inverted_colors ) {
+    renderer.setClearColor(0xffffff,1);
+    inset_renderer.setClearColor(0xffffff,0);  
+  } else {
+    renderer.setClearColor(0x000000,1);
+    inset_renderer.setClearColor(0x000000,0);
+  }
 
   renderer.setSize(width, height);
   inset_renderer.setSize(height/5, height/5);
