@@ -12,9 +12,11 @@ ispy.invertColors = function() {
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           if ( c.name === k ) {
-            c.material.color.setStyle(obj.style.color);
+            c.children.forEach(function(d) {
+              d.material.color.setStyle(obj.style.color);
+            });
           }
-        })
+        });
       }
     }
   } else {
@@ -25,11 +27,14 @@ ispy.invertColors = function() {
       if ( obj.style.altColor !== undefined ) {
         ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           if ( c.name === k ) {
-            c.material.color.setStyle(obj.style.altColor);
+            c.children.forEach(function(d) {
+              d.material.color.setStyle(obj.style.altColor);
+            });
           }
-        })
+        });
       }
     }
+
   }
 
   // Yeeesh I really need to clean up the class, ids, and css
