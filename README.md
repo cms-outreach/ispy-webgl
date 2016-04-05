@@ -14,6 +14,6 @@ and the test version is here:
 
 For more information on the input data format:
 
-http://cms-outreach.github.io/ispy
+<a target="_blank" href="http://cms-outreach.github.io/ispy-webgl">http://cms-outreach.github.io/ispy-webgl</a>
 
 Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Phong Nguyen, Michael Saunby
