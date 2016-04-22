@@ -1,5 +1,5 @@
 ispy.web_files = [
-  "/record/614/files/BTau.ig",
+  "/record/614/files/BTag.ig",
   "/record/615/files/DoubleElectron.ig",
   "/record/616/files/DoubleMu.ig",
   "/record/617/files/ElectronHad.ig",
