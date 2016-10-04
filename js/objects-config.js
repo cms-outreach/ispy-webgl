@@ -199,6 +199,11 @@ ispy.event_description = {
   "CSCWireDigis_V1": {type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Wire Digis",
     fn: ispy.makeCSCWireDigis, style: {color: "rgb(100%, 60%, 100%)", opacity: 0.5, linewidth: 0.5}},
 
+  "CSCStripDigis_V2": {type: ispy.LINE, on: false, group: "Muon", name: "CSC Strip Digis",
+    fn: ispy.makeCSCDigis_V2, style: {color: "rgb(100%, 20%, 100%)", opacity: 0.5, linewidth: 0.5}},
+  "CSCWireDigis_V2": {type: ispy.LINE, on: false, group: "Muon", name: "CSC Wire Digis",
+    fn: ispy.makeCSCDigis_V2, style: {color: "rgb(100%, 60%, 100%)", opacity: 0.5, linewidth: 0.5}},
+
   "CSCLCTDigis_V1": {type: ispy.POINT, on: false, group: "Muon", name: "CSC LCT Digis",
     fn: ispy.makeCSCLCTDigis, style: {color: "rgb(0%, 100%, 100%)", size: 0.15}},
 

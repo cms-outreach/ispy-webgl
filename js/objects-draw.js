@@ -1241,6 +1241,13 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
   return box;
 };
 
+ispy.makeCSCDigis_V2 = function(data) {
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
+  geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+  return [geometry];
+};
+
 /*
 "CSCStripDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
 "CSCWireDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
