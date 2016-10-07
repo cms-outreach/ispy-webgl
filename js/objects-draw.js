@@ -1265,6 +1265,18 @@ ispy.makeCSCLCTDigis = function(data) {
   return ispy.makePointCloud(data,0);
 };
 
+ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
+  var l1 = new THREE.Geometry();
+  l1.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
+  l1.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+
+  var l2 = new THREE.Geometry();
+  l2.vertices.push(new THREE.Vector3(data[2][0], data[2][1], data[2][2]));
+  l2.vertices.push(new THREE.Vector3(data[3][0], data[3][1], data[3][2]));
+
+  return [l1,l2];
+};
+
 
 ispy.makeEvent = function(data) {
   /*
