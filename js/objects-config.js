@@ -207,7 +207,7 @@ ispy.event_description = {
   "CSCLCTDigis_V1": {type: ispy.POINT, on: false, group: "Muon", name: "CSC LCT Digis",
     fn: ispy.makeCSCLCTDigis, style: {color: "rgb(0%, 100%, 100%)", size: 0.15}},
   "CSCCorrelatedLCTDigis_V2": {type: ispy.LINE, on: false, group: "Muon", name: "CSC Correlated LCT Digis",
-    fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(58%,0%,82%)", opacity:0.8, linewidth: 2}},
+    fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(0%,100%,100%)", opacity:0.8, linewidth: 2}},
 
   /* this only exists in my test file
    "MatchingCSCs_V1": {type: ispy.BOX, on: true, group: "Muon", name: "Matching CSCs",
