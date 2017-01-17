@@ -68,7 +68,7 @@ ispy.useRenderer = function(type) {
 
   if ( ispy.inverted_colors ) {
     renderer.setClearColor(0xffffff,1);
-    inset_renderer.setClearColor(0xffffff,0);  
+    inset_renderer.setClearColor(0xffffff,0);
   } else {
     renderer.setClearColor(0x000000,1);
     inset_renderer.setClearColor(0x000000,0);
@@ -173,27 +173,31 @@ ispy.init = function() {
     }
   });
 
-  var x_geo = new THREE.TextGeometry('X', {size:0.75, height:0.1});
-  var x_color = new THREE.Color(0xff0000);
-  var x_material = new THREE.MeshBasicMaterial({ color: x_color});
-  var x_text = new THREE.Mesh(x_geo, x_material);
-  x_text.position.x = 4.5;
+  var font_loader = new THREE.FontLoader();
+  font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
-  var y_geo = new THREE.TextGeometry('Y', {size:0.75, height:0.1});
-  var y_color = new THREE.Color(0x00ff00);
-  var y_material = new THREE.MeshBasicMaterial({ color: y_color});
-  var y_text = new THREE.Mesh(y_geo, y_material);
-  y_text.position.y = 4.5;
+    var tps = {size:0.75, height:0.1, font:font};
 
-  var z_geo = new THREE.TextGeometry('Z', {size:0.75, height:0.1});
-  var z_color = new THREE.Color(0x0000ff);
-  var z_material = new THREE.MeshBasicMaterial({ color: z_color});
-  var z_text = new THREE.Mesh(z_geo, z_material);
-  z_text.position.z = 4.5;
+    var x_geo = new THREE.TextGeometry('X', tps);
+    var y_geo = new THREE.TextGeometry('Y', tps);
+    var z_geo = new THREE.TextGeometry('Z', tps);
 
-  ispy.inset_scene.add(x_text);
-  ispy.inset_scene.add(y_text);
-  ispy.inset_scene.add(z_text);
+    var x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var x_text = new THREE.Mesh(x_geo, x_material);
+    x_text.position.x = 4.5;
+
+    var y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
+    var y_text = new THREE.Mesh(y_geo, y_material);
+    y_text.position.y = 4.5;
+
+    var z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
+    var z_text = new THREE.Mesh(z_geo, z_material);
+    z_text.position.z = 4.5;
+
+    ispy.inset_scene.add(x_text);
+    ispy.inset_scene.add(y_text);
+    ispy.inset_scene.add(z_text);
+  });
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas

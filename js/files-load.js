@@ -357,15 +357,15 @@ ispy.readOBJMTL = function(file, mtl_file, cb) {
 }
 
 ispy.loadOBJMTL = function(obj, mtl_file, name) {
-  //var object = new THREE.OBJLoader().parse(obj);
-  var object = new THREE.OBJMTLLoader().parse(obj);
-
+  var object = new THREE.OBJLoader().parse(obj);
   var reader = new FileReader();
 
   reader.onload = function(e) {
     var mtl = e.target.result;
     var materials_creator = new THREE.MTLLoader().parse(e.target.result);
     materials_creator.preload();
+
+    console.log(object);
 
     object.traverse(function (object) {
       if (object instanceof THREE.Mesh) {
@@ -440,6 +440,7 @@ ispy.importModel = function() {
     $('#import-model').modal('hide');
 
     ispy.readOBJMTL(obj_file, mtl_file, ispy.loadOBJMTL);
+
   } else {
     alert('For now, this application supports either loading one .obj file or loading an .obj file and a corresponding .mtl file!');
     return;
@@ -456,9 +457,17 @@ ispy.loadSelectedObj = function() {
   // When loading from the web load the mtl file as well
   var mtl_file = ispy.selected_obj.split('.')[0]+'.mtl';
 
-  var loader = new THREE.OBJMTLLoader();
-  loader.load('./geometry/'+ispy.selected_obj, './geometry/'+mtl_file,
-    function(object) {
+  var mtl_loader = new THREE.MTLLoader();
+  mtl_loader.load('./geometry/'+mtl_file, function(materials) {
+
+    materials.preload();
+
+    var obj_loader = new THREE.OBJLoader();
+
+    obj_loader.setMaterials(materials);
+
+    obj_loader.load('./geometry/'+ispy.selected_obj, function(object) {
+
       object.name = ispy.selected_obj;
       object.visible = true;
       ispy.disabled[object.name] = false;
@@ -472,25 +481,45 @@ ispy.loadSelectedObj = function() {
       ispy.addSelectionRow("Imported", object.name, object.name, true);
 
       $('#loading').modal('hide');
-    },
-    function(xhr) {
+
+    }, function(xhr) {
       $('#loading').modal('show');
-      //console.log((xhr.loaded/xhr.total*100) + '% loaded');
-    },
-    function(xhr) {
+    }, function(xhr) {
       alert('Yikes! An error occurred');
-    })
+    });
+
+  });
+
+};
+
+ispy.loadOBJMTL_new = function(obj_file, mtl_file, name, show) {
+
+  var mtl_loader = new THREE.MTLLoader();
+
+  mtl_loader.load(mtl_file, function(materials) {
+
+    materials.preload();
+
+    var obj_loader = new THREE.OBJLoader();
+    obj_loader.setMaterials(materials);
+
+    obj_loader.load(obj_file, function(object) {
+
+      object.name = name;
+      object.visible = true;
+      ispy.disabled[object.name] = false;
+
+      ispy.scene.getObjectByName('Imported').add(object);
+      ispy.addSelectionRow('Imported', object.name, name, show);
+
+    });
+
+  });
+
 };
 
 ispy.importBeampipe = function() {
-  var loader = new THREE.OBJMTLLoader();
 
-  loader.load('./geometry/beampipe.obj', './geometry/beampipe.mtl', function(object){
-    object.name = 'BeamPipe';
-    object.visible = true;
-    ispy.disabled[object.name] = false;
+  ispy.loadOBJMTL_new('./geometry/beampipe.obj', './geometry/beampipe.mtl', 'BeamPipe', true);
 
-    ispy.scene.getObjectByName('Imported').add(object);
-    ispy.addSelectionRow('Imported', object.name, 'Beam Pipe', true);
-  });
 };
