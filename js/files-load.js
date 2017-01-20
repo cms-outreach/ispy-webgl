@@ -86,6 +86,9 @@ ispy.enableNextPrev = function() {
 ispy.loadEvent = function() {
   $("#event-loaded").html("");
   $("#loading").modal("show");
+
+  ispy.mass_pair = [];
+
   var event;
 
   try {
