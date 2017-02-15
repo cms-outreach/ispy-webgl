@@ -303,8 +303,8 @@ ispy.initDetector = function() {
     $('#loading').modal('show');
 
     $.when(
-        ispy.getJSON('./geometry/eb.json'),
-        ispy.getJSON('./geometry/ee.json'),
+        ispy.getJSON('./geometry/eb-reduced.json'),
+        ispy.getJSON('./geometry/ee-reduced.json'),
         ispy.getJSON('./geometry/hb.json'),
         ispy.getJSON('./geometry/ho.json'),
         ispy.getJSON('./geometry/hehf.json'),
