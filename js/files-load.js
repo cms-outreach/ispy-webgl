@@ -1,11 +1,9 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "./data/4lepton.ig",
-  "./data/diphoton.ig",
-  "./data/MinimumBias.ig",
-  "./data/Mu.ig",
-  "./data/Electron.ig"
+  "./masterclass-2017/masterclass_1.ig",
+  "./masterclass-2017/masterclass_2.ig",
+  "./masterclass-2017/masterclass_3.ig"
 ];
 
 ispy.obj_files = [
