@@ -209,7 +209,7 @@ ispy.init = function() {
     ispy.scene.add(obj_group);
   });
 
-  $('#version').html("v"+ispy.version);
+  $('#version').html(ispy.version);
   $('#threejs').html("r"+THREE.REVISION);
 
   window.addEventListener('resize', ispy.onWindowResize, false);
