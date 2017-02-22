@@ -183,7 +183,7 @@ ispy.addEvent = function(event) {
         transp = true;
       }
     }
-
+    
     switch(descr.type) {
 
       case ispy.BOX:

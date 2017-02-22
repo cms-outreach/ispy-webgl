@@ -251,9 +251,9 @@ ispy.event_description = {
   "StandaloneMuons_V2": {type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
     extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
     fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1.5}, selection: {"min_pt":1.0, "index":0}},
-  "TrackerMuons_V1": {type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
-    extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
-    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1.5}, selection:{"min_pt":1.0, "index":0}},
+  //"TrackerMuons_V1": {type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
+  //  extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
+  //  fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1.5}, selection:{"min_pt":1.0, "index":0}},
 
   "GsfElectrons_V1": {type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
     extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
