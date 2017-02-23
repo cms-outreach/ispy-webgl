@@ -347,28 +347,26 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 ispy.getMass = function() {
 
   var k1 = ispy.mass_pair[0].key;
+  var k2 = ispy.mass_pair[1].key;
 
-  if ( k1.includes('Muons') || k1.includes('Electrons') ) {
+  if ( ! (k1.includes('Muons') || k1.includes('Electrons')) )
+    return;
+  if ( ! (k2.includes('Muons') || k2.includes('Electrons')) )
+    return;
 
-    var k2 = ispy.mass_pair[1].key;
+  var pt1 = ispy.mass_pair[0].pt;
+  var pt2 = ispy.mass_pair[1].pt;
 
-    if ( k1 !== k2 )
-      return;
+  var eta1 = ispy.mass_pair[0].eta;
+  var eta2 = ispy.mass_pair[1].eta;
 
-    var pt1 = ispy.mass_pair[0].pt;
-    var pt2 = ispy.mass_pair[1].pt;
+  var phi1 = ispy.mass_pair[0].phi;
+  var phi2 = ispy.mass_pair[1].phi;
 
-    var eta1 = ispy.mass_pair[0].eta;
-    var eta2 = ispy.mass_pair[1].eta;
+  var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
 
-    var phi1 = ispy.mass_pair[0].phi;
-    var phi2 = ispy.mass_pair[1].phi;
-
-    var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
-
-    $('#invariant-mass').html(m.toFixed(2));
-    $('#invariant-mass-modal').modal('show');
-  }
+  $('#invariant-mass').html(m.toFixed(2));
+  $('#invariant-mass-modal').modal('show');
 
 };
 
