@@ -347,24 +347,28 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 ispy.getMass = function() {
 
   var k1 = ispy.mass_pair[0].key;
-  var k2 = ispy.mass_pair[1].key;
 
-  if ( k1 !== k2 )
-    return;
+  if ( k1.includes('Muons') || k1.includes('Electrons') ) {
 
-  var pt1 = ispy.mass_pair[0].pt;
-  var pt2 = ispy.mass_pair[1].pt;
+    var k2 = ispy.mass_pair[1].key;
 
-  var eta1 = ispy.mass_pair[0].eta;
-  var eta2 = ispy.mass_pair[1].eta;
+    if ( k1 !== k2 )
+      return;
 
-  var phi1 = ispy.mass_pair[0].phi;
-  var phi2 = ispy.mass_pair[1].phi;
+    var pt1 = ispy.mass_pair[0].pt;
+    var pt2 = ispy.mass_pair[1].pt;
 
-  var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+    var eta1 = ispy.mass_pair[0].eta;
+    var eta2 = ispy.mass_pair[1].eta;
 
-  $('#invariant-mass').html(m.toFixed(2));
-  $('#invariant-mass-modal').modal('show');
+    var phi1 = ispy.mass_pair[0].phi;
+    var phi2 = ispy.mass_pair[1].phi;
+
+    var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+
+    $('#invariant-mass').html(m.toFixed(2));
+    $('#invariant-mass-modal').modal('show');
+  }
 
 };
 
