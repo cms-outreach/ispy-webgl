@@ -164,7 +164,7 @@ ispy.event_description = {
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1.5},
     selection: {"min_pt": 0.5, index: 2}},
-  "Tracks_V2": {type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
+  "Tracks_V2": {type: ispy.ASSOC, on: false, group: "Tracking", name: "Tracks (reco.)",
     extra: "Extras_V1", assoc: "TrackExtras_V1",
     fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1.5},
     selection: {"min_pt": 0.5, "index": 2}},
