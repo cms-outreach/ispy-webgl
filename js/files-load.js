@@ -365,8 +365,6 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
     var materials_creator = new THREE.MTLLoader().parse(e.target.result);
     materials_creator.preload();
 
-    console.log(object);
-
     object.traverse(function (object) {
       if (object instanceof THREE.Mesh) {
         if (object.material.name) {
@@ -492,7 +490,7 @@ ispy.loadSelectedObj = function() {
 
 };
 
-ispy.loadOBJMTL_new = function(obj_file, mtl_file, name, show) {
+ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, show) {
 
   var mtl_loader = new THREE.MTLLoader();
 
@@ -505,8 +503,8 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, name, show) {
 
     obj_loader.load(obj_file, function(object) {
 
-      object.name = name;
-      object.visible = true;
+      object.name = id;
+      object.visible = show;
       ispy.disabled[object.name] = false;
 
       ispy.scene.getObjectByName('Imported').add(object);
@@ -520,6 +518,6 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, name, show) {
 
 ispy.importBeampipe = function() {
 
-  ispy.loadOBJMTL_new('./geometry/beampipe.obj', './geometry/beampipe.mtl', 'BeamPipe', true);
+  ispy.loadOBJMTL_new('./geometry/beampipe.obj', './geometry/beampipe.mtl', 'BeamPipe', 'Beam Pipe', true);
 
 };

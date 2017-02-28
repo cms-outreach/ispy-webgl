@@ -109,6 +109,7 @@ ispy.updateRendererInfo = function() {
 // ---------------------------------
 
 ispy.updateRenderer = function(type) {
+
   if ( type === ispy.renderer_name ) {
     alert(type + ' is already in use');
     return;
@@ -132,6 +133,7 @@ ispy.updateRenderer = function(type) {
   ispy.controls = controls;
 
   ispy.updateRendererInfo();
+
 };
 
 ispy.onWindowResize = function() {
@@ -363,9 +365,3 @@ ispy.unHighlightObject = function(){
     ispy.highlighted = null;
   }
 };
-
-/*
-$(function(){
-
-});
-*/

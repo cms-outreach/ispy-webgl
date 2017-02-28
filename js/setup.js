@@ -57,11 +57,18 @@ ispy.initCamera = function() {
 };
 
 ispy.useRenderer = function(type) {
+
   var width = document.getElementById('display').clientWidth;
   var height = document.getElementById('display').clientHeight;
 
-  var renderer = new THREE[type]({antialias:true, alpha:true});
-  var inset_renderer = new THREE[type]({antialias:true, alpha:true});
+  var rendererTypes = {
+    'WebGLRenderer': THREE.WebGLRenderer,
+    'CanvasRenderer': THREE.CanvasRenderer,
+    'SVGRenderer': THREE.SVGRenderer
+  };
+
+  var renderer = new rendererTypes[type]({antialias:true, alpha:true});
+  var inset_renderer = new rendererTypes[type]({antialias:true, alpha:true});
 
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
   inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
@@ -83,6 +90,8 @@ ispy.useRenderer = function(type) {
 
   document.getElementById('display').appendChild(ispy.renderer.domElement);
   document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
+
+  $('#settings').modal('hide');
 };
 
 ispy.init = function() {
@@ -326,7 +335,9 @@ ispy.initDetector = function() {
 };
 
 ispy.render = function() {
+
   if ( ispy.renderer !== null ) {
+
     if ( ispy.stereo ) {
       ispy.stereo_renderer.render(ispy.scene, ispy.camera);
     } else {
@@ -337,14 +348,21 @@ ispy.render = function() {
       ispy.image_data = ispy.renderer.domElement.toDataURL();
       ispy.get_image_data = false;
     }
+
   }
 
-  if ( ispy.inset_renderer !== null ) {
+  if ( ispy.inset_renderer !== null && ispy.renderer instanceof THREE.WebGLRenderer ) {
+
+    // For some reason the inset renderer does not behave when
+    // the renderers are CanvasRenderers. Therefore the above second condition (for now)
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
+
   }
+
 };
 
 ispy.run = function() {
+
   setTimeout( function() {
     requestAnimationFrame(ispy.run);
   }, 1000 / ispy.framerate );
@@ -374,4 +392,5 @@ ispy.run = function() {
   if ( ispy.animating ) {
     TWEEN.update();
   }
+
 };
