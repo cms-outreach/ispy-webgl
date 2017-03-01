@@ -219,10 +219,25 @@ ispy.onMouseMove = function(e) {
 };
 
 ispy.onMouseDown = function(e) {
-  if(ispy.intersected){
-    ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
-  }
+
+  if ( ispy.intersected ) {
+
+      ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
+
+    }
+
 };
+
+ispy.shift_pressed = false;
+ispy.mass_pair = [];
+
+document.addEventListener('keyup', function(e) {
+
+  if ( e.which === 16 ) {
+    ispy.shift_pressed = false;
+  }
+
+});
 
 document.addEventListener('keydown', function(e) {
 
@@ -246,6 +261,11 @@ document.addEventListener('keydown', function(e) {
   if ( e.which === 65 && e.shiftKey ) {
     ispy.toggleAnimation();
   }
+
+  if ( e.shiftKey ) {
+    ispy.shift_pressed = true;
+  }
+
   /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
@@ -310,6 +330,25 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 };
 
+
+ispy.getMass = function() {
+
+  var pt1 = ispy.mass_pair[0].pt;
+  var pt2 = ispy.mass_pair[1].pt;
+
+  var eta1 = ispy.mass_pair[0].eta;
+  var eta2 = ispy.mass_pair[1].eta;
+
+  var phi1 = ispy.mass_pair[0].phi;
+  var phi2 = ispy.mass_pair[1].phi;
+
+  var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+
+  $('#invariant-mass').html(m.toFixed(2));
+  $('#invariant-mass-modal').modal('show');
+
+};
+
 ispy.displayEventObjectData = function(key, objectUserData){
   var type = ispy.current_event.Types[key];
   var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
@@ -319,12 +358,43 @@ ispy.displayEventObjectData = function(key, objectUserData){
   var dataTableBody = $('#table-data-eventObject').find("tbody");
   dataTableBody.empty();
 
-  for(var t in type){
+  var pt, eta, phi;
+
+  for ( var t in type ) {
+
     var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
     dataTableBody.append(row_content);
+
+    if ( type[t][0] === 'pt' ) {
+      pt = eventObjectData[t];
+    } else if ( type[t][0] === 'eta' ) {
+      eta = eventObjectData[t];
+    } else if ( type[t][0] === 'phi' ) {
+      phi = eventObjectData[t];
+    }
   }
 
-  $('#data-EventObjects').modal('show');
+  if ( ispy.shift_pressed ) {
+
+    if ( ispy.mass_pair.length === 2 ) {
+      ispy.mass_pair = [];
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+    }
+
+    else if ( ispy.mass_pair.length === 1 ) {
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+      ispy.getMass();
+    }
+
+    else if ( ispy.mass_pair.length === 0 ) {
+      ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+    }
+
+  } else {
+
+    $('#data-EventObjects').modal('show');
+
+  }
 };
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect){
