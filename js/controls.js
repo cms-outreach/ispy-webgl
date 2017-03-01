@@ -93,20 +93,18 @@ ispy.toStereo = function () {
     ispy.stereo = true;
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
-    ispy.stereo_renderer.setEyeSeparation(3.0);
-
     ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera);
 
     $('#axes').hide();
-    //$('#event-info').hide();
+    $('#event-info').hide();
 
     $('#display')[0].addEventListener('click', ispy.toStereo, false);
 
     ispy.do_controls.connect();
 
-    //ispy.camera.position.x = 5;
-    //ispy.camera.position.y = 2;
-    //ispy.camera.position.z = 10;
+    ispy.camera.position.x = 5;
+    ispy.camera.position.y = 2;
+    ispy.camera.position.z = 10;
 
     ispy.lookAtOrigin();
 

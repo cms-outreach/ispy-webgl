@@ -370,16 +370,21 @@ ispy.run = function() {
   ispy.stats.update();
 
   if ( ispy.stereo ) {
+
     ispy.do_controls.update();
+
     var width = window.innerWidth;
     var height = window.innerHeight;
 
     ispy.camera.aspect = width / height;
     ispy.camera.updateProjectionMatrix();
     ispy.stereo_renderer.setSize(width, height);
+
   } else {
+
     ispy.controls.update();
     ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
+
   }
 
   ispy.inset_camera.up = ispy.camera.up;
