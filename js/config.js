@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "masterclass2017-rc2";
+ispy.version = "masterclass2017-rc3";
 
 // These need to be defined before adding objects:
 ispy.POINT = 0;
