@@ -42,17 +42,28 @@ ispy.setFramerate = function(fr) {
   $('#fr').html(fr);
 };
 
+ispy.init_camera = {
+
+  'x': 9.5,
+  'y': 9.5,
+  'z': 13.0,
+  'zoom': 1.5,
+  'perspective': true,
+  'orthographic': false
+
+};
+
 ispy.initCamera = function() {
 
-  var home = {'x': 9.5, 'y': 9.5, 'z': 13.0};
-  var init_zoom = 1.5;
+  ispy.camera.position.x = ispy.init_camera.x;
+  ispy.camera.position.y = ispy.init_camera.y;
+  ispy.camera.position.z = ispy.init_camera.z;
 
-  ispy.camera.position.x = home.x;
-  ispy.camera.position.y = home.y;
-  ispy.camera.position.z = home.z;
-
-  ispy.camera.setZoom(init_zoom);
+  ispy.camera.setZoom(ispy.init_camera.zoom);
   ispy.camera.up = new THREE.Vector3(0,1,0);
+
+  ispy.init_camera.perspective ? ispy.camera.toPerspective() : ispy.camera.toOrthographic();
+
   ispy.lookAtOrigin();
 
 };

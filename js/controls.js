@@ -1,6 +1,9 @@
 
 ispy.resetControls = function() {
+
+  ispy.initCamera();
   ispy.controls.reset();
+
 };
 
 ispy.setXY = function() {
@@ -147,9 +150,24 @@ ispy.setStereo = function() {
   ispy.enterFullscreen();
 };
 
-ispy.zoom = function(step) {
+ispy.zoomIn = function() {
 
-  ispy.camera.position.multiplyScalar(step);
+  if ( ispy.camera.inPerspectiveMode ) {
+    ispy.camera.position.multiplyScalar(0.5);
+  } else {
+    var zoom = ispy.camera.zoom;
+    ispy.camera.setZoom(zoom+0.5);
+  }
+};
+
+ispy.zoomOut = function() {
+
+  if ( ispy.camera.inPerspectiveMode ) {
+    ispy.camera.position.multiplyScalar(1.5);
+  } else {
+    var zoom = ispy.camera.zoom;
+    ispy.camera.setZoom(zoom-0.5);
+  }
 
 };
 
