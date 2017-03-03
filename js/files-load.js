@@ -9,6 +9,11 @@ ispy.web_files = [
 ];
 
 ispy.obj_files = [
+  './geometry/EB.obj',
+  './geometry/EEminus.obj',
+  './geometry/EEplus.obj',
+  './geometry/ESminus.obj',
+  './geometry/ESplus.obj',
   './geometry/muon-barrel.obj',
   './geometry/muon-endcap-minus.obj',
   './geometry/muon-endcap-plus.obj',
@@ -368,19 +373,21 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
     var materials_creator = new THREE.MTLLoader().parse(e.target.result);
     materials_creator.preload();
 
-    object.traverse(function (object) {
-      if (object instanceof THREE.Mesh) {
-        if (object.material.name) {
+    object.traverse(function (o) {
 
-          var material = materials_creator.create(object.material.name);
+      if (o instanceof THREE.Mesh || o instanceof THREE.Line) {
+        if (o.material.name) {
+
+          var material = materials_creator.create(o.material.name);
 
           if (material) {
-            object.material = material;
-            object.material.transparent = true;
-            object.material.opacity = ispy.importTransparency;
+            o.material = material;
+            o.material.transparent = true;
+            o.material.opacity = ispy.importTransparency;
           }
         }
       }
+
     });
 
     $('#loading').modal('hide');
@@ -456,13 +463,81 @@ ispy.selectObj = function(obj_file) {
 
 };
 
+ispy.parseOBJMTL = function(obj_file, mtl_file, name) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", obj_file, true);
+
+  xhr.onload = function() {
+    if (this.status === 200) {
+      var object = new THREE.OBJLoader().parse(xhr.responseText);
+      ispy.parseMTL(object, mtl_file, name);
+    }
+  };
+
+  xhr.send();
+
+};
+
+ispy.parseMTL = function(object, mtl_file, name) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", mtl_file, true);
+
+  xhr.onload = function() {
+    if (this.status === 200) {
+
+      var materials = new THREE.MTLLoader().parse(xhr.responseText);
+      materials.preload();
+
+      object.traverse(function (o) {
+
+        if (o instanceof THREE.Mesh || o instanceof THREE.Line) {
+          if (o.material.name) {
+
+            var material = materials.create(o.material.name);
+
+            if (material) {
+              o.material = material;
+              o.material.transparent = true;
+              o.material.opacity = ispy.importTransparency;
+            }
+          }
+        }
+
+      });
+
+      $('#loading').modal('hide');
+      object.name = name;
+      object.visible = true;
+      ispy.disabled[name] = false;
+
+      ispy.scene.getObjectByName("Imported").add(object);
+      ispy.addSelectionRow("Imported", name, name, true);
+
+    }
+  };
+
+  xhr.send();
+
+};
+
 ispy.loadSelectedObj = function() {
 
   var name = ispy.selected_obj.split('.')[0];
   var obj_file = './geometry/'+ispy.selected_obj;
   var mtl_file = './geometry/'+name+'.mtl';
 
-  ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, true);
+  console.log(name, obj_file, mtl_file);
+
+  ispy.parseOBJMTL(obj_file, mtl_file, name);
+
+
+  // tpmccauley: In-principle this one-line function call should replace
+  // all of this function as well as the two above it. However, for some
+  // obj+mtl pairs one has to parse both the obj and mtl files first
+  // before both can be handled without errors. Ack!
+  //ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, true);
 
 };
 
