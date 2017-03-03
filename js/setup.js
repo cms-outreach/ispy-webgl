@@ -43,17 +43,18 @@ ispy.setFramerate = function(fr) {
 };
 
 ispy.initCamera = function() {
-  var home_x = -18.1;
-  var home_y = 8.6;
-  var home_z = 14.0;
 
-  ispy.camera.position.x = home_x*0.6;
-  ispy.camera.position.y = home_y*0.6;
-  ispy.camera.position.z = home_z*0.6;
+  var home = {'x': 9.5, 'y': 9.5, 'z': 13.0};
+  var init_zoom = 1.5;
 
-  ispy.camera.setZoom(1);
+  ispy.camera.position.x = home.x;
+  ispy.camera.position.y = home.y;
+  ispy.camera.position.z = home.z;
+
+  ispy.camera.setZoom(init_zoom);
   ispy.camera.up = new THREE.Vector3(0,1,0);
   ispy.lookAtOrigin();
+
 };
 
 ispy.useRenderer = function(type) {
@@ -210,10 +211,11 @@ ispy.init = function() {
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
-  var controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
-  controls.rotateSpeed = 3.0;
-  controls.zoomSpeed = 0.5;
-  ispy.controls = controls;
+  var tb_controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+  tb_controls.rotateSpeed = 3.0;
+  tb_controls.zoomSpeed = 0.5;
+
+  ispy.controls = tb_controls;
 
   // Add a parent object for each group
   ispy.data_groups.forEach(function(g) {

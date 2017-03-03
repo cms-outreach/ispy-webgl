@@ -31,17 +31,23 @@ ispy.setYZ = function() {
 };
 
 ispy.setOrthographic = function() {
+
   $('#perspective').removeClass('active');
   $('#orthographic').addClass('active');
   $('#stereo').removeClass('active');
+
   ispy.camera.toOrthographic();
+
 };
 
 ispy.setPerspective = function() {
+
   $('#perspective').addClass('active');
   $('#orthographic').removeClass('active');
   $('#stereo').removeClass('active');
+
   ispy.camera.toPerspective();
+
 };
 
 ispy.enterFullscreen = function() {
@@ -142,8 +148,9 @@ ispy.setStereo = function() {
 };
 
 ispy.zoom = function(step) {
-  var zoom = ispy.camera.zoom;
-  ispy.camera.setZoom(zoom+step);
+
+  ispy.camera.position.multiplyScalar(step);
+
 };
 
 ispy.printImage = function() {

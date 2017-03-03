@@ -63,7 +63,8 @@ THREE.CombinedCamera.prototype.toOrthographic = function () {
 
 	// The size that we set is the mid plane of the viewing frustum
 
-	var hyperfocus = ( near + far ) / 2;
+	// tpmccauley: divide by 2 is too far
+	var hyperfocus = ( near + far ) / 8;
 
 	var halfHeight = Math.tan( fov * Math.PI / 180 / 2 ) * hyperfocus;
 	var halfWidth = halfHeight * aspect;
