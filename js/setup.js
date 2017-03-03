@@ -263,7 +263,7 @@ ispy.init = function() {
   ispy.setFramerate(30);
   $('#fps-slider').prop('value', ispy.framerate); // for FF
 
-  ispy.importTransparency = 1.0;
+  ispy.importTransparency = 0.75;
   $('#transparency-slider').prop('value', ispy.importTransparency);
   $('#trspy').html(ispy.importTransparency);
 

@@ -9,12 +9,12 @@ ispy.web_files = [
 ];
 
 ispy.obj_files = [
-  "./geometry/muon-barrel.obj",
-  "./geometry/muon-endcap-minus.obj",
-  "./geometry/muon-endcap-plus.obj",
-  "./geometry/muon-rphi-minus.obj",
-  "./geometry/muon-rphi-plus.obj",
-  "./geometry/hf.obj"
+  './geometry/muon-barrel.obj',
+  './geometry/muon-endcap-minus.obj',
+  './geometry/muon-endcap-plus.obj',
+  './geometry/muon-rphi-minus.obj',
+  './geometry/muon-rphi-plus.obj',
+  './geometry/hf.obj'
 ];
 
 ispy.ig_data = null;
@@ -302,7 +302,7 @@ ispy.cleanupData = function(d) {
 ispy.loadObjFiles = function() {
   ispy.clearTable('obj-files');
 
-  $('#selected-obj').html("Selected event");
+  $('#selected-obj').html("Selected geometry");
   $('#load-obj').addClass('disabled');
 
   var tbl = document.getElementById('obj-files');
@@ -449,47 +449,20 @@ ispy.importModel = function() {
 };
 
 ispy.selectObj = function(obj_file) {
+
   $('#selected-obj').html(obj_file);
   $('#load-obj').removeClass('disabled');
   ispy.selected_obj = obj_file;
+
 };
 
 ispy.loadSelectedObj = function() {
-  // When loading from the web load the mtl file as well
-  var mtl_file = ispy.selected_obj.split('.')[0]+'.mtl';
 
-  var mtl_loader = new THREE.MTLLoader();
-  mtl_loader.load('./geometry/'+mtl_file, function(materials) {
+  var name = ispy.selected_obj.split('.')[0];
+  var obj_file = './geometry/'+ispy.selected_obj;
+  var mtl_file = './geometry/'+name+'.mtl';
 
-    materials.preload();
-
-    var obj_loader = new THREE.OBJLoader();
-
-    obj_loader.setMaterials(materials);
-
-    obj_loader.load('./geometry/'+ispy.selected_obj, function(object) {
-
-      object.name = ispy.selected_obj;
-      object.visible = true;
-      ispy.disabled[object.name] = false;
-
-      object.children.forEach(function(c) {
-        c.material.transparent = true;
-        c.material.opacity = ispy.importTransparency;
-      })
-
-      ispy.scene.getObjectByName("Imported").add(object);
-      ispy.addSelectionRow("Imported", object.name, object.name, true);
-
-      $('#loading').modal('hide');
-
-    }, function(xhr) {
-      $('#loading').modal('show');
-    }, function(xhr) {
-      alert('Yikes! An error occurred');
-    });
-
-  });
+  ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, true);
 
 };
 
@@ -509,6 +482,11 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, show) {
       object.name = id;
       object.visible = show;
       ispy.disabled[object.name] = false;
+
+      object.children.forEach(function(c) {
+        c.material.transparent = true;
+        c.material.opacity = ispy.importTransparency;
+      })
 
       ispy.scene.getObjectByName('Imported').add(object);
       ispy.addSelectionRow('Imported', object.name, name, show);

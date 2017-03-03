@@ -270,6 +270,11 @@ body.white {
   overflow-y: scroll;
 }
 
+#geometry-files .modal-body {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
 #selected-event, #selected-obj {
   border: 1px solid #ccc;
   width: 100%;
