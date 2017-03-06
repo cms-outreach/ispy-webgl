@@ -92,7 +92,7 @@ THREE.DeviceOrientationControls = function( object ) {
 		this.alpha = alpha;
 
 		//tpmccauley: move objects towards the viewer
-		this.object.translateZ(-0.02);
+		//this.object.translateZ(-0.02);
 
 	};
 

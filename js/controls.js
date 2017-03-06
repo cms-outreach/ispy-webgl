@@ -98,8 +98,16 @@ ispy.reload = function() {
 };
 
 ispy.toStereo = function () {
-  if (!ispy.stereo) {
+
+  if ( ! ispy.stereo ) {
+
     ispy.stereo = true;
+
+    ispy.camera.position.x = 0;
+    ispy.camera.position.y = 15;
+    ispy.camera.position.z = 0;
+
+    //ispy.lookAtOrigin();
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
     ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera);
@@ -111,14 +119,10 @@ ispy.toStereo = function () {
 
     ispy.do_controls.connect();
 
-    ispy.camera.position.x = 5;
-    ispy.camera.position.y = 2;
-    ispy.camera.position.z = 10;
-
-    ispy.lookAtOrigin();
-
     ispy.onWindowResize();
+
   } else {
+
     ispy.stereo = false;
 
     $('#axes').show();
@@ -129,6 +133,7 @@ ispy.toStereo = function () {
     ispy.setPerspective();
     ispy.initCamera();
     ispy.onWindowResize();
+
   }
 }
 
@@ -143,11 +148,15 @@ function setOrientationControls(e) {
 window.addEventListener('deviceorientation', setOrientationControls, true);
 
 ispy.setStereo = function() {
+
   $('#perspective').removeClass('active');
   $('#orthographic').removeClass('active');
+
   $('#stereo').addClass('active');
+
   ispy.toStereo();
   ispy.enterFullscreen();
+
 };
 
 ispy.zoomIn = function() {

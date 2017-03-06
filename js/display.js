@@ -137,38 +137,47 @@ ispy.updateRenderer = function(type) {
 };
 
 ispy.onWindowResize = function() {
-  if (ispy.stereo) {
 
-    d = $('#display').css({
+  if ( ispy.stereo ) {
+
+    var d = $('#display').css({
       'width' : window.innerWidth + 'px',
       'height' : window.innerHeight + 'px',
       'position': 'absolute',
       'left': '0px',
       'top': '0px',
       'z-index': 1000
-    })[0]
+    })[0];
+
     d.height = window.innerHeight;
     d.width = window.innerWidth;
+
   } else {
+
     $('#display').removeAttr('style');
+
   }
 
   var w = $('#display').innerWidth();
   var h = $('#display').innerHeight();
 
   if ( ispy.camera.inPerspectiveMode ) {
+
     ispy.camera.cameraP.aspect = w/h;
 
   } else {
+
     ispy.camera.cameraO.left = -w/2;
     ispy.camera.cameraO.right = w/2;
     ispy.camera.cameraO.top = h/2;
     ispy.camera.cameraO.bottom = -h/2;
+
   }
 
   ispy.camera.updateProjectionMatrix();
   ispy.renderer.setSize(w,h);
   ispy.render();
+
 };
 
 ispy.onMouseMove = function(e) {

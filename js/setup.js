@@ -408,7 +408,9 @@ ispy.run = function() {
   ispy.render();
 
   if ( ispy.animating ) {
+
     TWEEN.update();
+
   }
 
 };
