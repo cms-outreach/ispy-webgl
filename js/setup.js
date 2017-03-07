@@ -386,13 +386,6 @@ ispy.run = function() {
 
     ispy.do_controls.update();
 
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-
-    ispy.camera.aspect = width / height;
-    ispy.camera.updateProjectionMatrix();
-    ispy.stereo_renderer.setSize(width, height);
-
   } else {
 
     ispy.controls.update();
