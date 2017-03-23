@@ -349,6 +349,8 @@ ispy.getMass = function() {
   var k1 = ispy.mass_pair[0].key;
   var k2 = ispy.mass_pair[1].key;
 
+  console.log(k1,k2);
+
   if ( ! (k1.includes('Muons') || k1.includes('Electrons')) )
     return;
   if ( ! (k2.includes('Muons') || k2.includes('Electrons')) )
@@ -364,6 +366,8 @@ ispy.getMass = function() {
   var phi2 = ispy.mass_pair[1].phi;
 
   var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+
+  console.log('m = ', m);
 
   $('#invariant-mass').html(m.toFixed(2));
   $('#invariant-mass-modal').modal('show');
@@ -407,15 +411,24 @@ ispy.displayEventObjectData = function(key, objectUserData){
 
     if ( ispy.mass_pair.length === 2 ) {
       ispy.mass_pair = [];
+
+      console.log(2, {'key':key,'pt':pt,'eta':eta,'phi':phi});
+
       ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
     }
 
     else if ( ispy.mass_pair.length === 1 ) {
+
+      console.log(1, {'key':key,'pt':pt,'eta':eta,'phi':phi});
+
       ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
       ispy.getMass();
     }
 
     else if ( ispy.mass_pair.length === 0 ) {
+
+      console.log(0, {'key':key,'pt':pt,'eta':eta,'phi':phi});
+
       ispy.mass_pair.push({'key':key,'pt':pt,'eta':eta,'phi':phi});
     }
 
