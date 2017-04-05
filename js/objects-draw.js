@@ -785,9 +785,6 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
   for ( var i = 0; i < assocs.length; i++ ) {
     var pt = tracks[i][selection.index];
-    if ( pt < selection.min_pt ) {
-      continue;
-    }
 
     ti = assocs[i][0][1];
     ei = assocs[i][1][1];
@@ -821,13 +818,19 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     var tg = new THREE.Geometry();
     tg.vertices = curve.getPoints(32);
 
-    curves.push(new THREE.Line(tg, new THREE.LineBasicMaterial({
+    var line = new THREE.Line(tg, new THREE.LineBasicMaterial({
       color:tcolor,
       transparent: transp,
       linewidth:style.linewidth,
       linecap:'butt',
       opacity:style.opacity
-    })));
+    }));
+
+    if ( pt < selection.min_pt ) {
+      line.visible = false;
+    }
+
+    curves.push(line);
   }
 
   return curves;
@@ -991,11 +994,6 @@ ispy.makeMET = function(data, style, selection) {
     "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
   */
   var pt = data[1];
-
-  if ( pt < selection.min_pt ) {
-    return null;
-  }
-
   var px = data[2];
   var py = data[3];
 
@@ -1021,15 +1019,16 @@ ispy.makeMET = function(data, style, selection) {
   geometry.computeLineDistances(); // This is needed in order for dashed line to work
 
   var met = new THREE.Line(geometry, new THREE.LineDashedMaterial({color: color, scale: 10, dashSize:2, gapSize:1, linewidth: style.linewidth }));
+
+  if ( pt < selection.min_pt ) {
+    met.visible = false;
+  }
+
   return met;
 };
 
 ispy.makeJet = function(data, style, selection) {
   var et = data[0];
-
-  if ( et < selection.min_et ) {
-    return null;
-  }
 
   var theta = data[2];
   var phi = data[3];
@@ -1064,6 +1063,10 @@ ispy.makeJet = function(data, style, selection) {
 
   var jet = new THREE.Mesh(geometry, material);
   jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
+
+  if ( et < selection.min_et ) {
+    jet.visible = false;
+  }
 
   return jet;
 };
