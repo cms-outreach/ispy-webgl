@@ -124,6 +124,16 @@ ispy.detector_description = {
     opacity: 0.5, linewidth: 0.5}},
   "PixelBarrel3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
     fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
+    opacity: 0.5, linewidth: 0.5}},
+
+  "PixelEndcapMinus3D_V2": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (-)",
+    fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
+    opacity: 0.5, linewidth: 0.5}},
+  "PixelEndcapPlus3D_V2": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (+)",
+    fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
+    opacity: 0.5, linewidth: 0.5}},
+  "PixelBarrel3D_V2": {type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
+    fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)",
     opacity: 0.5, linewidth: 0.5}}
 };
 
