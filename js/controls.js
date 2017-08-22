@@ -191,6 +191,8 @@ ispy.exportString = function(output, filename) {
   var blob = new Blob([output], {type: 'text/plain'});
   var objectURL = URL.createObjectURL(blob);
 
+  console.log(filename);
+
   // Use this to output to file:
   var link = document.createElement('a');
   link.style.display = 'none';
@@ -217,6 +219,7 @@ ispy.exportScene = function() {
   });
 };
 
+/*
 ispy.exportModel = function() {
   var exporter = new THREE.OBJExporter();
 
@@ -229,4 +232,39 @@ ispy.exportModel = function() {
       });
     }
   });
-}
+};
+*/
+
+ispy.exportModel = function(format) {
+
+  var exporter;
+
+  if ( format === 'obj' ) {
+
+    exporter = new THREE.OBJExporter();
+
+  } else if ( format === 'stl' ) {
+
+    exporter = new THREE.STLExporter();
+
+  }
+
+  ispy.scene.children.forEach(function(c) {
+
+    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+
+      c.children.forEach(function(o) {
+
+        if ( o.visible ) {
+
+          ispy.exportString(exporter.parse(o), o.name+'.'+format);
+
+        }
+
+      });
+
+    }
+
+  });
+
+};

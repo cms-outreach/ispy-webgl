@@ -25,7 +25,9 @@
 
   <script src="js/lib/MTLLoader.js"></script>
   <script src="js/lib/OBJLoader.js"></script>
+
   <script src="js/lib/OBJExporter.js"></script>
+  <script src="js/lib/STLExporter.js"></script>
 
   <script src="js/lib/jszip.min.js"></script>
 
@@ -172,7 +174,12 @@
             </button>
           </div>
           <div class="btn-group" role="group">
+            <!--
             <button type="button" class="btn btn-default" onclick="ispy.exportModel();" title="Export 3D Model (obj format)">
+              <i class="fa fa-upload"></i>
+            </button>
+            -->
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
               <i class="fa fa-upload"></i>
             </button>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#import-model" title="Import 3D Model (obj format)">
@@ -394,6 +401,34 @@
           pans forward in the direction of view. To exit, tap the screen.
         </p>
         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ispy.setStereo();">Start</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="export-model" role="dialog" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content bordered black">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
+        <h4 class="modal-title black">Export model</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          <div class="btn-group">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+              Select export format <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#" onclick="ispy.exportModel('obj');">Export OBJ</a></li>
+              <li><a href="#" onclick="ispy.exportModel('stl');">Export STL</a></li>
+            </ul>
+          </div>
+        </p>
+        <div id="renderer-info"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
