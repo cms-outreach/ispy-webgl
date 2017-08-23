@@ -364,10 +364,8 @@ ispy.render = function() {
 
   }
 
-  if ( ispy.inset_renderer !== null && ispy.renderer instanceof THREE.WebGLRenderer ) {
-
-    // For some reason the inset renderer does not behave when
-    // the renderers are CanvasRenderers. Therefore the above second condition (for now)
+  if ( ispy.inset_renderer !== null ) {
+  
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
 
   }
