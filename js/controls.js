@@ -219,21 +219,34 @@ ispy.exportScene = function() {
   });
 };
 
-/*
-ispy.exportModel = function() {
-  var exporter = new THREE.OBJExporter();
+ispy.exportGLTF = function() {
 
-  ispy.scene.children.forEach(function(c){
+  var exporter = new THREE.GLTFExporter();
+
+  ispy.scene.children.forEach(function(c) {
+
     if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+
       c.children.forEach(function(o) {
+
         if ( o.visible ) {
-          ispy.exportString(exporter.parse(o), o.name+'.obj');
+
+          exporter.parse(o, function(result) {
+
+            var output = JSON.stringify(result, null, 2);
+            ispy.exportString(output, o.name+'.gltf');
+
+          });
+
         }
+
       });
+
     }
+
   });
+
 };
-*/
 
 ispy.exportModel = function(format) {
 
