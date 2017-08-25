@@ -103,11 +103,9 @@ ispy.toStereo = function () {
 
     ispy.stereo = true;
 
-    ispy.camera.position.x = 0;
-    ispy.camera.position.y = 15;
-    ispy.camera.position.z = 0;
-
-    //ispy.lookAtOrigin();
+    ispy.camera.position.x = 5;
+    ispy.camera.position.y = 5;
+    ispy.camera.position.z = 10;
 
     ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
     ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera);

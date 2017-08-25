@@ -365,7 +365,7 @@ ispy.render = function() {
   }
 
   if ( ispy.inset_renderer !== null ) {
-  
+
     ispy.inset_renderer.render(ispy.inset_scene, ispy.inset_camera);
 
   }
