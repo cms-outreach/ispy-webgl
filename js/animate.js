@@ -56,7 +56,7 @@ ispy.animation_script = {
         {key:"TrackerMuons_V1", show:true},
         {key:"GsfElectrons_V1", show:true},
         {key:"GsfElectrons_V2", show:true},
-        {key:"Beam Pipe", show:false}
+        {key:"BeamPipe", show:false}
       ]
     },
     "zoom": {
