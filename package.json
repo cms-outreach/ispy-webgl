@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/cms-outreach/ispy-webgl.git"
   },
-  "author": "Tom McCauley",
+  "author": "thomas.mccauley@cern.ch",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
     "url": "https://github.com/cms-outreach/ispy-webgl/issues"
