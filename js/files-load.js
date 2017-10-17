@@ -204,6 +204,57 @@ ispy.loadLocalFiles = function() {
   ispy.openDialog('#files');
 };
 
+ispy.loadDroppedFile = function(file) {
+
+  var reader = new FileReader();
+  ispy.file_name = file.name;
+
+  $('#loading').modal('show');
+
+  reader.onload = function(e) {
+
+    var data = e.target.result;
+    var zip = new JSZip(data);
+
+    var event_list = [];
+
+    $.each(zip.files, function(index, zipEntry) {
+
+      if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+
+        if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
+
+          ispy.isGeometry = true;
+
+        }
+
+        event_list.push(zipEntry.name);
+
+      }
+
+    });
+
+    ispy.event_list = event_list;
+    ispy.event_index = 0;
+    ispy.updateEventList();
+    ispy.ig_data = zip;
+
+    ispy.loadEvent();
+
+    $('#loading').modal('hide');
+
+  };
+
+  reader.onerror = function(e) {
+
+    alert(e);
+
+  };
+
+  reader.readAsArrayBuffer(file);
+
+};
+
 ispy.selectFile = function(filename) {
   ispy.clearTable("browser-events");
 

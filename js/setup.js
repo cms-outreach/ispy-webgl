@@ -107,6 +107,7 @@ ispy.useRenderer = function(type) {
 };
 
 ispy.init = function() {
+
   var display = document.getElementById('display');
   var inset = document.getElementById('axes');
 
@@ -195,6 +196,7 @@ ispy.init = function() {
   });
 
   var font_loader = new THREE.FontLoader();
+
   font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
     var tps = {size:0.75, height:0.1, font:font};
@@ -218,6 +220,7 @@ ispy.init = function() {
     ispy.inset_scene.add(x_text);
     ispy.inset_scene.add(y_text);
     ispy.inset_scene.add(z_text);
+
   });
 
   // The second argument is necessary to make sure that mouse events are
@@ -230,9 +233,11 @@ ispy.init = function() {
 
   // Add a parent object for each group
   ispy.data_groups.forEach(function(g) {
+
     var obj_group = new THREE.Object3D();
     obj_group.name = g;
     ispy.scene.add(obj_group);
+
   });
 
   $('#version').html("v"+ispy.version);
@@ -282,8 +287,32 @@ ispy.init = function() {
   ispy.stereo = false;
 
   $('#display').append($('#event-info'));
-};
 
+  var canvas = ispy.renderer.domElement;
+
+  canvas.ondragover = function() {
+
+    this.classList.add('hover');
+    return false;
+
+  };
+
+  canvas.ondrop = function(e) {
+
+    e.preventDefault();
+    this.classList.remove('hover');
+
+    var file = e.dataTransfer.files[0];
+    ispy.loadDroppedFile(file);
+
+    return false;
+
+  };
+
+  canvas.addEventListener('ondragover', canvas.ondragover);
+  canvas.addEventListener('ondrop', canvas.ondrop);
+
+};
 
 ispy.initLight = function() {
   var intensity = 1.0;

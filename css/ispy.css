@@ -6,6 +6,10 @@ body.white {
   background-color: white;
 }
 
+canvas.hover {
+  border:5px dashed #ccc;
+}
+
 #stats {
   position: absolute;
   top:0;

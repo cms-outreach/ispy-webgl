@@ -339,7 +339,6 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 };
 
-
 ispy.getMass = function() {
 
   var pt1 = ispy.mass_pair[0].pt;
