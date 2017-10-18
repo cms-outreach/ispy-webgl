@@ -1,0 +1,22 @@
+{
+  "name": "ispy-webgl",
+  "version": "0.9.4-invenio.23",
+  "description": "A browser-based event display for the CMS experiment at the LHC, using WebGL",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cms-outreach/ispy-webgl.git"
+  },
+  "author": "thomas.mccauley@cern.ch",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/cms-outreach/ispy-webgl/issues"
+  },
+  "homepage": "https://github.com/cms-outreach/ispy-webgl#readme",
+  "dependencies": {
+    "jszip": "https://github.com/Stuk/jszip.git"
+  }
+}
