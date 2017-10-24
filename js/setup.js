@@ -197,7 +197,7 @@ ispy.init = function() {
 
   var font_loader = new THREE.FontLoader();
 
-  font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
+  font_loader.load('/static/node_modules/ispy-webgl/fonts/helvetiker_regular.typeface.json', function(font) {
 
     var tps = {size:0.75, height:0.1, font:font};
 
@@ -344,30 +344,32 @@ ispy.getScript = function(scr) {
 };
 
 ispy.initDetector = function() {
+
   // Loading and rendering the actual geometry when WebGL is available
   // works well. With CanvasRenderer, not so well, so load and render
   // the geometry models.
 
   if ( ispy.renderer_name === "CanvasRenderer" ) {
-    ispy.getScript("./geometry/models.js")
+
+    ispy.getScript('/static/node_modules/ispy-webgl/geometry/models.js')
       .done(function() {
         ispy.addDetector();
-      });
+    });
   } else if ( ispy.renderer_name === "WebGLRenderer" ) {
 
     $('#loading').modal('show');
 
     $.when(
-        ispy.getJSON('./geometry/eb.json'),
-        ispy.getJSON('./geometry/ee.json'),
-        ispy.getJSON('./geometry/hb.json'),
-        ispy.getJSON('./geometry/ho.json'),
-        ispy.getJSON('./geometry/hehf.json'),
-        ispy.getJSON('./geometry/pixel.json'),
-        ispy.getJSON('./geometry/tec.json'),
-        ispy.getJSON('./geometry/tib.json'),
-        ispy.getJSON('./geometry/tid.json'),
-        ispy.getJSON('./geometry/tob.json')
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/eb.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/ee.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/hb.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/ho.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/hehf.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/pixel.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/tec.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/tib.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/tid.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/tob.json')
         ).done(function(){
         $.when(ispy.addDetector()).done(function() {
           $('#loading').modal('hide');

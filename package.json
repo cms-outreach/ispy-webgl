@@ -1,6 +1,6 @@
 {
   "name": "ispy-webgl",
-  "version": "0.9.8-COD3.2",
+  "version": "0.9.8-COD3.3",
   "description": "A browser-based event display for the CMS experiment at the LHC, using WebGL",
   "main": "",
   "scripts": {
