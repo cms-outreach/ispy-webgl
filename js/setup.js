@@ -360,8 +360,8 @@ ispy.initDetector = function() {
     $('#loading').modal('show');
 
     $.when(
-        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/eb.json'),
-        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/ee.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/eb-reduced.json'),
+        ispy.getJSON('/static/node_modules/ispy-webgl/geometry/ee-reduced.json'),
         ispy.getJSON('/static/node_modules/ispy-webgl/geometry/hb.json'),
         ispy.getJSON('/static/node_modules/ispy-webgl/geometry/ho.json'),
         ispy.getJSON('/static/node_modules/ispy-webgl/geometry/hehf.json'),
