@@ -1,13 +1,3 @@
-// For now, hard-code some examples files here for testing
-// the "files from the web"
-ispy.web_files = [
-  "./data/4lepton.ig",
-  "./data/diphoton.ig",
-  "./data/MinimumBias.ig",
-  "./data/Mu.ig",
-  "./data/Electron.ig"
-];
-
 ispy.obj_files = [
   './geometry/EB.obj',
   './geometry/EEminus.obj',
@@ -256,9 +246,10 @@ ispy.loadDroppedFile = function(file) {
 };
 
 ispy.selectFile = function(filename) {
+
   ispy.clearTable("browser-events");
 
-  var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
+  var new_file_name = filename.split('/')[filename.length-1];
   ispy.file_name = new_file_name;
 
   $('#progress').modal('show');
@@ -272,46 +263,64 @@ ispy.selectFile = function(filename) {
   ecell.innerHTML = 'Loading events...';
 
   xhr.onprogress = function(evt) {
+
     if ( evt.lengthComputable ) {
+
      var percentComplete = Math.round((evt.loaded / evt.total)*100);
      $('.progress-bar').attr('style', 'width:'+percentComplete+'%;');
      $('.progress-bar').html(percentComplete+'%');
+
    }
+
  };
 
   xhr.onreadystatechange = function () {
-    if (this.readyState === 4){
+
+    if ( this.readyState === 4 ) {
+
       $('#progress').modal('hide');
       $('.progress-bar').attr('style', 'width:0%;');
       $('.progress-bar').html('0%');
+
     }
+
   };
 
   xhr.onload = function() {
-    if (this.status === 200) {
+
+    if ( this.status === 200 ) {
 
       var zip = JSZip(xhr.responseText);
       var event_list = [];
 
-      $.each(zip.files, function(index, zipEntry){
+      $.each(zip.files, function(index, zipEntry) {
+
         if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+
           event_list.push(zipEntry.name);
+
         }
+
       });
 
       ispy.event_list = event_list;
       ispy.event_index = 0;
       ispy.updateEventList();
       ispy.ig_data = zip;
+
     }
+
   };
 
   xhr.send();
+
 };
 
 ispy.loadWebFiles = function(json_file) {
 
   $.ajax({url: json_file, dataType: "json", cache: true}).success(function(data) {
+
+    ispy.web_files = data;
 
     ispy.clearTable('browser-files');
     $('#selected-event').html("Selected event");
@@ -320,7 +329,7 @@ ispy.loadWebFiles = function(json_file) {
 
     for ( var d in data ) {
 
-        tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebFiles(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+        tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDir(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
 
     }
 
@@ -329,20 +338,44 @@ ispy.loadWebFiles = function(json_file) {
 };
 
 ispy.showWebFiles = function() {
+
   ispy.openDialog('#files');
+  ispy.showWebDirs();
 
-  if ( ispy.loaded_local === true ) {
-    // If we have previously opened a local file then
-    // we don't want its contents appearing
-    // in the web files dialog
-    ispy.clearTable("browser-files");
-    ispy.clearTable("browser-events");
-    ispy.loaded_local = false;
+  $('#open-files').model('hide');
 
-    //ispy.loadWebFiles();
-  }
+};
 
-  $('#open-files').modal('hide');
+ispy.showWebDir = function(dir_name) {
+
+  $('#browser-dirs').hide();
+
+  var tbl = document.getElementById("browser-files");
+  var files = ispy.web_files.filter(function(w){ return w.release === dir_name; })[0].files;
+  tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDirs();"> ../ </a>';
+
+  files.forEach(function(f) {
+
+    var filename = "/record/"+f.record +"/files/"+f.name;
+
+    tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML =
+      '<a id="browser-file-' + f.record + '" class="file" onclick="ispy.selectFile(\'' + filename + '\');">' + f.name + '</a>';
+
+  });
+
+  $('#browser-files').show();
+
+};
+
+ispy.showWebDirs = function() {
+
+  ispy.clearTable('browser-files');
+
+  $('#selected-event').html("Selected event");
+  $('#load-event').addClass('disabled');
+  $('#browser-files').hide();
+  $('#browser-dirs').show();
+
 };
 
 ispy.cleanupData = function(d) {

@@ -1,0 +1,126 @@
+[
+  {
+    "release":"Run2012C",
+    "files":
+      [
+        {"record":-1, "name":"BJetPlusX_Run2012C_0.ig"},
+        {"record":-1, "name":"BTag_Run2012C_0.ig"},
+        {"record":-1, "name":"Commissioning_Run2012C_0.ig"},
+        {"record":-1, "name":"DoubleElectron_Run2012C_0.ig"},
+        {"record":-1, "name":"DoubleMuParked_Run2012C_0.ig"},
+        {"record":-1, "name":"DoublePhotonHighPt_Run2012C_0.ig"},
+        {"record":-1, "name":"DoublePhoton_Run2012C_0.ig"},
+        {"record":-1, "name":"ElectronHad_Run2012C_0.ig"},
+        {"record":-1, "name":"HTMHTParked_Run2012C_0.ig"},
+        {"record":-1, "name":"HcalNZS_Run2012C_0.ig"},
+        {"record":-1, "name":"JetHT_Run2012C_0.ig"},
+        {"record":-1, "name":"JetMon_Run2012C_0.ig"},
+        {"record":-1, "name":"MET_Run2012C_0.ig"},
+        {"record":-1, "name":"MinimumBias_Run2012C_0.ig"},
+        {"record":-1, "name":"MuEG_Run2012C_0.ig"},
+        {"record":-1, "name":"MuHad_Run2012C_0.ig"},
+        {"record":-1, "name":"MuOnia_Run2012C_0.ig"},
+        {"record":-1, "name":"NoBPTX_Run2012C_0.ig"},
+        {"record":-1, "name":"PhotonHad_Run2012C_0.ig"},
+        {"record":-1, "name":"SingleElectron_Run2012C_0.ig"},
+        {"record":-1, "name":"SingleMu_Run2012C_0.ig"},
+        {"record":-1, "name":"SinglePhoton_Run2012C_0.ig"},
+        {"record":-1, "name":"TauParked_Run2012C_0.ig"},
+        {"record":-1, "name":"TauPlusX_Run2012C_0.ig"},
+        {"record":-1, "name":"VBF1Parked_Run2012C_0.ig"}
+      ]
+  },
+  {
+    "release":"Run2012B",
+    "files":
+      [
+        {"record":-1, "name":"BJetPlusX_Run2012B_0.ig"},
+        {"record":-1, "name":"BTag_Run2012B_0.ig"},
+        {"record":-1, "name":"Commissioning_Run2012B_0.ig"},
+        {"record":-1, "name":"DoubleElectron_Run2012B_0.ig"},
+        {"record":-1, "name":"DoubleMu_Run2012B_0.ig"},
+        {"record":-1, "name":"DoublePhotonHighPt_Run2012B_0.ig"},
+        {"record":-1, "name":"DoublePhoton_Run2012B_0.ig"},
+        {"record":-1, "name":"ElectronHad_Run2012B_0.ig"},
+        {"record":-1, "name":"HTMHTParked_Run2012B_0.ig"},
+        {"record":-1, "name":"HcalNZS_Run2012B_0.ig"},
+        {"record":-1, "name":"JetHT_Run2012B_0.ig"},
+        {"record":-1, "name":"JetMon_Run2012B_0.ig"},
+        {"record":-1, "name":"MET_Run2012B_0.ig"},
+        {"record":-1, "name":"MinimumBias_Run2012B_0.ig"},
+        {"record":-1, "name":"MuEG_Run2012B_0.ig"},
+        {"record":-1, "name":"MuHad_Run2012B_0.ig"},
+        {"record":-1, "name":"MuOnia_Run2012B_0.ig"},
+        {"record":-1, "name":"NoBPTX_Run2012B_0.ig"},
+        {"record":-1, "name":"PhotonHad_Run2012B_0.ig"},
+        {"record":-1, "name":"SingleElectron_Run2012B_0.ig"},
+        {"record":-1, "name":"SingleMu_Run2012B_0.ig"},
+        {"record":-1, "name":"SinglePhoton_Run2012B_0.ig"},
+        {"record":-1, "name":"TauParked_Run2012B_0.ig"},
+        {"record":-1, "name":"TauPlusX_Run2012B_0.ig"},
+        {"record":-1, "name":"VBF1Parked_Run2012B_0.ig"}
+      ]
+  },
+  {
+    "release":"Run2011A",
+    "files":
+      [
+        {"record":614, "name":"BTag.ig"},
+        {"record":615, "name":"DoubleElectron.ig"},
+        {"record":616, "name":"DoubleMu.ig"},
+        {"record":617, "name":"ElectronHad.ig"},
+        {"record":618, "name":"HT.ig"},
+        {"record":619, "name":"Jet.ig"},
+        {"record":620, "name":"MET.ig"},
+        {"record":621, "name":"METBTag.ig"},
+        {"record":622, "name":"MinimumBias.ig"},
+        {"record":623, "name":"MuEG.ig"},
+        {"record":624, "name":"MuHad.ig"},
+        {"record":625, "name":"MultiJet.ig"},
+        {"record":626, "name":"MuOnia.ig"},
+        {"record":627, "name":"Photon.ig"},
+        {"record":628, "name":"PhotonHad.ig"},
+        {"record":629, "name":"SingleElectron.ig"},
+        {"record":630, "name":"SingleMu.ig"},
+        {"record":631, "name":"Tau.ig"},
+        {"record":632, "name":"TauPlusX.ig"}
+      ]
+  },
+  {
+    "release":"Run2010B",
+    "files":
+      [
+        {"record":600, "name":"BTau.ig"},
+        {"record":601, "name":"EGMonitor.ig"},
+        {"record":602, "name":"Electron.ig"},
+        {"record":603, "name":"Jet.ig"},
+        {"record":604, "name":"JetMETTauMonitor.ig"},
+        {"record":605, "name":"METFwd.ig"},
+        {"record":606, "name":"Mu.ig"},
+        {"record":607, "name":"MuMonitor.ig"},
+        {"record":608, "name":"MuOnia.ig"},
+        {"record":609, "name":"MultiJet.ig"},
+        {"record":610, "name":"Photon.ig"},
+        {"record":611, "name":"Commissioning.ig"},
+        {"record":612, "name":"MinimumBias.ig"},
+        {"record":613, "name":"ZeroBias.ig"}
+      ]
+  },
+  {
+    "release":"Education",
+    "files":
+      [
+        {"record":300, "name":"4lepton.ig"},
+        {"record":300, "name":"diphoton.ig"},
+        {"record":301, "name":"dimuon-Jpsi_0.ig"},
+        {"record":302, "name":"dielectron-Jpsi_0.ig"},
+        {"record":303, "name":"dimuon_0.ig"},
+        {"record":304, "name":"dielectron_0.ig"},
+        {"record":305, "name":"dielectron-Upsilon_0.ig"},
+        {"record":306, "name":"Zee_0.ig"},
+        {"record":307, "name":"Zmumu_0.ig"},
+        {"record":308, "name":"Wenu_0.ig"},
+        {"record":309, "name":"Wmunu_0.ig"}
+      ]
+  }
+]
