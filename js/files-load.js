@@ -309,20 +309,23 @@ ispy.selectFile = function(filename) {
   xhr.send();
 };
 
-ispy.loadWebFiles = function() {
-  $('#selected-event').html("Selected event");
-  $('#load-event').addClass('disabled');
+ispy.loadWebFiles = function(json_file) {
 
-  var tbl = document.getElementById("browser-files");
+  $.ajax({url: json_file, dataType: "json", cache: true}).success(function(data) {
 
-  for (var i = 0; i < ispy.web_files.length; i++) {
-    var e = ispy.web_files[i];
-    var name = e.split("/")[2];
-    var row = tbl.insertRow(tbl.rows.length);
-    var cell = row.insertCell(0);
-    var cls = "file";
-    cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
-  }
+    ispy.clearTable('browser-files');
+    $('#selected-event').html("Selected event");
+
+    var tbl = document.getElementById("browser-dirs");
+
+    for ( var d in data ) {
+
+        tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebFiles(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+
+    }
+
+  });
+
 };
 
 ispy.showWebFiles = function() {
@@ -336,7 +339,7 @@ ispy.showWebFiles = function() {
     ispy.clearTable("browser-events");
     ispy.loaded_local = false;
 
-    ispy.loadWebFiles();
+    //ispy.loadWebFiles();
   }
 
   $('#open-files').modal('hide');
