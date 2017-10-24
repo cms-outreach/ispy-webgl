@@ -378,6 +378,46 @@ ispy.showWebDirs = function() {
 
 };
 
+ispy.loadUrl = function(url) {
+
+  var url_split = url.split("/");
+  ispy.file_name = url_split[url_split.length-1];
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.overrideMimeType("text/plain; charset=x-user-defined");
+
+  xhr.onload = function() {
+
+    if ( this.status === 200 ) {
+
+      var zip = JSZip(xhr.responseText);
+      var event_list = [];
+
+      $.each(zip.files, function(index, zipEntry) {
+
+        if ( zipEntry._data !== null && zipEntry.name !== "Header" ) {
+
+          event_list.push(zipEntry.name);
+
+        }
+
+      });
+
+      ispy.event_list = event_list;
+      ispy.event_index = 0;
+      ispy.updateEventList();
+      ispy.ig_data = zip;
+      ispy.loadEvent();
+
+    }
+
+  };
+
+  xhr.send();
+
+};
+
 ispy.cleanupData = function(d) {
   // rm non-standard json bits
   // newer files will not have this problem
