@@ -186,6 +186,9 @@ ispy.loadLocalFiles = function() {
 
   ispy.clearTable("browser-files");
   ispy.clearTable("browser-events");
+
+  $('#browser-dirs').hide();
+
   $('#selected-event').html("Selected event");
 
   ispy.local_files = document.getElementById('local-files').files;
@@ -342,7 +345,7 @@ ispy.showWebFiles = function() {
   ispy.openDialog('#files');
   ispy.showWebDirs();
 
-  $('#open-files').model('hide');
+  $('#open-files').modal('hide');
 
 };
 
