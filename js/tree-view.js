@@ -52,7 +52,7 @@ ispy.toggle = function(key) {
 ispy.showObject = function(key, show) {
   var obj = ispy.scene.getObjectByName(key);
   if ( obj !== undefined ) {
-    console.log(key, show);
+    //console.log(key, show);
     obj.visible = show;
     ispy.disabled[key] = !show;
     $('#'+key).prop('checked', show);
