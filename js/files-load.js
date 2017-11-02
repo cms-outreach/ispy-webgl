@@ -171,6 +171,8 @@ ispy.updateLocalFileList = function(list) {
     var cls = "file";
     cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectLocalFile(\'' + i + '\');">' + name + '</a>';
   }
+
+  $('#browser-files').show();
 };
 
 ispy.loadLocalFiles = function() {
@@ -325,7 +327,9 @@ ispy.loadWebFiles = function(json_file) {
 
     ispy.web_files = data;
 
-    ispy.clearTable('browser-files');
+    //ispy.clearTable('browser-files');
+    //ispy.clearTable('browser-events');
+
     $('#selected-event').html("Selected event");
 
     var tbl = document.getElementById("browser-dirs");
@@ -373,9 +377,11 @@ ispy.showWebDir = function(dir_name) {
 ispy.showWebDirs = function() {
 
   ispy.clearTable('browser-files');
+  ispy.clearTable('browser-events');
 
   $('#selected-event').html("Selected event");
   $('#load-event').addClass('disabled');
+
   $('#browser-files').hide();
   $('#browser-dirs').show();
 
