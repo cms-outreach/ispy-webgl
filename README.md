@@ -18,4 +18,6 @@ For more information on the input data format:
 
 Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Phong Nguyen, Michael Saunby
 
+Reference: T McCauley 2017 J. Phys.: Conf. Ser. 898 072030 <a target="_blank" href="https://doi.org/10.1088/1742-6596/898/7/072030">DOI</a> 
+
 <img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/ispy-webgl-screenshot-0.9.6.png"></img>
