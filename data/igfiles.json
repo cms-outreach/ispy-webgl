@@ -107,11 +107,17 @@
       ]
   },
   {
-    "release":"Education",
+    "release":"HiggsCandidates",
     "files":
       [
         {"record":300, "name":"4lepton.ig"},
-        {"record":300, "name":"diphoton.ig"},
+        {"record":300, "name":"diphoton.ig"}
+      ]
+  },
+  {
+    "release":"Education",
+    "files":
+      [
         {"record":301, "name":"dimuon-Jpsi_0.ig"},
         {"record":302, "name":"dielectron-Jpsi_0.ig"},
         {"record":303, "name":"dimuon_0.ig"},
