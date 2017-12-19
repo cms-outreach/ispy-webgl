@@ -254,7 +254,7 @@ ispy.selectFile = function(filename) {
 
   ispy.clearTable("browser-events");
 
-  var new_file_name = filename.split('/')[filename.length-1];
+  var new_file_name = filename.split('/')[4]; // This is the case for records in CODP
   ispy.file_name = new_file_name;
 
   $('#progress').modal('show');
