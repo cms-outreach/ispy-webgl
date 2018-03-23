@@ -6,8 +6,14 @@
   <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
+  
+  <script src="js/lib/d3.v4.min.js"></script>
+
   <script src="js/lib/jquery-1.11.1.min.js"></script>
   <script src="js/lib/jquery.scrollintoview.min.js"></script>
+  <script src="js/lib/jquery.flot.js"></script>
+
+
   <script src="js/lib/stupidtable.min.js"></script>
   <script src="js/lib/bootstrap.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
@@ -198,17 +204,35 @@
         </div>
       </div>
       <!-- The canvas goes into this div -->
-      <div class="col-lg-9 bordered black" id="display">
+      <div class="col-lg-6 bordered black" id="display">
         <div id="axes"></div>
       </div>
+      <div class="col-lg-3" id="hists">
+        <div class="row">
+          <div class="col-3 bordered">
+            <div id="Z"></div>
+            <!--<svg id="Z"></svg>-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3 bordered">
+            <div id="H"></div>
+            <!--<svg id="H"></svg>-->
+          </div>
+        </div>
+      </div>
     </div>
+    <!--
     <div class="row">
       <div class="col-lg-12 bordered black" id="tableview">
       <table id="collection-table" class="table table-hover"></table>
       </div>
     </div>
+    -->
   </div>
 </body>
+
+<script src="js/hist.js"></script>
 
 <div id="event-info" class="black">
 <table>
@@ -269,7 +293,7 @@
         <div class="bordered" id="selected-event"> </div>
         <div id="event-buttons">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" id="load-event" class="btn btn-default disabled" onclick="$('#files').modal('hide'); ispy.loadEvent();">Load</button>
+          <button type="button" id="load-event" class="btn btn-default disabled" onclick="$('#files').modal('hide'); ispy.loadEvent(); ispy.get_mass(1);">Load</button>
         </div>
       </div>
     </div>

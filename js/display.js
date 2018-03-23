@@ -240,6 +240,8 @@ ispy.onMouseDown = function(e) {
 ispy.shift_pressed = false;
 ispy.mass_pair = [];
 
+ispy.Z_data = [];
+
 document.addEventListener('keyup', function(e) {
 
   if ( e.which === 16 ) {
@@ -275,12 +277,13 @@ document.addEventListener('keydown', function(e) {
     ispy.shift_pressed = true;
   }
 
-  /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
-    console.log('right');
+    ispy.Z_data.push(90.0+Math.floor((Math.random() * 20) + 1));
+    ispy.make_hist(ispy.Z_data);
   }
 
+  /*
   // left
   if ( e.which === 37 && e.shiftKey ) {
     console.log('left');

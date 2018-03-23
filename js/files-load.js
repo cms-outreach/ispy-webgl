@@ -1,11 +1,7 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "./data/4lepton.ig",
-  "./data/diphoton.ig",
-  "./data/MinimumBias.ig",
-  "./data/Mu.ig",
-  "./data/Electron.ig"
+  "./data/test.ig"
 ];
 
 ispy.obj_files = [
@@ -89,6 +85,7 @@ ispy.enableNextPrev = function() {
 };
 
 ispy.loadEvent = function() {
+
   $("#event-loaded").html("");
   $("#loading").modal("show");
 
@@ -129,6 +126,7 @@ ispy.nextEvent = function() {
   if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
     ispy.event_index++;
     ispy.loadEvent();
+    ispy.get_mass(1);
   }
 };
 
@@ -136,6 +134,7 @@ ispy.prevEvent = function() {
   if ( ispy.event_list && ispy.event_index > 0) {
     ispy.event_index--;
     ispy.loadEvent();
+    ispy.get_mass(-1);
   }
 };
 

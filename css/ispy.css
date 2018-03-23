@@ -117,7 +117,7 @@ canvas.hover {
 }
 
 #treeview {
-  height: 500px;
+  height: 640px;
   overflow: scroll;
 }
 
@@ -180,7 +180,7 @@ canvas.hover {
 }
 
 #display {
-  height: 500px;
+  height: 640px;
   overflow: hidden;
   padding: 0;
 }
@@ -193,6 +193,32 @@ canvas.hover {
 #display.white {
   color: black;
   background-color: white;
+}
+
+#hists {
+  height: 640px;
+  background-color: white;
+}
+
+svg {
+  height: 250px;
+  width: 350px;
+}
+
+#Z, #H {
+  height: 309px;
+  margin: 5px;
+}
+
+.histogram-area {
+  fill-opacity: 1.0;
+  fill: #c00;
+}
+
+.histogram-line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
 
 #tableview {
