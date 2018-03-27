@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
-  
+
   <script src="js/lib/d3.v4.min.js"></script>
 
   <script src="js/lib/jquery-1.11.1.min.js"></script>
   <script src="js/lib/jquery.scrollintoview.min.js"></script>
   <script src="js/lib/jquery.flot.js"></script>
-
+  <script src="js/lib/jquery.flot.axislabels.js"></script>
 
   <script src="js/lib/stupidtable.min.js"></script>
   <script src="js/lib/bootstrap.min.js"></script>
@@ -293,7 +293,7 @@
         <div class="bordered" id="selected-event"> </div>
         <div id="event-buttons">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" id="load-event" class="btn btn-default disabled" onclick="$('#files').modal('hide'); ispy.loadEvent(); ispy.get_mass(1);">Load</button>
+          <button type="button" id="load-event" class="btn btn-default disabled" onclick="$('#files').modal('hide'); ispy.loadEvent(); ispy.push_mass();">Load</button>
         </div>
       </div>
     </div>

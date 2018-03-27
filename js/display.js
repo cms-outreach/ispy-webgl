@@ -277,13 +277,12 @@ document.addEventListener('keydown', function(e) {
     ispy.shift_pressed = true;
   }
 
+  /*
   // right
   if ( e.which === 39 && e.shiftKey ) {
-    ispy.Z_data.push(90.0+Math.floor((Math.random() * 20) + 1));
-    ispy.make_hist(ispy.Z_data);
+    console.log('right');
   }
 
-  /*
   // left
   if ( e.which === 37 && e.shiftKey ) {
     console.log('left');

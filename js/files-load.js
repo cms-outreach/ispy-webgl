@@ -126,7 +126,8 @@ ispy.nextEvent = function() {
   if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
     ispy.event_index++;
     ispy.loadEvent();
-    ispy.get_mass(1);
+
+    ispy.push_mass();
   }
 };
 
@@ -134,7 +135,8 @@ ispy.prevEvent = function() {
   if ( ispy.event_list && ispy.event_index > 0) {
     ispy.event_index--;
     ispy.loadEvent();
-    ispy.get_mass(-1);
+
+    ispy.pull_mass();
   }
 };
 
