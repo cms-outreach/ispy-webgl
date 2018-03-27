@@ -16,7 +16,7 @@ var zplot = $.plot($("#Z"), [{data:[], label:"Z", color:"#202020"}], {
   }],
   yaxes: [{
     position: 'right',
-    axisLabel: 'events / 5 GeV'
+    axisLabel: 'Events / 5 GeV'
   }]
 });
 
@@ -35,13 +35,13 @@ var hplot = $.plot($("#H"), [{data:[], label: "H", color:"#202020"}], {
   }],
   yaxes: [{
     position: 'right',
-    axisLabel: 'events / 5 GeV'
+    axisLabel: 'Events / 5 GeV'
   }]
 });
 
 ispy.csv_data = [];
 
-d3.csv("./data/test.csv", function(data) {
+d3.csv("./data/ZH.csv", function(data) {
 
   ispy.csv_data = data;
 
@@ -58,7 +58,7 @@ ispy.push_mass = function() {
     return e.Event == eventN;
   });
 
-  if ( eventD[0].Type == 'Zmumu' ) {
+  if ( eventD[0].Type == 'Zmumu' || eventD[0].Type == 'Zee' ) {
       ispy.Zmasses.push(eventD[0].M);
       ispy.make_hist(ispy.Zmasses, 'Z');
   }
@@ -78,7 +78,7 @@ ispy.pull_mass = function() {
     return e.Event == eventN;
   });
 
-  if ( eventD[0].Type == 'Zmumu' ) {
+  if ( eventD[0].Type == 'Zmumu' || eventD[0].Type == 'Zee' ) {
       ispy.Zmasses.pop();
       ispy.make_hist(ispy.Zmasses, 'Z');
   }
