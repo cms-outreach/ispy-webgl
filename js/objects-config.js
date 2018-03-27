@@ -17,7 +17,7 @@ ispy.detector_description = {
   "CSCRZ_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Cathode Strip Chambers RZ",
     fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 0.5}},
 
-  "DTs3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
+  "DTs3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Drift Tubes",
     fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 0.5}},
   "DTsRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name: "Drift Tubes RPhi",
     fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 0.5}},
@@ -35,9 +35,9 @@ ispy.detector_description = {
   "HcalForwardRZ_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Forward RZ",
     fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
 
-  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: true, group: "Detector", name: "HCAL Outer",
+  "HcalOuter3D_MODEL": {type: ispy.MODEL, on: false, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeModelHcalOuter, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
-  "HcalOuter3D_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer",
+  "HcalOuter3D_V1": {type: ispy.BOX, on: false, group: "Detector", name: "HCAL Outer",
     fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
   "HcalOuterRPhi_V1": {type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer RPhi",
     fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 0.5}},
@@ -76,7 +76,7 @@ ispy.detector_description = {
   "EcalEndcapRZ_V1": {type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Endcap RZ",
     fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.75, linewidth: 0.1}},
 
-  "EcalBarrel3D_V1": {type: ispy.BUFFERBOX, on: false, group: "Detector", name: "ECAL Barrel",
+  "EcalBarrel3D_V1": {type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Barrel",
     fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.05}},
   "EcalBarrelRPhi_V1": {type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Barrel RPhi",
     fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.75, linewidth: 0.1}},

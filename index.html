@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="./css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/ispy.css">
 
-
   <script src="js/lib/d3.v4.min.js"></script>
 
   <script src="js/lib/jquery-1.11.1.min.js"></script>
@@ -158,6 +157,7 @@
               <i class="fa fa-info"></i>
             </button>
           </div>
+          <!--
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.printImage();" title="Print Image to File">
               <i class="fa fa-file-image-o"></i>
@@ -168,6 +168,7 @@
               <i class="fa fa-film"></i>
             </button>
           </div>
+          -->
           <!--
           <div class="btn-group" role="group">
             <button type="button" id="record" class="btn btn-default" onclick="ispy.toggleRecording();" title="Start/Stop Recording">
@@ -175,17 +176,18 @@
             </button>
           </div>
           -->
+          <!--
           <div class="btn-group" role="group">
             <button type="button" id="stereo" class="btn btn-default" data-toggle="modal" data-target="#stereo-modal" title="Stereo View">
               <i class="fa fa-binoculars"></i>
             </button>
           </div>
+          -->
+          <!--
           <div class="btn-group" role="group">
-            <!--
             <button type="button" class="btn btn-default" onclick="ispy.exportModel();" title="Export 3D Model (obj format)">
               <i class="fa fa-upload"></i>
             </button>
-            -->
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
               <i class="fa fa-upload"></i>
             </button>
@@ -193,6 +195,7 @@
               <i class="fa fa-download"></i>
             </button>
           </div>
+          -->
         </div>
       </div>
     </div>
@@ -254,9 +257,11 @@
       <div class="modal-body">
         <table>
           <p><button type="button" class="btn btn-default" onclick="ispy.showWebFiles();">Open file(s) from the Web</button></p>
+          <!--
           <p>
             Open local file(s): <input type="file" id="local-files" onchange="ispy.loadLocalFiles();" onclick="$('#open-files').modal('hide');" multiple/>
           </p>
+          -->
         </table>
       </div>
       <div class="modal-footer">
