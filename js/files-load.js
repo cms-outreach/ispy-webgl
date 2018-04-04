@@ -1,7 +1,7 @@
 // For now, hard-code some examples files here for testing
 // the "files from the web"
 ispy.web_files = [
-  "./data/ZH.ig"
+  "./data/events.ig"
 ];
 
 ispy.obj_files = [

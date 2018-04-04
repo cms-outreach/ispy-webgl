@@ -1,4 +1,4 @@
-var zplot = $.plot($("#Z"), [{data:[], label:"Z", color:"#202020"}], {
+var zplot = $.plot($("#Z"), [{data:[], label:"", color:"#202020"}], {
   lines: {
     show: true, fill: true, lineWidth: 1.0, fillColor: "#B4B400"
   },
@@ -20,7 +20,7 @@ var zplot = $.plot($("#Z"), [{data:[], label:"Z", color:"#202020"}], {
   }]
 });
 
-var hplot = $.plot($("#H"), [{data:[], label: "H", color:"#202020"}], {
+var hplot = $.plot($("#H"), [{data:[], label: "", color:"#202020"}], {
   lines: {
     show: true, fill: true, lineWidth: 1.0, fillColor: "#B4B400"
   },
@@ -110,14 +110,14 @@ ispy.make_hist = function(data, type) {
 
   if ( type == 'Z' ) {
 
-    zplot.setData([{data:output, label:"Z", color:"#202020"}]);
+    zplot.setData([{data:output, label:"", color:"#202020"}]);
     zplot.setupGrid();
     zplot.draw();
   }
 
   if ( type == 'H' ) {
 
-    hplot.setData([{data:output, label:"H", color:"#202020"}]);
+    hplot.setData([{data:output, label:"", color:"#202020"}]);
     hplot.setupGrid();
     hplot.draw();
 
