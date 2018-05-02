@@ -719,13 +719,15 @@ ispy.makeScaledWireframeTower = function(data, material, ci, scale) {
 };
 
 ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
+
   if ( ! assoc ) {
     throw "No association!";
   }
 
-  var muons = [];
+  var positions = [];
+
   for ( var i = 0; i < data.length; i++ ) {
-    muons[i] = new THREE.Geometry();
+      positions[i] = [];
   }
 
   var mi = 0;
@@ -737,7 +739,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     }
 
     pi = assoc[j][1][1];
-    muons[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
+    positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);
   }
 
   var tcolor = new THREE.Color(style.color);
@@ -748,20 +750,28 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   }
 
   var lines = [];
-  for ( var k = 0; k < muons.length; k++ ) {
-    lines.push(new THREE.Line(muons[k], new THREE.LineBasicMaterial({
-      color:tcolor,
+
+  for ( var k = 0; k < positions.length; k++ ) {
+
+    var muon = new THREE.LineGeometry();
+    muon.setPositions(positions[k]);
+
+    var line = new THREE.Line2(muon, new THREE.LineMaterial({
+      color: tcolor,
+      linewidth: style.linewidth*0.001,
       transparent: transp,
-      linewidth:style.linewidth,
-      linecap:'butt',
       opacity:style.opacity
-    })));
+    }));
+
+    line.computeLineDistances();
+    lines.push(line);
   }
 
   return lines;
 };
 
 ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
+  
   if ( ! assocs ) {
     throw "No association!";
   }
@@ -784,6 +794,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   }
 
   for ( var i = 0; i < assocs.length; i++ ) {
+
     var pt = tracks[i][selection.index];
 
     ti = assocs[i][0][1];
@@ -815,25 +826,25 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
     curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 
-    var tg = new THREE.Geometry();
-    tg.vertices = curve.getPoints(32);
+    var positions = [];
+    curve.getPoints(24).forEach(function(p) { positions.push(p.x,p.y,p.z); });
 
-    var line = new THREE.Line(tg, new THREE.LineBasicMaterial({
-      color:tcolor,
-      transparent: transp,
-      linewidth:style.linewidth,
-      linecap:'butt',
-      opacity:style.opacity
-    }));
+    var lg = new THREE.LineGeometry();
+    lg.setPositions(positions);
+
+    var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, linewidth:style.linewidth*0.001}));
+    line.computeLineDistances();
 
     if ( pt < selection.min_pt ) {
       line.visible = false;
     }
 
     curves.push(line);
+
   }
 
   return curves;
+
 };
 
 ispy.makeVertex = function(data,style) {
@@ -975,7 +986,7 @@ ispy.makePointCloud = function(data, index) {
 		positions[i*3 + 2] = data[i][index][2];
   }
 
-	geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
   geometry.computeBoundingSphere();
 
   return geometry;
@@ -1004,27 +1015,20 @@ ispy.makeMET = function(data, style, selection) {
   var origin = new THREE.Vector3(0,0,0);
   var length = pt*0.1;
 
-  // Hmmm. This doesn't seem to render anymore and also makes picking complicated
-  // since it consists of 2 children (the line and the head). Let's just draw
-  // a line and forget the arrow head. This is what's actually done in iSpy "classique",
-  // albeit a dashed line.
-
-  // dir, origin, length, hex, headLength, headWidth
-  //var met = new THREE.ArrowHelper(dir,origin,length,color.getHex(),0.25,0.15);
-  //return met;
-
-  var geometry = new THREE.Geometry();
   dir.setLength(length);
-  geometry.vertices.push(origin, dir);
-  geometry.computeLineDistances(); // This is needed in order for dashed line to work
-
-  var met = new THREE.Line(geometry, new THREE.LineDashedMaterial({color: color, scale: 10, dashSize:2, gapSize:1, linewidth: style.linewidth }));
+  
+  var geometry = new THREE.LineGeometry();
+  geometry.setPositions([origin.x,origin.y,origin.z,dir.x,dir.y,dir.z]);
+ 
+  var met = new THREE.Line2(geometry, new THREE.LineMaterial({color: color, linewidth: style.linewidth*0.001, dashed:true}));
+  met.computeLineDistances();
 
   if ( pt < selection.min_pt ) {
     met.visible = false;
   }
 
   return met;
+
 };
 
 ispy.makeJet = function(data, style, selection) {
