@@ -180,7 +180,25 @@ ispy.onWindowResize = function() {
 
 };
 
+
+// Given an object3d this returns the ids of its
+// children
+ispy.getObjectIds = function(obj) {
+
+    var ids = [];
+
+    obj.children.forEach(function(c) {
+
+	    ids.push(c.id);
+
+	});
+
+    return ids;
+
+};
+
 ispy.onMouseMove = function(e) {
+  
   e.preventDefault();
 
   var container = $("canvas");
@@ -206,25 +224,52 @@ ispy.onMouseMove = function(e) {
   var i = 0; while(i < intersects.length && !intersects[i].object.visible) ++i;
 
   if ( intersects[i] ) {
+      
     if ( ispy.intersected != intersects[i].object) {
-      if ( ispy.intersected ) {
-        ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-        ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-      }
-      container.css('cursor','pointer');
-      ispy.intersected = intersects[i].object;
-      ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
-      ispy.intersected.current_color = ispy.intersected.material.color.getHex();
-      ispy.intersected.material.color.setHex(0xcccccc);
+     
+	if ( ispy.intersected ) {
+        
+	    ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+
+	    ispy.displayCollection(ispy.intersected.name, "Physics", 
+				   ispy.event_description[ispy.intersected.name].name, 
+				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
+	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+      
+	}
+      
+	container.css('cursor','pointer');
+	
+	ispy.intersected = intersects[i].object;
+
+	ispy.displayCollection(ispy.intersected.name, "Physics", 
+			       ispy.event_description[ispy.intersected.name].name, 
+			       ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
+	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+
+	ispy.intersected.current_color = ispy.intersected.material.color.getHex();
+	ispy.intersected.material.color.setHex(0xcccccc);
+
     }
+
   } else {
-    if ( ispy.intersected ){
-      container.css('cursor','auto');
-      ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-      ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-      ispy.intersected = null;
-    }
+    
+      if ( ispy.intersected ) {
+	  
+	  container.css('cursor','auto');
+
+	  ispy.displayCollection(ispy.intersected.name, "Physics", 
+				 ispy.event_description[ispy.intersected.name].name, 
+				 ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
+	  ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+
+	  ispy.intersected.material.color.setHex(ispy.intersected.current_color);
+	  ispy.intersected = null;
+
+      }
+  
   }
+
 };
 
 ispy.onMouseDown = function(e) {
@@ -289,6 +334,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 ispy.displayCollection = function(key, group, name, objectIds) {
+ 
   ispy.currentCollection = key;
   var type = ispy.current_event.Types[key];
   var collection = ispy.current_event.Collections[key];
@@ -358,6 +404,7 @@ ispy.getMass = function() {
 };
 
 ispy.displayEventObjectData = function(key, objectUserData){
+  
   var type = ispy.current_event.Types[key];
   var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
 
