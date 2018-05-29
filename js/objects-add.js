@@ -123,8 +123,10 @@ ispy.addEvent = function(event) {
     if ( c.name !== 'Detector' ) {
       if ( c.name !== 'Imported' ) {
         if ( c.name !== 'Lights') {
-          ispy.scene.getObjectByName(c.name).children.length = 0;
-        }
+	    if ( c.name !== 'Axes' ) { 
+		 ispy.scene.getObjectByName(c.name).children.length = 0;
+	    }
+	}
       }
     }
   });

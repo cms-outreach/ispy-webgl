@@ -174,9 +174,9 @@ ispy.init = function() {
   $('#invert-colors').prop('checked', false);
 
   var origin = new THREE.Vector3(0,0,0);
-  var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
-  var gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
-  var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
+  var rx = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), origin, 4, 0xff0000, 0.01, 0.01);
+  var gy = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), origin, 4, 0x00ff00, 0.01, 0.01);
+  var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), origin, 4, 0x0000ff, 0.01, 0.01);
 
   rx.line.material.linewidth = 2.5;
   gy.line.material.linewidth = 2.5;
@@ -194,6 +194,15 @@ ispy.init = function() {
       $('#axes').show();
     }
   });
+
+  // dir, origin, length, hex, headLength, headWidth
+  var xaxis = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(-4,0,0), 8, 0xffffff, 0.01, 0.01);
+  var yaxis = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,-4,0), 8, 0xffffff, 0.01, 0.01);
+  var zaxis = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,-4), 8, 0xffffff, 0.01, 0.01);
+
+  xaxis.line.material.linewidth = 2.0;
+  yaxis.line.material.linewidth = 2.0;
+  zaxis.line.material.linewidth = 2.0;
 
   var font_loader = new THREE.FontLoader();
 
@@ -220,6 +229,37 @@ ispy.init = function() {
     ispy.inset_scene.add(x_text);
     ispy.inset_scene.add(y_text);
     ispy.inset_scene.add(z_text);
+
+    var xg = new THREE.TextGeometry('X', {size: 0.5, height: 0.01, font: font});
+    var yg = new THREE.TextGeometry('Y', {size: 0.5, height: 0.01, font: font});
+    var zg = new THREE.TextGeometry('Z', {size: 0.5, height: 0.01, font: font});
+
+    var am = new THREE.MeshBasicMaterial({color:0xffffff});
+
+    var xt = new THREE.Mesh(xg, am);
+    xt.position.x = 4.5;
+    xt.name = 'xtext';
+
+    var yt = new THREE.Mesh(yg, am);
+    yt.position.y  = 4.5;
+    yt.name = 'ytext';
+
+    var zt = new THREE.Mesh(zg, am);
+    zt.position.z = 4.5;
+    zt.name = 'ztext';
+    
+    var axes = new THREE.Object3D();
+    axes.name = 'Axes';
+
+    axes.add(xaxis);
+    axes.add(yaxis);
+    axes.add(zaxis);
+
+    axes.add(xt);
+    axes.add(yt);
+    axes.add(zt);
+    
+    ispy.scene.add(axes);
 
   });
 
@@ -401,6 +441,31 @@ ispy.render = function() {
 
 };
 
+ispy.handle_axis_text = function() {
+
+    var tol = 0.1;
+
+    var x = ispy.camera.position.x;
+    var y = ispy.camera.position.y;
+    var z = ispy.camera.position.z;
+
+    if ( y > -tol && y < tol && x > -tol && x < tol ) 
+	ispy.scene.getObjectByName('ztext').visible = false;
+    else 
+	ispy.scene.getObjectByName('ztext').visible = true;
+
+    if ( y > -tol && y < tol && z > -tol && z < tol )
+        ispy.scene.getObjectByName('xtext').visible = false;
+    else
+        ispy.scene.getObjectByName('xtext').visible = true;
+    
+    if ( z > -tol && z < tol && x > -tol && x < tol )
+        ispy.scene.getObjectByName('ytext').visible = false;
+    else
+        ispy.scene.getObjectByName('ytext').visible = true;
+
+};
+
 ispy.run = function() {
 
   setTimeout( function() {
@@ -431,6 +496,12 @@ ispy.run = function() {
   ispy.inset_camera.quarternion = ispy.camera.quaternion;
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
+
+  ispy.scene.getObjectByName('xtext').quaternion.copy(ispy.camera.quaternion);
+  ispy.scene.getObjectByName('ytext').quaternion.copy(ispy.camera.quaternion);
+  ispy.scene.getObjectByName('ztext').quaternion.copy(ispy.camera.quaternion);
+
+  ispy.handle_axis_text();
 
   ispy.render();
 
