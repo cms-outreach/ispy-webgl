@@ -208,14 +208,17 @@ ispy.init = function() {
     var x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     var x_text = new THREE.Mesh(x_geo, x_material);
     x_text.position.x = 4.5;
+    x_text.name = 'xtext';
 
     var y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
     var y_text = new THREE.Mesh(y_geo, y_material);
     y_text.position.y = 4.5;
+    y_text.name = 'ytext';
 
     var z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
     var z_text = new THREE.Mesh(z_geo, z_material);
     z_text.position.z = 4.5;
+    z_text.name = 'ztext';
 
     ispy.inset_scene.add(x_text);
     ispy.inset_scene.add(y_text);
@@ -431,6 +434,10 @@ ispy.run = function() {
   ispy.inset_camera.quarternion = ispy.camera.quaternion;
   ispy.inset_camera.position.setLength(10);
   ispy.inset_camera.lookAt(ispy.inset_scene.position);
+
+  ispy.inset_scene.getObjectByName('xtext').quaternion.copy(ispy.inset_camera.quaternion);
+  ispy.inset_scene.getObjectByName('ytext').quaternion.copy(ispy.inset_camera.quaternion);
+  ispy.inset_scene.getObjectByName('ztext').quaternion.copy(ispy.inset_camera.quaternion);
 
   ispy.render();
 

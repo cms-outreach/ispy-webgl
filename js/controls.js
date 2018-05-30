@@ -53,6 +53,38 @@ ispy.setPerspective = function() {
 
 };
 
+ispy.showView = function(view) {
+
+    if ( view === '3d' ) {
+	
+	$('#3d').addClass('active');
+	$('#rphi').removeClass('active');
+	$('#rhoz').removeClass('active');
+   
+	ispy.setPerspective();
+ 
+    } else if ( view === 'rphi' ) {
+	
+	$('#3d').removeClass('active');
+        $('#rphi').addClass('active');
+	$('#rhoz').removeClass('active');
+
+	ispy.setXY();
+	ispy.setOrthographic();
+
+    } else {
+	
+	$('#3d').removeClass('active');
+        $('#rphi').removeClass('active');
+	$('#rhoz').addClass('active');
+    
+	ispy.setZX();
+	ispy.setOrthographic();
+	
+    }
+
+};
+
 ispy.enterFullscreen = function() {
   var container = document.getElementById('ispy');
 
