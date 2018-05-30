@@ -196,9 +196,9 @@ ispy.init = function() {
   });
 
   // dir, origin, length, hex, headLength, headWidth
-  var xaxis = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(-4,0,0), 8, 0xffffff, 0.01, 0.01);
-  var yaxis = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,-4,0), 8, 0xffffff, 0.01, 0.01);
-  var zaxis = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,-4), 8, 0xffffff, 0.01, 0.01);
+  var xaxis = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(-4,0,0), 8, 0x909090, 0.01, 0.01);
+  var yaxis = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,-4,0), 8, 0x909090, 0.01, 0.01);
+  var zaxis = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,-4), 8, 0x909090, 0.01, 0.01);
 
   xaxis.line.material.linewidth = 2.0;
   yaxis.line.material.linewidth = 2.0;
@@ -234,7 +234,7 @@ ispy.init = function() {
     var yg = new THREE.TextGeometry('Y', {size: 0.5, height: 0.01, font: font});
     var zg = new THREE.TextGeometry('Z', {size: 0.5, height: 0.01, font: font});
 
-    var am = new THREE.MeshBasicMaterial({color:0xffffff});
+    var am = new THREE.MeshBasicMaterial({color:0x909090});
 
     var xt = new THREE.Mesh(xg, am);
     xt.position.x = 4.5;
