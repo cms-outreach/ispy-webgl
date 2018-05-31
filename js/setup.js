@@ -186,15 +186,6 @@ ispy.init = function() {
   ispy.inset_scene.add(gy);
   ispy.inset_scene.add(bz);
 
-  $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
-  $('#show-axes').change(function() {
-    if ( this.checked ) { // if checked then hide axes
-      $('#axes').hide();
-    } else {
-      $('#axes').show();
-    }
-  });
-
   // dir, origin, length, hex, headLength, headWidth
   var xaxis = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(-5,0,0), 10, 0x909090, 0.01, 0.01);
   var yaxis = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,-5,0), 10, 0x909090, 0.01, 0.01);
@@ -265,6 +256,17 @@ ispy.init = function() {
     ispy.scene.add(axes);
 
   });
+
+  $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
+  $('#show-axes').change(function() {
+	  if ( this.checked ) { // if checked then hide axes
+	      $('#axes').hide();
+	      ispy.scene.getObjectByName('Axes').visible = false;
+	  } else {
+	      $('#axes').show();
+	      ispy.scene.getObjectByName('Axes').visible = true;
+	  }
+      });
 
   // The second argument is necessary to make sure that mouse events are
   // handled only when in the canvas
