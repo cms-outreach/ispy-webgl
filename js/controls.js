@@ -3,6 +3,7 @@ ispy.resetControls = function() {
 
   ispy.initCamera();
   ispy.controls.reset();
+  ispy.setPerspective();
 
 };
 
