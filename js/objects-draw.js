@@ -721,32 +721,38 @@ ispy.makeScaledWireframeTower = function(data, material, ci, scale) {
 ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
   if ( ! assoc ) {
-    throw "No association!";
+  
+      throw "No association!";
+  
   }
 
+  var cut = [];
+  var mi = 0;  
   var positions = [];
 
   for ( var i = 0; i < data.length; i++ ) {
+
       positions[i] = [];
+
   }
+                                                                                                                                 
+  for ( var j = 0; j < assoc.length; j++ ) {                                                                                                                      
 
-  var mi = 0;
-  for ( var j = 0; j < assoc.length; j++ ) {
-    mi = assoc[j][0][1];
+      mi = assoc[j][0][1];                                                                                                                                     
+   
+      pi = assoc[j][1][1];                                                                                                                                    
+      positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                                                        
 
-    if ( data[mi][selection.index] < selection.min_pt ) {
-      continue;
-    }
-
-    pi = assoc[j][1][1];
-    positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);
   }
-
+    
   var tcolor = new THREE.Color(style.color);
 
   var transp = false;
+  
   if ( style.opacity < 1.0 ) {
-    transp = true;
+  
+      transp = true;
+  
   }
 
   var lines = [];
@@ -763,11 +769,14 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
       opacity:style.opacity
     }));
 
+    line.visible =  data[k][selection.index] < selection.min_pt ? false : true;
     line.computeLineDistances();
     lines.push(line);
+
   }
 
   return lines;
+
 };
 
 ispy.makeTracks = function(tracks, extras, assocs, style, selection) {

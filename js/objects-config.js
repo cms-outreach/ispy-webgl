@@ -315,19 +315,19 @@ ispy.event_description = {
     "Tracks_V1": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1.5},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 0.5, index: 2}
     },
     "Tracks_V2": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1.5},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 0.5, "index": 2}
     },
     "Tracks_V3": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1.5},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.9, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 0.5, "index": 2}
     },
     "TrackDets_V1": {
@@ -390,7 +390,7 @@ ispy.event_description = {
     },
     "MatchingCSCs_V1": {
 	type: ispy.BOX, on: true, group: "Muon", name: "Matching CSCs",
-	fn: ispy.makeMuonChamber, style: {color: [1, 0, 0], opacity: 0.3, linewidth: 2}
+	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.5, linewidth: 1}
     },
     "CSCRecHit2Ds_V2": {
 	type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
@@ -410,7 +410,7 @@ ispy.event_description = {
     },
     "MuonChambers_V1": {
 	type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
-	fn: ispy.makeMuonChamber, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.5, linewidth: 0.5}
+	fn: ispy.makeMuonChamber, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.5, linewidth: 1}
     },
     "METs_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
