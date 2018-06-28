@@ -67,9 +67,11 @@ ispy.useRenderer = function(type) {
     var height = document.getElementById('display').clientHeight;
 
     var rendererTypes = {
+	
 	'WebGLRenderer': THREE.WebGLRenderer,
 	'CanvasRenderer': THREE.CanvasRenderer,
 	'SVGRenderer': THREE.SVGRenderer
+    
     };
 
     var renderer = new rendererTypes[type]({antialias:true, alpha:true});
@@ -165,6 +167,7 @@ ispy.init = function() {
 		$('#stats').hide();
     
 	    }
+
 	});
 
     $('#show-logo').prop('checked', true);
@@ -180,6 +183,7 @@ ispy.init = function() {
 		$('#cms-logo').hide();
     
 	    }
+
 	});
 
     ispy.inverted_colors = false;
@@ -340,6 +344,8 @@ ispy.init = function() {
     canvas.addEventListener('ondragover', canvas.ondragover);
     canvas.addEventListener('ondrop', canvas.ondrop);
 
+    ispy.current_view = 'threed';
+
 };
 
 ispy.initLight = function() {
@@ -419,10 +425,10 @@ ispy.initDetector = function() {
           
 			       $('#loading').modal('hide');
 			   
-			   })
-
 			   });
-    
+
+		   });
+	
     }
 
 };
@@ -464,7 +470,7 @@ ispy.run = function() {
   
 	    requestAnimationFrame(ispy.run);
   
-	}, 1000 / ispy.framerate );
+	}, 1000/ispy.framerate );
 
     ispy.stats.update();
 
