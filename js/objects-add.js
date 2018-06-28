@@ -1,6 +1,9 @@
 
 ispy.addDetector = function() {
 
+    /*
+      Do we want to do this anymore?
+
     ispy.scene.children.forEach(function(c) {
 	    
 	    if ( c.name === 'Detector' ) {
@@ -12,6 +15,7 @@ ispy.addDetector = function() {
 	});
     
     $("tr.Detector").remove();
+    */
 
     for ( var key in ispy.detector_description ) {
 
