@@ -36,9 +36,11 @@ ispy.addDetector = function() {
 	ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
 
 	var obj = new THREE.Object3D();
+	
 	obj.name = key;
 	obj.visible = visible;
-	obj.views = [descr.threed, descr.rphi, descr.rz];
+	obj.views = [descr.threed, descr.rphi, descr.rhoz];
+	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
 	var ocolor = new THREE.Color(descr.style.color);
@@ -210,9 +212,11 @@ ispy.addEvent = function(event) {
 	var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
 	var obj = new THREE.Object3D();
+	
 	obj.name = key;
 	obj.visible = visible;
-	obj.views = [descr.three3d, descr.rphi, descr.rz];
+	obj.views = [descr.threed, descr.rphi, descr.rhoz];
+	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
 	var ocolor = null;
