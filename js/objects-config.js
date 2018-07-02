@@ -161,7 +161,7 @@ ispy.detector_description = {
 	threed: false, rphi: false, rhoz: true
     },
     "EcalBarrel3D_V1": {
-	type: ispy.BUFFERBOX, on: false, group: "Detector", name: "ECAL Barrel",
+	type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Barrel",
 	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
@@ -389,7 +389,7 @@ ispy.event_description = {
 	fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(0%,100%,100%)", opacity:0.8, linewidth: 2}
     },
     "MatchingCSCs_V1": {
-	type: ispy.BOX, on: true, group: "Muon", name: "Matching CSCs",
+	type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching CSCs",
 	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.5, linewidth: 1}
     },
     "CSCRecHit2Ds_V2": {

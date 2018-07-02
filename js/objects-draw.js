@@ -145,7 +145,25 @@ ispy.makeSolidBox = function(data, ci) {
     box.computeFaceNormals();
     box.computeVertexNormals();
     
-    return box;
+    // These are the lines along the box edges
+    var line_box = new THREE.Geometry();
+
+    line_box.vertices.push(f1,f2);
+    line_box.vertices.push(f2,f3);
+    line_box.vertices.push(f3,f4);
+    line_box.vertices.push(f4,f1);
+
+    line_box.vertices.push(b1,b2);
+    line_box.vertices.push(b2,b3);
+    line_box.vertices.push(b3,b4);
+    line_box.vertices.push(b4,b1);
+
+    line_box.vertices.push(b1,f1);
+    line_box.vertices.push(b3,f3);
+    line_box.vertices.push(b2,f2);
+    line_box.vertices.push(b4,f4);
+
+    return [box, line_box];
 
 };
 
@@ -1147,6 +1165,7 @@ ispy.makeCSC = function(csc) {
 
 ispy.makeMuonChamber = function(chamber) {
     
+    //return ispy.makeSolidBox(chamber, 1);
     return ispy.makeWireframeBox(chamber, 1);
 
 };

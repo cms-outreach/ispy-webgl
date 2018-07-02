@@ -85,11 +85,13 @@ ispy.addDetector = function() {
 	    material.side = THREE.DoubleSide;
 
 	    var boxes = new THREE.Geometry();
+	    var lines = new THREE.Geometry();
 
 	    for ( var i = 0; i < data.length; i++ ) {
 		
-		var box = descr.fn(data[i]);
-		boxes.merge(box);
+		var bl = descr.fn(data[i]);
+		boxes.merge(bl[0]);
+		lines.merge(bl[1]);
         
 	    }
 
@@ -97,6 +99,17 @@ ispy.addDetector = function() {
 	    meshes.name = key;
 	    meshes.renderOrder = 1;
 	    ispy.scene.getObjectByName(key).add(meshes);
+
+	    var line_material = new THREE.LineBasicMaterial({
+		    color:0xcccccc,
+		    transparent: false,
+		    linewidth:1,
+		    depthWrite: false
+		});
+
+	    var line_mesh = new THREE.LineSegments(lines, line_material);
+	    line_mesh.name = descr.key;
+	    ispy.scene.getObjectByName(key).add(line_mesh);
 
 	    break;
 
@@ -276,17 +289,30 @@ ispy.addEvent = function(event) {
 	    material.side = THREE.DoubleSide;
 
 	    var boxes = new THREE.Geometry();
+	    var lines = new THREE.Geometry();
 
 	    for ( var i = 0; i < data.length; i++ ) {
           
-		var box = descr.fn(data[i]);
-		boxes.merge(box);
+		var bl = descr.fn(data[i]);
+		boxes.merge(bl[0]);
+		lines.merge(bl[1]);
         
 	    }
 
 	    var meshes = new THREE.Mesh(boxes, material);
 	    meshes.name = key;
 	    ispy.scene.getObjectByName(key).add(meshes);
+
+	    var line_material = new THREE.LineBasicMaterial({
+                    color:0xcccccc,
+                    transparent: false,
+                    linewidth:1,
+                    depthWrite: false  
+                });
+
+            var line_mesh = new THREE.LineSegments(lines, line_material);
+            line_mesh.name = descr.key;    
+            ispy.scene.getObjectByName(key).add(line_mesh);
 
 	    break;
 
