@@ -64,7 +64,7 @@ ispy.toggle = function(key) {
   
     }
 
-  ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
+    ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
 
 };
 
@@ -107,9 +107,17 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     var html = "<tr class='" + dc + " "+ group +"'>";
     var cc = ispy.inverted_colors ? "white" : "black";
 
-    if ( group !== 'Detector' && group !== 'Imported' ) {
+    var nobjects = 0;
+
+    if ( ispy.current_event !== undefined ) {
+
+	nobjects = ispy.current_event.Collections[key].length;
+
+    } 
+
+    if ( group !== 'Detector' && group !== 'Imported' && group !== 'Provenance' ) {
     
-	html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + "</td>";
+	html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + " ["+nobjects+"]</td>";
   
     } else {
     
