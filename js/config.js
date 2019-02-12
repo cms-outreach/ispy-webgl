@@ -20,3 +20,4 @@ ispy.ASSOC = 8;
 ispy.SHAPE = 9;
 ispy.TEXT = 10;
 ispy.BUFFERBOX = 11;
+ispy.STACKEDTOWER = 12;

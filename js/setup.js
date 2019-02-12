@@ -345,7 +345,7 @@ ispy.init = function() {
     canvas.addEventListener('ondrop', canvas.ondrop);
 
     ispy.current_view = 'threed';
-
+    
 };
 
 ispy.initLight = function() {

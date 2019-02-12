@@ -115,6 +115,10 @@ ispy.makeSolidBox = function(data, ci) {
     var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
     var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
 
+
+    if ( f4.x < 0 && f1.x < 0 && ( f1.z > 0 || f2.z > 0))
+	return [];
+
     var box = new THREE.Geometry();
     box.vertices = [f1,f2,f3,f4,b1,b2,b3,b4];
     
@@ -191,6 +195,10 @@ ispy.makeBufferBoxes = function(data, ci) {
 	var f3 = data[i][ci+2];
 	var f4 = data[i][ci+3];
 	
+	
+	//if ( f1[0] < 0 && f4[0] < 0 && ( f1[2] > 0 || f2[2] > 0))
+	//    continue;
+
 	var b1 = data[i][ci+4];
 	var b2 = data[i][ci+5];
 	var b3 = data[i][ci+6];
@@ -322,7 +330,7 @@ ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
 };
 
 ispy.makeScaledSolidTower = function(data, geometry, ci, scale) {
-
+    
     var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
     var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
     var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
@@ -406,7 +414,7 @@ ispy.makeWireframeBox = function(data, ci) {
     var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
     var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
     var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-
+    
     // With THREE.LinePieces the Line is made
     // by connecting pairs of vertices instead
     // of one continuous line
@@ -1149,17 +1157,188 @@ ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
 
 };
 
+ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
+
+    var et = data[0];
+
+    var emEnergy = data[5];
+    var hadEnergy = data[4];
+
+    var eta = data[1];
+    var phi = data[2];
+
+    var theta = 2*Math.atan(Math.exp(-eta));
+
+    var ci = 11;
+
+    if ( et > selection.min_energy ) {
+
+	var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
+	var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
+	var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
+	var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+    
+	var b1e = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+	var b2e = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+	var b3e = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+	var b4e = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+    
+	var b1h = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
+        var b2h = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
+        var b3h = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
+        var b4h = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+
+	var ebox = new THREE.Geometry();
+	var hbox = new THREE.Geometry();
+		
+	escale = scale*(emEnergy > 0 ? emEnergy*Math.sin(theta) : 0);
+	hscale = scale*(hadEnergy > 0 ? hadEnergy*Math.sin(theta) : 0);
+
+	if ( escale > 0 ) {
+
+	    ebox.vertices.push(f1);
+	    ebox.vertices.push(f2);
+	    ebox.vertices.push(f3);
+	    ebox.vertices.push(f4);
+    
+	    b1e.normalize();
+	    b2e.normalize();
+	    b3e.normalize();
+	    b4e.normalize();
+
+	    b1e.multiplyScalar(escale);
+	    b2e.multiplyScalar(escale);
+	    b3e.multiplyScalar(escale);
+	    b4e.multiplyScalar(escale);
+
+	    b1e.addVectors(f1,b1e);
+	    b2e.addVectors(f2,b2e);
+	    b3e.addVectors(f3,b3e);
+	    b4e.addVectors(f4,b4e);
+
+	    ebox.vertices.push(b1e);
+	    ebox.vertices.push(b2e);
+	    ebox.vertices.push(b3e);
+	    ebox.vertices.push(b4e);
+
+	    //front
+	    ebox.faces.push(new THREE.Face3(0,1,2));
+	    ebox.faces.push(new THREE.Face3(2,3,0));
+	    //back
+	    ebox.faces.push(new THREE.Face3(4,5,6));
+	    ebox.faces.push(new THREE.Face3(6,7,4));
+	    //top
+	    ebox.faces.push(new THREE.Face3(4,5,1));
+	    ebox.faces.push(new THREE.Face3(1,0,4));
+	    //bottom
+	    ebox.faces.push(new THREE.Face3(7,6,2));
+	    ebox.faces.push(new THREE.Face3(2,3,7));
+	    //left
+	    ebox.faces.push(new THREE.Face3(0,3,7));
+	    ebox.faces.push(new THREE.Face3(7,4,0));
+	    //right
+	    ebox.faces.push(new THREE.Face3(1,5,6));
+	    ebox.faces.push(new THREE.Face3(6,2,1));
+	    
+	    ebox.computeFaceNormals();
+	    ebox.computeVertexNormals();
+	    
+	    egeometry.merge(ebox);
+	    
+	}
+
+	if ( hscale > 0 ) {
+	
+	    if ( escale > 0 ) {
+    
+		hbox.vertices.push(b1e);
+		hbox.vertices.push(b2e);
+		hbox.vertices.push(b3e);
+		hbox.vertices.push(b4e);
+	    }
+	
+	    else {
+	    
+		hbox.vertices.push(f1);
+		hbox.vertices.push(f2);
+		hbox.vertices.push(f3);
+		hbox.vertices.push(f4);
+
+	    }
+
+	    b1h.normalize();
+	    b2h.normalize();
+	    b3h.normalize();
+	    b4h.normalize();
+	
+	    b1h.multiplyScalar(hscale);
+	    b2h.multiplyScalar(hscale);
+	    b3h.multiplyScalar(hscale);
+	    b4h.multiplyScalar(hscale);
+
+
+	    if ( escale > 0 ) {
+		
+		b1h.addVectors(b1e,b1h);
+		b2h.addVectors(b2e,b2h);
+		b3h.addVectors(b3e,b3h);
+		b4h.addVectors(b4e,b4h);
+		
+	    } else {
+
+		b1h.addVectors(f1,b1h);
+		b2h.addVectors(f2,b2h);
+		b3h.addVectors(f3,b3h);
+		b4h.addVectors(f4,b4h);
+		
+	    }
+
+	    hbox.vertices.push(b1h);
+	    hbox.vertices.push(b2h);
+	    hbox.vertices.push(b3h);
+	    hbox.vertices.push(b4h);
+	    
+	    //front
+	    hbox.faces.push(new THREE.Face3(0,1,2));
+	    hbox.faces.push(new THREE.Face3(2,3,0));
+	    //back
+	    hbox.faces.push(new THREE.Face3(4,5,6));
+	    hbox.faces.push(new THREE.Face3(6,7,4));
+	    //top
+	    hbox.faces.push(new THREE.Face3(4,5,1));
+	    hbox.faces.push(new THREE.Face3(1,0,4));
+	    //bottom
+	    hbox.faces.push(new THREE.Face3(7,6,2));
+	    hbox.faces.push(new THREE.Face3(2,3,7));
+	    //left
+	    hbox.faces.push(new THREE.Face3(0,3,7));
+	    hbox.faces.push(new THREE.Face3(7,4,0));
+	    //right
+	    hbox.faces.push(new THREE.Face3(1,5,6));
+	    hbox.faces.push(new THREE.Face3(6,2,1));
+	    
+	    hbox.computeFaceNormals();
+	    hbox.computeVertexNormals();
+	    
+	    hgeometry.merge(hbox);
+
+	}
+
+    }
+
+};
+
 ispy.makeDT = function(dt) {
 
-    //return ispy.makeSolidBox(dt, 1);
-    return ispy.makeWireframeBox(dt, 1);
+    return ispy.makeSolidBox(dt, 1);
+    //return ispy.makeWireframeBox(dt, 1);
 
 };
 
 ispy.makeCSC = function(csc) {
 
-    //return ispy.makeSolidBox(csc, 1);  
-    return ispy.makeWireframeBox(csc, 1);
+    return ispy.makeSolidBox(csc, 1);  
+    //return ispy.makeWireframeBox(csc, 1);
 
 };
 
@@ -1267,8 +1446,8 @@ ispy.makeJet = function(data, style, selection) {
     var cp = Math.cos(phi);
     var sp = Math.sin(phi);
 
-    var maxZ = 4.0;
-    var maxR = 2.0;
+    var maxZ = 3.0;
+    var maxR = 1.5;
     
     var length1 = ct ? maxZ / Math.abs(ct) : maxZ;
     var length2 = st ? maxR / Math.abs(st) : maxR;
@@ -1276,7 +1455,7 @@ ispy.makeJet = function(data, style, selection) {
     var radius = 0.3 * (1.0 /(1 + 0.001));
     
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
-    var geometry = new THREE.CylinderGeometry(radius,0.0,length,8,1,true);
+    var geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
     geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
     
@@ -1295,12 +1474,18 @@ ispy.makeJet = function(data, style, selection) {
     
     var jet = new THREE.Mesh(geometry, material);
     jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
-    
+    jet.visible = true;
+
     if ( et < selection.min_et ) {
     
 	jet.visible = false;
   
     }
+
+    
+    if ( et > 50 )
+	jet.visible = false;
+    
 
     return jet;
 

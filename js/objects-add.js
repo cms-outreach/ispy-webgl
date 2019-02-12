@@ -90,6 +90,10 @@ ispy.addDetector = function() {
 	    for ( var i = 0; i < data.length; i++ ) {
 		
 		var bl = descr.fn(data[i]);
+		
+		if ( bl.length === 0 )
+		    continue;
+
 		boxes.merge(bl[0]);
 		lines.merge(bl[1]);
         
@@ -101,7 +105,7 @@ ispy.addDetector = function() {
 	    ispy.scene.getObjectByName(key).add(meshes);
 
 	    var line_material = new THREE.LineBasicMaterial({
-		    color:0xcccccc,
+		    color:0x000000,
 		    transparent: false,
 		    linewidth:1,
 		    depthWrite: false
@@ -252,6 +256,8 @@ ispy.addEvent = function(event) {
 
 	}
 
+	console.log(key);
+
 	switch(descr.type) {
 	    
 	case ispy.BOX:
@@ -374,23 +380,64 @@ ispy.addEvent = function(event) {
 
 	    break;
 
+	case ispy.STACKEDTOWER:
+	    
+	    var ematerial = new THREE.MeshBasicMaterial({
+		    color: new THREE.Color(descr.style.ecolor),
+		    transparent: transp,
+		    opacity: descr.style.opacity
+		});
+
+	    var hmaterial = new THREE.MeshBasicMaterial({
+		    color: new THREE.Color(descr.style.hcolor),
+                    transparent: transp,
+                    opacity: descr.style.opacity
+		});
+	    
+	    ematerial.side = THREE.DoubleSide;
+	    hmaterial.side = THREE.DoubleSide;
+
+	    var eboxes = new THREE.Geometry();
+	    var hboxes = new THREE.Geometry();
+	    
+	    for ( var i = 0; i < data.length; i++ ) {
+
+		descr.fn(data[i], eboxes, hboxes, descr.scale, descr.selection);
+
+	    }
+
+	    var emeshes = new THREE.Mesh(eboxes, ematerial);
+	    var hmeshes = new THREE.Mesh(hboxes, hmaterial);
+
+	    emeshes.name = key;
+	    hmeshes.name = key;
+
+	    ispy.scene.getObjectByName(key).add(emeshes);
+	    ispy.scene.getObjectByName(key).add(hmeshes);
+
+	    break;
+
 	case ispy.ASSOC:
 	    
 	    var objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
         
-	    objs.forEach(function(o, i) {
+	    if ( objs !== undefined ) {
+
+		objs.forEach(function(o, i) {
 		    
-		    // for event info we want each of the children to have the
-		    // same name as the parent. this is so clicking on an object works
-		    o.name = key;
+			// for event info we want each of the children to have the
+			// same name as the parent. this is so clicking on an object works
+			o.name = key;
 		    
-		    // originalIndex works as a link between the original
-		    // data and THREE objects:
-		    o.userData.originalIndex = i;
-		    objectIds.push(o.id);
-		    ispy.scene.getObjectByName(key).add(o);
+			// originalIndex works as a link between the original
+			// data and THREE objects:
+			o.userData.originalIndex = i;
+			objectIds.push(o.id);
+			ispy.scene.getObjectByName(key).add(o);
 		
-		});
+		    });
+	    
+	    }
 	    
 	    break;
 
