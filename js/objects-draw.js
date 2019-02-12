@@ -115,10 +115,6 @@ ispy.makeSolidBox = function(data, ci) {
     var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
     var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
 
-
-    if ( f4.x < 0 && f1.x < 0 && ( f1.z > 0 || f2.z > 0))
-	return [];
-
     var box = new THREE.Geometry();
     box.vertices = [f1,f2,f3,f4,b1,b2,b3,b4];
     
