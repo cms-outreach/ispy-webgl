@@ -17,6 +17,7 @@
 
   <script src="js/lib/CombinedCamera.js"></script>
   <script src="js/lib/TrackballControls.js"></script>
+  <script src="js/lib/OrbitControls.js"></script>
 
   <script src="js/lib/Projector.js"></script>
   <script src="js/lib/CanvasRenderer.js"></script>
@@ -122,6 +123,11 @@
               <i class="fa fa-search-minus"></i>
             </button>
           </div>
+	  <div class="btn-group" role="group">
+	    <button type="button" id="autorotate" class="btn btn-default" onclick="ispy.autoRotate();" title="Autorotate about Y axis">
+	      <i class="fa fa-undo"></i>
+	      </button>
+	  </div>
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.setXY();" title="YX Plane">
               <img src="./graphics/yx_small.png" class="img-responsive"/>

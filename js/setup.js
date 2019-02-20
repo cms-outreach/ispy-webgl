@@ -347,6 +347,8 @@ ispy.init = function() {
 
     ispy.current_view = 'threed';
     
+    ispy.autoRotating = false;
+
 };
 
 ispy.initLight = function() {
@@ -504,6 +506,14 @@ ispy.run = function() {
 
 	TWEEN.update();
 	
+    }
+
+    if ( ispy.autoRotating ) {
+	
+	var speed = Date.now()*0.0005;
+	ispy.camera.position.x = Math.cos(speed)*10;
+	ispy.camera.position.z = Math.sin(speed)*10;
+    
     }
 
 };

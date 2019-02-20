@@ -366,6 +366,17 @@ document.addEventListener('keydown', function(e) {
 	
 	}
 
+	// right
+	if ( e.which === 39 && e.shiftKey ) {
+   
+	}
+
+  
+	// left
+	if ( e.which === 37 && e.shiftKey ) {
+    
+	}
+
 	// shift+a to toggle animation
 	if ( e.which === 65 && e.shiftKey ) {
 	 
@@ -378,18 +389,6 @@ document.addEventListener('keydown', function(e) {
 	    ispy.shift_pressed = true;
   
 	}
-
-  /*
-  // right
-  if ( e.which === 39 && e.shiftKey ) {
-    console.log('right');
-  }
-
-  // left
-  if ( e.which === 37 && e.shiftKey ) {
-    console.log('left');
-  }
-  */
 
 });
 

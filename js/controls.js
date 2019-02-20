@@ -40,6 +40,13 @@ ispy.setYZ = function() {
 
 };
 
+ispy.autoRotate = function() {
+
+    ispy.autoRotating = !ispy.autoRotating;
+    $('#autorotate').toggleClass('active');
+
+};
+
 ispy.setOrthographic = function() {
 
   $('#perspective').removeClass('active');
