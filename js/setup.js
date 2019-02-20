@@ -254,6 +254,7 @@ ispy.init = function() {
     var tb_controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
     tb_controls.rotateSpeed = 3.0;
     tb_controls.zoomSpeed = 0.5;
+    tb_controls.dynamicDampingFactor = 1.0;
 
     ispy.controls = tb_controls;
 
@@ -404,14 +405,8 @@ ispy.initDetector = function() {
 	$('#loading').modal('show');
 
 	$.when(
-
-	       //ispy.loadOBJMTL_new('./geometry/EB.obj', './geometry/EB.mtl', 'ECALBarrel3D', 'ECAL Barrel', 'Detector', true),
-	       //ispy.loadOBJMTL_new('./geometry/EEminus.obj', './geometry/EEminus.mtl', 'ECALEndcap3DMinus', 'ECAL Endcap (-)', 'Detector', true),
-	       //ispy.loadOBJMTL_new('./geometry/EEplus.obj','./geometry/EEplus.mtl', 'ECALEndcap3DPlus', 'ECAL Endcap (+)', 'Detector', true),
-
 	       ispy.getJSON('./geometry/eb.json'),
 	       ispy.getJSON('./geometry/ee.json'),
-	       
 	       ispy.getJSON('./geometry/hb.json'),
 	       ispy.getJSON('./geometry/ho.json'),
 	       ispy.getJSON('./geometry/hehf.json'),
@@ -420,9 +415,6 @@ ispy.initDetector = function() {
 	       ispy.getJSON('./geometry/tib.json'),
 	       ispy.getJSON('./geometry/tid.json'),
 	       ispy.getJSON('./geometry/tob.json')
-	       
-	       //ispy.getJSON('./geometry/rphi.json'),
-	       //ispy.getJSON('./geometry/rz.json')
 
 	       ).done(function(){
 		       

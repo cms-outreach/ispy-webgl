@@ -355,14 +355,14 @@ document.addEventListener('keydown', function(e) {
 	// up arrow
 	if ( e.which === 38 && e.shiftKey ) {
     
-	    ispy.zoom(0.5);
+	    ispy.zoomIn();
   
 	}
 
 	// down
 	if ( e.which === 40 && e.shiftKey ) {
 	 
-	    ispy.zoom(-0.5);
+	    ispy.zoomOut();
 	
 	}
 
