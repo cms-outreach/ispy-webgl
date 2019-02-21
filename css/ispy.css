@@ -117,7 +117,7 @@ canvas.hover {
 }
 
 #treeview {
-  height: 500px;
+  height: 450px;
   overflow: scroll;
 }
 
@@ -180,7 +180,7 @@ canvas.hover {
 }
 
 #display {
-  height: 500px;
+  height: 450px;
   overflow: hidden;
   padding: 0;
 }
@@ -196,7 +196,7 @@ canvas.hover {
 }
 
 #tableview {
-  height: 140px;
+  height: 190px;
   overflow: scroll;
 }
 
