@@ -1330,22 +1330,22 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 
 ispy.makeDT = function(dt) {
 
-    return ispy.makeSolidBox(dt, 1);
-    //return ispy.makeWireframeBox(dt, 1);
+    //return ispy.makeSolidBox(dt, 1);
+    return ispy.makeWireframeBox(dt, 1);
 
 };
 
 ispy.makeCSC = function(csc) {
 
-    return ispy.makeSolidBox(csc, 1);  
-    //return ispy.makeWireframeBox(csc, 1);
+    //return ispy.makeSolidBox(csc, 1);  
+    return ispy.makeWireframeBox(csc, 1);
 
 };
 
 ispy.makeMuonChamber = function(chamber) {
     
-    //return ispy.makeSolidBox(chamber, 1);
-    return ispy.makeWireframeBox(chamber, 1);
+    return ispy.makeSolidBox(chamber, 1);
+    //return ispy.makeWireframeBox(chamber, 1);
 
 };
 

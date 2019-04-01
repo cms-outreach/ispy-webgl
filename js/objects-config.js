@@ -21,7 +21,7 @@ ispy.detector_description = {
 	threed: true, rphi: false, rhoz: false
     },
     "CSC3D_V1": {
-	type: ispy.SOLIDBOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
+	type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
 	fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
@@ -31,7 +31,7 @@ ispy.detector_description = {
 	threed: false, rphi: false, rhoz: true
     },
     "DTs3D_V1": {
-	type: ispy.SOLIDBOX, on: false, group: "Detector", name: "Drift Tubes",
+	type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
 	fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
@@ -390,7 +390,7 @@ ispy.event_description = {
     },
     "MatchingCSCs_V1": {
 	type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching CSCs",
-	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.5, linewidth: 1}
+	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.1, linewidth: 1}
     },
     "CSCRecHit2Ds_V2": {
 	type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
@@ -409,8 +409,8 @@ ispy.event_description = {
 	fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
     },
     "MuonChambers_V1": {
-	type: ispy.BOX, on: true, group: "Muon", name: "Matching muon chambers",
-	fn: ispy.makeMuonChamber, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.5, linewidth: 1}
+	type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
+	fn: ispy.makeMuonChamber, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.1, linewidth: 1}
     },
     "CaloTowers_V2":{
 	type: ispy.STACKEDTOWER, on: false, group: "Physics", name: "Calo Towers",
