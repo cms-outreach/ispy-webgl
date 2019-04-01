@@ -8,9 +8,9 @@ The "production" version is here:
 
 <a target="_blank" href="http://cern.ch/ispy-webgl">http://cern.ch/ispy-webgl</a>
 
-and the test version is here:
+and the development version is here:
 
-<a target="_blank" href="http://cern.ch/test-ispy-webgl">http://cern.ch/test-ispy-webgl</a>
+<a target="_blank" href="http://cern.ch/ispy-webgl-dev">http://cern.ch/ispy-webgl-dev</a>
 
 For more information on the input data format:
 
