@@ -958,9 +958,13 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   
     }
 
+    var linewidth = style.linewidth*0.001;
+
     for ( var i = 0; i < assocs.length; i++ ) {
 
 	var pt = tracks[i][selection.index];
+	var eta = tracks[i][4];
+	var phi = tracks[i][3];
 
 	ti = assocs[i][0][1];
 	ei = assocs[i][1][1];
@@ -997,7 +1001,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	var lg = new THREE.LineGeometry();
 	lg.setPositions(positions);
 	
-	var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, linewidth:style.linewidth*0.001}));
+	var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, opacity:style.opacity, transparent:true, linewidth:linewidth}));
 	line.computeLineDistances();
 	
 	if ( pt < selection.min_pt ) {

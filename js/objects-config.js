@@ -274,7 +274,7 @@ ispy.event_description = {
     },
     "EERecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Endcap Rec. Hits",
-	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5}, scale: 0.01, selection: {"min_energy": 0.5}
+	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5}, scale: 0.075, selection: {"min_energy": 0.5}
     },
     "ESRecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Preshower Rec. Hits",
@@ -316,19 +316,19 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 0.5, index: 2}
+	selection: {"min_pt": 1.0, index: 2}
     },
     "Tracks_V2": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 0.5, "index": 2}
+	selection: {"min_pt": 1.0, "index": 2}
     },
     "Tracks_V3": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 0.5, "index": 2}
+	selection: {"min_pt": 1.0, "index": 2}
     },
     "TrackDets_V1": {
 	type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
