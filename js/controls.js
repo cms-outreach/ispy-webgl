@@ -212,13 +212,13 @@ window.addEventListener('deviceorientation', setOrientationControls, true);
 
 ispy.setStereo = function() {
 
-  $('#perspective').removeClass('active');
-  $('#orthographic').removeClass('active');
+    $('#perspective').removeClass('active');
+    $('#orthographic').removeClass('active');
 
-  $('#stereo').addClass('active');
+    $('#stereo').addClass('active');
 
-  ispy.toStereo();
-  ispy.enterFullscreen();
+    ispy.toStereo();
+    ispy.enterFullscreen();
 
 };
 
@@ -256,7 +256,7 @@ ispy.printImage = function() {
   
     ispy.get_image_data = true;
     ispy.render();
-    window.open(ispy.image_data, "toDataURL() image", "width=800, height=400");
+    window.open(ispy.image_data, "toDataURL() image", "width=1600, height=900");
 
 };
 
