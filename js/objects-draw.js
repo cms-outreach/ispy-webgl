@@ -1446,8 +1446,8 @@ ispy.makeJet = function(data, style, selection) {
     var cp = Math.cos(phi);
     var sp = Math.sin(phi);
 
-    var maxZ = 3.0;
-    var maxR = 1.5;
+    var maxZ = 2.5;
+    var maxR = 1.25;
     
     var length1 = ct ? maxZ / Math.abs(ct) : maxZ;
     var length2 = st ? maxR / Math.abs(st) : maxR;
@@ -1481,11 +1481,6 @@ ispy.makeJet = function(data, style, selection) {
 	jet.visible = false;
   
     }
-
-    
-    if ( et > 50 )
-	jet.visible = false;
-    
 
     return jet;
 
