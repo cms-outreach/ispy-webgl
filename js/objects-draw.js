@@ -1486,7 +1486,7 @@ ispy.makeJet = function(data, style, selection) {
 
 };
 
-ispy.makePhoton = function(data) {
+ispy.makePhoton = function(data, style, selection) {
     /*
       Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
       "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
@@ -1497,6 +1497,8 @@ ispy.makePhoton = function(data) {
     var eta = data[2];
     var phi = data[3];
     
+    var et = data[1];
+
     var px = Math.cos(phi);
     var py = Math.sin(phi);
     var pz = (Math.pow(Math.E, eta) - Math.pow(Math.E, -eta))/2;
@@ -1523,12 +1525,21 @@ ispy.makePhoton = function(data) {
     var pt1 = new THREE.Vector3(x0, y0, z0);
     var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
     
-    var photon = new THREE.Geometry();
-    
-    photon.vertices.push(pt1);
-    photon.vertices.push(pt2);
-    
-    return [photon];
+    var geometry = new THREE.LineGeometry();    
+    geometry.setPositions([pt1.x, pt1.y, pt1.z, pt2.x, pt2.y, pt2.z]);
+
+    var color = new THREE.Color(style.color);
+
+    var photon = new THREE.Line2(geometry, new THREE.LineMaterial({color: color, linewidth: style.linewidth*0.001, dashed:true}));
+    photon.computeLineDistances();
+
+    if ( et < selection.min_et ) {
+
+        photon.visible = false;
+
+    }
+
+    return photon;
 
 };
 

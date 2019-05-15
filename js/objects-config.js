@@ -446,12 +446,12 @@ ispy.event_description = {
 	fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}
     },
     "Photons_V1": {
-	type: ispy.LINE, on: false, group: "Physics", name: "Photons (Reco)",
-	fn: ispy.makePhoton, style: {color: "rgb(80%, 80%, 0%)", opacity: 1.0, linewidth: 1}
+	type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
+	fn: ispy.makePhoton, style: {color: "rgb(80%, 80%, 0%)", opacity: 1.0, linewidth: 3}, selection: {"min_et": 10.0}
     },
     "PATPhotons_V1": {
-	type: ispy.LINE, on: false, group: "Physics", name: "Photons (PAT)",
-	fn: ispy.makePhoton, style: {color: "rgb(80%, 80%, 0%)", opacity: 1.0, linewidth: 1}
+	type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (PAT)",
+	fn: ispy.makePhoton, style: {color: "rgb(80%, 80%, 0%)", opacity: 1.0, linewidth: 3}, selection: {"min_et":10.0}
     },
     "GlobalMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
