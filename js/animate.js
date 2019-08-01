@@ -32,16 +32,19 @@ ispy.animation_script = {
         {key:"CSCSegments_V2", show:false},
         {key:"CSCSegments_V3", show:false},
         {key:"MuonChambers_V1", show:false},
+{key:"MatchingCSCs_V1",show:false},
         {key:"GlobalMuons_V1", show:false},
         {key:"TrackerMuons_V1", show:false},
+{key:"TrackerMuons_V2", show:false},
         {key:"GsfElectrons_V1", show:false},
-        {key:"GsfElectrons_V2", show:false}
+        {key:"GsfElectrons_V2", show:false},
+        {key:"PFJets_V1", show:false}
       ],
       "after_objects": [ // What gets turned on/off after the collision
         {key:"Tracks_V1", show:true},
         {key:"Tracks_V2", show:true},
         {key:"Tracks_V3", show:true},
-        {key: "EERecHits_V2", show:true},
+        {key:"EERecHits_V2", show:true},
         {key:"EBRecHits_V2", show:true},
         {key:"HERecHits_V2", show:true},
         {key:"HBRecHits_V2", show:true},
@@ -53,9 +56,10 @@ ispy.animation_script = {
         {key:"CSCSegments_V3", show:true},
         {key:"MuonChambers_V1", show:true},
         {key:"GlobalMuons_V1", show:true},
-        {key:"TrackerMuons_V1", show:true},
-        {key:"GsfElectrons_V1", show:true},
-        {key:"GsfElectrons_V2", show:true},
+        //{key:"TrackerMuons_V1", show:true},
+        //{key:"GsfElectrons_V1", show:true},
+        //{key:"GsfElectrons_V2", show:true}, 
+        {key:"PFJets_V1", show:true},
         {key:"BeamPipe", show:false}
       ]
     },

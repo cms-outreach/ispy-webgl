@@ -1414,7 +1414,7 @@ ispy.makeMET = function(data, style, selection) {
     
     var color = new THREE.Color(style.color);
     var origin = new THREE.Vector3(0,0,0);
-    var length = pt*0.1;
+    var length = pt*style.scale;
     
     dir.setLength(length);
     
@@ -1437,7 +1437,8 @@ ispy.makeMET = function(data, style, selection) {
 ispy.makeJet = function(data, style, selection) {
   
     var et = data[0];
-    
+    var eta = data[1];
+
     var theta = data[2];
     var phi = data[3];
     
@@ -1446,8 +1447,8 @@ ispy.makeJet = function(data, style, selection) {
     var cp = Math.cos(phi);
     var sp = Math.sin(phi);
 
-    var maxZ = 2.5;
-    var maxR = 1.25;
+    var maxZ = 2.25;
+    var maxR = 1.10;
     
     var length1 = ct ? maxZ / Math.abs(ct) : maxZ;
     var length2 = st ? maxR / Math.abs(st) : maxR;
@@ -1481,7 +1482,7 @@ ispy.makeJet = function(data, style, selection) {
 	jet.visible = false;
   
     }
-
+  
     return jet;
 
 };
@@ -1533,7 +1534,7 @@ ispy.makePhoton = function(data, style, selection) {
     var photon = new THREE.Line2(geometry, new THREE.LineMaterial({color: color, linewidth: style.linewidth*0.001, dashed:true}));
     photon.computeLineDistances();
 
-    if ( et < selection.min_et ) {
+    if ( et < selection.min_et || et > 110 ) {
 
         photon.visible = false;
 
