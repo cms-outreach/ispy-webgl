@@ -1003,7 +1003,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	
 	var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, opacity:style.opacity, transparent:true, linewidth:linewidth}));
 	line.computeLineDistances();
-	
+
 	if ( pt < selection.min_pt ) {
 
 	    line.visible = false;
@@ -1020,7 +1020,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 ispy.makeVertex = function(data,style) {
 
-    var geometry = new THREE.SphereGeometry(0.0025,32,32);
+    var geometry = new THREE.SphereGeometry(style.radius, 32, 32);
     var hcolor = new THREE.Color(style.color);
     var transp = false;
     

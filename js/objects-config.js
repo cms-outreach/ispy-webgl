@@ -1,4 +1,3 @@
-
 // Hmmm, IIRC objects are unordered. However, at least Chrome and Firefox fetch things in
 // the reverse order than specified here. Therefore e.g. Tracker appears at the top of
 // row of the tree view and CSC at the bottom. Which is what we want.
@@ -316,19 +315,19 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 2.0, index: 2}
+	selection: {"min_pt": 1.0, index: 2}
     },
     "Tracks_V2": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 2.0, "index": 2}
+	selection: {"min_pt": 1.0, "index": 2}
     },
     "Tracks_V3": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
-	selection: {"min_pt": 2.0, "index": 2}
+	selection: {"min_pt": 1.0, "index": 2}
     },
     "TrackDets_V1": {
 	type: ispy.BOX, on: false, group: "Tracking", name: "Matching Tracker Dets",
@@ -351,6 +350,9 @@ ispy.event_description = {
     },
     "Event_V2":{
 	type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
+    },
+    "Event_V3":{
+        type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
     },
     "DTRecHits_V1": {
 	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
@@ -493,7 +495,7 @@ ispy.event_description = {
     "TrackerMuons_V2": {
         type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
         extra: "Extras_V1", assoc: "MuonTrackerExtras_V1",
-        fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection:{"min_pt":1.0, "index":0}
+        fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection:{"min_pt":2.0, "index":0}
     },
     "PATTrackerMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
@@ -522,15 +524,15 @@ ispy.event_description = {
     },
     "Vertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Reco)",
-	fn:ispy.makeVertex, style: {color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+	fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
     },
     "PrimaryVertices_V1": {
         type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-        fn:ispy.makeVertex, style: {color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+        fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 100%, 0%)", opacity: 1.0}
     },
     "SecondaryVertices_V1": {
         type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-        fn:ispy.makeVertex, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.9}
+        fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 40%, 0%)", opacity: 1.0}
     },
     "SimVertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",

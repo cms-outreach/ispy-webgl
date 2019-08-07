@@ -50,7 +50,7 @@ ispy.toggle = function(key) {
 
     // For event information we display as simple HTML
     // so therefore not part of the scene
-    if ( key === 'Event_V1' || key === 'Event_V2' ) {
+    if ( key === 'Event_V1' || key === 'Event_V2' || key === 'Event_V3' ) {
     
 	if ( ispy.disabled[key] ) {
       
