@@ -435,7 +435,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 		var aV3 = a.split(",");
 		var bV3 = b.split(",");
 
-		if( aV3.length === 3 && bV3.length === 3 ) {
+		if ( aV3.length === 3 && bV3.length === 3 ) {
 
 		    var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
 		    var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
