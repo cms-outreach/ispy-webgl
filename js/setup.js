@@ -301,7 +301,7 @@ ispy.init = function() {
 
     // Info dialogs are hidden by default (see ispy.css)
     // FF keeps state on reload so force here
-    $('#show-info').prop('checked', false);
+    $('#show-info').prop('checked', true);
 
     $('#show-info').change(function() {
 	    

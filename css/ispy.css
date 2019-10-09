@@ -29,9 +29,11 @@ canvas.hover {
   background-color: transparent;
 }
 
+/*
 .info {
   visibility: collapse;
 }
+*/
 
 #event-info {
   position: absolute;
