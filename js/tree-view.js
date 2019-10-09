@@ -109,7 +109,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     var nobjects = 0;
 
-    if ( ispy.current_event !== undefined ) {
+    if ( ispy.current_event !== undefined && group === 'Event' ) {
 
 	nobjects = ispy.current_event.Collections[key].length;
 
