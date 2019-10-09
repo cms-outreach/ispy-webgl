@@ -879,8 +879,8 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     
     for ( var i = 0; i < data.length; i++ ) {
 	
-	positions[i] = [];
-
+	//positions[i] = [];
+	positions[i] = new THREE.Geometry();
     }
                                                                                                                                  
     for ( var j = 0; j < assoc.length; j++ ) {                                                                                                   
@@ -888,8 +888,8 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 	mi = assoc[j][0][1];                                                                                                                           
 	pi = assoc[j][1][1];                                                                                                                           
 	
-	positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                                           
-	
+	//positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                                           
+	positions[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
     }
     
     var tcolor = new THREE.Color(style.color);
@@ -902,7 +902,8 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     }
 
     var lines = [];
-    
+
+    /*
     for ( var k = 0; k < positions.length; k++ ) {
 	
 	var muon = new THREE.LineGeometry();
@@ -920,7 +921,20 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 	lines.push(line);
 	
     }
+    */
 
+    for ( var k = 0; k < positions.length; k++ ) {
+
+	var line = new THREE.Line(positions[k], new THREE.LineBasicMaterial({
+	    color: tcolor,
+	    transparent: transp,
+	    opacity: style.opacity
+	}));
+
+	line.visible = data[k][selection.index] < selection.min_pt ? false : true;
+	lines.push(line);
+    }
+    
     return lines;
 
 };
@@ -994,7 +1008,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
 	
 	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
-	
+	/*
 	var positions = [];
 	curve.getPoints(24).forEach(function(p) { positions.push(p.x,p.y,p.z); });
 	
@@ -1003,6 +1017,16 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	
 	var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, opacity:style.opacity, transparent:true, linewidth:linewidth}));
 	line.computeLineDistances();
+	*/
+
+	var lg = new THREE.Geometry();
+	lg.vertices = curve.getPoints(32);
+
+	var line = new THREE.Line(lg, new THREE.LineBasicMaterial({
+	    color: tcolor,
+	    transparent: transp,
+	    opacity: style.opacity
+	}));
 
 	if ( pt < selection.min_pt ) {
 
