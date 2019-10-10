@@ -109,14 +109,14 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     var nobjects = 0;
 
-    if ( ispy.current_event !== undefined && group === 'Event' ) {
-
-	nobjects = ispy.current_event.Collections[key].length;
-
-    } 
-
     if ( group !== 'Detector' && group !== 'Imported' && group !== 'Provenance' ) {
-    
+
+	if ( ispy.current_event !== undefined ) {
+
+	    nobjects = ispy.current_event.Collections[key].length;
+	    
+	}
+	
 	html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + " ["+nobjects+"]</td>";
   
     } else {
