@@ -1,11 +1,15 @@
 
 ispy.web_files = 
     [
-     "./data/4lepton.ig",
-     "./data/diphoton.ig",
-     "./data/MinimumBias.ig",
-     "./data/Mu.ig",
-     "./data/Electron.ig"
+	"./data/Hto4l_120-130GeV.ig",
+	"./data/BJetPlusX_Run2012C_0.ig",
+	"./data/DoubleMuParked_Run2012C_0.ig",
+	"./data/MET_Run2012C_0.ig",
+	"./data/TauParked_Run2012C_0.ig",
+	"./data/DoubleElectron_Run2012C_0.ig",
+	"./data/DoublePhoton_Run2012B_0.ig",
+	"./data/JetHT_Run2012C_0.ig",
+	"./data/MinimumBias_Run2012C_0.ig"
      ];
 
 ispy.obj_files = 
