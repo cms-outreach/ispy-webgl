@@ -406,22 +406,44 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTable.append('<thead> <tr>');
     var collectionTableHead = collectionTable.find('thead').find('tr');
 
+    var charge_index = -1;
+    var i = 0;
+    
     for ( var t in type ) {
-	
+
+	if ( type[t][0] === 'charge' ) {
+
+	    charge_index = i;
+
+	}
+
+	i += 1;
+
 	var dataSort = type[t][1] === "double" ? "float" : type[t][1];
 	collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
   
     }
 
     var index = 0;
+
     for ( var c in collection ) {
 	
 	var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
 	for ( v in collection[c] ) {
 	    
-	    row_content += "<td>"+collection[c][v]+"</td>";
-    
+	    //row_content += "<td>"+collection[c][v]+"</td>";
+
+	    if ( v === charge_index.toString() ) {
+
+		row_content += "<td> </td>";
+
+	    } else {
+
+		row_content += "<td>"+collection[c][v]+"</td>";
+
+	    }
+	    
 	}
 
 	collectionTable.append(row_content);
@@ -489,6 +511,17 @@ ispy.displayEventObjectData = function(key, objectUserData) {
     for ( var t in type ) {
 
 	var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
+
+	if ( type[t][0] === 'charge' ) {
+
+	    row_content = "<tr> <td>" + type[t][0] + "</td> <td> </td> </tr>";
+
+	} else {
+
+	    row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
+
+	}
+
 	dataTableBody.append(row_content);
 
 	if ( type[t][0] === 'pt' ) {
