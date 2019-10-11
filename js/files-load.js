@@ -1,11 +1,16 @@
 
 ispy.web_files = 
     [
-     "./data/4lepton.ig",
-     "./data/diphoton.ig",
-     "./data/MinimumBias.ig",
-     "./data/Mu.ig",
-     "./data/Electron.ig"
+	"./data/masterclass2019_1.ig",
+	"./data/masterclass2019_2.ig",
+	"./data/masterclass2019_3.ig",
+	"./data/masterclass2019_4.ig",
+	"./data/masterclass2019_5.ig",
+	"./data/masterclass2019_6.ig",
+	"./data/masterclass2019_7.ig",
+	"./data/masterclass2019_8.ig",
+	"./data/masterclass2019_9.ig",
+	"./data/masterclass2019_10.ig"	
      ];
 
 ispy.obj_files = 
