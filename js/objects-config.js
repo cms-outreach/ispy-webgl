@@ -292,7 +292,7 @@ ispy.event_description = {
 	fn: ispy.makeHRecHit_V2, style: {color: "rgb(60%, 100%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 1.0}
     },
     "HORecHits_V2": {
-	type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
+	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Outer Rec. Hits",
 	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 1.0}
     },
     "HERecHits_V2": {
@@ -359,11 +359,11 @@ ispy.event_description = {
 	fn: ispy.makeDTRecHits, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 1}
     },
     "DTRecSegment4D_V1": {
-	type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
+	type: ispy.LINE, on: false, group: "Muon", name: "DT Rec. Segments (4D)",
 	fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 1.0, linewidth: 1.5}
     },
     "RPCRecHits_V1": {
-	type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
+	type: ispy.LINE, on: false, group: "Muon", name: "RPC Rec. Hits",
 	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)", opacity: 1.0, linewidth: 1.5}
     },
     "CSCStripDigis_V1": {
@@ -391,23 +391,23 @@ ispy.event_description = {
 	fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(0%,100%,100%)", opacity:0.8, linewidth: 2}
     },
     "MatchingCSCs_V1": {
-	type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching CSCs",
+	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "Matching CSCs",
 	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.1, linewidth: 1}
     },
     "CSCRecHit2Ds_V2": {
-	type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
+	type: ispy.LINE, on: false, group: "Muon", name: "CSC Rec. Hits (2D)",
 	fn: ispy.makeCSCRecHit2Ds_V2, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
     },
     "CSCSegments_V1": {
-	type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
+	type: ispy.LINE, on: false, group: "Muon", name: "CSC Segments",
 	fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
     },
     "CSCSegments_V2": {
-	type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
+	type: ispy.LINE, on: false, group: "Muon", name: "CSC Segments",
 	fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
     },
     "CSCSegments_V3": {
-	type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
+	type: ispy.LINE, on: false, group: "Muon", name: "CSC Segments",
 	fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
     },
     "MuonChambers_V1": {
@@ -420,11 +420,11 @@ ispy.event_description = {
 	scale: 0.1, selection: {"min_energy": 0.1}
     },
     "METs_V1": {
-	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
+	type: ispy.SHAPE, on: true, group: "Physics", name: "Missing Et (Reco)",
 	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.1}, selection: {"min_pt": 0.0}
     },
     "PFMETs_V1": {
-	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (PF)",
+	type: ispy.SHAPE, on: true, group: "Physics", name: "Missing Et (PF)",
 	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.05}, selection: {"min_pt": 0.0}
     },
     "PATMETs_V1": {
@@ -471,12 +471,12 @@ ispy.event_description = {
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
     },    
     "StandaloneMuons_V1": {
-	type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
+	type: ispy.ASSOC, on: true, group: "Physics", name: "Stand-alone Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
     },
     "StandaloneMuons_V2": {
-	type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
+	type: ispy.ASSOC, on: true, group: "Physics", name: "Stand-alone Muons (Reco)",
 	extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection: {"min_pt":1.0, "index":0}
     },
