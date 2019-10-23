@@ -394,8 +394,7 @@ document.addEventListener('keydown', function(e) {
     }
 
     if ( e.which === 77 ) {
-
-	//console.log(ispy.four_vectors);
+	
 	ispy.showMass();
 	
     }
@@ -564,6 +563,8 @@ ispy.displayEventObjectData = function(key, objectUserData) {
 
     var mMuon2 = 0.10566*0.10566;
     var mElectron2 = 0.511e-3*0.511e-3;
+
+    var ptype;
     
     // Do this only for Muons and Electrons
     if ( ispy.shift_pressed && ( isMuon || isElectron ) ) {
@@ -574,15 +575,24 @@ ispy.displayEventObjectData = function(key, objectUserData) {
 
 	E = 0;
 	
-	if ( isMuon )
-	    E += mMuon2;
-	if ( isElectron )
-	    E += mElectron2;
+	if ( isMuon ) {
 
+	    E += mMuon2;
+	    ptype = 'Muon';
+
+	}
+
+	if ( isElectron ) {
+	    
+	    E += mElectron2;
+	    ptype = 'Electron';
+
+	}
+	
 	E += pt*pt*Math.cosh(eta)*Math.cosh(eta);
 	E = Math.sqrt(E);
-	
-	ispy.four_vectors.push({'E':E, 'px': px, 'py': py, 'pz': pz});
+
+	ispy.four_vectors.push({'E':E, 'px': px, 'py': py, 'pz': pz, 'ptype': ptype});
 
     } else {
 
