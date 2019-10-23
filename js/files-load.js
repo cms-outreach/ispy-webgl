@@ -14,17 +14,17 @@ ispy.web_files =
 
 ispy.obj_files = 
     [
-     //'./geometry/EB.obj',
-     './geometry/EEminus.obj',
-     './geometry/EEplus.obj',
-     './geometry/ESminus.obj',
-     './geometry/ESplus.obj',
-     './geometry/muon-barrel.obj',
-     './geometry/muon-endcap-minus.obj',
-     './geometry/muon-endcap-plus.obj',
-     './geometry/muon-rphi-minus.obj',
-     './geometry/muon-rphi-plus.obj',
-     './geometry/hf.obj'
+	//'./geometry/EB.obj',
+	'./geometry/EEminus.obj',
+	'./geometry/EEplus.obj',
+	'./geometry/ESminus.obj',
+	'./geometry/ESplus.obj',
+	'./geometry/muon-barrel.obj',
+	'./geometry/muon-endcap-minus.obj',
+	'./geometry/muon-endcap-plus.obj',
+	'./geometry/muon-rphi-minus.obj',
+	'./geometry/muon-rphi-plus.obj',
+	'./geometry/hf.obj'
      ];
 
 ispy.ig_data = null;
@@ -130,8 +130,11 @@ ispy.loadEvent = function() {
     // Clear 4 vectors for invariant mass calculation
     ispy.four_vectors = [];
 
-    // Hide Detector stuff in tree view
-    ispy.toggleCollapse('Detector');
+    // Hide Detector stuff in tree view if already shown
+    if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {
+	
+	ispy.toggleCollapse('Detector');
+    }
     
     var event;
 
