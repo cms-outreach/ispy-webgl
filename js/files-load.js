@@ -127,8 +127,12 @@ ispy.loadEvent = function() {
     $("#event-loaded").html("");
     $("#loading").modal("show");
 
-    ispy.mass_pair = [];
+    // Clear 4 vectors for invariant mass calculation
+    ispy.four_vectors = [];
 
+    // Hide Detector stuff in tree view
+    ispy.toggleCollapse('Detector');
+    
     var event;
 
     try {
