@@ -330,66 +330,75 @@ ispy.onMouseDown = function(e) {
 };
 
 ispy.shift_pressed = false;
-ispy.mass_pair = [];
+ispy.four_vectors = [];
 
 document.addEventListener('keyup', function(e) {
 
-	if ( e.which === 16 ) {
-    
-	    ispy.shift_pressed = false;
-  
-	}
+    if ( e.shiftKey || e.key  === 'Shift' ) {
+	
+	ispy.shift_pressed = false;
+	
+    }
 
 });
 
 document.addEventListener('keydown', function(e) {
-
-	// Instead of a button, make output of 3D to JSON a "secret" key binding
-	// If shift + e then export
-	if ( e.which === 69 && e.shiftKey ) {
-	    
-	    ispy.exportScene();
-  
-	}
-
-	// up arrow
-	if ( e.which === 38 && e.shiftKey ) {
     
-	    ispy.zoomIn();
-  
-	}
-
-	// down
-	if ( e.which === 40 && e.shiftKey ) {
-	 
-	    ispy.zoomOut();
+    // Instead of a button, make output of 3D to JSON a "secret" key binding
+    // If shift + e then export
+    if ( e.which === 69 && e.shiftKey ) {
 	
-	}
-
-	// right
-	if ( e.which === 39 && e.shiftKey ) {
-   
-	}
-
-  
-	// left
-	if ( e.which === 37 && e.shiftKey ) {
-    
-	}
-
-	// shift+a to toggle animation
-	if ( e.which === 65 && e.shiftKey ) {
-	 
-	    ispy.toggleAnimation();
+	ispy.exportScene();
 	
-	}
-
-	if ( e.shiftKey ) {
+    }
     
-	    ispy.shift_pressed = true;
-  
-	}
+    // up arrow
+    if ( e.which === 38 && e.shiftKey ) {
+	
+	ispy.zoomIn();
+	
+    }
+    
+    // down
+    if ( e.which === 40 && e.shiftKey ) {
+	
+	ispy.zoomOut();
+	
+    }
+    
+    // right
+    if ( e.which === 39 ) {
 
+	ispy.nextEvent();
+
+    }
+
+    // left
+    if ( e.which === 37 ) {
+
+	ispy.prevEvent();
+
+    }
+
+    // shift+a to toggle animation
+    if ( e.which === 65 && e.shiftKey ) {
+	
+	ispy.toggleAnimation();
+	
+    }
+
+    if ( e.shiftKey || e.key === 'Shift' ) {
+	
+	ispy.shift_pressed = true;
+	
+    }
+
+    if ( e.which === 77 ) {
+
+	//console.log(ispy.four_vectors);
+	ispy.showMass();
+	
+    }
 });
 
 ispy.displayCollection = function(key, group, name, objectIds) {
@@ -478,21 +487,31 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     
 };
 
-ispy.getMass = function() {
+ispy.showMass = function() {
 
-    var pt1 = ispy.mass_pair[0].pt;
-    var pt2 = ispy.mass_pair[1].pt;
+    var m = 0;
+    var sumE = 0;
+    var sumPx = 0;
+    var sumPy = 0;
+    var sumPz = 0;
     
-    var eta1 = ispy.mass_pair[0].eta;
-    var eta2 = ispy.mass_pair[1].eta;
-    
-    var phi1 = ispy.mass_pair[0].phi;
-    var phi2 = ispy.mass_pair[1].phi;
-    
-    var m = Math.sqrt(2*pt1*pt2*(Math.cosh(eta1-eta2) - Math.cos(phi1-phi2)));
+    ispy.four_vectors.forEach(function(fv) {
 
+	sumE  += fv.E;
+	sumPx += fv.px;
+	sumPy += fv.py;
+	sumPz += fv.pz;
+	
+    });
+
+    m = sumE*sumE;
+    m -= (sumPx*sumPx + sumPy*sumPy + sumPz*sumPz);
+    m = Math.sqrt(m);
+    
     $('#invariant-mass').html(m.toFixed(2));
     $('#invariant-mass-modal').modal('show');
+
+    ispy.four_vectors = [];
 
 };
 
@@ -507,7 +526,8 @@ ispy.displayEventObjectData = function(key, objectUserData) {
     dataTableBody.empty();
 
     var pt, eta, phi;
-
+    var E, px, py, pz;
+    
     for ( var t in type ) {
 
 	var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
@@ -539,27 +559,30 @@ ispy.displayEventObjectData = function(key, objectUserData) {
 	}
     }
 
-    if ( ispy.shift_pressed ) {
+    var isMuon = key.includes('Muon');
+    var isElectron = key.includes('Electron');
 
-	if ( ispy.mass_pair.length === 2 ) {
-      
-	    ispy.mass_pair = [];
-	    ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
+    var mMuon2 = 0.10566*0.10566;
+    var mElectron2 = 0.511e-3*0.511e-3;
     
-	}
+    // Do this only for Muons and Electrons
+    if ( ispy.shift_pressed && ( isMuon || isElectron ) ) {
 
-	else if ( ispy.mass_pair.length === 1 ) {
-	    
-	    ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
-	    ispy.getMass();
-    
-	}
+	px = pt*Math.cos(phi);
+	py = pt*Math.sin(phi);
+	pz = pt*Math.sinh(eta);
 
-	else if ( ispy.mass_pair.length === 0 ) {
-      
-	    ispy.mass_pair.push({'pt':pt,'eta':eta,'phi':phi});
-    
-	}
+	E = 0;
+	
+	if ( isMuon )
+	    E += mMuon2;
+	if ( isElectron )
+	    E += mElectron2;
+
+	E += pt*pt*Math.cosh(eta)*Math.cosh(eta);
+	E = Math.sqrt(E);
+	
+	ispy.four_vectors.push({'E':E, 'px': px, 'py': py, 'pz': pz});
 
     } else {
 

@@ -128,7 +128,8 @@ ispy.loadEvent = function() {
     $("#event-loaded").html("");
     $("#loading").modal("show");
 
-    ispy.mass_pair = [];
+    // Clear for new event
+    ispy.four_vectors = [];
 
     var event;
 
