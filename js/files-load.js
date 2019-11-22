@@ -1,18 +1,3 @@
-
-ispy.web_files = 
-    [
-	"./data/masterclass2019_1.ig",
-	"./data/masterclass2019_2.ig",
-	"./data/masterclass2019_3.ig",
-	"./data/masterclass2019_4.ig",
-	"./data/masterclass2019_5.ig",
-	"./data/masterclass2019_6.ig",
-	"./data/masterclass2019_7.ig",
-	"./data/masterclass2019_8.ig",
-	"./data/masterclass2019_9.ig",
-	"./data/masterclass2019_10.ig"	
-     ];
-
 ispy.obj_files = 
     [
      //'./geometry/EB.obj',
@@ -396,6 +381,76 @@ ispy.selectFile = function(filename) {
 
 };
 
+ispy.loadWebFiles = function(json_file) {
+
+  $.ajax({url: json_file, dataType: "json", cache: true}).success(function(data) {
+
+    ispy.web_files = data;
+
+    //ispy.clearTable('browser-files');
+    //ispy.clearTable('browser-events');
+
+    $('#selected-event').html("Selected event");
+
+    var tbl = document.getElementById("browser-dirs");
+
+    for ( var d in data ) {
+
+        tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDir(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+
+    }
+
+  });
+
+};
+
+ispy.showWebFiles = function() {
+
+  ispy.openDialog('#files');
+  ispy.showWebDirs();
+
+  $('#open-files').modal('hide');
+
+};
+
+ispy.showWebDir = function(dir_name) {
+
+    $('#browser-dirs').hide();
+
+    var tbl = document.getElementById("browser-files");
+    var files = ispy.web_files.filter(function(w){ return w.release === dir_name; })[0].files;
+    tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDirs();"> ../ </a>';
+    
+    files.forEach(function(f) {
+
+	console.log(f);
+      
+	var filename = "./data/"+dir_name+"/"+f;
+
+	tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML =
+	    '<a class="file" onclick="ispy.selectFile(\'' + filename + '\');">' + f + '</a>';
+
+    });
+
+    $('#browser-files').show();
+
+};
+
+ispy.showWebDirs = function() {
+
+  ispy.clearTable('browser-files');
+  ispy.clearTable('browser-events');
+
+  $('#selected-event').html("Selected event");
+  $('#load-event').addClass('disabled');
+
+  $('#browser-files').hide();
+  $('#browser-dirs').show();
+
+};
+
+
+/*
 ispy.loadWebFiles = function() {
 
     $('#selected-event').html("Selected event");
@@ -415,6 +470,7 @@ ispy.loadWebFiles = function() {
     }
 
 };
+
 
 ispy.showWebFiles = function() {
 
@@ -436,6 +492,7 @@ ispy.showWebFiles = function() {
     $('#open-files').modal('hide');
 
 };
+*/
 
 ispy.cleanupData = function(d) {
 

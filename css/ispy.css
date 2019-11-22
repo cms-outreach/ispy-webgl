@@ -253,11 +253,11 @@ canvas.hover {
   text-align: center;
 }
 
-#browser-events td.black {
+#browser-events td.black, #browser-dirs td.black {
   background-color: #303030;
 }
 
-#browser-events td.white {
+#browser-events td.white, #browser-dirs td.white {
   background-color: white;
 }
 
@@ -332,6 +332,6 @@ canvas.hover {
   border: 0;
 }
 
-#browser-events td {
+#browser-events td, #browser-dirs td {
   border: 0;
 }
