@@ -383,25 +383,32 @@ ispy.selectFile = function(filename) {
 
 ispy.loadWebFiles = function(json_file) {
 
-  $.ajax({url: json_file, dataType: "json", cache: true}).success(function(data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", json_file, true);
 
-    ispy.web_files = data;
+    xhr.onload = function() {
 
-    //ispy.clearTable('browser-files');
-    //ispy.clearTable('browser-events');
+	if ( this.status === 200 ) {
 
-    $('#selected-event').html("Selected event");
+	    data = JSON.parse(xhr.responseText);
+	    ispy.web_files = data;
+	
+	    $('#selected-event').html("Selected event");
+	
+	    var tbl = document.getElementById("browser-dirs");
 
-    var tbl = document.getElementById("browser-dirs");
+	    for ( var d in data ) {
 
-    for ( var d in data ) {
+		tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDir(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+	   
+	    }
 
-        tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDir(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+	}
 
-    }
+    };
 
-  });
-
+    xhr.send();
+    
 };
 
 ispy.showWebFiles = function() {
@@ -422,9 +429,7 @@ ispy.showWebDir = function(dir_name) {
     tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDirs();"> ../ </a>';
     
     files.forEach(function(f) {
-
-	console.log(f);
-      
+ 
 	var filename = "./data/"+dir_name+"/"+f;
 
 	tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML =
