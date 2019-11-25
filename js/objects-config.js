@@ -75,7 +75,7 @@ ispy.detector_description = {
 	threed: true, rphi: false, rhoz: false
     },
     "HcalOuter3D_V1": {
-	type: ispy.BOX, on: false, group: "Detector", name: "HCAL Outer",
+	type: ispy.BOX, on: true, group: "Detector", name: "HCAL Outer",
 	fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },

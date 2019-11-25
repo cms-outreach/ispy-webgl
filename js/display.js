@@ -398,6 +398,7 @@ document.addEventListener('keydown', function(e) {
 	ispy.showMass();
 	
     }
+
 });
 
 ispy.displayCollection = function(key, group, name, objectIds) {
