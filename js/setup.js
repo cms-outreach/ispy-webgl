@@ -41,8 +41,8 @@ ispy.init_camera = {
     'y': 9.5,
     'z': 13.0,
     'zoom': 1.5,
-    'perspective': true,
-    'orthographic': false
+    'perspective': false,
+    'orthographic': true
 
 };
 
