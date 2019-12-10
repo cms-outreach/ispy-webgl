@@ -116,6 +116,13 @@ ispy.loadEvent = function() {
     // Clear for new event
     ispy.four_vectors = [];
 
+    // Hide Detector stuff in tree view if already shown
+    if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {
+
+	ispy.toggleCollapse('Detector');
+
+    }
+    
     var event;
 
     try {
