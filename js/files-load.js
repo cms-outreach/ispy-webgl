@@ -114,7 +114,7 @@ ispy.loadEvent = function() {
     $("#loading").modal("show");
 
     // Clear for new event
-    ispy.four_vectors = [];
+    ispy.selected_objects.clear();
 
     // Hide Detector stuff in tree view if already shown
     if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {

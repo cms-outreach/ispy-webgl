@@ -228,7 +228,6 @@ ispy.onWindowResize = function() {
 
 };
 
-
 // Given an object3d this returns the ids of its children
 ispy.getObjectIds = function(obj) {
 
@@ -267,54 +266,44 @@ ispy.onMouseMove = function(e) {
     ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
     var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
 
-    // Make sure invisible objects in front won't interfere:
-    var i = 0; while(i < intersects.length && !intersects[i].object.visible) ++i;
+    // If there is an already-picked object restore its color
+    if ( ispy.intersected ) {
 
-    if ( intersects[i] ) {
-      
-	if ( ispy.intersected != intersects[i].object) {
-     
-	    if ( ispy.intersected ) {
-        
-		ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-		
-		ispy.displayCollection(ispy.intersected.name, "Physics", 
-				       ispy.event_description[ispy.intersected.name].name, 
-				       ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
-		ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-		
-	    }
-      
-	    container.css('cursor','pointer');
+	container.css('cursor', 'auto');
+	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 	
-	    ispy.intersected = intersects[i].object;
+	if ( ! ispy.intersected.selected ) {
+	    
+	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	    ispy.intersected.material.color = original_color;
+	    
+	} else {
 
-	    ispy.displayCollection(ispy.intersected.name, "Physics", 
-				   ispy.event_description[ispy.intersected.name].name, 
-				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
-	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+	    ispy.intersected.material.color.setHex(0x808080);
 
-	    ispy.intersected.current_color = ispy.intersected.material.color.getHex();
+	}
+	
+    }
+	
+    if ( intersects.length ) {
+
+	// First object should be the closet one
+	ispy.intersected = intersects[0].object;
+
+	if ( ispy.intersected ) {
+
+	    container.css('cursor', 'pointer');
+	    
 	    ispy.intersected.material.color.setHex(0xcccccc);
 	    
-	}
-
-    } else {
-    
-	if ( ispy.intersected ) {
-	  
-	    container.css('cursor','auto');
-	    
 	    ispy.displayCollection(ispy.intersected.name, "Physics", 
 				   ispy.event_description[ispy.intersected.name].name, 
 				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
-	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 	    
-	    ispy.intersected.material.color.setHex(ispy.intersected.current_color);
-	    ispy.intersected = null;
-
+	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+		
 	}
-  
+
     }
 
 };
@@ -322,15 +311,34 @@ ispy.onMouseMove = function(e) {
 ispy.onMouseDown = function(e) {
 
     if ( ispy.intersected ) {
+    
+	if ( ispy.intersected.selected ) {
+	    
+	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	    ispy.intersected.material.color = original_color;
+	    ispy.intersected.selected = false;
 
-	ispy.displayEventObjectData(ispy.intersected.name, ispy.intersected.userData);
+	    if ( ispy.selected_objects.has(ispy.intersected.id) ) {
+
+		ispy.selected_objects.delete(ispy.intersected.id);
+
+	    }
+	    
+	    
+	} else {
+	    
+	    ispy.intersected.material.color.setHex(0x808080);
+	    ispy.intersected.selected = true;
+	    
+	    ispy.displayEventObjectData();
+
+	}
 	
     }
 
 };
 
-ispy.shift_pressed = false;
-ispy.four_vectors = [];
+ispy.selected_objects = new Map();
 
 document.addEventListener('keyup', function(e) {
 
@@ -393,6 +401,7 @@ document.addEventListener('keydown', function(e) {
 	
     }
 
+    // M
     if ( e.which === 77 ) {
 	
 	ispy.showMass();
@@ -400,6 +409,9 @@ document.addEventListener('keydown', function(e) {
     }
 
 });
+
+var mMuon2 = 0.10566*0.10566;
+var mElectron2 = 0.511e-3*0.511e-3;
 
 ispy.displayCollection = function(key, group, name, objectIds) {
  
@@ -415,7 +427,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTable.append('<thead> <tr>');
     var collectionTableHead = collectionTable.find('thead').find('tr');
 
-    var charge_index = -1;
+    var charge_index = -1;  
     var i = 0;
     
     for ( var t in type ) {
@@ -434,13 +446,14 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     }
 
     var index = 0;
-
+    
     for ( var c in collection ) {
 	
 	var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	//var row_content = "<tr id='" + key.concat(index++) + "'>";
 
 	for ( v in collection[c] ) {
-	    
+  
 	    //row_content += "<td>"+collection[c][v]+"</td>";
 
 	    if ( v === charge_index.toString() ) {
@@ -455,7 +468,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	    
 	}
 
-	collectionTable.append(row_content);
+	var rc = $(row_content)
+	collectionTable.append(rc);
   
     }
 
@@ -495,54 +509,62 @@ ispy.showMass = function() {
     var sumPy = 0;
     var sumPz = 0;
     
-    ispy.four_vectors.forEach(function(fv) {
+    ispy.selected_objects.forEach(function(o, key) {
 
-	sumE  += fv.E;
-	sumPx += fv.px;
-	sumPy += fv.py;
-	sumPz += fv.pz;
+	sumE  += o.four_vector.E;
+	sumPx += o.four_vector.px;
+	sumPy += o.four_vector.py;
+	sumPz += o.four_vector.pz;
+
+	// This is cheating. Should get colors from event_description config.
+	if ( o.ptype === 'Electron' ) {
+
+	    o.material.color.setHex(0x19ff19);
+
+	}
+
+	if ( o.ptype === 'Muon' ) {
+
+	    o.material.color.setHex(0xff0000);
+
+	}
+
+	o.selected = false;
 	
     });
-
+    
     m = sumE*sumE;
     m -= (sumPx*sumPx + sumPy*sumPy + sumPz*sumPz);
     m = Math.sqrt(m);
     
     $('#invariant-mass').html(m.toFixed(2));
     $('#invariant-mass-modal').modal('show');
-
-    ispy.four_vectors = [];
+    
+    ispy.selected_objects.clear();
 
 };
 
-ispy.displayEventObjectData = function(key, objectUserData) {
-  
+ispy.displayEventObjectData = function() {
+
+    var key = ispy.intersected.name;
+    
+    var isMuon = key.includes('Muon');
+    var isElectron = key.includes('Electron');
+
+    if ( ! ( isMuon || isElectron ) ) {
+
+	return;
+
+    }
+
+    var objectUserData = ispy.intersected.userData;
     var type = ispy.current_event.Types[key];
     var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
     
-    $('#title-data-EventObjects').empty().append(ispy.event_description[key].name);
-
-    var dataTableBody = $('#table-data-eventObject').find("tbody");
-    dataTableBody.empty();
-
     var pt, eta, phi;
     var E, px, py, pz;
     
     for ( var t in type ) {
-
-	var row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
-
-	if ( type[t][0] === 'charge' ) {
-
-	    row_content = "<tr> <td>" + type[t][0] + "</td> <td> </td> </tr>";
-
-	} else {
-
-	    row_content = "<tr> <td>" + type[t][0] + "</td> <td>" + eventObjectData[t] + "</td> </tr>";
-
-	}
-
-	dataTableBody.append(row_content);
 
 	if ( type[t][0] === 'pt' ) {
 	    
@@ -559,53 +581,41 @@ ispy.displayEventObjectData = function(key, objectUserData) {
 	}
     }
 
-    var isMuon = key.includes('Muon');
-    var isElectron = key.includes('Electron');
-
-    var mMuon2 = 0.10566*0.10566;
-    var mElectron2 = 0.511e-3*0.511e-3;
-
     var ptype;
+
+    px = pt*Math.cos(phi);
+    py = pt*Math.sin(phi);
+    pz = pt*Math.sinh(eta);
     
-    // Do this only for Muons and Electrons
-    if ( ispy.shift_pressed && ( isMuon || isElectron ) ) {
-
-	px = pt*Math.cos(phi);
-	py = pt*Math.sin(phi);
-	pz = pt*Math.sinh(eta);
-
-	E = 0;
+    E = 0;
 	
-	if ( isMuon ) {
-
-	    E += mMuon2;
-	    ptype = 'Muon';
-
-	}
-
-	if ( isElectron ) {
-	    
-	    E += mElectron2;
-	    ptype = 'Electron';
-
-	}
+    if ( isMuon ) {
 	
-	E += pt*pt*Math.cosh(eta)*Math.cosh(eta);
-	E = Math.sqrt(E);
-
-	ispy.four_vectors.push({'E':E, 'px': px, 'py': py, 'pz': pz, 'ptype': ptype});
-
-    } else {
-
-	$('#data-EventObjects').modal('show');
-
+	E += mMuon2;
+	ptype = 'Muon';
+	
     }
 
+    if ( isElectron ) {
+	
+	E += mElectron2;
+	ptype = 'Electron';
+	
+    }
+	
+    E += pt*pt*Math.cosh(eta)*Math.cosh(eta);
+    E = Math.sqrt(E);
+
+    ispy.intersected.four_vector = {'E':E, 'px':px, 'py':py, 'pz':pz};
+    ispy.intersected.ptype = ptype;
+    
+    ispy.selected_objects.set(ispy.intersected.id, ispy.intersected);
+    
 };
 
 ispy.highlightTableRow = function(key, objectUserData, doEffect) {
  
-    if ( (ispy.currentCollection == key && doEffect) || ! doEffect ) {
+    if ( ( ispy.currentCollection == key && doEffect ) || ! doEffect ) {
 	
 	var selector = "#" + key.concat(objectUserData.originalIndex);
 	var row = $(selector);
@@ -617,6 +627,7 @@ ispy.highlightTableRow = function(key, objectUserData, doEffect) {
 		var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
 		row.css("background-color", color);
 		row.scrollintoview();
+
 	    } else {
 		
 		row.removeAttr("style");
@@ -635,7 +646,7 @@ ispy.highlightObject = function(objectId) {
 
     if ( selected ) {
     
-	if( ispy.highlighted != selected && selected.visible ) {
+	if ( ispy.highlighted != selected && selected.visible ) {
       
 	    if ( ispy.highlighted ) {
 
