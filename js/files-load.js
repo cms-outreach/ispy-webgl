@@ -127,8 +127,7 @@ ispy.loadEvent = function() {
     $("#event-loaded").html("");
     $("#loading").modal("show");
 
-    // Clear 4 vectors for invariant mass calculation
-    ispy.four_vectors = [];
+    ispy.selected_objects.clear();
 
     // Hide Detector stuff in tree view if already shown
     if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {
