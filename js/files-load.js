@@ -120,6 +120,8 @@ ispy.enableNextPrev = function() {
     
     }
 
+    $('#autoplay').removeClass('disabled');
+
 };
 
 ispy.loadEvent = function() {
@@ -169,6 +171,23 @@ ispy.loadEvent = function() {
 	
     }
 
+};
+
+ispy.autoplay = function() {
+
+    console.log('autoplay');
+
+    $('#autoplay').addClass('disabled');
+    $('#pause').removeClass('disabled');
+};
+
+ispy.pause = function() {
+
+    console.log('pause');
+
+    $('#pause').addClass('disabled');
+    $('#autoplay').removeClass('disabled');
+    
 };
 
 ispy.nextEvent = function() {
