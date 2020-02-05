@@ -350,9 +350,15 @@
         <p>
           Show experiment logo: <input id='show-logo' type='checkbox'>
         </p>
+	<!--
+	<p>
+	  Set autoplay interval: <span id='apt'></span> seconds
+	  <input type='range' min='1' max='10' value='3' id='apt-slider' step='1' oninput='ispy.setAutoplayInterval(value);'>
+	</p>
+	-->
         <p>
           Set maximum frame rate: <span id='fr'></span> fps
-          <input type='range' min='1' max='60' value='30' id='fps-slider' step='1' oninput='ispy.setFramerate(value);'>
+          <input type='range' min='1' max='6' value='30' id='fps-slider' step='1' oninput='ispy.setFramerate(value);'>
         </p>
         <p>
           Set imported geometry transparency: <span id='trspy'></span>

@@ -80,6 +80,8 @@ ispy.selectEvent = function(index) {
     ispy.event_index = index;
     $('#load-event').removeClass('disabled');
 
+    $('#autoplay').removeClass('disabled');
+    
 };
 
 ispy.updateEventList = function() {
@@ -100,35 +102,35 @@ ispy.updateEventList = function() {
 
 ispy.enableNextPrev = function() {
 
+    // We are not at the beginning so enable moving backwards
     if ( ispy.event_index > 0 ) {
 	
 	$("#prev-event-button").removeClass("disabled");
     
-    } else {
+    } else { // We are at the beginning so disable moving backwards
     
 	$("#prev-event-button").addClass("disabled");
   
     }
 
+    // We are not at the end so enable moving forward
     if ( ispy.event_list && ispy.event_list.length - 1 > ispy.event_index ) {
 	
 	$("#next-event-button").removeClass("disabled");
     
-    } else {
-	
-	$("#next-event-button").addClass("disabled");
+    } else { // We are at the end so disable moving forwards
+
+	$("#next-event-button").addClass('disabled');
     
     }
-
-    $('#autoplay').removeClass('disabled');
-
+    
 };
 
 ispy.loadEvent = function() {
 
     $("#event-loaded").html("");
     $("#loading").modal("show");
-
+    
     ispy.selected_objects.clear();
 
     // Hide Detector stuff in tree view if already shown
@@ -179,6 +181,9 @@ ispy.autoplay = function() {
 
     $('#autoplay').addClass('disabled');
     $('#pause').removeClass('disabled');
+
+    ispy.autoplayTimer = setInterval(ispy.nextEvent, 5*1000); //ms
+    
 };
 
 ispy.pause = function() {
@@ -187,19 +192,36 @@ ispy.pause = function() {
 
     $('#pause').addClass('disabled');
     $('#autoplay').removeClass('disabled');
+
+    clearTimeout(ispy.autoplayTimer);
     
 };
 
 ispy.nextEvent = function() {
 
-    if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
-    
-	ispy.event_index++;
-	ispy.loadEvent();
-  
-    }
+    if ( ispy.event_list ) {
+	
+	// If we are in autoplay and at the end then go to
+	// first event
+	if ( $('#autoplay').hasClass('disabled') &&
+	     ispy.event_index === ispy.event_list.length-1 ) {
 
+	    ispy.event_index = 0;
+	    ispy.loadEvent();
+
+	}
+        
+	if ( ispy.event_list.length-1 > ispy.event_index ) {
+    
+	    ispy.event_index++;
+	    ispy.loadEvent();
+
+	}
+
+    }
+    
 };
+
 
 ispy.prevEvent = function() {
 

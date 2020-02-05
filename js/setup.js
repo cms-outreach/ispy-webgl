@@ -28,6 +28,13 @@ ispy.lookAtOrigin = function() {
 
 };
 
+ispy.setAutoplayInterval = function(apt) {
+
+    ispy.autoplayInterval = apt;
+    $('#apt').html(apt);
+
+};
+
 ispy.setFramerate = function(fr) {
 
     ispy.framerate = fr;  
@@ -299,6 +306,10 @@ ispy.init = function() {
     $('#transparency-slider').prop('value', ispy.importTransparency);
     $('#trspy').html(ispy.importTransparency);
 
+    ispy.autoplayInterval = 3;
+    $('#apt-slider').prop('value', ispy.autoplayInterval);
+    $('#apt').html(ispy.autoplayInterval);
+ 
     // Info dialogs are hidden by default (see ispy.css)
     // FF keeps state on reload so force here
     $('#show-info').prop('checked', false);
