@@ -1405,6 +1405,11 @@ ispy.makeMET = function(data, style, selection) {
     /*
       "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
     */
+
+    /*
+    "PATMETs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
+    */
+    
     var pt = data[1];
     var px = data[2];
     var py = data[3];
@@ -1419,11 +1424,22 @@ ispy.makeMET = function(data, style, selection) {
     dir.setLength(length);
     
     var geometry = new THREE.LineGeometry();
-    geometry.setPositions([origin.x,origin.y,origin.z,dir.x,dir.y,dir.z]);
+    geometry.setPositions([
+	origin.x,origin.y,origin.z,
+	dir.x,dir.y,dir.z
+    ]);
+
+    var material = new THREE.LineMaterial({
+	color: color,
+	linewidth: style.linewidth*0.001
+    });
     
-    var met = new THREE.Line2(geometry, new THREE.LineMaterial({color: color, linewidth: style.linewidth*0.001, dashed:true}));
+    var met = new THREE.Line2(geometry, material);
     met.computeLineDistances();
 
+    dir.normalize();
+    met.translateOnAxis(dir, 1.45);
+    
     if ( pt < selection.min_pt ) {
     
 	met.visible = false;
