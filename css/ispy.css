@@ -1,3 +1,7 @@
+body {
+  margin-right: 1px;
+}
+
 body.black {
   background-color: black;
 }
@@ -117,8 +121,8 @@ canvas.hover {
 }
 
 #treeview {
-  height: 500px;
-  overflow: scroll;
+  height: 65vh;
+  overflow: auto;
 }
 
 #treeview.black .table-hover tr:hover {
@@ -180,7 +184,7 @@ canvas.hover {
 }
 
 #display {
-  height: 500px;
+  height: 65vh;
   overflow: hidden;
   padding: 0;
 }
@@ -196,8 +200,8 @@ canvas.hover {
 }
 
 #tableview {
-  height: 240px;
-  overflow: scroll;
+  height: 25vh;
+  overflow: auto;
 }
 
 #tableview.black {
@@ -226,6 +230,15 @@ canvas.hover {
   background-color: #dfdfdf;
 }
 
+.modal.in .modal-dialog {
+  margin: 0 auto;
+  top: 40%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+}
+
 .modal-dialog button.close {
   color: red;
   text-shadow: none;
@@ -249,6 +262,10 @@ canvas.hover {
 #loading .modal-content {
   width: 50%;
   text-align: center;
+  transform: translateX(50%);
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -moz-transform: translateX(50%);
 }
 
 #browser-events td.black {
@@ -272,6 +289,10 @@ canvas.hover {
 #files .modal-body {
   max-height: 300px;
   overflow-y: scroll;
+}
+
+#files a {
+  cursor: pointer;
 }
 
 #geometry-files .modal-body {
