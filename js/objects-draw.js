@@ -1409,14 +1409,34 @@ ispy.makeMET = function(data, style, selection) {
     /*
     "PATMETs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
     */
-    
+
     var pt = data[1];
     var px = data[2];
     var py = data[3];
 
+    var length = pt*style.scale;
+   
     var dir = new THREE.Vector3(px,py,0);
     dir.normalize();
+       
+    var origin = new THREE.Vector3(0,0,0);
+    origin.add(dir);
+    origin.multiplyScalar(1.45);
     
+    var color = new THREE.Color(style.color);
+
+    // dir, origin, length, hex, headLength, headWidth
+    var met = new THREE.ArrowHelper(dir, origin, length, color.getHex(), 0.2, 0.2);
+
+    if ( pt < selection.min_pt ) {
+
+	met.visible = false;
+
+    }
+
+    return met;
+    
+    /*
     var color = new THREE.Color(style.color);
     var origin = new THREE.Vector3(0,0,0);
     var length = pt*style.scale;
@@ -1439,15 +1459,7 @@ ispy.makeMET = function(data, style, selection) {
 
     dir.normalize();
     met.translateOnAxis(dir, 1.45);
-    
-    if ( pt < selection.min_pt ) {
-    
-	met.visible = false;
-    
-    }
-
-    return met;
-
+    */
 };
 
 ispy.makeJet = function(data, style, selection) {

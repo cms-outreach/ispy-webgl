@@ -146,12 +146,12 @@ ispy.detector_description = {
     },
     "EcalEndcapMinus3D_V1": {
 	type: ispy.BUFFERBOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 1.0},
+	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5},
 	threed: true, rphi: false, rhoz: false
     },
     "EcalEndcapPlus3D_V1": {
 	type: ispy.BUFFERBOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 1.0},
+	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5},
 	threed: true, rphi: false, rhoz: false
     },
     "EcalEndcapRZ_V1": {
@@ -161,7 +161,7 @@ ispy.detector_description = {
     },
     "EcalBarrel3D_V1": {
 	type: ispy.BUFFERBOX, on: true, group: "Detector", name: "ECAL Barrel",
-	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 1.0},
+	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5},
 	threed: true, rphi: false, rhoz: false
     },
     "EcalBarrelRPhi_V1": {
@@ -265,68 +265,83 @@ ispy.event_description = {
     },
     "EEDigis_V1": {
 	type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Endcap Digis",
-	fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5}, scale: 1.0, selection: {"min_energy": 0.5}
+	fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5},
+	scale: 1.0, selection: {"min_energy": 0.5}
     },
     "EBDigis_V1": {
 	type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Barrel Digis",
-	fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5}, scale: 1.0, selection: {"min_energy": 0.25}
+	fn: ispy.makeEcalDigi, style: {color: "rgb(100%, 20%, 0%)", opacity: 0.5, linewidth: 0.5},
+	scale: 1.0, selection: {"min_energy": 0.25}
     },
     "EERecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Endcap Rec. Hits",
-	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5}, scale: 0.075, selection: {"min_energy": 0.5}
+	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5},
+	scale: 0.075, selection: {"min_energy": 0.5}
     },
     "ESRecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Preshower Rec. Hits",
-	fn: ispy.makeERecHit_V2, style: {color: "rgb(100%, 60%, 0%)", opacity: 0.5, linewidth: 0.5}, scale: 100.0, selection: {"min_energy": 0.0005}
+	fn: ispy.makeERecHit_V2, style: {color: "rgb(100%, 60%, 0%)", opacity: 0.5, linewidth: 0.5},
+	scale: 100.0, selection: {"min_energy": 0.0005}
     },
     "EBRecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Barrel Rec. Hits",
-	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5}, scale: 0.1, selection: {"min_energy": 0.25}
+	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5},
+	scale: 0.1, selection: {"min_energy": 0.25}
     },
     "HGCEERecHits_V1": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "HGC EE Rec. Hits",
-	fn: ispy.makeHGCRecHit, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 0.01}
+	fn: ispy.makeHGCRecHit, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 0.01}
     },
     "HFRecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
-	fn: ispy.makeHRecHit_V2, style: {color: "rgb(60%, 100%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 1.0}
+	fn: ispy.makeHRecHit_V2, style: {color: "rgb(60%, 100%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 1.0}
     },
     "HORecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
-	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 1.0}
+	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 1.0}
     },
     "HERecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
-	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 0.5}
+	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 0.5}
     },
     "HBRecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
-	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 0.25}
+	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 0.25}
     },
     "HGCHEBRecHits_V1": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "HGC HE Back Rec. Hits",
-	fn: ispy.makeHGCRecHit, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 0.01}
+	fn: ispy.makeHGCRecHit, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 0.01}
     },
     "HGCHEFRecHits_V1": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "HGC HE Front Rec. Hits",
-	fn: ispy.makeHGCRecHit, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25}, selection: {"min_energy": 0.01}
+	fn: ispy.makeHGCRecHit, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
+	selection: {"min_energy": 0.01}
     },
     "Tracks_V1": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, index: 2}
     },
     "Tracks_V2": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, "index": 2}
     },
     "Tracks_V3": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 0.5, lineCaps: "square", linewidth: 1},
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, "index": 2}
     },
     "TrackDets_V1": {
@@ -360,11 +375,13 @@ ispy.event_description = {
     },
     "DTRecSegment4D_V1": {
 	type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-	fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)", opacity: 1.0, linewidth: 1.5}
+	fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+					    opacity: 1.0, linewidth: 1.5}
     },
     "RPCRecHits_V1": {
 	type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)", opacity: 1.0, linewidth: 1.5}
+	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)",
+					 opacity: 1.0, linewidth: 1.5}
     },
     "CSCStripDigis_V1": {
 	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Strip Digis",
@@ -421,15 +438,15 @@ ispy.event_description = {
     },
     "METs_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (Reco)",
-	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.05}, selection: {"min_pt": 0.0}
+	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.025}, selection: {"min_pt": 0.0}
     },
     "PFMETs_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (PF)",
-	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.05}, selection: {"min_pt": 0.0}
+	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.025}, selection: {"min_pt": 0.0}
     },
     "PATMETs_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Missing Et (PAT)",
-	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.05}, selection: {"min_pt": 0.0}
+	fn: ispy.makeMET, style: {color: "rgb(100%, 50%, 100%)", linewidth:2, scale: 0.025}, selection: {"min_pt": 0.0}
     },
     "Jets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Reco)",
@@ -458,32 +475,38 @@ ispy.event_description = {
     "GlobalMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	selection:{"min_pt":1.0, "index":0}
     },
     "GlobalMuons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	selection:{"min_pt":1.0, "index":0}
     },
     "PATGlobalMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (PAT)",
 	extra: "Points_V1", assoc: "PATMuonGlobalPoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	selection:{"min_pt":1.0, "index":0}
     },    
     "StandaloneMuons_V1": {
 	type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonStandalonePoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	selection:{"min_pt":1.0, "index":0}
     },
     "StandaloneMuons_V2": {
 	type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (Reco)",
 	extra: "Extras_V1", assoc: "MuonTrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection: {"min_pt":1.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection: {"min_pt":1.0, "index":0}
     },
     "PATStandaloneMuons_V1": {
 	type: ispy.ASSOC, on: false, group: "Physics", name: "Stand-alone Muons (PAT)",
 	extra: "Extras_V1", assoc: "PATMuonTrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection: {"min_pt":1.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection: {"min_pt":1.0, "index":0}
     },
     /*
     "TrackerMuons_V1": {
@@ -495,32 +518,38 @@ ispy.event_description = {
     "TrackerMuons_V2": {
         type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
         extra: "Extras_V1", assoc: "MuonTrackerExtras_V1",
-        fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection:{"min_pt":2.0, "index":0}
+        fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection:{"min_pt":2.0, "index":0}
     },
     "PATTrackerMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
 	extra: "Points_V1", assoc: "PATMuonTrackerPoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection:{"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3}, selection: {"min_pt":10.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
+	selection: {"min_pt":10.0, "index":0}
     },
     "GsfElectrons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3}, selection: {"min_pt":10.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	selection: {"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V3": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3}, selection: {"min_pt":10.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	selection: {"min_pt":1.0, "index":0}
     },
     "PATElectrons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (PAT)",
 	extra: "Extras_V1", assoc: "PATElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3}, selection: {"min_pt":1.0, "index":0}
+	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
+	selection: {"min_pt":1.0, "index":0}
     },
     "Vertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Reco)",
