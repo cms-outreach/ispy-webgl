@@ -1,6 +1,8 @@
 iSpy WebGL
 ==========
 
+[![DOI](https://zenodo.org/badge/27218260.svg)](https://zenodo.org/badge/latestdoi/27218260)
+
 This is a browser-based event display for the <a href="http://cern.ch/cms" target="_blank">CMS experiment</a> at the LHC that uses
 three.js, bootstrap.js, and jQuery.
 
