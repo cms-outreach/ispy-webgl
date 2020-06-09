@@ -163,8 +163,7 @@ ispy.updateRenderer = function(type) {
     
 	if ( ! ispy.hasWebGL() ) {
       
-	    alert('WebGL is not available. Using CanvasRenderer.');
-	    type = 'CanvasRenderer';
+	    alert('WebGL is not available');
     
 	}
   

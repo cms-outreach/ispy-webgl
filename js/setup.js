@@ -69,7 +69,6 @@ ispy.useRenderer = function(type) {
     var rendererTypes = {
 	
 	'WebGLRenderer': THREE.WebGLRenderer,
-	'CanvasRenderer': THREE.CanvasRenderer,
 	'SVGRenderer': THREE.SVGRenderer
     
     };
@@ -138,16 +137,8 @@ ispy.init = function() {
     var renderer;
     var inset_renderer;
 
-    if ( ispy.hasWebGL() ) {
-      
-	ispy.useRenderer('WebGLRenderer', width, height);
+    ispy.useRenderer('WebGLRenderer', width, height);
   
-    } else {
-  
-	ispy.useRenderer('CanvasRenderer', width, height);
-  
-    }
-
     ispy.stats = new Stats();
     display.appendChild(ispy.stats.domElement);
 
@@ -390,46 +381,30 @@ ispy.getScript = function(scr) {
 
 ispy.initDetector = function() {
 
-    // Loading and rendering the actual geometry when WebGL is available
-    // works well. With CanvasRenderer, not so well, so load and render
-    // the geometry models.
+    $('#loading').modal('show');
 
-    if ( ispy.renderer_name === "CanvasRenderer" ) {
-    
-	ispy.getScript("./geometry/models.js").done(function() {
-        
-		ispy.addDetector();
+    $.when(
+	ispy.getJSON('./geometry/eb.json'),
+	ispy.getJSON('./geometry/ee.json'),
+	ispy.getJSON('./geometry/hb.json'),
+	ispy.getJSON('./geometry/ho.json'),
+	ispy.getJSON('./geometry/hehf.json'),
+	ispy.getJSON('./geometry/pixel.json'),
+	ispy.getJSON('./geometry/tec.json'),
+	ispy.getJSON('./geometry/tib.json'),
+	ispy.getJSON('./geometry/tid.json'),
+	ispy.getJSON('./geometry/tob.json')
 
-	    });
-
-    } else if ( ispy.renderer_name === "WebGLRenderer" ) {
-
-	$('#loading').modal('show');
-
-	$.when(
-	       ispy.getJSON('./geometry/eb.json'),
-	       ispy.getJSON('./geometry/ee.json'),
-	       ispy.getJSON('./geometry/hb.json'),
-	       ispy.getJSON('./geometry/ho.json'),
-	       ispy.getJSON('./geometry/hehf.json'),
-	       ispy.getJSON('./geometry/pixel.json'),
-	       ispy.getJSON('./geometry/tec.json'),
-	       ispy.getJSON('./geometry/tib.json'),
-	       ispy.getJSON('./geometry/tid.json'),
-	       ispy.getJSON('./geometry/tob.json')
-
-	       ).done(function(){
+    ).done(function(){
 		       
-		       $.when(ispy.addDetector()).done(function() {
-          
-			       $('#loading').modal('hide');
+	$.when(ispy.addDetector()).done(function() {
+            
+	    $('#loading').modal('hide');
 			   
-			   });
+	});
 
-		   });
+    });
 	
-    }
-
 };
 
 ispy.render = function() {
