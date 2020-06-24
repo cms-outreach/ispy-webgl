@@ -3,20 +3,19 @@ iSpy WebGL
 
 [![DOI](https://zenodo.org/badge/27218260.svg)](https://zenodo.org/badge/latestdoi/27218260)
 
-This is a browser-based event display for the <a href="http://cern.ch/cms" target="_blank">CMS experiment</a> at the LHC that uses
-three.js, bootstrap.js, and jQuery.
+This is a browser-based event display for the <a href="http://cern.ch/cms" target="_blank">CMS experiment</a> at the LHC using [three.js](https://threejs.org/).
 
 The "production" version is here:
 
-<a target="_blank" href="http://cern.ch/ispy-webgl">http://cern.ch/ispy-webgl</a>
+[http://cern.ch/ispy-webgl](http://cern.ch/ispy-webgl)
 
 and the development version is here:
 
-<a target="_blank" href="http://cern.ch/ispy-webgl-dev">http://cern.ch/ispy-webgl-dev</a>
+[http://cern.ch/ispy-webgl-dev](http://cern.ch/ispy-webgl-dev)
 
-For more information on the input data format:
+For more information on the input data format and how to create files for the display:
 
-<a target="_blank" href="http://cms-outreach.github.io/ispy-webgl">http://cms-outreach.github.io/ispy-webgl</a>
+[https://github.com/cms-outreach/ispy-analyzers](https://github.com/cms-outreach/ispy-analyzers)
 
 Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Phong Nguyen, Michael Saunby
 
