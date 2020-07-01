@@ -14,7 +14,7 @@ canvas.hover {
   border:5px dashed #ccc;
 }
 
-#stats {
+#stats, #datgui {
   position: absolute;
   top:0;
   right: 0;
