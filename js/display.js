@@ -300,7 +300,7 @@ ispy.onMouseMove = function(e) {
 				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
 	    
 	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
-		
+	    
 	}
 
     }
@@ -308,6 +308,7 @@ ispy.onMouseMove = function(e) {
 };
 
 ispy.selected_objects = new Map();
+ispy.hidden_objects = new Array();
 
 ispy.onMouseDown = function(e) {
 
@@ -330,9 +331,8 @@ ispy.onMouseDown = function(e) {
 	    
 	    ispy.intersected.material.color.setHex(0x808080);
 	    ispy.intersected.selected = true;
-	    
 	    ispy.displayEventObjectData();
-
+	    
 	}
 	
     }
@@ -407,6 +407,38 @@ document.addEventListener('keydown', function(e) {
 	
     }
 
+    // H
+    if ( e.which === 72 ) {
+
+	ispy.hide = true;
+
+	if ( ispy.intersected && ispy.intersected.name.includes('PFJet') ) {
+
+	    ispy.intersected.material.color = new THREE.Color(
+		ispy.event_description[ispy.intersected.name].style.color
+	    );
+
+	    ispy.intersected.visible = false;
+	    ispy.hidden_objects.push(ispy.intersected);
+
+	}
+	  	
+    }
+
+    // S
+    if ( e.which === 83 ) {
+
+	ispy.show = true;
+
+	var hidden_object = ispy.hidden_objects.pop()
+
+	if ( hidden_object ) {
+
+	    hidden_object.visible = true;
+
+	}
+    }
+    
 });
 
 var mMuon2 = 0.10566*0.10566;
