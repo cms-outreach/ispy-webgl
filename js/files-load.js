@@ -169,6 +169,9 @@ ispy.loadEvent = function() {
 	
     }
 
+
+    //ispy.initGUI();
+
 };
 
 ispy.nextEvent = function() {

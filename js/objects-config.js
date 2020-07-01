@@ -454,7 +454,8 @@ ispy.event_description = {
     },
     "PFJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 50%, 0%)", opacity: 0.6}, selection: {"min_et": 10.0}
+	fn: ispy.makeJet, style: {color: "rgb(100%, 50%, 0%)", opacity: 0.6},
+	selection: {"min_et": 10.0}, cuts: true
     },
     "GenJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Sim)",
