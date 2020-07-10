@@ -44,7 +44,7 @@ Can your browser use WebGL? Check [here](https://caniuse.com/#feat=webgl) or bet
 
 ### How do I run this application locally?
 
-Clone this repository and in the `ispy-webgl/` run either `python -m http.server` (python3) or `python -m SimpleHTTPServer` (python2.7). Then go to `http://localhost:8000` in your browser.
+Clone this repository and in the `ispy-webgl/` directory run either `python -m http.server` (python3) or `python -m SimpleHTTPServer` (python2.7). Then go to `http://localhost:8000` in your browser.
 
 ### Does this run on a touch-screen like a tablet or phone?
 
