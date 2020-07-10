@@ -34,6 +34,10 @@ Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Pho
 
 ## Frequently asked questions
 
+### WebGL?
+
+"WebGL (Web Graphics Library) is a JavaScript API for rendering high-performance interactive 3D and 2D graphics within any compatible web browser without the use of plug-ins. WebGL does so by introducing an API that closely conforms to OpenGL ES 2.0 that can be used in HTML5 <canvas> elements. This conformance makes it possible for the API to take advantage of hardware graphics acceleration provided by the user's device." - [Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
+
 ### How do I run this application locally?
 
 Clone this repository and in the `ispy-webgl/` run either `python -m http.server` (python3) or `python -m SimpleHTTPServer` (python2.7). Then go to `http://localhost:8000` in your browser.
@@ -55,8 +59,67 @@ You can either press the "Home" button to return to the original view or simply 
 
 More information is [here](https://github.com/cms-outreach/ispy-analyzers).
 
-### How do I change the colors of the objects in the display?
+### How do I make a nice publication-quality event display?
+
+You save an image using the "Print Image to File Button" which will output what you see in the 3D display window. However, it's often better to take a screenshot. Easy enough, but it's often the details that matter.
+
+Some tips:
+
+* It helps to have a nice high-resolution machine on which to work. 
+* Enlarge your display window to be as large as it can go (given your screen aspect ratio). Since you're working with a browser that should be `Ctrl +`.
+* Turn off the axes in the bottom left of the display (from the "Settings" button).
+* The default black background is often better but in some cases a white background is preferred. This can be changed using the "Settings" button.
+* Find the right combination of zoom level, rotation, and projection ("orthographic" or "perspective"). 
+
+### How do I know what's been loaded in the event?
+
+[Recall](https://github.com/cms-outreach/ispy-analyzers) that the `ig` file is a text-based zip archive. To see what's in it you can just unzip it and take a look. 
+
+Also, one of the advantages of a browser-based application is the JavaScript console.
+In your browser look for a menu item called "Web developer" or "Developer tools" and open the conosle.
+You should see it open your browser and see some log information such as what's been loaded. 
 
 ### How do I select event objects based on cuts?
 
-### How do I make a nice publication-quality event display?
+You can select things upstream at the [analyzer step](https://github.com/cms-outreach/ispy-analyzers). This is probably the most flexible option. After all, it's what they're made for.
+
+Downstream, i.e. here, it's often best to run the display locally (see above). Many properties of the objects (including things like minimum pt) are set by default [here](https://github.com/cms-outreach/ispy-webgl/blob/master/js/objects-config.js). Each object in the `ig` file has a configuration associated to it. Say for example you want to cut on track pt. In your local `objects-config.js` you will see something like this:
+
+```
+"Tracks_V2": {
+	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
+	extra: "Extras_V1", assoc: "TrackExtras_V1",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+				     opacity: 0.5, lineCaps: "square", linewidth: 1},
+	selection: {"min_pt": 1.0, "index": 2}
+    },
+ ```
+
+You can change `min_pt` to something, then reload the page and the event. Then the display will use this `min_pt`.
+
+A better interface in which to do this is in the works.
+
+### How do I change the object colors?
+
+Again, a better interface is in the works, but you can follow the procedure above and change `color` and reload.
+
+### How do I explore and change the application in the console?
+
+As stated above, one of the advantages of a browser-based application is the JavaScript console.
+Everything in the display is part of an `ispy` object. What's shown in the 3D display window is part of the `ispy.scene`. If you type `ispy.scene.children` in the console you will see the objects that make up the scene. Many of them correspond to the categories shown in the "tree" view on the left column next to the 3d display: `ECAL`, `HCAL`, `Muon`, `Physics`, etc. For example:
+
+<img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/console1.png"></img>
+
+You can look at "Physics" by index:
+
+<img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/console2.png"></img>
+
+or get objects by name:
+
+<img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/console3.png"></img>
+
+Note that the console has some features of an IDE like auto-complete. 
+
+
+
+
