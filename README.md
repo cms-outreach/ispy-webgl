@@ -60,16 +60,16 @@ More information is [here](https://github.com/cms-outreach/ispy-analyzers).
 
 ### How do I make a nice publication-quality event display?
 
-You save an image using the "Print Image to File Button" which will output what you see in the 3D display window. However, it's often better to take a screenshot. Easy enough, but it's often the details that matter.
+You can save an image using the "Print Image to File Button" which will output what you see in the 3D display window. However, it's often better to take a screenshot. Easy enough, but it's often the details that matter.
 
 Some tips:
 
-* It helps to have a nice high-resolution machine on which to work. 
+* It helps to have a nice high-resolution display on which to work. 
 * Enlarge your display window to be as large as it can go (given your screen aspect ratio). Since you're working with a browser that should be `Ctrl +`.
 * Turn off the axes in the bottom left of the display (from the "Settings" button).
 * The default black background is often better but in some cases a white background is preferred. This can be changed using the "Settings" button.
 * Find the right combination of zoom level, rotation, and projection ("orthographic" or "perspective"). 
-* Turn off/on different parts of the detector to provide some context and background. The event can often look like it's just there in the black void. The ECAL barrel is a nice one to have on by default. Also try some of the more complex geometries found via the "Import 3D Model" button.
+* Turn off/on different parts of the detector to provide some context and background. The event can often look like it's just there in the black void. The ECAL barrel is a nice one to have on by default. Also you can try some of the more complex geometries found via the "Import 3D Model" button. More on those [here](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SketchUpCMS).
 
 ### How do I know what's been loaded in the event?
 
@@ -83,7 +83,6 @@ You should see it open your browser and see some log information such as what's 
 
 Objects like particle flow jets can be hidden by hovering over them in the display (and the color will change to gray). Press `H` to hide the jet. Press `S` to show.
 Note that the hidden objects are put in a list so hide and show are push and pop actions, respectively.
-
 
 ### How do I select event objects based on cuts?
 
@@ -129,6 +128,10 @@ Note that the console has some features of an IDE like auto-complete.
 ### Some quantities like jet and photon energy aren't the same as what I expect from my analysis code. Why?
 
 The input for the display comes from the [CMSSW analyzers](https://github.com/cms-outreach/ispy-analyzers) which may be different objects, the datasets may be from different reconstructions, or energy corrections have not been applied. 
+
+### How can I make and use some more complex geometries like [here](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SketchUpCMS) and in the screenshot above?
+
+Try the instructions found [here](https://github.com/SketchUpCMS/SketchUpCMS) to create a CMS geometry. Making something useful is a bit beyond the scope of this README but in SketchUp try exporting a geometry to `.obj` and `.mtl` and then load using the "Import 3D Model" button. 
 
 ### Who do I contact for questions/comments/praise/blame?
 
