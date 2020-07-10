@@ -139,6 +139,14 @@ There is a default animation sequence that runs when you click the "Start/Stop A
 
 You can also capture things when running after clicking the "Autorotate about Y axis" button.
 
+### Is it me, or is the display seem a "bit slow" when I try to manipulate it?
+
+It may not be you. Toggle "Show display statistics" from the "Stats" button. What's the framerate? The framerate is actually throttled but it's probably fine to turn the maximum framerate via the "Settings" button. 
+
+### In orthographic (i.e. "flat" as opposed to the default perspective mode) zooming doesn't seem to work. What gives?
+
+Supporting both perspective and orthographic cameras is a bit tricky to be fair. When in orthographic mode it's better to use the zoom in and out buttons or the `Shift Up Arrow` and `Shift Down Arrow` key bindings.
+
 ### Who do I contact for questions/comments/praise/blame?
 ispy-developers[at]cern.ch
 
