@@ -64,7 +64,7 @@ You can save an image using the "Print Image to File Button" which will output w
 
 Some tips:
 
-* It helps to have a nice high-resolution display on which to work. 
+* It helps to have a nice high-resolution display on which to work (this step is doing a lot of "heavy lifting" as it were)
 * Enlarge your display window to be as large as it can go (given your screen aspect ratio). Since you're working with a browser that should be `Ctrl +`.
 * Turn off the axes in the bottom left of the display (from the "Settings" button).
 * The default black background is often better but in some cases a white background is preferred. This can be changed using the "Settings" button.
@@ -133,8 +133,13 @@ The input for the display comes from the [CMSSW analyzers](https://github.com/cm
 
 Try the instructions found [here](https://github.com/SketchUpCMS/SketchUpCMS) to create a CMS geometry. Making something useful is a bit beyond the scope of this README but in SketchUp try exporting a geometry to `.obj` and `.mtl` and then load using the "Import 3D Model" button. 
 
-### Who do I contact for questions/comments/praise/blame?
+### How do I make an animation? 
 
+There is a default animation sequence that runs when you click the "Start/Stop Animation" button (or `Shift A`). If you want to capture it you can use any number of video capture programs like QuickTime (for Mac). There is a least one open issue on improvements for this (like how to improve saving the animation and how to customize the sequence).
+
+You can also capture things when running after clicking the "Autorotate about Y axis" button.
+
+### Who do I contact for questions/comments/praise/blame?
 ispy-developers[at]cern.ch
 
 
