@@ -37,6 +37,10 @@ Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Pho
 ### WebGL?
 
 "WebGL (Web Graphics Library) is a JavaScript API for rendering high-performance interactive 3D and 2D graphics within any compatible web browser without the use of plug-ins. WebGL does so by introducing an API that closely conforms to OpenGL ES 2.0 that can be used in HTML5 <canvas> elements. This conformance makes it possible for the API to take advantage of hardware graphics acceleration provided by the user's device." - [Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
+	
+"WebGL brings plugin-free 3D to the web, implemented right into the browser. Major browser vendors Apple (Safari), Google (Chrome), Microsoft (Edge), and Mozilla (Firefox) are members of the WebGL Working Group." - [Khronos Group](https://www.khronos.org/webgl/)
+
+Can your browser use WebGL? Check [here](https://caniuse.com/#feat=webgl) or better yet click [here](https://get.webgl.org/).
 
 ### How do I run this application locally?
 
