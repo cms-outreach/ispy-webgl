@@ -42,11 +42,6 @@ Contributors: Luke Barnard, Mihael Hategan, Carita Logrén, Thomas McCauley, Pho
 
 Clone this repository and in the `ispy-webgl/` run either `python -m http.server` (python3) or `python -m SimpleHTTPServer` (python2.7). Then go to `http://localhost:8000` in your browser.
 
-### How do I hide/show objects like jets?
-
-Objects like particle flow jets can be hidden by hovering over them in the display (and the color will change to gray). Press `H` to hide the jet. Press `S` to show.
-Note that the hidden objects are put in a list so hide and show are push and pop actions, respectively.
-
 ### Does this run on a touch-screen like a tablet or phone?
 
 Yes, it should. You will not have access to certain click events though.
@@ -70,6 +65,7 @@ Some tips:
 * Turn off the axes in the bottom left of the display (from the "Settings" button).
 * The default black background is often better but in some cases a white background is preferred. This can be changed using the "Settings" button.
 * Find the right combination of zoom level, rotation, and projection ("orthographic" or "perspective"). 
+* Turn off/on different parts of the detector to provide some context and background. The event can often look like it's just there in the black void. The ECAL barrel is a nice one to have on by default. Also try some of the more complex geometries found via the "Import 3D Model" button.
 
 ### How do I know what's been loaded in the event?
 
@@ -78,6 +74,12 @@ Some tips:
 Also, one of the advantages of a browser-based application is the JavaScript console.
 In your browser look for a menu item called "Web developer" or "Developer tools" and open the conosle.
 You should see it open your browser and see some log information such as what's been loaded. 
+
+### There are a lot of jets showing. How do I hide some of them?
+
+Objects like particle flow jets can be hidden by hovering over them in the display (and the color will change to gray). Press `H` to hide the jet. Press `S` to show.
+Note that the hidden objects are put in a list so hide and show are push and pop actions, respectively.
+
 
 ### How do I select event objects based on cuts?
 
@@ -119,6 +121,10 @@ or get objects by name:
 <img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/console3.png"></img>
 
 Note that the console has some features of an IDE like auto-complete. 
+
+### Some quantities like jet and photon energy aren't the same as what I expect from my analysis code. Why?
+
+The input for the display comes from the [CMSSW analyzers](https://github.com/cms-outreach/ispy-analyzers) which may be different objects, the datasets may be from different reconstructions, or energy corrections have not been applied. 
 
 ### Who do I contact for questions/comments/praise/blame?
 
