@@ -120,6 +120,8 @@ or get objects by name:
 
 Note that the console has some features of an IDE like auto-complete. 
 
+### Who do I contact for questions/comments/praise/blame?
 
+ispy-developers[at]cern.ch
 
 
