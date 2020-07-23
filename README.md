@@ -79,10 +79,18 @@ Also, one of the advantages of a browser-based application is the JavaScript con
 In your browser look for a menu item called "Web developer" or "Developer tools" and open the conosle.
 You should see it open your browser and see some log information such as what's been loaded. 
 
-### There are a lot of jets showing. How do I hide some of them?
+### How do I see the properties of the individual objects shown in the display?
+
+When an event is loaded you can click on an object name under "Physics" in the list of objects. This will display the contents in the table view at the bottom. For example, if you click on "Global Muons (Reco)" you will see the muon information in the table, with a row for each muon. If you hover over the row, you should see its color change to gray. You should also see the color of the muon in the 3D display change as well. 
+
+Alternatively, you can hover over an object in the 3D display and its information will appear in the table with the row corresponding to this particular object highlighted. Sometimes objects are hard to select with the cursor in the 3D display so highlighting using the table as above may be preferred in this case.
+
+### I see a lot of jets. How do I hide some of them?
 
 Objects like particle flow jets can be hidden by hovering over them in the display (and the color will change to gray). Press `H` to hide the jet. Press `S` to show.
 Note that the hidden objects are put in a list so hide and show are push and pop actions, respectively.
+
+You can also cut on jet energy upstream at the analyzer step. See the next question.
 
 ### How do I select event objects based on cuts?
 
@@ -141,7 +149,7 @@ You can also capture things when running after clicking the "Autorotate about Y 
 
 ### Is it me, or is the display seem a "bit slow" when I try to manipulate it?
 
-It may not be you. Toggle "Show display statistics" from the "Stats" button. What's the framerate? The framerate is actually throttled but it's probably fine to turn the maximum framerate via the "Settings" button. 
+It may not be you. Toggle "Show display statistics" from the "Stats" button. What's the framerate? The framerate is actually throttled but it's probably fine to turn up the maximum framerate via the "Settings" button. 
 
 ### In orthographic (i.e. "flat" as opposed to the default perspective mode) zooming doesn't seem to work. What gives?
 
