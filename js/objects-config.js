@@ -509,18 +509,17 @@ ispy.event_description = {
 	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	selection: {"min_pt":1.0, "index":0}
     },
-    /*
     "TrackerMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
-	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1}, selection:{"min_pt":1.0, "index":0}
+	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection:{"min_pt":1.0, "index":0}
     },
-    */
     "TrackerMuons_V2": {
         type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
         extra: "Extras_V1", assoc: "MuonTrackerExtras_V1",
         fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
-	selection:{"min_pt":2.0, "index":0}
+	selection:{"min_pt":1.0, "index":0}
     },
     "PATTrackerMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",

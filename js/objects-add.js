@@ -219,9 +219,12 @@ ispy.addEvent = function(event) {
 	if ( descr.assoc ) {
 	    
 	    assoc = event.Associations[descr.assoc];
-    
-	}
 
+	    if ( assoc.length === 0 )
+		continue;
+	    
+	}
+	
 	// objectIds contain the ids of 'Physics' THREE objects. Ids are
 	// used when displaying event data in table-view so that we are
 	// able to connect the data somehow with THREE objects.
@@ -420,7 +423,7 @@ ispy.addEvent = function(event) {
 	case ispy.ASSOC:
 	    
 	    var objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
-        
+
 	    if ( objs !== undefined ) {
 
 		objs.forEach(function(o, i) {

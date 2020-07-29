@@ -872,7 +872,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 	throw "No association!";
   
     }
-
+    
     var cut = [];
     var mi = 0;  
     var positions = [];
@@ -883,12 +883,11 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
     }
                                                                                                                                  
-    for ( var j = 0; j < assoc.length; j++ ) {                                                                                                   
+    for ( var j = 0; j < assoc.length; j++ ) {
              
-	mi = assoc[j][0][1];                                                                                                                           
-	pi = assoc[j][1][1];                                                                                                                           
-	
-	positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                                           
+	mi = assoc[j][0][1];                                                                                              
+	pi = assoc[j][1][1];                                                                                                               
+	positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                               
 	
     }
     
