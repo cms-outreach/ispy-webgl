@@ -196,19 +196,36 @@ ispy.init = function() {
     $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
   
     $('#show-axes').change(function() {
-    
-	    if ( this.checked ) { // if checked then hide axes
-     
-		$('#axes').hide();
-    
-	    } else {
-		
-		$('#axes').show();
-    
-	    }
-	    
-	});
 
+	if ( this.checked ) {
+
+	    $('#axes').hide()
+
+	} else {
+
+	    $('#axes').show();
+
+	}
+	
+    });
+
+    ispy.use_line2 = false;
+    $('#pickable_lines').prop('checked', true);
+
+    $('#pickable_lines').change(function() {
+
+	if ( this.checked ) {
+
+	    ispy.use_line2 = false;
+
+	} else {
+
+	    ispy.use_line2 = true;
+
+	}
+	
+    });
+				
     var font_loader = new THREE.FontLoader();
     
     font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {

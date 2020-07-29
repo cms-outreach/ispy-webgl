@@ -878,17 +878,34 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     var positions = [];
     
     for ( var i = 0; i < data.length; i++ ) {
-	
-	positions[i] = [];
 
+	if ( ispy.use_line2 ) {
+	    
+	    positions[i] = [];
+
+	} else {
+
+	    positions[i] = new THREE.Geometry();
+
+	}
+	
     }
                                                                                                                                  
     for ( var j = 0; j < assoc.length; j++ ) {
              
 	mi = assoc[j][0][1];                                                                                              
 	pi = assoc[j][1][1];                                                                                                               
-	positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                               
-	
+
+	if ( ispy.use_line2 ) {
+
+	    positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                               
+
+	} else {
+
+	    positions[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
+
+	}
+	    
     }
     
     var tcolor = new THREE.Color(style.color);
@@ -903,20 +920,35 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     var lines = [];
     
     for ( var k = 0; k < positions.length; k++ ) {
-	
-	var muon = new THREE.LineGeometry();
-	muon.setPositions(positions[k]);
-	
-	var line = new THREE.Line2(muon, new THREE.LineMaterial({
-		    color: tcolor,
-		    linewidth: style.linewidth*0.001,
-		    transparent: transp,
-		    opacity:style.opacity
-		}));
 
-	line.visible =  data[k][selection.index] < selection.min_pt ? false : true;
-	line.computeLineDistances();
-	lines.push(line);
+	if ( ispy.use_line2 ) {
+	
+	    var muon = new THREE.LineGeometry();
+	    muon.setPositions(positions[k]);
+	
+	    var line = new THREE.Line2(muon, new THREE.LineMaterial({
+		color: tcolor,
+		linewidth: style.linewidth*0.001,
+		transparent: transp,
+		opacity:style.opacity
+	    }));
+
+	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
+	    line.computeLineDistances();
+	    lines.push(line);
+
+	} else {
+
+	    var line = new THREE.Line(positions[k], new THREE.LineBasicMaterial({
+		color: tcolor,
+		transparent: transp,
+		opacity: style.opacity
+	    }));
+
+	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
+	    lines.push(line);
+
+	}
 	
     }
 
