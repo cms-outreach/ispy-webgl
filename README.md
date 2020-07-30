@@ -85,6 +85,16 @@ When an event is loaded you can click on an object name under "Physics" in the l
 
 Alternatively, you can hover over an object in the 3D display and its information will appear in the table with the row corresponding to this particular object highlighted. Sometimes objects are hard to select with the cursor in the 3D display so highlighting using the table as above may be preferred in this case.
 
+### It would be nice to calculate invariant mass for selected objects. How do I do that?
+
+You can select electrons and muons in the 3D display window and obtain an estimate for invariant mass. First, make sure in "Settings" that the "Use pick-able lines" is selected. This will make picking easier. If this option is not selected you may select it and re-load the event. The tracks should appear thinner than usual.
+
+So, say that you have an event with four muons. To select it, hover over it and click. Its color should change to gray. To select another one, do the same. You should now have two muons colored gray. By pressing "M" you can display the invariant mass of the two muons. Now the two muons should have reverted to their original color. The four-vectors used to calculate invariant mass are cleared as well.
+
+If you have selected an object and want to de-select it, click on it again and it will not be part of the invariant mass calculation. It's color will revert back to its original color.
+
+**Note** The input for the display comes from the [CMSSW analyzers](https://github.com/cms-outreach/ispy-analyzers) which may be from different objects, the datasets may be from different reconstructions, or corrections have not been applied. Therefore the invariant mass values may not be exactly as expected from "official" results. Use the numbers here as guidance only.
+
 ### I see a lot of jets. How do I hide some of them?
 
 Objects like particle flow jets can be hidden by hovering over them in the display (and the color will change to gray). Press `H` to hide the jet. Press `S` to show.
@@ -135,7 +145,7 @@ Note that the console has some features of an IDE like auto-complete.
 
 ### Some quantities like jet and photon energy aren't the same as what I expect from my analysis code. Why?
 
-The input for the display comes from the [CMSSW analyzers](https://github.com/cms-outreach/ispy-analyzers) which may be different objects, the datasets may be from different reconstructions, or energy corrections have not been applied. 
+The input for the display comes from the [CMSSW analyzers](https://github.com/cms-outreach/ispy-analyzers) which may be from different objects, the datasets may be from different reconstructions, or energy corrections have not been applied. 
 
 ### How can I make and use some more complex geometries like [here](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SketchUpCMS) and in the screenshot above?
 
