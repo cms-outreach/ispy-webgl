@@ -58,9 +58,17 @@ You can either press the "Home" button to return to the original view or simply 
 
 More information is [here](https://github.com/cms-outreach/ispy-analyzers).
 
+### When I "Print Image to File" I don't see the event information text or CMS logo. Why?
+
+These elements are actually overlaid on the image and aren't part of it. Therefore they aren't printed. If you want to 
+include these elements in an exported image see the next question.
+
 ### How do I make a nice publication-quality event display?
 
-You can save an image using the "Print Image to File Button" which will output what you see in the 3D display window. However, it's often better to take a screenshot. Easy enough, but it's often the details that matter.
+You can save an image using the "Print Image to File Button" which will output what you see in the 3D display window. Note that the CMS logo, text, and axis
+are actually overlaid on top of the display so therefore aren't part of the image.
+
+For this and for other reasons it's often better to take a screenshot. Easy enough, but it's often the details that matter.
 
 Some tips:
 
