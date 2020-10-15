@@ -1,24 +1,13 @@
-# Our workflow will define to stages: build and deploy the web site
-# These stages will be attached to jobs and define the sequence in which they will be executed
-
 stages:
   - build
   - deploy
 
-# Pages job in charge of compiling/generating the web site from the sources kept in the git repository
-# Follow documentation in https://gitlab.cern.ch/help/pages/README.md
 pages:
-  # Executed during the build stage
-  stage: build
-  # Docker image used to build the web site (if needed). Using python as an example
-  image: python
-  # Script(s) to build the web site
+  stage: deploy
   script:
-    - ls -lRt $CI_PROJECT_DIR/
-    # Create the public/ directory
-    - mkdir public
-    - cp -r $CI_PROJECT_DIR/* public/
-  # Upload the public/ directory as artifact. The web generated will be attached to the build
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
   artifacts:
     paths:
       - public
