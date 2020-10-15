@@ -8,7 +8,7 @@ pages:
     - mkdir .public
     - cp -r $CI_PROJECT_DIR/* .public
     - ls -ltr .public
-    - mv .public public
+    - mv .public public/
   artifacts:
     paths:
       - public
