@@ -970,7 +970,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     var curves = [];
 
     var tcolor = new THREE.Color();
-   
+
     if ( ispy.inverted_colors ) {
     
 	tcolor.setStyle(style.altColor);
@@ -981,16 +981,8 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   
     }
 
-    var transp = false;
-  
-    if ( style.opacity < 1.0 ) {
+    transp = style.opacity < 1.0 ? true : false;
     
-	transp = true;
-  
-    }
-
-    var linewidth = style.linewidth*0.001;
-
     for ( var i = 0; i < assocs.length; i++ ) {
 
 	var pt = tracks[i][selection.index];
@@ -1026,22 +1018,40 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	
 	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 	
-	var positions = [];
-	curve.getPoints(24).forEach(function(p) { positions.push(p.x,p.y,p.z); });
-	
-	var lg = new THREE.LineGeometry();
-	lg.setPositions(positions);
-	
-	var line = new THREE.Line2(lg, new THREE.LineMaterial({color:tcolor, opacity:style.opacity, transparent:true, linewidth:linewidth}));
-	line.computeLineDistances();
+	if ( ispy.use_line2 ) {
+	    	
+	    var lg = new THREE.LineGeometry();
+	    var positions = [];
+	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
+	    lg.setPositions(positions);
 
-	if ( pt < selection.min_pt ) {
+	    var line = new THREE.Line2(lg, new THREE.LineMaterial({
+		color:tcolor,
+		opacity:style.opacity,
+		transparent:transp,
+		linewidth:style.linewidth*0.001
+	    }));
 
-	    line.visible = false;
-	
+	    line.computeLineDistances();
+
+	    line.visible = pt < selection.min_pt ? false : true;
+	    curves.push(line);
+	    
+	} else {
+
+	    var lg = new THREE.Geometry();
+	    lg.vertices = curve.getPoints(32);
+	    
+	    var line = new THREE.Line(lg, new THREE.LineBasicMaterial({
+		color:tcolor,
+		opacity:style.opacity,
+		transparent: transp,
+	    }));
+
+	    line.visible = pt < selection.min_pt ? false : true;
+	    curves.push(line);
+
 	}
-
-	curves.push(line);
 
     }
 
