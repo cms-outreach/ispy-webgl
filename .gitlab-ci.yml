@@ -8,25 +8,7 @@ pages:
     - mkdir .public
     - cp -r $CI_PROJECT_DIR/* .public
     - ls -ltr .public
-    - mv .public public/
+    - mv .public public
   artifacts:
     paths:
       - public
-
-# Deploy the pages generated to DFS
-dfsdeploy:
-  # Executed during the deploy stage
-  stage: deploy
-  # Only when the master branch is pushed
-  only:
-    - master
-  # Custom docker image providing the needed tools to deploy in DFS
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
-  script:
-  # Script that performs the deploy to DFS. Makes use of the variables defined in the project
-  # It will not sync the generated content with the folder in DFS (risk of deleting DFS management files)
-  # It will just override the contents of DFS or copy new files
-  - deploy-dfs
-  # do not run any globally defined before_script or after_script for this step
-  before_script: []
-  after_script: []
