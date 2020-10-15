@@ -5,9 +5,8 @@ stages:
 pages:
   stage: deploy
   script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
+    - mkdir public
+    - cp -r * public
   artifacts:
     paths:
       - public
