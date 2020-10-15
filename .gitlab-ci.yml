@@ -1,0 +1,43 @@
+# Our workflow will define to stages: build and deploy the web site
+# These stages will be attached to jobs and define the sequence in which they will be executed
+
+stages:
+  - build
+  - deploy
+
+# Pages job in charge of compiling/generating the web site from the sources kept in the git repository
+# Follow documentation in https://gitlab.cern.ch/help/pages/README.md
+pages:
+  # Executed during the build stage
+  stage: build
+  # Docker image used to build the web site (if needed). Using python as an example
+  image: python
+  # Script(s) to build the web site
+  script:
+    - ls -lRt $CI_PROJECT_DIR/
+    # Create the public/ directory
+    - mkdir public
+    # Copy the generated web to the local public/ directory
+    - cp -r $CI_PROJECT_DIR/* public/
+  # Upload the public/ directory as artifact. The web generated will be attached to the build
+  artifacts:
+    paths:
+      - public
+
+# Deploy the pages generated to DFS
+dfsdeploy:
+  # Executed during the deploy stage
+  stage: deploy
+  # Only when the master branch is pushed
+  only:
+    - master
+  # Custom docker image providing the needed tools to deploy in DFS
+  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  script:
+  # Script that performs the deploy to DFS. Makes use of the variables defined in the project
+  # It will not sync the generated content with the folder in DFS (risk of deleting DFS management files)
+  # It will just override the contents of DFS or copy new files
+  - deploy-dfs
+  # do not run any globally defined before_script or after_script for this step
+  before_script: []
+  after_script: []
