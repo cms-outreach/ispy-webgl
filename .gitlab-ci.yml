@@ -17,8 +17,6 @@ pages:
     - ls -lRt $CI_PROJECT_DIR/
     # Create the public/ directory
     - mkdir public
-    # Copy the generated web to the local public/ directory
-    - cp -r $CI_PROJECT_DIR/* public/
   # Upload the public/ directory as artifact. The web generated will be attached to the build
   artifacts:
     paths:
