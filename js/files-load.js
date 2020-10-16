@@ -14,7 +14,7 @@ ispy.web_files =
 
 ispy.obj_files = 
     [
-	//'./geometry/EB.obj',
+	'./geometry/EB.obj',
 	'./geometry/EEminus.obj',
 	'./geometry/EEplus.obj',
 	'./geometry/ESminus.obj',
@@ -24,7 +24,11 @@ ispy.obj_files =
 	'./geometry/muon-endcap-plus.obj',
 	'./geometry/muon-rphi-minus.obj',
 	'./geometry/muon-rphi-plus.obj',
-	'./geometry/hf.obj'
+	'./geometry/muon-0.obj',
+	'./geometry/muon-1.obj',
+	'./geometry/muon-2.obj',
+	'./geometry/muon-3.obj',
+	'./geometry/HF.obj'
      ];
 
 ispy.ig_data = null;
