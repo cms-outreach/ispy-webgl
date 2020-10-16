@@ -9,11 +9,11 @@ This is a browser-based event display for the <a href="http://cern.ch/cms" targe
 
 The "production" version is here:
 
-[http://cern.ch/ispy-webgl](http://cern.ch/ispy-webgl)
+[https://cern.ch/ispy-webgl](https://cern.ch/ispy-webgl)
 
 and the development version is here:
 
-[http://cern.ch/ispy-webgl-dev](http://cern.ch/ispy-webgl-dev)
+[https://cern.ch/ispy-webgl-dev](https://cern.ch/ispy-webgl-dev)
 
 For more information on the input data format and how to create files for the display:
 
