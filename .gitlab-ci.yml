@@ -3,7 +3,7 @@ stages:
   - deploy
 
 pages:
-  stage: deploy
+  stage: build
   script:
     - mkdir .public
     - cp -r $CI_PROJECT_DIR/* .public
@@ -12,3 +12,11 @@ pages:
   artifacts:
     paths:
       - public
+
+dfsdeploy:
+  stage: deploy
+  only:
+    - master
+  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  script:
+    - deploy-dfs
