@@ -412,7 +412,7 @@ document.addEventListener('keydown', function(e) {
 
 	ispy.hide = true;
 
-	if ( ispy.intersected && ispy.intersected.name.includes('PFJet') ) {
+	if ( ispy.intersected && ispy.intersected.name.includes('Jet') ) {
 
 	    ispy.intersected.material.color = new THREE.Color(
 		ispy.event_description[ispy.intersected.name].style.color

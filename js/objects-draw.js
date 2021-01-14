@@ -1591,7 +1591,7 @@ ispy.makePhoton = function(data, style, selection) {
 	t = (-b+Math.sqrt(b*b-4*a*c))/2*a;
   
     }
-
+    
     var pt1 = new THREE.Vector3(x0, y0, z0);
     var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
     
@@ -1603,7 +1603,7 @@ ispy.makePhoton = function(data, style, selection) {
     var photon = new THREE.Line2(geometry, new THREE.LineMaterial({color: color, linewidth: style.linewidth*0.001, dashed:true}));
     photon.computeLineDistances();
 
-    if ( et < selection.min_et || et > 110 ) {
+    if ( et < selection.min_et ) {
 
         photon.visible = false;
 
