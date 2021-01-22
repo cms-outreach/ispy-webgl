@@ -1034,7 +1034,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 	    line.computeLineDistances();
 
-	    line.visible = pt < selection.min_pt ? false : true;
+	    line.visible = pt > selection.min_pt ? true : false;
 	    curves.push(line);
 	    
 	} else {
@@ -1048,7 +1048,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 		transparent: transp,
 	    }));
 
-	    line.visible = pt < selection.min_pt ? false : true;
+	    line.visible = pt > selection.min_pt ? true : false;
 	    curves.push(line);
 
 	}
@@ -1077,6 +1077,29 @@ ispy.makeVertex = function(data,style) {
     vertex.position.x = data[2][0];
     vertex.position.y = data[2][1];
     vertex.position.z = data[2][2];
+
+    return vertex;
+
+};
+
+ispy.makeVertexCompositeCandidate = function(data,style) {
+
+    var geometry = new THREE.SphereGeometry(style.radius, 32, 32);
+    var hcolor = new THREE.Color(style.color);
+    var transp = false;
+    
+    if ( style.opacity < 1.0 ) {
+    
+	transp = true;
+  
+    }
+
+    var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+    
+    var vertex = new THREE.Mesh(geometry, material);
+    vertex.position.x = data[0][0];
+    vertex.position.y = data[0][1];
+    vertex.position.z = data[0][2];
 
     return vertex;
 
@@ -1528,9 +1551,15 @@ ispy.makeJet = function(data, style, selection) {
     var geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
     geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
-    
+
     var jcolor = new THREE.Color(style.color);
 
+    if ( Math.abs(eta) > 3 ) {
+
+	jcolor = new THREE.Color("rgb(100%, 100%, 0%)");
+
+    }
+    
     var transp = false;
     
     if ( style.opacity < 1.0 ) {

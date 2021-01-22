@@ -306,12 +306,12 @@ ispy.event_description = {
     "HERecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
 	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
-	selection: {"min_energy": 0.5}
+	selection: {"min_energy": 0.0}
     },
     "HBRecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
 	fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
-	selection: {"min_energy": 0.25}
+	selection: {"min_energy": 0.0}
     },
     "HGCHEBRecHits_V1": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "HGC HE Back Rec. Hits",
@@ -450,11 +450,11 @@ ispy.event_description = {
     },
     "Jets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Reco)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 50%, 0%)", opacity: 0.75}, selection: {"min_et": 10.0}
+	fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.75}, selection: {"min_et": 10.0}
     },
     "PFJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 50%, 0%)", opacity: 0.6},
+	fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.6},
 	selection: {"min_et": 10.0}, cuts: true
     },
     "GenJets_V1": {
@@ -463,7 +463,7 @@ ispy.event_description = {
     },
     "PATJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PAT)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}
+	fn: ispy.makeJet, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.3}, selection: {"min_et": 34.0}
     },
     "Photons_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
@@ -562,6 +562,10 @@ ispy.event_description = {
     "SecondaryVertices_V1": {
         type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
         fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 40%, 0%)", opacity: 1.0}
+    },
+    "VertexCompositeCandidates_V1": {
+	type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
+	fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 1.0}
     },
     "SimVertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",
