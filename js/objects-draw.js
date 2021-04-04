@@ -104,66 +104,47 @@ ispy.makeTube = function(ir, or, len, pos, slices, segments) {
 };
 
 ispy.makeSolidBox = function(data, ci) {
+    let all_positions = [];
 
-    var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-    var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-    var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-    var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+    const addFace3 = (...vectors) => {
+        all_positions = all_positions.concat(...vectors);
+    };
 
-    var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-    var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-    var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-    var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+    // front
+    addFace3(data[ci], data[ci + 1], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci]);
 
-    var box = new THREE.Geometry();
-    box.vertices = [f1,f2,f3,f4,b1,b2,b3,b4];
-    
-    // front                                                                                                                                           
-    box.faces.push(new THREE.Face3(0,1,2));
-    box.faces.push(new THREE.Face3(2,3,0));
+    // back
+    addFace3(data[ci + 4], data[ci + 5], data[ci + 6]);
+    addFace3(data[ci + 6], data[ci + 7], data[ci + 4]);
 
-    // back                                                                                                                                            
-    box.faces.push(new THREE.Face3(4,5,6));
-    box.faces.push(new THREE.Face3(6,7,4));
+    // top
+    addFace3(data[ci + 4], data[ci + 5], data[ci + 1]);
+    addFace3(data[ci + 1], data[ci], data[ci + 4]);
 
-    // top                                                                                                                                             
-    box.faces.push(new THREE.Face3(4,5,1));
-    box.faces.push(new THREE.Face3(1,0,4));
+    // bottom
+    addFace3(data[ci + 7], data[ci + 6], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci + 7]);
 
-    // bottom                                                                                                                                          
-    box.faces.push(new THREE.Face3(7,6,2));
-    box.faces.push(new THREE.Face3(2,3,7));
+    // left
+    addFace3(data[ci + 0], data[ci + 3], data[ci + 7]);
+    addFace3(data[ci + 7], data[ci + 4], data[ci + 0]);
 
-    // left                                                                                                                                            
-    box.faces.push(new THREE.Face3(0,3,7));
-    box.faces.push(new THREE.Face3(7,4,0));
+    // right
+    addFace3(data[ci + 1], data[ci + 5], data[ci + 6]);
+    addFace3(data[ci + 6], data[ci + 2], data[ci + 1]);
 
-    // right                                                                                                                                          
-    box.faces.push(new THREE.Face3(1,5,6));
-    box.faces.push(new THREE.Face3(6,2,1));
-    
-    box.computeFaceNormals();
-    box.computeVertexNormals();
-    
+    const box_buffer = new THREE.BufferGeometry();
+    box_buffer.attributes.position = new THREE.BufferAttribute(
+        new Float32Array(all_positions),
+        3
+    );
+    const box = new THREE.Geometry().fromBufferGeometry(box_buffer);
+
     // These are the lines along the box edges
-    var line_box = new THREE.Geometry();
+    const box_edges = new THREE.Geometry().fromBufferGeometry(new THREE.EdgesGeometry(box_buffer));
 
-    line_box.vertices.push(f1,f2);
-    line_box.vertices.push(f2,f3);
-    line_box.vertices.push(f3,f4);
-    line_box.vertices.push(f4,f1);
-
-    line_box.vertices.push(b1,b2);
-    line_box.vertices.push(b2,b3);
-    line_box.vertices.push(b3,b4);
-    line_box.vertices.push(b4,b1);
-
-    line_box.vertices.push(b1,f1);
-    line_box.vertices.push(b3,f3);
-    line_box.vertices.push(b2,f2);
-    line_box.vertices.push(b4,f4);
-
-    return [box, line_box];
+    return [box, box_edges];
 
 };
 
