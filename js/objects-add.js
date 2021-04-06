@@ -1,22 +1,6 @@
 
 ispy.addDetector = function() {
 
-    /*
-      Do we want to do this anymore?
-
-    ispy.scene.children.forEach(function(c) {
-	    
-	    if ( c.name === 'Detector' ) {
-		
-		ispy.scene.getObjectByName(c.name).children.length = 0;
-    
-	    }
-  
-	});
-    
-    $("tr.Detector").remove();
-    */
-
     for ( var key in ispy.detector_description ) {
 
 	var data = ispy.detector.Collections[key];
@@ -56,17 +40,19 @@ ispy.addDetector = function() {
 		    linewidth:descr.style.linewidth, 
 		    depthWrite: false,
 		    opacity:descr.style.opacity
-		});
-
-	    var geometry = new THREE.Geometry();
+	    });
+	    
+	    var geometries = [];
 	    
 	    for ( var i = 0; i < data.length; i++ ) {
 		
 		var box = descr.fn(data[i]);
-		geometry.merge(box);
+		geometries.push(box);
         
 	    }
 
+	    var geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
+	    
 	    var line = new THREE.LineSegments(geometry, material);
 	    line.name = key;
 	    line.renderOrder = 1;
@@ -84,8 +70,8 @@ ispy.addDetector = function() {
         
 	    material.side = THREE.DoubleSide;
 
-	    var boxes = new THREE.Geometry();
-	    var lines = new THREE.Geometry();
+	    var boxes = [];
+	    var lines = [];
 
 	    for ( var i = 0; i < data.length; i++ ) {
 		
@@ -94,12 +80,15 @@ ispy.addDetector = function() {
 		if ( bl.length === 0 )
 		    continue;
 
-		boxes.merge(bl[0]);
-		lines.merge(bl[1]);
+		boxes.push(bl[0]);
+		lines.push(bl[1]);
         
 	    }
 
-	    var meshes = new THREE.Mesh(boxes, material);
+	    var box = THREE.BufferGeometryUtils.mergeBufferGeometries(boxes);
+	    var line = THREE.BufferGeometryUtils.mergeBufferGeometries(lines);
+	    
+	    var meshes = new THREE.Mesh(box, material);
 	    meshes.name = key;
 	    meshes.renderOrder = 1;
 	    ispy.scene.getObjectByName(key).add(meshes);
@@ -111,56 +100,9 @@ ispy.addDetector = function() {
 		    depthWrite: false
 		});
 
-	    var line_mesh = new THREE.LineSegments(lines, line_material);
+	    var line_mesh = new THREE.LineSegments(line, line_material);
 	    line_mesh.name = descr.key;
 	    ispy.scene.getObjectByName(key).add(line_mesh);
-
-	    break;
-
-	case ispy.BUFFERBOX:
-
-	    var material = new THREE.LineBasicMaterial({
-		    color:ocolor,
-		    transparent: transp,
-		    linewidth: descr.style.linewidth, 
-		    depthWrite: false,
-		    opacity:descr.style.opacity
-		});
-
-	    var geometry = descr.fn(data);
-
-	    var mesh = new THREE.LineSegments(geometry, material);
-	    mesh.name = key;
-	    mesh.renderOrder = 1;
-	    ispy.scene.getObjectByName(key).add(mesh);
-
-	    break;
-
-	case ispy.MODEL:
-
-	    var material = new THREE.LineBasicMaterial({
-		    color:ocolor,
-		    transparent: transp,
-		    linewidth: descr.style.linewidth, 
-		    depthWrite: false,
-		    opacity:descr.style.opacity
-		});
-
-	    for ( var i = 0; i < data.length; i++ ) {
-		
-		var models = descr.fn(data[i]);
-
-		for ( var j = 0; j < models.length; j++ ) {
-            
-		    var shape = ispy.makeShapes(models[j]);
-		    var line = new THREE.LineSegments(shape, material);
-		    line.name = key;
-		    line.renderOrder = 1;
-		    ispy.scene.getObjectByName(key).add(line);
-          
-		}
-        
-	    }
 
 	    break;
 	

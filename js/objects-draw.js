@@ -1,109 +1,93 @@
-ispy.makeDisc = function(ir, or, pos, slices) {
+ispy.makeWireframeBox = function(data, ci) {
 
-    var lines = [];
-    var points = [];
+    let all_positions = [];
 
-    for (var i = 0; i < slices; i++) {
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
     
-	var sa = Math.sin(i / slices * 2 * Math.PI);
-	var ca = Math.cos(i / slices * 2 * Math.PI);
+    // front
+    addFace3(data[ci], data[ci + 1], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci]);
 
-	points.push({x: ir * sa, y: ir * ca, z: pos});
-	points.push({x: or * sa, y: or * ca, z: pos});
+    // back
+    addFace3(data[ci + 4], data[ci + 5], data[ci + 6]);
+    addFace3(data[ci + 6], data[ci + 7], data[ci + 4]);
 
-	var ix1 = i * 2;
-	var ix2 = ((i + 1) % slices) * 2;
+    // top
+    addFace3(data[ci + 4], data[ci + 5], data[ci + 1]);
+    addFace3(data[ci + 1], data[ci], data[ci + 4]);
 
-	lines.push({p1: ix1 + 0, p2: ix1 + 1});
-	lines.push({p1: ix1 + 0, p2: ix2 + 0});
-	lines.push({p1: ix1 + 1, p2: ix2 + 1});
-  
-    }
+    // bottom
+    addFace3(data[ci + 7], data[ci + 6], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci + 7]);
 
-    return [points, lines];
+    // left
+    addFace3(data[ci + 0], data[ci + 3], data[ci + 7]);
+    addFace3(data[ci + 7], data[ci + 4], data[ci + 0]);
+
+    // right
+    addFace3(data[ci + 1], data[ci + 5], data[ci + 6]);
+    addFace3(data[ci + 6], data[ci + 2], data[ci + 1]);
+
+    const box_buffer = new THREE.BufferGeometry();
+    box_buffer.attributes.position = new THREE.BufferAttribute(
+        new Float32Array(all_positions),
+        3
+    );
+
+    const box = new THREE.EdgesGeometry(box_buffer);
+
+    return box;
 
 };
 
-ispy.makeCylinder = function(r, len, pos, slices, segments) {
+ispy.makeWireFace = function(data, ci) {
     
-    var lines = [];
-    var points = [];
-  
-    for (var s = 0; s < segments; s++) {
-	
-	for (var i = 0; i < slices; i++) {
-      
-	    var sa = Math.sin(i / slices * 2 * Math.PI);
-	    var ca = Math.cos(i / slices * 2 * Math.PI);
-	    var p = s/(segments - 1) * len + pos;
-	    points.push({x: r * sa, y: r * ca, z: p});
-
-	    var ix1 = (s * slices + i);
-	    var ix2 = (s * slices + ((i + 1) % slices));
-	    
-	    lines.push({p1: ix1, p2: ix2});
-
-	    if (s > 0) {
-
-		var ix3 = ((s - 1) * slices + i);
-		lines.push({p1: ix3 + 0, p2: ix1 + 0});
-      
-	    }
+    let all_positions = [];
     
-	}
-  
-    }
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    addFace3(data[ci], data[ci + 1], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci]);
 
-    return [points, lines];
+    const box_buffer = new THREE.BufferGeometry();
+    box_buffer.attributes.position = new THREE.BufferAttribute(
+        new Float32Array(all_positions),
+	3
+    );
+
+    const box = new THREE.EdgesGeometry(box_buffer);
+    
+    return box;
 
 };
 
-/*
-ispy.makeCylinder = function(rT, rB, height, rSeg, hSeg, openEnded) {
-  return new THREE.CylinderGeometry(rT, rB, height, rSeg, hSeg, openEnded);
-}
-*/
+ispy.makeSolidFace = function(data, ci) {
 
-ispy.makeTube = function(ir, or, len, pos, slices, segments) {
-  
-    var lines = [];
-    var points = [];
+    let all_positions = [];
+    
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    addFace3(data[ci], data[ci + 1], data[ci + 2]);
+    addFace3(data[ci + 2], data[ci + 3], data[ci]);
 
-    for ( var s = 0; s < segments; s++ ) {
-	
-	for ( var i = 0; i < slices; i++ ) {
-      
-	    var sa = Math.sin(i / slices * 2 * Math.PI);
-	    var ca = Math.cos(i / slices * 2 * Math.PI);
-	    var p = s/(segments - 1) * len + pos;
-	    points.push({x: ir * sa, y: ir * ca, z: p});
-	    points.push({x: or * sa, y: or * ca, z: p});
-	    
-	    var ix1 = (s * slices + i) * 2;
-	    var ix2 = (s * slices + ((i + 1) % slices)) * 2;
-	    
-	    lines.push({p1: ix1 + 0, p2: ix1 + 1});
-	    lines.push({p1: ix2 + 0, p2: ix2 + 1});
-	    lines.push({p1: ix1 + 0, p2: ix2 + 0});
-	    lines.push({p1: ix1 + 1, p2: ix2 + 1});
-	    
-	    if (s > 0) {
-        
-		var ix3 = ((s - 1) * slices + i) * 2;
-		lines.push({p1: ix3 + 0, p2: ix1 + 0});
-		lines.push({p1: ix3 + 1, p2: ix1 + 1});
-      
-	    }
-	
-	}
-  
-    }
-
-    return [points, lines];
-
+    const box_buffer = new THREE.BufferGeometry();
+    box_buffer.attributes.position = new THREE.BufferAttribute(
+        new Float32Array(all_positions),
+	3
+    );
+    
+    return box_buffer;
+    
 };
 
 ispy.makeSolidBox = function(data, ci) {
+
     let all_positions = [];
 
     const addFace3 = (...vectors) => {
@@ -139,77 +123,59 @@ ispy.makeSolidBox = function(data, ci) {
         new Float32Array(all_positions),
         3
     );
-    const box = new THREE.Geometry().fromBufferGeometry(box_buffer);
+    
+    const box_edges = new THREE.EdgesGeometry(box_buffer);
 
-    // These are the lines along the box edges
-    const box_edges = new THREE.Geometry().fromBufferGeometry(new THREE.EdgesGeometry(box_buffer));
-
-    return [box, box_edges];
+    return [box_buffer, box_edges];
 
 };
 
 ispy.makeBufferBoxes = function(data, ci) {
-  
-    var geometry = new THREE.BufferGeometry();
-    /*
-      4 corners needed to define a box,
-      2 together to form a pair
-      (using LinePieces to avoid spurious connecting lines),
-      3 components each for the corner (x,y,z),
-      3 sets of pairs to define the box
-      (one for front, one for back, and one for sides)
-    */
-    var nvs = 4*2*3*3;
-    var vertices = new Float32Array(data.length*nvs);
-
-    // Since we draw the Lines that make the box with LinePieces
-    // we want to add pairs of vertices. These are then connected.
-    // The pairing starts as 0-1, 1-2, 2-3, 3-0, etc.
-    for ( var i = 0; i < data.length; i++ ) {
     
-	var f1 = data[i][ci];
-	var f2 = data[i][ci+1];
-	var f3 = data[i][ci+2];
-	var f4 = data[i][ci+3];
+    let all_positions = [];
+
+    const addFace3 = (...vectors) => {
+	all_positions.push(...vectors);
+    };
+
+    for ( let i = 0; i < data.length; i++ ) {
 	
-	
-	//if ( f1[0] < 0 && f4[0] < 0 && ( f1[2] > 0 || f2[2] > 0))
-	//    continue;
+	// front
+	addFace3(data[i][ci], data[i][ci + 1], data[i][ci + 2]);
+	addFace3(data[i][ci + 2], data[i][ci + 3], data[i][ci]);
 
-	var b1 = data[i][ci+4];
-	var b2 = data[i][ci+5];
-	var b3 = data[i][ci+6];
-	var b4 = data[i][ci+7];
+	// back
+	addFace3(data[i][ci + 4], data[i][ci + 5], data[i][ci + 6]);
+	addFace3(data[i][ci + 6], data[i][ci + 7], data[i][ci + 4]);
 
-	var pairs = [
-		     f1,f2,
-		     f2,f3,
-		     f3,f4,
-		     f4,f1,
-		     b1,b2,
-		     b2,b3,
-		     b3,b4,
-		     b4,b1,
-		     b1,f1,
-		     b3,f3,
-		     b2,f2,
-		     b4,f4
-		     ];
+	// top
+	addFace3(data[i][ci + 4], data[i][ci + 5], data[i][ci + 1]);
+	addFace3(data[i][ci + 1], data[i][ci], data[i][ci + 4]);
 
-	for ( var j = 0; j < pairs.length; j++ ) {
-      
-	    vertices[i*nvs + j*3 + 0] = pairs[j][0];
-	    vertices[i*nvs + j*3 + 1] = pairs[j][1];
-	    vertices[i*nvs + j*3 + 2] = pairs[j][2];
-    
-	}
-  
+	// bottom
+	addFace3(data[i][ci + 7], data[i][ci + 6], data[i][ci + 2]);
+	addFace3(data[i][ci + 2], data[i][ci + 3], data[i][ci + 7]);
+
+	// left
+	addFace3(data[i][ci + 0], data[i][ci + 3], data[i][ci + 7]);
+	addFace3(data[i][ci + 7], data[i][ci + 4], data[i][ci + 0]);
+
+	// right
+	addFace3(data[i][ci + 1], data[i][ci + 5], data[i][ci + 6]);
+	addFace3(data[i][ci + 6], data[i][ci + 2], data[i][ci + 1]);
+
     }
 
-    geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    const box_buffer = new THREE.BufferGeometry();
+    box_buffer.attributes.position = new THREE.BufferAttribute(
+        new Float32Array(all_positions),
+        3
+    );
 
-    return geometry;
-
+    const box_edges = new THREE.EdgesGeometry(box_buffer);
+    
+    return box_edges;
+    
 };
 
 ispy.makeScaledSolidBox = function(data, geometry, ci, scale) {
@@ -372,7 +338,6 @@ ispy.makeScaledSolidTower = function(data, geometry, ci, scale) {
     box.faces.push(new THREE.Face3(1,5,6));
     box.faces.push(new THREE.Face3(6,2,1));
 
-
     box.computeFaceNormals();
     box.computeVertexNormals();
 
@@ -380,78 +345,10 @@ ispy.makeScaledSolidTower = function(data, geometry, ci, scale) {
 
 };
 
-ispy.makeWireframeBox = function(data, ci) {
-
-    var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-    var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-    var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-    var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
-
-    var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-    var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-    var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-    var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-    
-    // With THREE.LinePieces the Line is made
-    // by connecting pairs of vertices instead
-    // of one continuous line
-    var box = new THREE.Geometry();
-    box.vertices.push(f1,f2);
-    box.vertices.push(f2,f3);
-    box.vertices.push(f3,f4);
-    box.vertices.push(f4,f1);
-    
-    box.vertices.push(b1,b2);
-    box.vertices.push(b2,b3);
-    box.vertices.push(b3,b4);
-    box.vertices.push(b4,b1);
-    
-    box.vertices.push(b1,f1);
-    box.vertices.push(b3,f3);
-    box.vertices.push(b2,f2);
-    box.vertices.push(b4,f4);
-    
-    return box;
-
-};
-
-ispy.makeWireFace = function(data, ci) {
-
-    var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-    var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-    var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-    var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
-
-    var box = new THREE.Geometry();
-    box.vertices.push(f1,f2);
-    box.vertices.push(f2,f3);
-    box.vertices.push(f3,f4);
-    box.vertices.push(f4,f1);
-    
-    return box;
-
-};
-
-ispy.makeSolidFace = function(data, ci) {
-
-    var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-    var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-    var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-    var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
-    
-    var rect = new THREE.Geometry();
-    rect.vertices = [f1,f2,f3,f4];
-    rect.faces.push(new THREE.Face3(0,1,2));
-    rect.faces.push(new THREE.Face3(2,3,0));
-    
-    return rect;
-
-};
-
 ispy.makeTrackerPiece = function(data) {
 
     return ispy.makeWireFace(data, 1);
-
+    
 };
 
 ispy.makeShapes = function(data) {
@@ -471,305 +368,6 @@ ispy.makeShapes = function(data) {
     }
 
     return line;
-
-};
-
-ispy.makeModelTrackerBarrel = function(data) {
-
-    var radii = [0.046, 0.07, 0.1,
-		 0.24, 0.27, 0.32, 0.37, 0.40, 0.43, 0.47, 0.51,
-		 0.62, 0.70, 0.78, 0.88, 0.97, 1.08];
-    
-    var lengths = [0.53, 0.53, 0.53,
-		   1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3,
-		   2.18, 2.18, 2.18, 2.18, 2.18, 2.18];
-
-    var slices = 24;
-    var wfs = [];
-    
-    for ( var i = 0; i < radii.length; i++ ) {
-
-	var r = radii[i];
-	var l = lengths[i];
-
-	wfs.push(ispy.makeCylinder(r, l, -l / 2, slices, 2));
-	
-	//var barrel = ispy.makeCylinder(r, r, l, slices, 1, true);
-	//barrel.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
-	//wfs.push(barrel);
-  
-    }
-
-    return wfs;
-
-};
-
-ispy.makeModelTrackerEndcap = function(data) {
-   
-    var ecradii = [0.145, 0.145, 0.50, 0.47, 0.50, 0.47, 0.50, 0.47,
-		   1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06, 1.08, 1.06,
-		   1.08, 1.06, 1.08, 1.06, 1.08, 1.06];
-
-    var ecintradii = [0.07,  0.07,  0.40, 0.25, 0.40, 0.25, 0.40, 0.25,
-		      0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30, 0.30,
-		      0.30, 0.30, 0.30, 0.30, 0.30, 0.30];
-
-    var ecpos = [0.35,  0.48,  0.76, 0.83, 0.89, 0.96, 1.02, 1.09,
-		 1.27, 1.34, 1.41, 1.48, 1.55, 1.62, 1.69, 1.76, 1.83, 1.90, 2.00, 2.08,
-		 2.20, 2.28, 2.40, 2.48, 2.60, 2.68];
-
-    var slices = 24;
-    var wfs = [];
-
-    for ( var i = 0; i < ecradii.length; i++ ) {
-
-	var ecro = ecradii[i];
-	var ecri = ecintradii[i];
-	var ecp = ecpos[i];
-	
-	wfs.push(ispy.makeDisc(ecri, ecro, ecp, slices));
-	wfs.push(ispy.makeDisc(ecri, ecro, -ecp, slices));
-  
-    }
-  
-    return wfs;
-
-};
-
-ispy.makeModelEcalBarrel = function(data) {
-
-    var hr = data[0];
-    var pos = data[1];
-    var fr = data[2];
-    var hpos = data[3];
-    var slices = 24;
-    
-    var points = [];
-    var lines = [];
-    
-    for ( var a = 0; a < slices; a++ ) {
-	
-	var sa = Math.sin(a / slices * 2 * Math.PI);
-	var ca = Math.cos(a / slices * 2 * Math.PI);
-	
-	for ( var i = 0; i < pos.length; i++ ) {
-	    
-	    points.push({x: hr * ca, y: hr * sa, z: hpos[i]});
-    
-	}
-    
-	for ( var i = 0; i < pos.length; i++ ) {
-      
-	    points.push({x: fr[i] * ca, y: fr[i] * sa, z: pos[i]});
-    
-	}
-
-	for ( var i = 0; i < pos.length; i++ ) {
-	    
-	    var so1 = a * pos.length * 2;
-	    var so2 = ((a + 1) % slices) * pos.length * 2;
-	    var ix1 = i;
-
-	    if ( i < pos.length - 1 ) {
-		
-		lines.push({p1: so1 + ix1, p2: so1 + ix1 + 1});
-	    
-	    }
-      
-	    lines.push({p1: so1 + ix1, p2: so2 + ix1});
-
-	    var so1 = a * pos.length * 2;
-	    var so2 = ((a + 1) % slices) * pos.length * 2;
-	    var ix1 = i + pos.length;
-
-	    if ( i < pos.length - 1 ) {
-		
-		lines.push({p1: so1 + ix1, p2: so1 + ix1 + 1});
-      
-	    }
-      
-	    lines.push({p1: so1 + ix1, p2: so2 + ix1});
-    
-	}
-  
-    }
-
-    return [[points, lines]];
-
-};
-
-ispy.makeModelEcalEndcapMinus = function(data) {
-
-    return [ispy.makeTube(0.35, 1.5, -0.05, -3.2, 24, 2)];
-
-};
-
-ispy.makeModelEcalEndcapPlus = function(data) {
-
-    return [ispy.makeTube(0.35, 1.5, 0.05, 3.2, 24, 2)];
-
-};
-
-ispy.makeModelEcalPreshower = function(data) {
-
-    return [ispy.makeDisc(0.4, 1.3, 3.025, 24), ispy.makeDisc(0.4, 1.3, 3.075, 24),
-	    ispy.makeDisc(0.4, 1.3, -3.025, 24), ispy.makeDisc(0.4, 1.3, -3.075, 24)];
-
-};
-
-ispy.makeModelHcalBarrel = function(data) {
-
-    var points = [];
-    var lines = [];
-    
-    var or = 2.9;
-    var ir = 1.8;
-    var slices = 72;
-    var len = 5;
-    var lslices = 20;
-
-    var maxa = Math.atan(len / or);
-
-    for ( var pos = 0; pos <= lslices; pos++ ) {
-      
-	var a = pos / lslices * maxa;
-	var po = or * Math.tan(a);
-	var pi = ir * Math.tan(a);
-	
-	for ( var i = 0; i < slices; i++ ) {
-	    
-	    var sa = Math.sin(i / slices * 2 * Math.PI);
-	    var ca = Math.cos(i / slices * 2 * Math.PI);
-	    
-	    points.push({x: or * ca, y: or * sa, z: po});
-	    points.push({x: ir * ca, y: ir * sa, z: pi});
-	    
-	    points.push({x: or * ca, y: or * sa, z: -po});
-	    points.push({x: ir * ca, y: ir * sa, z: -pi});
-	    
-	    var ix1 = (pos * slices + i) * 4;
-	    var ix2 = (pos * slices + ((i + 1) % slices)) * 4;
-	    
-	    //tan
-	    lines.push({p1: ix1 + 0, p2: ix2 + 0});
-	    lines.push({p1: ix1 + 1, p2: ix2 + 1});
-	    
-	    if ( pos > 0 ) {
-		
-		lines.push({p1: ix1 + 2, p2: ix2 + 2});
-		lines.push({p1: ix1 + 3, p2: ix2 + 3});
-		
-	    }
-	    
-	    //rad
-	    lines.push({p1: ix1 + 0, p2: ix1 + 1});
-	    
-	    if ( pos > 0 ) {
-		
-		lines.push({p1: ix1 + 2, p2: ix1 + 3});
-		
-	    }
-	    
-	    //axial
-	    if ( pos < lslices ) {
-		
-		var ix3 = ((pos + 1) * slices + i) * 4;
-		lines.push({p1: ix1 + 0, p2: ix3 + 0});
-		lines.push({p1: ix1 + 2, p2: ix3 + 2});
-		
-	    }
-
-	}
-  
-    }
-  
-    return [[points, lines]];
-
-};
-
-ispy.makeModelHcalForward = function(data) {
-    
-    return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2), ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
-
-};
-
-ispy.makeModelHcalForwardPlus = function(data) {
-
-    return [ispy.makeTube(0.15, 1.25, 1.7, 11.1, 24, 2)];
-
-};
-
-ispy.makeModelHcalForwardMinus = function(data) {
-
-    return [ispy.makeTube(0.15, 1.25, -1.7, -11.1, 24, 2)];
-
-};
-
-ispy.makeModelHcalOuter = function(data) {
-
-    return [ispy.makeTube(3.9, 4.1, 3, -1.5, 48, 8), ispy.makeCylinder(4.2, 2.5, 1.5, 24, 7),
-	    ispy.makeCylinder(4.2, 3, 4.1, 24, 6), ispy.makeCylinder(4.2, -2.5, -1.5, 24, 7),
-	    ispy.makeCylinder(4.2, -3, -4.1, 24, 6)];
-
-};
-
-ispy.makeModelHcalEndcap = function(data) {
-    
-    var points = [];
-    var lines = [];
-    
-    var or = 2.9;
-    var ir = 0.4;
-    
-    var slices = 72;
-    var len = 1.5;
-    var pos = 4;
-
-    var ori = pos / (pos + len) * or;
-    var iro = (pos + len) / pos * ir;
-
-  for ( var i = 0; i < slices; i++ ) {
-      
-      var sa = Math.sin(i / slices * 2 * Math.PI);
-      var ca = Math.cos(i / slices * 2 * Math.PI);
-      
-      points.push({x: ori * ca, y: ori * sa, z: pos});
-      points.push({x: ir * ca, y: ir * sa, z: pos});
-      points.push({x: or * ca, y: or * sa, z: pos + len});
-      points.push({x: iro * ca, y: iro * sa, z: pos + len});
-      
-      points.push({x: ori * ca, y: ori * sa, z: -pos});
-      points.push({x: ir * ca, y: ir * sa, z: -pos});
-      points.push({x: or * ca, y: or * sa, z: -pos - len});
-      points.push({x: iro * ca, y: iro * sa, z: -pos - len});
-
-      var ix1 = i * 8;
-      var ix2 = ((i + 1) % slices) * 8;
-      
-      //maybe this slice thing should be abstracted
-      //radial
-      lines.push({p1: ix1 + 0, p2: ix1 + 1});
-      lines.push({p1: ix1 + 2, p2: ix1 + 3});
-      lines.push({p1: ix1 + 4, p2: ix1 + 5});
-      lines.push({p1: ix1 + 6, p2: ix1 + 7});
-
-      //tangential
-      lines.push({p1: ix1 + 0, p2: ix2 + 0});
-      lines.push({p1: ix1 + 1, p2: ix2 + 1});
-      lines.push({p1: ix1 + 2, p2: ix2 + 2});
-      lines.push({p1: ix1 + 3, p2: ix2 + 3});
-      lines.push({p1: ix1 + 4, p2: ix2 + 4});
-      lines.push({p1: ix1 + 5, p2: ix2 + 5});
-      lines.push({p1: ix1 + 6, p2: ix2 + 6});
-      lines.push({p1: ix1 + 7, p2: ix2 + 7});
-
-      //well, still radial, but the other radius
-      lines.push({p1: ix1 + 0, p2: ix1 + 2});
-      lines.push({p1: ix1 + 4, p2: ix1 + 6});
-  
-  }
-
-    return [[points, lines]];
 
 };
 
@@ -1375,8 +973,8 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 
 ispy.makeDT = function(dt) {
 
-    //return ispy.makeSolidBox(dt, 1);
-    return ispy.makeWireframeBox(dt, 1);
+    return ispy.makeSolidBox(dt, 1);
+    //return ispy.makeWireframeBox(dt, 1);
 
 };
 
@@ -1402,15 +1000,16 @@ ispy.makeHcal = function(hb) {
 
 ispy.makeEcal = function(ecal) {
 
-    //return ispy.makeWireframeBox(ecal, 1);  
-    return ispy.makeBufferBoxes(ecal,1);
+    return ispy.makeWireframeBox(ecal, 1);  
+    //return ispy.makeBufferBoxesOLD(ecal,1);
 
 };
 
 ispy.makeRPC = function(rpc) {
     
-    return ispy.makeWireFace(rpc, 1);
-
+    //return ispy.makeWireFace(rpc, 1);
+    return ispy.makeWireframeBox(rpc, 1);
+    
 };
 
 ispy.makePointCloud = function(data, index) {
@@ -1426,7 +1025,7 @@ ispy.makePointCloud = function(data, index) {
   
     }
 
-    geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.computeBoundingSphere();
     
     return geometry;
