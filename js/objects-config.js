@@ -104,6 +104,7 @@ ispy.detector_description = {
 	fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: false, rphi: false, rhoz: true
     },
+    /*
     "EcalEndcapMinus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
 	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5},
@@ -134,6 +135,7 @@ ispy.detector_description = {
 	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.75, linewidth: 1.0},
 	threed: false, rphi: false, rhoz: true
     },
+    */
     "TrackerRPhi_V1": {
 	type: ispy.BOX, on: true, group: "Detector", name:"Tracker RPhi",
 	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},

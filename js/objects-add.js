@@ -277,7 +277,7 @@ ispy.addEvent = function(event) {
 	    
 	    material.side = THREE.DoubleSide;
 
-	    var boxes = new THREE.Geometry();
+	    var boxes = [];
 	    var maxEnergy = 5.0;
 
 	    for ( var j = 0; j < data.length; j++ ) {
@@ -295,7 +295,11 @@ ispy.addEvent = function(event) {
         
 	    }
 
-	    var meshes = new THREE.Mesh(boxes, material);
+	    var meshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		material
+	    );
+
 	    meshes.name = key;
 	    ispy.scene.getObjectByName(key).add(meshes);
 
@@ -311,7 +315,7 @@ ispy.addEvent = function(event) {
 	    
 	    material.side = THREE.DoubleSide;
 
-	    var boxes = new THREE.Geometry();
+	    var boxes = [];
 	    
 	    for ( var i = 0; i < data.length; i++ ) {
           
@@ -319,7 +323,11 @@ ispy.addEvent = function(event) {
         
 	    }
 
-	    var meshes = new THREE.Mesh(boxes, material);
+	    var meshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		material
+	    );
+	    
 	    meshes.name = key;
 	    ispy.scene.getObjectByName(key).add(meshes);
 
