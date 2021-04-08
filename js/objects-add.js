@@ -214,16 +214,20 @@ ispy.addEvent = function(event) {
 		    opacity:descr.style.opacity
 		});
 
-	    var geometry = new THREE.Geometry();
+	    var boxes = [];
 
 	    for ( var i = 0; i < data.length; i++ ) {
 		
 		var box = descr.fn(data[i]);
-		geometry.merge(box);
+		boxes.push(box);
 
 	    }
 
-	    var line = new THREE.LineSegments(geometry, material);
+	    var line = new THREE.LineSegments(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		material
+	    );
+
 	    line.name = key;
 	    ispy.scene.getObjectByName(key).add(line);
 
@@ -239,18 +243,25 @@ ispy.addEvent = function(event) {
 	    
 	    material.side = THREE.DoubleSide;
 
-	    var boxes = new THREE.Geometry();
-	    var lines = new THREE.Geometry();
+	    //var boxes = new THREE.Geometry();
+	    //var lines = new THREE.Geometry();
 
+	    var boxes = [];
+	    var lines = [];
+	    
 	    for ( var i = 0; i < data.length; i++ ) {
           
 		var bl = descr.fn(data[i]);
-		boxes.merge(bl[0]);
-		lines.merge(bl[1]);
+		boxes.push(bl[0]);
+		lines.push(bl[1]);
         
 	    }
 
-	    var meshes = new THREE.Mesh(boxes, material);
+	    var meshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		material
+	    );
+
 	    meshes.name = key;
 	    ispy.scene.getObjectByName(key).add(meshes);
 
@@ -261,8 +272,12 @@ ispy.addEvent = function(event) {
                     depthWrite: false  
                 });
 
-            var line_mesh = new THREE.LineSegments(lines, line_material);
-            line_mesh.name = descr.key;    
+            var line_mesh = new THREE.LineSegments(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
+		line_material
+	    );
+
+	    line_mesh.name = descr.key;    
             ispy.scene.getObjectByName(key).add(line_mesh);
 
 	    break;
@@ -323,14 +338,18 @@ ispy.addEvent = function(event) {
         
 	    }
 
-	    var meshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		material
-	    );
+	    if ( boxes.length > 0 ) {
 	    
-	    meshes.name = key;
-	    ispy.scene.getObjectByName(key).add(meshes);
+		var meshes = new THREE.Mesh(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		    material
+		);
+	    
+		meshes.name = key;
+		ispy.scene.getObjectByName(key).add(meshes);
 
+	    }
+	    
 	    break;
 
 	case ispy.STACKEDTOWER:

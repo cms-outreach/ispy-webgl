@@ -295,99 +295,6 @@ ispy.makeTrackerPiece = function(data) {
     
 };
 
-ispy.makeShapes = function(data) {
-
-    points = data[0];
-    lines = data[1];
-    shapes = [];
-
-    var line = new THREE.Geometry();
-
-    for ( var i = 0; i < lines.length; i++ ) {
-    
-	var l = lines[i];
-	line.vertices.push(points[l.p1]);
-	line.vertices.push(points[l.p2]);
-  
-    }
-
-    return line;
-
-};
-
-ispy.makeScaledWireframeTower = function(data, material, ci, scale) {
-
-    var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-    var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-    var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-    var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
-    
-    var b1 = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-    var b2 = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-    var b3 = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-    var b4 = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-    
-    b1.sub(f1);
-    b2.sub(f2);
-    b3.sub(f3);
-    b4.sub(f4);
-    
-    b1.normalize();
-    b2.normalize();
-    b3.normalize();
-    b4.normalize();
-    
-    b1.multiplyScalar(scale);
-    b2.multiplyScalar(scale);
-    b3.multiplyScalar(scale);
-    b4.multiplyScalar(scale);
-    
-    b1.addVectors(f1,b1);
-    b2.addVectors(f2,b2);
-    b3.addVectors(f3,b3);
-    b4.addVectors(f4,b4);
-    
-    var front = new THREE.Geometry();
-    front.vertices.push(f1);
-    front.vertices.push(f2);
-    front.vertices.push(f3);
-    front.vertices.push(f4);
-    front.vertices.push(f1);
-    
-    var back = new THREE.Geometry();
-    back.vertices.push(b1);
-    back.vertices.push(b2);
-    back.vertices.push(b3);
-    back.vertices.push(b4);
-    back.vertices.push(b1);
-    
-    var s1 = new THREE.Geometry();
-    s1.vertices.push(f1);
-    s1.vertices.push(b1);
-    
-    var s2 = new THREE.Geometry();
-    s2.vertices.push(f2);
-    s2.vertices.push(b2);
-
-    var s3 = new THREE.Geometry();
-    s3.vertices.push(f3);
-    s3.vertices.push(b3);
-
-    var s4 = new THREE.Geometry();
-    s4.vertices.push(f4);
-    s4.vertices.push(b4);
-
-    return [
-	    new THREE.Line(front,material),
-	    new THREE.Line(back,material),
-	    new THREE.Line(s1,material),
-	    new THREE.Line(s2,material),
-	    new THREE.Line(s3,material),
-	    new THREE.Line(s4,material)
-	    ];
-
-};
-
 ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
     if ( ! assoc ) {
@@ -396,43 +303,27 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   
     }
     
-    var cut = [];
-    var mi = 0;  
-    var positions = [];
+    let cut = [];
+    let mi = 0;  
+    let positions = [];
     
     for ( var i = 0; i < data.length; i++ ) {
 
-	if ( ispy.use_line2 ) {
-	    
-	    positions[i] = [];
-
-	} else {
-
-	    positions[i] = new THREE.Geometry();
-
-	}
+	positions[i] = [];
 	
     }
                                                                                                                                  
     for ( var j = 0; j < assoc.length; j++ ) {
              
-	mi = assoc[j][0][1];                                                                                              
-	pi = assoc[j][1][1];                                                                                                               
-
-	if ( ispy.use_line2 ) {
-
-	    positions[mi].push(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]);                                                               
-
-	} else {
-
-	    positions[mi].vertices.push(new THREE.Vector3(extra[pi][0][0],extra[pi][0][1],extra[pi][0][2]));
-
-	}
+	mi = assoc[j][0][1];
+	pi = assoc[j][1][1];
+	positions[mi].push(new THREE.Vector3(...extra[pi][0]));
+	
 	    
     }
     
-    var tcolor = new THREE.Color(style.color);
-    var transp = false;
+    let tcolor = new THREE.Color(style.color);
+    let transp = false;
   
     if ( style.opacity < 1.0 ) {
 	
@@ -440,7 +331,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   
     }
 
-    var lines = [];
+    let lines = [];
     
     for ( var k = 0; k < positions.length; k++ ) {
 
@@ -462,11 +353,14 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
 	} else {
 
-	    var line = new THREE.Line(positions[k], new THREE.LineBasicMaterial({
-		color: tcolor,
-		transparent: transp,
-		opacity: style.opacity
-	    }));
+	    var line = new THREE.Line(
+		new THREE.BufferGeometry().setFromPoints(positions[k]),
+		new THREE.LineBasicMaterial({
+		    color: tcolor,
+		    transparent: transp,
+		    opacity: style.opacity
+		})
+	    );
 
 	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
 	    lines.push(line);
@@ -561,15 +455,15 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	    curves.push(line);
 	    
 	} else {
-
-	    var lg = new THREE.Geometry();
-	    lg.vertices = curve.getPoints(32);
 	    
-	    var line = new THREE.Line(lg, new THREE.LineBasicMaterial({
-		color:tcolor,
-		opacity:style.opacity,
-		transparent: transp,
-	    }));
+	    var line = new THREE.Line(
+		new THREE.BufferGeometry().setFromPoints(curve.getPoints(32)),
+		new THREE.LineBasicMaterial({
+		    color:tcolor,
+		    opacity:style.opacity,
+		    transparent: transp,
+		})
+	    );
 
 	    line.visible = pt > selection.min_pt ? true : false;
 	    curves.push(line);
@@ -594,7 +488,11 @@ ispy.makeVertex = function(data,style) {
   
     }
 
-    var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+    var material = new THREE.MeshBasicMaterial({
+	color:hcolor,
+	transparent: transp,
+	opacity:style.opacity
+    });
     
     var vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[2][0];
@@ -617,7 +515,11 @@ ispy.makeVertexCompositeCandidate = function(data,style) {
   
     }
 
-    var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+    var material = new THREE.MeshBasicMaterial({
+	color:hcolor,
+	transparent: transp,
+	opacity:style.opacity
+    });
     
     var vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[0][0];
@@ -644,7 +546,11 @@ ispy.makeSimVertex = function(data, style) {
   
     }
 
-    var material = new THREE.MeshBasicMaterial({color:hcolor, transparent: transp, opacity:style.opacity});
+    var material = new THREE.MeshBasicMaterial({
+	color:hcolor,
+	transparent: transp,
+	opacity:style.opacity
+    });
     
     var vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[0][0];
