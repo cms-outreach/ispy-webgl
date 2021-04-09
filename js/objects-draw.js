@@ -409,12 +409,12 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	ti = assocs[i][0][1];
 	ei = assocs[i][1][1];
 	
-	p1 = new THREE.Vector3(extras[ei][0][0],extras[ei][0][1],extras[ei][0][2]);
-	d1 = new THREE.Vector3(extras[ei][1][0],extras[ei][1][1],extras[ei][1][2]);
+	p1 = new THREE.Vector3(...extras[ei][0]);
+	d1 = new THREE.Vector3(...extras[ei][1]);
 	d1.normalize();
 	
-	p2 = new THREE.Vector3(extras[ei][2][0],extras[ei][2][1],extras[ei][2][2]);
-	d2 = new THREE.Vector3(extras[ei][3][0],extras[ei][3][1],extras[ei][3][2]);
+	p2 = new THREE.Vector3(...extras[ei][2]);
+	d2 = new THREE.Vector3(...extras[ei][3]);
 	d2.normalize();
 	
 	// What's all this then?
