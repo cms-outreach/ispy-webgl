@@ -243,20 +243,24 @@ ispy.addEvent = function(event) {
 	    
 	    material.side = THREE.DoubleSide;
 
-	    //var boxes = new THREE.Geometry();
-	    //var lines = new THREE.Geometry();
-
 	    var boxes = [];
 	    var lines = [];
 	    
 	    for ( var i = 0; i < data.length; i++ ) {
           
 		var bl = descr.fn(data[i]);
-		boxes.push(bl[0]);
-		lines.push(bl[1]);
+
+		if ( bl.length == 1 ) {
+		    boxes.push(bl[0]);
+		}
+		
+		if ( bl.length === 2 ) {
+		    boxes.push(bl[0]);
+		    lines.push(bl[1]);
+		}
         
 	    }
-
+	    
 	    var meshes = new THREE.Mesh(
 		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
 		material
@@ -265,21 +269,25 @@ ispy.addEvent = function(event) {
 	    meshes.name = key;
 	    ispy.scene.getObjectByName(key).add(meshes);
 
-	    var line_material = new THREE.LineBasicMaterial({
+	    if ( lines.length > 0 ) {
+	    
+		var line_material = new THREE.LineBasicMaterial({
                     color:0xcccccc,
                     transparent: false,
                     linewidth:1,
                     depthWrite: false  
                 });
 
-            var line_mesh = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
-		line_material
-	    );
+		var line_mesh = new THREE.LineSegments(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
+		    line_material
+		);
 
-	    line_mesh.name = descr.key;    
-            ispy.scene.getObjectByName(key).add(line_mesh);
+		line_mesh.name = descr.key;    
+		ispy.scene.getObjectByName(key).add(line_mesh);
 
+	    }
+	    
 	    break;
 
 	case ispy.SCALEDSOLIDBOX:
