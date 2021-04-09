@@ -312,14 +312,22 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 	positions[i] = [];
 	
     }
-                                                                                                                                 
+                                                                                                     
     for ( var j = 0; j < assoc.length; j++ ) {
              
 	mi = assoc[j][0][1];
 	pi = assoc[j][1][1];
-	positions[mi].push(new THREE.Vector3(...extra[pi][0]));
-	
+
+	if ( ispy.use_line2 ) {
+
+	    positions[mi].push(...extra[pi][0]);
+
+	} else {
 	    
+	    positions[mi].push(new THREE.Vector3(...extra[pi][0]));
+
+	}
+	
     }
     
     let tcolor = new THREE.Color(style.color);
@@ -337,15 +345,15 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
 	if ( ispy.use_line2 ) {
 	
-	    var muon = new THREE.LineGeometry();
-	    muon.setPositions(positions[k]);
-	
-	    var line = new THREE.Line2(muon, new THREE.LineMaterial({
-		color: tcolor,
-		linewidth: style.linewidth*0.001,
-		transparent: transp,
-		opacity:style.opacity
-	    }));
+	    var line = new THREE.Line2(
+		new THREE.LineGeometry().setPositions(positions[k]),
+		new THREE.LineMaterial({
+		    color: tcolor,
+		    linewidth: style.linewidth*0.001,
+		    transparent: transp,
+		    opacity:style.opacity
+		})
+	    );
 
 	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
 	    line.computeLineDistances();
@@ -1038,21 +1046,19 @@ ispy.makePhoton = function(data, style, selection) {
     var pt1 = new THREE.Vector3(x0, y0, z0);
     var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
     
-    var geometry = new THREE.LineGeometry();    
-    geometry.setPositions([pt1.x, pt1.y, pt1.z, pt2.x, pt2.y, pt2.z]);
-
     var color = new THREE.Color(style.color);
 
-    var photon = new THREE.Line2(
-	geometry,
-	new THREE.LineMaterial({
+    var photon = new THREE.Line(
+	new THREE.BufferGeometry().setFromPoints([pt1, pt2]),
+	new THREE.LineDashedMaterial({
 	    color: color,
-	    linewidth: style.linewidth*0.001,
-	    dashed:true
+	    scale: 1,
+	    dashSize: 1,
+	    gapSize: 1
 	})
     );
 
-    photon.computeLineDistances();
+    //photon.computeLineDistances();
 
     if ( et < selection.min_et ) {
 
