@@ -377,8 +377,8 @@ ispy.addEvent = function(event) {
 	    ematerial.side = THREE.DoubleSide;
 	    hmaterial.side = THREE.DoubleSide;
 
-	    var eboxes = new THREE.Geometry();
-	    var hboxes = new THREE.Geometry();
+	    var eboxes = [];
+	    var hboxes = [];
 	    
 	    for ( var i = 0; i < data.length; i++ ) {
 
@@ -386,8 +386,15 @@ ispy.addEvent = function(event) {
 
 	    }
 
-	    var emeshes = new THREE.Mesh(eboxes, ematerial);
-	    var hmeshes = new THREE.Mesh(hboxes, hmaterial);
+	    var emeshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(eboxes),
+		ematerial
+	    );
+	    
+	    var hmeshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(hboxes),
+		hmaterial
+	    );
 
 	    emeshes.name = key;
 	    hmeshes.name = key;

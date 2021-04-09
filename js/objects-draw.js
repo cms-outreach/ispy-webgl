@@ -657,48 +657,46 @@ ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
 };
 
 ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
+    
+    let all_positions = [];
 
-    var et = data[0];
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    let et = data[0];
 
-    var emEnergy = data[5];
-    var hadEnergy = data[4];
+    let emEnergy = data[5];
+    let hadEnergy = data[4];
 
-    var eta = data[1];
-    var phi = data[2];
+    let eta = data[1];
+    let phi = data[2];
 
-    var theta = 2*Math.atan(Math.exp(-eta));
+    let theta = 2*Math.atan(Math.exp(-eta));
 
-    var ci = 11;
+    let ci = 11;
 
     if ( et > selection.min_energy ) {
 
-	var f1 = new THREE.Vector3(data[ci][0],   data[ci][1],   data[ci][2]);
-	var f2 = new THREE.Vector3(data[ci+1][0], data[ci+1][1], data[ci+1][2]);
-	var f3 = new THREE.Vector3(data[ci+2][0], data[ci+2][1], data[ci+2][2]);
-	var f4 = new THREE.Vector3(data[ci+3][0], data[ci+3][1], data[ci+3][2]);
+	let f1 = new THREE.Vector3(...data[ci]);
+	let f2 = new THREE.Vector3(...data[ci+1]);
+	let f3 = new THREE.Vector3(...data[ci+2]);
+	let f4 = new THREE.Vector3(...data[ci+3]);
     
-	var b1e = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-	var b2e = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-	var b3e = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-	var b4e = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
-    
-	var b1h = new THREE.Vector3(data[ci+4][0], data[ci+4][1], data[ci+4][2]);
-        var b2h = new THREE.Vector3(data[ci+5][0], data[ci+5][1], data[ci+5][2]);
-        var b3h = new THREE.Vector3(data[ci+6][0], data[ci+6][1], data[ci+6][2]);
-        var b4h = new THREE.Vector3(data[ci+7][0], data[ci+7][1], data[ci+7][2]);
+	let b1e = new THREE.Vector3(...data[ci+4]);
+	let b2e = new THREE.Vector3(...data[ci+5]);
+	let b3e = new THREE.Vector3(...data[ci+6]);
+	let b4e = new THREE.Vector3(...data[ci+7]);
 
-	var ebox = new THREE.Geometry();
-	var hbox = new THREE.Geometry();
+	let b1h = b1e;
+	let b2h = b2e;
+	let b3h = b3e;
+	let b4h = b4e;
 		
 	escale = scale*(emEnergy > 0 ? emEnergy*Math.sin(theta) : 0);
 	hscale = scale*(hadEnergy > 0 ? hadEnergy*Math.sin(theta) : 0);
 
 	if ( escale > 0 ) {
-
-	    ebox.vertices.push(f1);
-	    ebox.vertices.push(f2);
-	    ebox.vertices.push(f3);
-	    ebox.vertices.push(f4);
     
 	    b1e.normalize();
 	    b2e.normalize();
@@ -715,53 +713,55 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 	    b3e.addVectors(f3,b3e);
 	    b4e.addVectors(f4,b4e);
 
-	    ebox.vertices.push(b1e);
-	    ebox.vertices.push(b2e);
-	    ebox.vertices.push(b3e);
-	    ebox.vertices.push(b4e);
-
-	    //front
-	    ebox.faces.push(new THREE.Face3(0,1,2));
-	    ebox.faces.push(new THREE.Face3(2,3,0));
+	    // front
+	    addFace3(f1.toArray(), f2.toArray(), f3.toArray());
+	    addFace3(f3.toArray(), f4.toArray(), f1.toArray());
 	    //back
-	    ebox.faces.push(new THREE.Face3(4,5,6));
-	    ebox.faces.push(new THREE.Face3(6,7,4));
+	    addFace3(b1e.toArray(), b2e.toArray(), b3e.toArray());
+	    addFace3(b3e.toArray(), b4e.toArray(), b1e.toArray());
 	    //top
-	    ebox.faces.push(new THREE.Face3(4,5,1));
-	    ebox.faces.push(new THREE.Face3(1,0,4));
+	    addFace3(b1e.toArray(), b2e.toArray(), f2.toArray());
+	    addFace3(f2.toArray(), f1.toArray(), b1e.toArray());
 	    //bottom
-	    ebox.faces.push(new THREE.Face3(7,6,2));
-	    ebox.faces.push(new THREE.Face3(2,3,7));
+	    addFace3(b4e.toArray(), b3e.toArray(), f3.toArray());
+	    addFace3(f3.toArray(), f4.toArray(), b4e.toArray());
 	    //left
-	    ebox.faces.push(new THREE.Face3(0,3,7));
-	    ebox.faces.push(new THREE.Face3(7,4,0));
+	    addFace3(f1.toArray(), f4.toArray(), b4e.toArray());
+	    addFace3(b4e.toArray(), b1e.toArray(), f1.toArray());
 	    //right
-	    ebox.faces.push(new THREE.Face3(1,5,6));
-	    ebox.faces.push(new THREE.Face3(6,2,1));
-	    
-	    ebox.computeFaceNormals();
-	    ebox.computeVertexNormals();
-	    
-	    egeometry.merge(ebox);
+	    addFace3(f2.toArray(), b2e.toArray(), b3e.toArray());
+	    addFace3(b3e.toArray(), f3.toArray(), f2.toArray());
+
+	    const ebox = new THREE.BufferGeometry();
+	    ebox.attributes.position = new THREE.BufferAttribute(
+		new Float32Array(all_positions),
+		3
+	    );
+
+	    egeometry.push(ebox);
 	    
 	}
 
-	if ( hscale > 0 ) {
+	all_positions = [];
 	
+	if ( hscale > 0 ) {
+
+	    let v = [];
+	    
 	    if ( escale > 0 ) {
     
-		hbox.vertices.push(b1e);
-		hbox.vertices.push(b2e);
-		hbox.vertices.push(b3e);
-		hbox.vertices.push(b4e);
+		v.push(b1e);
+		v.push(b2e);
+		v.push(b3e);
+		v.push(b4e);
 	    }
 	
 	    else {
 	    
-		hbox.vertices.push(f1);
-		hbox.vertices.push(f2);
-		hbox.vertices.push(f3);
-		hbox.vertices.push(f4);
+		v.push(f1);
+		v.push(f2);
+		v.push(f3);
+		v.push(f4);
 
 	    }
 
@@ -774,7 +774,6 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 	    b2h.multiplyScalar(hscale);
 	    b3h.multiplyScalar(hscale);
 	    b4h.multiplyScalar(hscale);
-
 
 	    if ( escale > 0 ) {
 		
@@ -792,35 +791,38 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 		
 	    }
 
-	    hbox.vertices.push(b1h);
-	    hbox.vertices.push(b2h);
-	    hbox.vertices.push(b3h);
-	    hbox.vertices.push(b4h);
+	    v.push(b1h);
+	    v.push(b2h);
+	    v.push(b3h);
+	    v.push(b4h);
 	    
-	    //front
-	    hbox.faces.push(new THREE.Face3(0,1,2));
-	    hbox.faces.push(new THREE.Face3(2,3,0));
+	    // front
+	    addFace3(v[0].toArray(), v[1].toArray(), v[2].toArray());
+	    addFace3(v[2].toArray(), v[3].toArray(), v[1].toArray());
 	    //back
-	    hbox.faces.push(new THREE.Face3(4,5,6));
-	    hbox.faces.push(new THREE.Face3(6,7,4));
+	    addFace3(v[4].toArray(), v[5].toArray(), v[6].toArray());
+	    addFace3(v[6].toArray(), v[7].toArray(), v[4].toArray());
 	    //top
-	    hbox.faces.push(new THREE.Face3(4,5,1));
-	    hbox.faces.push(new THREE.Face3(1,0,4));
+	    addFace3(v[4].toArray(), v[5].toArray(), v[1].toArray());
+	    addFace3(v[1].toArray(), v[0].toArray(), v[4].toArray());
 	    //bottom
-	    hbox.faces.push(new THREE.Face3(7,6,2));
-	    hbox.faces.push(new THREE.Face3(2,3,7));
+	    addFace3(v[7].toArray(), v[6].toArray(), v[2].toArray());
+	    addFace3(v[2].toArray(), v[3].toArray(), v[7].toArray());
 	    //left
-	    hbox.faces.push(new THREE.Face3(0,3,7));
-	    hbox.faces.push(new THREE.Face3(7,4,0));
+	    addFace3(v[0].toArray(), v[3].toArray(), v[7].toArray());
+	    addFace3(v[7].toArray(), v[4].toArray(), v[0].toArray());
 	    //right
-	    hbox.faces.push(new THREE.Face3(1,5,6));
-	    hbox.faces.push(new THREE.Face3(6,2,1));
-	    
-	    hbox.computeFaceNormals();
-	    hbox.computeVertexNormals();
-	    
-	    hgeometry.merge(hbox);
+	    addFace3(v[1].toArray(), v[5].toArray(), v[6].toArray());
+	    addFace3(v[6].toArray(), v[2].toArray(), v[1].toArray());
 
+	    const hbox = new THREE.BufferGeometry();
+	    hbox.attributes.position = new THREE.BufferAttribute(
+		new Float32Array(all_positions),
+		3
+	    );
+
+	    hgeometry.push(hbox);
+	    
 	}
 
     }
