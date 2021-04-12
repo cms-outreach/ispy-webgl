@@ -1,4 +1,3 @@
-
 ispy.web_files = 
     [
 	"./data/Hto4l_120-130GeV.ig",
@@ -14,21 +13,21 @@ ispy.web_files =
 
 ispy.obj_files = 
     [
-	'./geometry/EB.obj',
-	'./geometry/EEminus.obj',
-	'./geometry/EEplus.obj',
-	'./geometry/ESminus.obj',
-	'./geometry/ESplus.obj',
-	'./geometry/muon-barrel.obj',
-	'./geometry/muon-endcap-minus.obj',
-	'./geometry/muon-endcap-plus.obj',
-	'./geometry/muon-rphi-minus.obj',
-	'./geometry/muon-rphi-plus.obj',
-	'./geometry/muon-0.obj',
-	'./geometry/muon-1.obj',
-	'./geometry/muon-2.obj',
-	'./geometry/muon-3.obj',
-	'./geometry/HF.obj'
+	'./geometry/obj/EB.obj',
+	'./geometry/obj/EEminus.obj',
+	'./geometry/obj/EEplus.obj',
+	'./geometry/obj/ESminus.obj',
+	'./geometry/obj/ESplus.obj',
+	'./geometry/obj/muon-barrel.obj',
+	'./geometry/obj/muon-endcap-minus.obj',
+	'./geometry/obj/muon-endcap-plus.obj',
+	'./geometry/obj/muon-rphi-minus.obj',
+	'./geometry/obj/muon-rphi-plus.obj',
+	'./geometry/obj/muon-0.obj',
+	'./geometry/obj/muon-1.obj',
+	'./geometry/obj/muon-2.obj',
+	'./geometry/obj/muon-3.obj',
+	'./geometry/obj/HF.obj'
      ];
 
 ispy.ig_data = null;
@@ -791,6 +790,127 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
 ispy.importBeampipe = function() {
 
-    ispy.loadOBJMTL_new('./geometry/beampipe.obj', './geometry/beampipe.mtl', 'BeamPipe', 'Beam Pipe', 'Imported', true);
+    ispy.loadOBJMTL_new(
+	'./geometry/obj/beampipe.obj',
+	'./geometry/obj/beampipe.mtl',
+	'BeamPipe',
+	'Beam Pipe',
+	'Imported',
+	true
+    );
 
+};
+
+// Temp function for testing loading of gltf geometry
+ispy.importGLTF = function() {
+
+    const gltf_loader = new THREE.GLTFLoader();
+    
+    const gltf_objs = [
+	{
+	    id: 'PixelBarrel3D_V1',
+	    name: 'Pixel Barrel',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/PixelBarrel3D_V1.glb'
+	},
+	{
+	    id: 'PixelEndcapPlus3D_V1',
+	    name: 'Pixel Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/PixelEndcapPlus3D_V1.glb'
+	},
+	{
+	    id: 'PixelEndcapMinus3D_V1',
+	    name: 'Pixel Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/PixelEndcapMinus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTIB3D_V1',
+	    name: 'Tracker Inner Barrel',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTIB3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTOB3D_V1',
+	    name: 'Tracker Outer Barrel',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTOB3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTIDPlus3D_V1',
+	    name: 'Tracker Inner Detector (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTIDPlus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTIDMinus3D_V1',
+	    name: 'Tracker Inner Detector (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTIDMinus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTECPlus3D_V1',
+	    name: 'Tracker Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTECPlus3D_V1.glb'
+	},
+	{
+	    id: 'SiStripTECMinus3D_V1',
+	    name: 'Tracker Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/SiStripTECMinus3D_V1.glb'
+	},
+	{
+	    id: 'EcalBarrel3D_V1',
+	    name: 'ECAL Barrel',
+	    group: 'Detector',
+	    show: true,
+	    file: './geometry/gltf/EcalBarrel3D_V1.glb'
+	},
+	{
+	    id: 'EcalEndcapPlus3D_V1',
+	    name: 'ECAL Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/EcalEndcapPlus3D_V1.glb'
+	},
+	{
+	    id: 'EcalEndcapMinus3D_V1',
+	    name: 'ECAL Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/EcalEndcapMinus3D_V1.glb'
+	}
+    ];
+
+    gltf_objs.forEach(function(g) {
+
+	gltf_loader.load(
+	    g.file,
+	    function(gltf) {
+		
+		let object = gltf.scene.children[0];
+	
+		object.name = g.id;
+		object.visible = g.show;
+		ispy.disabled[object.name] = ! g.show;
+		
+		ispy.scene.getObjectByName(g.group).add(object);
+		ispy.addSelectionRow(g.group, object.name, g.name, g.show);
+
+	    }
+	);
+
+    });
+    
 };
