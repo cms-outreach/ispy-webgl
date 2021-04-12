@@ -260,6 +260,26 @@ ispy.printImage = function() {
 
 };
 
+ispy.exportScene = function() {
+
+    const exporter = new THREE.GLTFExporter();
+
+    const options = {
+	onlyVisible: true,
+	binary: true
+    };
+
+    exporter.parse(ispy.scene, function(result) {
+
+	ispy.exportArrayBuffer(result, 'scene.glb'); 
+
+    }, options);
+
+
+    alert('scene.glb created');
+    
+};
+
 ispy.exportString = function(output, filename) {
 
     // This comes from three.js editor
@@ -273,7 +293,7 @@ ispy.exportString = function(output, filename) {
     link.style.display = 'none';
     document.body.appendChild( link );
     link.href = objectURL;
-    link.download = filename || 'data.txt';
+    link.download = filename;
     link.target = '_blank';
     link.click();
     
@@ -283,81 +303,97 @@ ispy.exportString = function(output, filename) {
 
 };
 
-ispy.exportScene = function() {
+ispy.exportArrayBuffer = function(output, filename) {
 
-    // The scene is actually made up of several objects,
-    // one each for major category: e.g. Detector, ECAL, Physics, etc.
-    // This exports a json file for each whether visible or not.
-    ispy.scene.children.forEach(function(c) {
+    var blob = new Blob([output], {type: 'application/octect-stream'});
+    var objectURL = URL.createObjectURL(blob);
+
+    console.log(filename);
+
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    document.body.appendChild( link );
+    link.href = objectURL;
+    link.download = filename;
+    link.target = '_blank';
+    link.click();
     
-	    var output = c.toJSON();
-	    output = JSON.stringify( output, null, '\t' );
-	    output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
-	    ispy.exportString(output, c.name+'.json');
-  
-	});
-
 };
 
 ispy.exportGLTF = function() {
 
-    var exporter = new THREE.GLTFExporter();
+    const exporter = new THREE.GLTFExporter();
 
+    const options = {
+	binary: true
+    };
+	
     ispy.scene.children.forEach(function(c) {
 	    
-	    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+	if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+	    
+	    c.children.forEach(function(o) {
 
-		c.children.forEach(function(o) {
+		if ( o.visible ) {
+		    
+		    exporter.parse(o, function(result) {
 
-			if ( o.visible ) {
+			if ( result instanceof ArrayBuffer ) {
+
+			    ispy.exportArrayBuffer(result, o.name+'.glb'); 
 			    
-			    exporter.parse(o, function(result) {
-				    
-				    var output = JSON.stringify(result, null, 2);
-				    ispy.exportString(output, o.name+'.gltf');
-				    
-				});
+			} else {
+
+			    const output = JSON.stringify(result, null, 2);
+			    ispy.exportString(output, o.name+'.gltf');
 
 			}
 			
-		    });
+		    }, options);
+
+		}
+			
+	    });
 		
-	    }
+	}
 	    
-	});
+    });
 
 };
 
-ispy.exportModel = function(format) {
+ispy.exportOBJ = function() {
 
-    var exporter;
-    
-    if ( format === 'obj' ) {
-	
-	exporter = new THREE.OBJExporter();
-	
-    } else if ( format === 'stl' ) {
-	
-	exporter = new THREE.STLExporter();
-	
-    }
+    const exporter = new THREE.OBJExporter();
 
     ispy.scene.children.forEach(function(c) {
 	    
-	    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+	if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
 		
-		c.children.forEach(function(o) {
+	    c.children.forEach(function(o) {
 			
-			if ( o.visible ) {
+		if ( o.visible ) {
 			    
-			    ispy.exportString(exporter.parse(o), o.name+'.'+format);
+		    ispy.exportString(exporter.parse(o), o.name+'.obj');
 			    
-			}
+		}
 			
-		    });
+	    });
 
-	    }
+	}
 
-	});
+    });
     
+};
+
+ispy.exportModel = function(format) {
+ 
+    if ( format === 'gltf' ) {
+	
+	ispy.exportGLTF();
+	
+    } else if ( format === 'obj' ) {
+
+	ispy.exportOBJ();
+    }
+
 };
