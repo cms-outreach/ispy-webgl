@@ -966,8 +966,8 @@ ispy.makeJet = function(data, style, selection) {
     
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
     var geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
-    geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
-    geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI/2));
+    geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
+    geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
     var jcolor = new THREE.Color(style.color);
 

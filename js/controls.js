@@ -1,4 +1,3 @@
-
 ispy.resetControls = function() {
 
   ispy.initCamera();
@@ -49,22 +48,30 @@ ispy.autoRotate = function() {
 
 ispy.setOrthographic = function() {
 
-  $('#perspective').removeClass('active');
-  $('#orthographic').addClass('active');
-  $('#stereo').removeClass('active');
+    $('#perspective').removeClass('active');
+    $('#orthographic').addClass('active');
+    $('#stereo').removeClass('active');
 
-  ispy.camera.toOrthographic();
-
+    ispy.is_perspective = false;
+    ispy.camera = ispy.o_camera;
+    ispy.camera.updateProjectionMatrix();
+    ispy.controls.object = ispy.camera;
+    ispy.controls.update();
+    
 };
 
 ispy.setPerspective = function() {
 
-  $('#perspective').addClass('active');
-  $('#orthographic').removeClass('active');
-  $('#stereo').removeClass('active');
+    $('#perspective').addClass('active');
+    $('#orthographic').removeClass('active');
+    $('#stereo').removeClass('active');
 
-  ispy.camera.toPerspective();
-
+    ispy.is_perspective = true;
+    ispy.camera = ispy.p_camera;
+    ispy.camera.updateProjectionMatrix();
+    ispy.controls.object = ispy.camera;
+    ispy.controls.update();
+    
 };
 
 ispy.showView = function(view) {
@@ -224,31 +231,15 @@ ispy.setStereo = function() {
 
 ispy.zoomIn = function() {
 
-    if ( ispy.camera.inPerspectiveMode ) {
-	
-	ispy.camera.position.multiplyScalar(0.5);
-  
-    } else {
+    ispy.camera.zoom += 0.5;
+    ispy.camera.updateProjectionMatrix();
     
-	var zoom = ispy.camera.zoom;
-	ispy.camera.setZoom(zoom+0.5);
-	
-  }
-
 };
 
 ispy.zoomOut = function() {
-
-    if ( ispy.camera.inPerspectiveMode ) {
     
-	ispy.camera.position.multiplyScalar(1.5);
-  
-    } else {
-    
-	var zoom = ispy.camera.zoom;
-	ispy.camera.setZoom(zoom-0.5);
-    
-    }
+    ispy.camera.zoom -= 0.5;
+    ispy.camera.updateProjectionMatrix();
 
 };
 

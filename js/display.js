@@ -265,6 +265,10 @@ ispy.onMouseMove = function(e) {
     ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
     var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
 
+    
+    
+    
+    /*
     // If there is an already-picked object restore its color
     if ( ispy.intersected ) {
 
@@ -304,6 +308,7 @@ ispy.onMouseMove = function(e) {
 	}
 
     }
+    */
 
 };
 

@@ -35,46 +35,34 @@ ispy.setFramerate = function(fr) {
 
 };
 
-ispy.init_camera = {
-
-    'x': 9.5,
-    'y': 9.5,
-    'z': 13.0,
-    'zoom': 1.5,
-    'perspective': true,
-    'orthographic': false
-
-};
-
 ispy.initCamera = function() {
 
-    ispy.camera.position.x = ispy.init_camera.x;
-    ispy.camera.position.y = ispy.init_camera.y;
-    ispy.camera.position.z = ispy.init_camera.z;
-    
-    ispy.camera.setZoom(ispy.init_camera.zoom);
+    ispy.camera.position.x = 9.0;
+    ispy.camera.position.y = 9.0;
+    ispy.camera.position.z = 12.0;
+
+    ispy.camera.zoom = ispy.is_perspective ? 1 : 20.0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
     
-    ispy.init_camera.perspective ? ispy.camera.toPerspective() : ispy.camera.toOrthographic();
-
+    ispy.camera.updateProjectionMatrix();
     ispy.lookAtOrigin();
-
+ 
 };
 
 ispy.useRenderer = function(type) {
 
-    var width = document.getElementById('display').clientWidth;
-    var height = document.getElementById('display').clientHeight;
+    const width = document.getElementById('display').clientWidth;
+    const height = document.getElementById('display').clientHeight;
 
-    var rendererTypes = {
+    const rendererTypes = {
 	
 	'WebGLRenderer': THREE.WebGLRenderer,
 	'SVGRenderer': THREE.SVGRenderer
     
     };
 
-    var renderer = new rendererTypes[type]({antialias:true, alpha:true});
-    var inset_renderer = new rendererTypes[type]({antialias:true, alpha:true});
+    const renderer = new rendererTypes[type]({antialias:true, alpha:true});
+    const inset_renderer = new rendererTypes[type]({antialias:true, alpha:true});
 
     renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
     inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
@@ -107,35 +95,47 @@ ispy.useRenderer = function(type) {
 
 ispy.init = function() {
 
-    var display = document.getElementById('display');
-    var inset = document.getElementById('axes');
+    const display = document.getElementById('display');
+    const inset = document.getElementById('axes');
     
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
     ispy.scene = scene;
     
-    var width = display.clientWidth;
-    var height = display.clientHeight;
+    const width = display.clientWidth;
+    const height = display.clientHeight;
     
-    // width, height, fov, near, far, orthoNear, orthoFar
-    var camera = new THREE.CombinedCamera(width, height, 75, 0.1, 100, 0.1, 100);
-    ispy.camera = camera;
-    ispy.initCamera();
+    ispy.p_camera = new THREE.PerspectiveCamera(
+	75,
+	width/height,
+	0.1,
+	100
+    );
 
+    ispy.o_camera = new THREE.OrthographicCamera(
+	width / -2,
+	width / 2,
+	height / 2,
+	height / -2,
+	0.1,
+	100
+    );
+
+    ispy.is_perspective = true; 
+    ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
+    ispy.initCamera();
+    
     ispy.velocity = new THREE.Vector3(0, 0, 0);
     ispy.acceleration = new THREE.Vector3(0, 0, 0);
 
-    var inset_scene = new THREE.Scene();
+    const inset_scene = new THREE.Scene();
     ispy.inset_scene = inset_scene;
 
     // fov, aspect, near, far
-    var inset_width = height/5;
-    var inset_height = height/5;
-    var inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
+    const inset_width = height/5;
+    const inset_height = height/5;
+    const inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
     ispy.inset_camera = inset_camera;
     ispy.inset_camera.up = ispy.camera.up;
-
-    var renderer;
-    var inset_renderer;
 
     ispy.useRenderer('WebGLRenderer', width, height);
   
@@ -180,10 +180,10 @@ ispy.init = function() {
     ispy.inverted_colors = false;
     $('#invert-colors').prop('checked', false);
 
-    var origin = new THREE.Vector3(0,0,0);
-    var rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
-    var gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
-    var bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
+    const origin = new THREE.Vector3(0,0,0);
+    const rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
+    const gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
+    const bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
 
     rx.line.material.linewidth = 2.5;
     gy.line.material.linewidth = 2.5;
@@ -226,28 +226,28 @@ ispy.init = function() {
 	
     });
 				
-    var font_loader = new THREE.FontLoader();
+    const font_loader = new THREE.FontLoader();
     
     font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
-	    var tps = {size:0.75, height:0.1, font:font};
+	    const tps = {size:0.75, height:0.1, font:font};
 
-	    var x_geo = new THREE.TextGeometry('X', tps);
-	    var y_geo = new THREE.TextGeometry('Y', tps);
-	    var z_geo = new THREE.TextGeometry('Z', tps);
+	    const x_geo = new THREE.TextGeometry('X', tps);
+	    const y_geo = new THREE.TextGeometry('Y', tps);
+	    const z_geo = new THREE.TextGeometry('Z', tps);
 
-	    var x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	    var x_text = new THREE.Mesh(x_geo, x_material);
+	    const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	    const x_text = new THREE.Mesh(x_geo, x_material);
 	    x_text.position.x = 4.5;
 	    x_text.name = 'xtext';
 
-	    var y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
-	    var y_text = new THREE.Mesh(y_geo, y_material);
+	    const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
+	    const y_text = new THREE.Mesh(y_geo, y_material);
 	    y_text.position.y = 4.5;
 	    y_text.name = 'ytext';
 	    
-	    var z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
-	    var z_text = new THREE.Mesh(z_geo, z_material);
+	    const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
+	    const z_text = new THREE.Mesh(z_geo, z_material);
 	    z_text.position.z = 4.5;
 	    z_text.name = 'ztext';
 
@@ -259,17 +259,17 @@ ispy.init = function() {
 
     // The second argument is necessary to make sure that mouse events are
     // handled only when in the canvas
-    var tb_controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
-    tb_controls.rotateSpeed = 3.0;
-    tb_controls.zoomSpeed = 0.5;
-    tb_controls.dynamicDampingFactor = 1.0;
+    const controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+    controls.rotateSpeed = 3.0;
+    controls.zoomSpeed = 0.5;
+    controls.dynamicDampingFactor = 1.0;
 
-    ispy.controls = tb_controls;
+    ispy.controls = controls;
 
     // Add a parent object for each group
     ispy.data_groups.forEach(function(g) {
 
-	    var obj_group = new THREE.Object3D();
+	    let obj_group = new THREE.Object3D();
 	    obj_group.name = g;
 	    ispy.scene.add(obj_group);
 	    
@@ -330,7 +330,7 @@ ispy.init = function() {
     
     $('#display').append($('#event-info'));
 
-    var canvas = ispy.renderer.domElement;
+    const canvas = ispy.renderer.domElement;
 
     canvas.ondragover = function() {
 
