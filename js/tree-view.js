@@ -1,48 +1,14 @@
-// It's not good to have all this html made in js.
-// This screams: "template me!"
-
 ispy.addGroups = function() {
 
-    var group_table = $('#treeview table');
-    
+    ispy.treegui.addFolder("Detector");
+    ispy.treegui.addFolder("Imported");
+
     ispy.data_groups.forEach(function(g) {
+
+	ispy.treegui.addFolder(g);
+
+    });
     
-	    var n = g;
-	    var html = "<tr id='"+ g +"'>";
-
-	    html += "<td class='group black'><a class='expand' onclick='ispy.toggleCollapse(\"" + g + "\");' href='#'>";
-	    html += "<i class='"+g+" expand glyphicon glyphicon-chevron-down'></i></a>";
-	    html += n +"</td>";
-
-	    // These are the information dialogs for the public. For now, by default, keep them hidden.
-	    // They can be turned on in the settings dialog.
-	    html += "<td class='group black'><a class='info' href='#' data-toggle='modal' data-target='#info-"+ g +"'>";
-	    html += "<i class='glyphicon glyphicon-info-sign'></i></a></td>";
-	    
-	    html += "</tr>";
-	    group_table.append(html);
-
-  });
-
-};
-
-ispy.toggleCollapse = function(g) {
-    
-    // If the objects under the group category have not been loaded then
-    // do not toggle the chevron. We don't want to have it in the wrong
-    // state when the group is eventually populated
-    var children = $('tr.'+g);
-  
-    if ( children.length === 0 ) {
-
-	return;
-	
-    }
-
-    children.toggle();
-    
-    $('i.'+g).toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
-
 };
 
 ispy.toggle = function(key) {
@@ -87,50 +53,29 @@ ispy.showObject = function(key, show) {
 };
 
 ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
-    
-    var dc = 'Detector';
 
-    if ( group !== 'Detector' ) {
-	
-	if ( group !== 'Imported' ) {
-	    
-	    dc = 'Event'; // this means it gets cleared from the tree view when an event is loaded
-    
-	} else {
-      
-	    dc = 'Imported';
-	
-	}
-    
-    }
+    let row_obj = {
+	show: visible,
+	key: key
+    };
 
-    var on = !ispy.disabled[key] ? "checked" : "";
-    var html = "<tr class='" + dc + " "+ group +"'>";
-    var cc = ispy.inverted_colors ? "white" : "black";
+    let folder = ispy.treegui.__folders[group];
+    let sb = folder.__folders[name];
 
-    var nobjects = 0;
+    if ( sb !== undefined ) {
 
-    if ( group !== 'Detector' && group !== 'Imported' && group !== 'Provenance' ) {
+	ispy.treegui.__folders[group].removeFolder(sb);
 
-	if ( ispy.current_event !== undefined ) {
-
-	    nobjects = ispy.current_event.Collections[key].length;
-	    
-	}
-	
-	html += "<td class='collection "+ cc +"' onclick='ispy.displayCollection(\""+key+"\",\""+ group + "\",\"" + name +"\",[" + objectIds + "])'>" + name + " ["+nobjects+"]</td>";
-  
     } else {
-    
-	html += "<td class='collection "+ cc +"'>"+ name +"</td>";
-  
-    }
 
-    html += "<td class='collection'>";
-    html += "<input type='checkbox' id='"+key+"'" + on + " onchange='ispy.toggle(\"" + key + "\");'>";
-    html += "</td>";
-    html += "</tr>";
-    
-    $('#'+group).after(html);
+	sb = folder.addFolder(name);
+	
+	sb.add(row_obj, 'show').onChange(function() {
+	    ispy.toggle(key);
+	});
+
+	sb.add(row_obj, 'key');
+
+    } 
 
 };

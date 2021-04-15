@@ -37,11 +37,11 @@ ispy.setFramerate = function(fr) {
 
 ispy.initCamera = function() {
 
-    ispy.camera.position.x = 9.0;
-    ispy.camera.position.y = 9.0;
-    ispy.camera.position.z = 12.0;
+    ispy.camera.position.x = 9.5;
+    ispy.camera.position.y = 9.5;
+    ispy.camera.position.z = 13.0;
 
-    ispy.camera.zoom = ispy.is_perspective ? 1 : 20.0;
+    ispy.camera.zoom = ispy.is_perspective ? 2.0 : 20.0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
     
     ispy.camera.updateProjectionMatrix();
@@ -176,7 +176,11 @@ ispy.init = function() {
 	    }
 
 	});
-
+    
+    ispy.treegui = new dat.GUI({
+	name: 'Tree View'
+    });
+    
     ispy.inverted_colors = false;
     $('#invert-colors').prop('checked', false);
 
@@ -266,6 +270,14 @@ ispy.init = function() {
 
     ispy.controls = controls;
 
+    ["Detector", "Imported"].forEach(function(g) {
+
+	let obj_group = new THREE.Object3D();
+	obj_group.name = g;
+	ispy.scene.add(obj_group);
+
+    });
+    
     // Add a parent object for each group
     ispy.data_groups.forEach(function(g) {
 
@@ -358,10 +370,6 @@ ispy.init = function() {
     
     ispy.autoRotating = false;
 
-    //ispy.datgui = new dat.GUI();
-    //ispy.datgui.domElement.id = 'datgui';
-    //display.appendChild(ispy.datgui.domElement);
-    
 };
 
 ispy.initLight = function() {

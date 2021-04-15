@@ -14,7 +14,7 @@ canvas.hover {
   border:5px dashed #ccc;
 }
 
-#stats, #datgui {
+#stats {
   position: absolute;
   top:0;
   right: 0;
@@ -75,7 +75,7 @@ canvas.hover {
 }
 
 #titlebar {
-  height: 20px;
+  height: 30px;
 }
 
 #titlebar.black {

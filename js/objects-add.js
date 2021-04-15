@@ -1,4 +1,3 @@
-
 ispy.addDetector = function() {
 
     for ( var key in ispy.detector_description ) {
@@ -118,16 +117,16 @@ ispy.addEvent = function(event) {
     // scene before rendering
     ispy.scene.children.forEach(function(c) {
     
-	    if ( c.name !== 'Detector' ) {
-		if ( c.name !== 'Imported' ) {
-		    if ( c.name !== 'Lights') {
-			
-			ispy.scene.getObjectByName(c.name).children.length = 0;
+	if ( c.name !== 'Detector' ) {
+	    if ( c.name !== 'Imported' ) {
+		if ( c.name !== 'Lights') {
 		    
-		    }
+		    ispy.scene.getObjectByName(c.name).children.length = 0;
+		    
 		}
 	    }
-	});
+	}
+    });
 
     ispy.current_event = event;
     // Clear table from last event and show default caption
@@ -136,7 +135,7 @@ ispy.addEvent = function(event) {
 
     // remove selectors for last event
     $("tr.Event").remove();
-
+    
     for ( var key in ispy.event_description ) {
 	
 	var data = event.Collections[key];
@@ -501,7 +500,7 @@ ispy.addEvent = function(event) {
 	    break;
 	    
 	}
-
+	
 	ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
     }

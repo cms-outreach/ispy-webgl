@@ -172,7 +172,6 @@ ispy.loadEvent = function() {
 	
     }
 
-
     //ispy.initGUI();
 
 };
@@ -475,7 +474,7 @@ ispy.loadObjFiles = function() {
     for ( var i = 0; i < ispy.obj_files.length; i++ ) {
 	
 	var e = ispy.obj_files[i];
-	var name = e.split('/')[2];
+	var name = e.split('/')[3];
 	var row = tbl.insertRow(tbl.rows.length);
 	var cell = row.insertCell(0);
 	var cls = "file";
@@ -502,7 +501,6 @@ ispy.readOBJ = function(file, cb) {
   
     };
 
-  
     reader.readAsText(file);
 
 };
@@ -520,7 +518,7 @@ ispy.loadOBJ = function(contents, name) {
 	});
 
     ispy.scene.getObjectByName("Imported").add(object);
-    ispy.addSelectionRow("Imported", object.name, object.name, true);
+    ispy.addSelectionRow("Imported", object.name, object.name, [], true);
 
 };
 
@@ -581,7 +579,7 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 	ispy.disabled[name] = false;
 
 	ispy.scene.getObjectByName("Imported").add(object);
-	ispy.addSelectionRow("Imported", name, name, true);
+	ispy.addSelectionRow("Imported", name, name, [], true);
   
     };
 
@@ -668,88 +666,13 @@ ispy.selectObj = function(obj_file) {
 
 };
 
-ispy.parseOBJMTL = function(obj_file, mtl_file, name) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", obj_file, true);
-
-    xhr.onload = function() {
-    
-	if ( this.status === 200 ) {
-	    
-	    var object = new THREE.OBJLoader().parse(xhr.responseText);
-	    ispy.parseMTL(object, mtl_file, name);
-	
-	}
-  
-    };
-
-    xhr.send();
-
-};
-
-ispy.parseMTL = function(object, mtl_file, name) {
-    
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", mtl_file, true);
-    
-    xhr.onload = function() {
-	
-	if ( this.status === 200 ) {
-
-	    var materials = new THREE.MTLLoader().parse(xhr.responseText);
-	    materials.preload();
-
-	    object.traverse(function (o) {
-
-		    if ( o instanceof THREE.Mesh || o instanceof THREE.Line ) {
-
-			if ( o.material.name ) {
-
-			    var material = materials.create(o.material.name);
-
-			    if ( material ) {
-				
-				o.material = material;
-				o.material.transparent = true;
-				o.material.opacity = ispy.importTransparency;
-
-			    }
-          
-			}
-        
-		    }
-
-		});
-
-	    $('#loading').modal('hide');
-	    object.name = name;
-	    object.visible = true;
-	    ispy.disabled[name] = false;
-	    
-	    ispy.scene.getObjectByName("Imported").add(object);
-	    ispy.addSelectionRow("Imported", name, name, true);
-	    
-	}
-    };
-
-    xhr.send();
-
-};
-
 ispy.loadSelectedObj = function() {
 
     var name = ispy.selected_obj.split('.')[0];
-    var obj_file = './geometry/'+ispy.selected_obj;
-    var mtl_file = './geometry/'+name+'.mtl';
-    
-    ispy.parseOBJMTL(obj_file, mtl_file, name);
+    var obj_file = './geometry/obj/'+ispy.selected_obj;
+    var mtl_file = './geometry/obj/'+name+'.mtl';
 
-    // tpmccauley: In-principle this one-line function call should replace
-    // all of this function as well as the two above it. However, for some
-    // obj+mtl pairs one has to parse both the obj and mtl files first
-    // before both can be handled without errors. Ack!
-    //ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, true);
+    ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, 'Imported', true);
     
 };
 
@@ -759,30 +682,30 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
     mtl_loader.load(mtl_file, function(materials) {
 
-	    materials.preload();
+	materials.preload();
 
-	    var obj_loader = new THREE.OBJLoader();
-	    obj_loader.setMaterials(materials);
+	var obj_loader = new THREE.OBJLoader();
+	obj_loader.setMaterials(materials);
 
-	    obj_loader.load(obj_file, function(object) {
+	obj_loader.load(obj_file, function(object) {
 
-		    object.name = id;
-		    object.visible = show;
-		    ispy.disabled[object.name] = false;
-		    
-		    object.children.forEach(function(c) {
+	    object.name = id;
+	    object.visible = show;
+	    ispy.disabled[object.name] = false;
+	    
+	    object.children.forEach(function(c) {
         
-			    c.material.transparent = true;
-			    c.material.opacity = ispy.importTransparency;
+		c.material.transparent = true;
+		c.material.opacity = ispy.importTransparency;
       
-			});
+	    });
 
-		    ispy.scene.getObjectByName(group).add(object);
-		    ispy.addSelectionRow(group, object.name, name, show);
-
-		});
+	    ispy.scene.getObjectByName(group).add(object);
+	    ispy.addSelectionRow(group, object.name, name, [], show);
 
 	});
+
+    });
 
     return;
 
@@ -906,7 +829,7 @@ ispy.importGLTF = function() {
 		ispy.disabled[object.name] = ! g.show;
 		
 		ispy.scene.getObjectByName(g.group).add(object);
-		ispy.addSelectionRow(g.group, object.name, g.name, g.show);
+		ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 
 	    }
 	);

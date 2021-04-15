@@ -208,16 +208,16 @@ ispy.onWindowResize = function() {
     var w = $('#display').innerWidth();
     var h = $('#display').innerHeight();
 
-    if ( ispy.camera.inPerspectiveMode ) {
+    if ( ispy.is_perspective ) {
 
-	ispy.camera.cameraP.aspect = w/h;
+	ispy.camera.aspect = w/h;
 
     } else {
 
-	ispy.camera.cameraO.left = -w/2;
-	ispy.camera.cameraO.right = w/2;
-	ispy.camera.cameraO.top = h/2;
-	ispy.camera.cameraO.bottom = -h/2;
+	ispy.camera.left = -w/2;
+	ispy.camera.right = w/2;
+	ispy.camera.top = h/2;
+	ispy.camera.bottom = -h/2;
 
     }
 
@@ -264,11 +264,7 @@ ispy.onMouseMove = function(e) {
     var vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
     ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
     var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
-
     
-    
-    
-    /*
     // If there is an already-picked object restore its color
     if ( ispy.intersected ) {
 
@@ -308,7 +304,6 @@ ispy.onMouseMove = function(e) {
 	}
 
     }
-    */
 
 };
 

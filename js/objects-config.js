@@ -563,5 +563,13 @@ for ( var key in ispy.event_description ) {
 
 }
 
-ispy.data_groups = ["Detector", "Imported", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "Physics"];
+ispy.data_groups = [
+    "Provenance",
+    "Tracking",
+    "ECAL",
+    "HCAL",
+    "Muon",
+    "Physics"
+];
+
 ispy.table_caption = '<caption>Click on a name under "Provenance", "Tracking", "ECAL", "HCAL", "Muon", and "Physics" to view contents in table</caption>';
