@@ -724,7 +724,6 @@ ispy.importBeampipe = function() {
 
 };
 
-// Temp function for testing loading of gltf geometry
 ispy.importGLTF = function() {
 
     const gltf_loader = new THREE.GLTFLoader();
@@ -813,6 +812,83 @@ ispy.importGLTF = function() {
 	    group: 'Detector',
 	    show: false,
 	    file: './geometry/gltf/EcalEndcapMinus3D_V1.glb'
+	},
+	{
+	    id: 'HcalBarrel3D_V1',
+	    name: 'HCAL Barrel',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalBarrel3D_V1.glb',
+	},
+	{
+	    id: 'HcalOuter3D_V1',
+	    name: 'HCAL Outer',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalOuter3D_V1.glb'
+	},
+	{
+	    id: 'HcalEndcapPlus3D_V1',
+	    name: 'HCAL Endcap (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalEndcapPlus3D_V1.glb'
+	},
+	{
+	    id: 'HcalEndcapMinus3D_V1',
+	    name: 'HCAL Endcap (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalEndcapMinus3D_V1.glb'
+	},
+	{
+	    id: 'HcalForwardPlus3D_V1',
+	    name: 'HCAL Forward (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalForwardPlus3D_V1.glb'
+	},
+	{
+	    id: 'HcalForwardMinus3D_V1',
+	    name: 'HCAL Forward (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/HcalForwardMinus3D_V1.glb'
+	},
+	{
+	    id: 'CSC3D_V1',
+	    name: 'Cathode Strip Chambers',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/CSC3D_V1.glb'
+	},
+	{
+	    id: 'DTs3D_V1',
+	    name: 'Drift Tubes',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/DTs3D_V1.glb'
+	},
+	{
+	    id: 'RPCBarrel3D_V1',
+	    name: 'Resistive Plate Chambers (barrel)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/RPCBarrel3D_V1.glb'
+	},
+	{
+	    id: 'RPCPlusEndcap3D_V1',
+	    name: 'Resistive Plate Chambers (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/RPCPlusEndcap3D_V1.glb'
+	},
+	{
+	    id: 'RPCMinusEndcap3D_V1',
+	    name: 'Resistive Plate Chambers (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/RPCMinusEndcap3D_V1.glb'
 	}
     ];
 

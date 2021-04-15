@@ -414,16 +414,28 @@ ispy.initDetector = function() {
     $('#loading').modal('show');
 
     $.when(
-	//ispy.getJSON('./geometry/json/eb.json'),
-	//ispy.getJSON('./geometry/json/ee.json'),
+	ispy.importGLTF()
+    ).done(function() {
+	$('#loading').modal('hide')
+    });
+
+};
+
+ispy.initDetector_old = function() {
+
+    $('#loading').modal('show');
+
+    $.when(
+	ispy.getJSON('./geometry/json/eb.json'),
+	ispy.getJSON('./geometry/json/ee.json'),
 	ispy.getJSON('./geometry/json/hb.json'),
 	ispy.getJSON('./geometry/json/ho.json'),
 	ispy.getJSON('./geometry/json/hehf.json'),
-	//ispy.getJSON('./geometry/json/pixel.json'),
-	//ispy.getJSON('./geometry/json/tec.json'),
-	//ispy.getJSON('./geometry/json/tib.json'),
-	//ispy.getJSON('./geometry/json/tid.json'),
-	//ispy.getJSON('./geometry/json/tob.json')
+	ispy.getJSON('./geometry/json/pixel-phase1.json'),
+	ispy.getJSON('./geometry/json/tec.json'),
+	ispy.getJSON('./geometry/json/tib.json'),
+	ispy.getJSON('./geometry/json/tid.json'),
+	ispy.getJSON('./geometry/json/tob.json')
 
     ).done(function(){
 		       
