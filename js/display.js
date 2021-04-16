@@ -246,34 +246,42 @@ ispy.onMouseMove = function(e) {
   
     e.preventDefault();
 
-    var container = $("canvas");
+    const container = $("canvas");
 
-    var w = $('#display').innerWidth();
-    var h = $('#display').innerHeight();
+    const w = $('#display').innerWidth();
+    const h = $('#display').innerHeight();
 
-    var doc = document.documentElement;
-    var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    const doc = document.documentElement;
+    const left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+    const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
 
-    var offsetX = $('#display').offset().left - left;
-    var offsetY = $('#display').offset().top - top;
+    const offsetX = $('#display').offset().left - left;
+    const offsetY = $('#display').offset().top - top;
 
     ispy.mouse.x = ((e.clientX-offsetX) / w)*2 - 1;
     ispy.mouse.y = -((e.clientY-offsetY) / h)*2 +1;
 
-    var vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
-    ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
-    var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
+    const vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
+
+    ispy.raycaster.set(
+	ispy.camera.position,
+	vector.subVectors(vector, ispy.camera.position).normalize()
+    );
+
+    const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
     
     // If there is an already-picked object restore its color
     if ( ispy.intersected ) {
-
+	
 	container.css('cursor', 'auto');
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 	
 	if ( ! ispy.intersected.selected ) {
 	    
-	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	    const original_color = new THREE.Color(
+		ispy.event_description[ispy.intersected.name].style.color
+	    );
+
 	    ispy.intersected.material.color = original_color;
 	    
 	} else {
@@ -316,7 +324,7 @@ ispy.onMouseDown = function(e) {
     
 	if ( ispy.intersected.selected ) {
 	    
-	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	    const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
 	    ispy.intersected.material.color = original_color;
 	    ispy.intersected.selected = false;
 

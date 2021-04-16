@@ -451,7 +451,22 @@ ispy.addEvent = function(event) {
 		if ( shape !== null ) {
             
 		    shape.name = key;
-            
+
+		    // If the shape is made using something like
+		    // ArrowHelper (e.g. for MET) then there are
+		    // children and they aren't named. This later
+		    // makes picking complain. So make sure the
+		    // children if they exist have names.
+		    if ( shape.children.length > 0 ) {
+		    
+			shape.children.forEach(function(c) {
+
+			    c.name = key;
+			
+			});
+
+		    }
+		    
 		    // originalIndex works as a link between the original
 		    // data and THREE objects:
 		    shape.userData.originalIndex = i;
