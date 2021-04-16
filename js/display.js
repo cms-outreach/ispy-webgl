@@ -1,4 +1,3 @@
-
 // ----------- MODALS: settings
 
 ispy.invertColors = function() {
@@ -17,17 +16,17 @@ ispy.invertColors = function() {
         
 		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           
-			if ( c.name === k ) {
+		    if ( c.name === k ) {
 			    
-			    c.children.forEach(function(d) {
-				
-				    d.material.color.setStyle(obj.style.color);
+			c.children.forEach(function(d) {
+			    
+			    d.material.color.setStyle(obj.style.color);
             
-				});
+			});
           
-			}
+		    }
         
-		    });
+		});
 	    
 	    }
     
@@ -42,20 +41,20 @@ ispy.invertColors = function() {
 	    var obj = ispy.event_description[k];
       
 	    if ( obj.style.altColor !== undefined ) {
-        
+		
 		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
           
-			if ( c.name === k ) {
+		    if ( c.name === k ) {
             
-			    c.children.forEach(function(d) {
-				    
-				    d.material.color.setStyle(obj.style.altColor);
+			c.children.forEach(function(d) {
+			    
+			    d.material.color.setStyle(obj.style.altColor);
             
-				});
+			});
 			
-			}
+		    }
         
-		    });
+		});
       
 	    }
     
@@ -103,14 +102,14 @@ ispy.setTransparency = function(t) {
 
     imported.children.forEach(function(obj) {
     
-	    obj.children.forEach(function(c) {
+	obj.children.forEach(function(c) {
       
-		    c.material.transparent = true;
-		    c.material.opacity = t;
+	    c.material.transparent = true;
+	    c.material.opacity = t;
     
-		});
-	    
 	});
+	    
+    });
 
 };
 
@@ -271,7 +270,7 @@ ispy.onMouseMove = function(e) {
     const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
     
     // If there is an already-picked object restore its color
-    if ( ispy.intersected ) {
+    if ( ispy.intersected ) {	
 	
 	container.css('cursor', 'auto');
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);

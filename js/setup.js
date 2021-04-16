@@ -301,6 +301,8 @@ ispy.init = function() {
     ispy.image_data = null;
     
     ispy.raycaster = new THREE.Raycaster();
+    ispy.raycaster.layers.set(2);
+
     //ispy.raycaster.params.Line.threshold = 0.1;
     //ispy.raycaster.linePrecision = 0.1; // Previously 0.01, but choosing the object was difficult
 

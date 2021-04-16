@@ -389,12 +389,12 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
   
     }
 
-    var ti, ei;
-    var p1, d1, p2, d2;
-    var distance, scale, curve;
-    var curves = [];
+    let ti, ei;
+    let p1, d1, p2, d2;
+    let distance, scale, curve;
+    let curves = [];
 
-    var tcolor = new THREE.Color();
+    let tcolor = new THREE.Color();
 
     if ( ispy.inverted_colors ) {
     
@@ -408,11 +408,11 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
     transp = style.opacity < 1.0 ? true : false;
     
-    for ( var i = 0; i < assocs.length; i++ ) {
+    for ( let i = 0; i < assocs.length; i++ ) {
 
-	var pt = tracks[i][selection.index];
-	var eta = tracks[i][4];
-	var phi = tracks[i][3];
+	let pt = tracks[i][selection.index];
+	let eta = tracks[i][4];
+	let phi = tracks[i][3];
 
 	ti = assocs[i][0][1];
 	ei = assocs[i][1][1];
@@ -445,12 +445,12 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	
 	if ( ispy.use_line2 ) {
 	    	
-	    var lg = new THREE.LineGeometry();
-	    var positions = [];
+	    let lg = new THREE.LineGeometry();
+	    let positions = [];
 	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
 	    lg.setPositions(positions);
 
-	    var line = new THREE.Line2(lg, new THREE.LineMaterial({
+	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
 		color:tcolor,
 		opacity:style.opacity,
 		transparent:transp,
@@ -464,7 +464,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	    
 	} else {
 	    
-	    var line = new THREE.Line(
+	    let line = new THREE.Line(
 		new THREE.BufferGeometry().setFromPoints(curve.getPoints(32)),
 		new THREE.LineBasicMaterial({
 		    color:tcolor,

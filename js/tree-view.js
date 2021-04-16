@@ -33,13 +33,21 @@ ispy.toggle = function(key) {
 
     ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
 
+    // This is for picking
+    // In-principle this would make anything in layer 2 pickable
+    // with the raycaster but we only select for physics objects
+    // (i.e. in the 'Physics' group) so OK
+    ispy.scene.getObjectByName(key).visible ?
+	ispy.scene.getObjectByName(key).layers.enable(2) :
+	ispy.scene.getObjectByName(key).layers.disable(2);
+    
 };
 
 // In some cases (e.g. animation) we want to explicitly turn somethings on/off
 // It would probably be nice to: do this by group, support wildcards, etc.
 ispy.showObject = function(key, show) {
 
-    var obj = ispy.scene.getObjectByName(key);
+    const obj = ispy.scene.getObjectByName(key);
     
     if ( obj !== undefined ) {
     
@@ -54,7 +62,7 @@ ispy.showObject = function(key, show) {
 
 ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
-    let row_obj = {
+    const row_obj = {
 	show: visible,
 	key: key
     };
@@ -71,7 +79,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	sb = folder.addFolder(name);
 	
 	sb.add(row_obj, 'show').onChange(function() {
+
 	    ispy.toggle(key);
+
 	});
 
 	sb.add(row_obj, 'key');

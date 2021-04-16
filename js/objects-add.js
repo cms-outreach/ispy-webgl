@@ -1,8 +1,8 @@
 ispy.addDetector = function() {
 
-    for ( var key in ispy.detector_description ) {
+    for ( let key in ispy.detector_description ) {
 
-	var data = ispy.detector.Collections[key];
+	const data = ispy.detector.Collections[key];
 	
 	if ( ! data || data.length === 0 ) {
       
@@ -10,15 +10,15 @@ ispy.addDetector = function() {
 	
 	}
 
-	var descr = ispy.detector_description[key];
+	const descr = ispy.detector_description[key];
 
 	// If something is already disabled via the toggle then this
 	// should override what comes from the description
 	// -- However it is not used in addSelectionRow()? - C
-	var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
+	const visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 	ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
 
-	var obj = new THREE.Object3D();
+	const obj = new THREE.Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
@@ -26,8 +26,8 @@ ispy.addDetector = function() {
 	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
-	var ocolor = new THREE.Color(descr.style.color);
-	var transp = descr.style.opacity < 1.0 ? true : false;
+	const ocolor = new THREE.Color(descr.style.color);
+	const transp = descr.style.opacity < 1.0 ? true : false;
 	
 	switch(descr.type) {
 
@@ -136,9 +136,9 @@ ispy.addEvent = function(event) {
     // remove selectors for last event
     $("tr.Event").remove();
     
-    for ( var key in ispy.event_description ) {
+    for ( let key in ispy.event_description ) {
 	
-	var data = event.Collections[key];
+	const data = event.Collections[key];
     
 	if ( ! data || data.length === 0 ) {
 	 
@@ -146,10 +146,10 @@ ispy.addEvent = function(event) {
 	
 	}
 
-	var descr = ispy.event_description[key];
+	const descr = ispy.event_description[key];
 
-	var extra = null;
-	var assoc = null;
+	let extra = null;
+	let assoc = null;
 
 	if ( descr.extra ) {
 	    
@@ -169,10 +169,10 @@ ispy.addEvent = function(event) {
 	// objectIds contain the ids of 'Physics' THREE objects. Ids are
 	// used when displaying event data in table-view so that we are
 	// able to connect the data somehow with THREE objects.
-	var objectIds = [];
-	var visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
+	let objectIds = [];
+	const visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
-	var obj = new THREE.Object3D();
+	const obj = new THREE.Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
@@ -180,7 +180,8 @@ ispy.addEvent = function(event) {
 	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
-	var ocolor = null;
+	let ocolor = null;
+	let transp;
 
 	if ( descr.style.color !== undefined ) {
 	    
@@ -196,12 +197,14 @@ ispy.addEvent = function(event) {
 	    
 	    }
 
-	    var transp = descr.style.opacity < 1.0 ? true : false;
+	    transp = descr.style.opacity < 1.0 ? true : false;
 
 	}
 
 	console.log(key);
 
+	let is_physics_obj = descr.group === 'Physics' ? true : false; 
+	
 	switch(descr.type) {
 	    
 	case ispy.BOX:
@@ -398,6 +401,16 @@ ispy.addEvent = function(event) {
 	    emeshes.name = key;
 	    hmeshes.name = key;
 
+	    if ( is_physics_obj ) {
+
+		if ( emeshes.visible )
+		    emeshed.layers.enable(2);
+
+		if ( hmeshes.visible )
+		    hmeshes.layers.enable(2);
+
+	    }
+	    
 	    ispy.scene.getObjectByName(key).add(emeshes);
 	    ispy.scene.getObjectByName(key).add(hmeshes);
 
@@ -411,18 +424,24 @@ ispy.addEvent = function(event) {
 
 		objs.forEach(function(o, i) {
 		    
-			// for event info we want each of the children to have the
-			// same name as the parent. this is so clicking on an object works
-			o.name = key;
+		    // For event info we want each of the children to have the
+		    // same name as the parent. this is so picking on an object works
+		    o.name = key;
+
+		    if ( is_physics_obj && o.visible ) {
+
+			o.layers.enable(2);
+
+		    }
 		    
-			// originalIndex works as a link between the original
-			// data and THREE objects:
-			o.userData.originalIndex = i;
-			objectIds.push(o.id);
-			ispy.scene.getObjectByName(key).add(o);
+		    // originalIndex works as a link between the original
+		    // data and THREE objects:
+		    o.userData.originalIndex = i;
+		    objectIds.push(o.id);
+		    ispy.scene.getObjectByName(key).add(o);
+		    
+		});
 		
-		    });
-	    
 	    }
 	    
 	    break;
@@ -452,6 +471,9 @@ ispy.addEvent = function(event) {
             
 		    shape.name = key;
 
+		    if ( is_physics_obj && shape.visible )
+			shape.layers.enable(2);
+		    
 		    // If the shape is made using something like
 		    // ArrowHelper (e.g. for MET) then there are
 		    // children and they aren't named. This later
@@ -462,7 +484,10 @@ ispy.addEvent = function(event) {
 			shape.children.forEach(function(c) {
 
 			    c.name = key;
-			
+
+			    if ( is_physics_obj && shape.visible )
+				c.layers.enable(2);
+			    
 			});
 
 		    }
