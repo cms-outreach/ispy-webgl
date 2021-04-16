@@ -16,7 +16,7 @@ pages:
 dfsdeploy:
   stage: deploy
   only:
-    - master
+    - r125
   image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
   script:
     - deploy-dfs
