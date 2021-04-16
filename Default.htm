@@ -180,12 +180,12 @@
               <i class="fa fa-video-camera"></i>
             </button>
           </div>
-          -->
           <div class="btn-group" role="group">
             <button type="button" id="stereo" class="btn btn-default" data-toggle="modal" data-target="#stereo-modal" title="Stereo View">
               <i class="fa fa-vr-cardboard"></i>
             </button>
           </div>
+	  -->
           <div class="btn-group" role="group">
             
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
@@ -402,7 +402,7 @@
           <a target="_blank" href="https://github.com/cms-outreach/ispy-webgl">Code</a> and
           <a target="_blank" href="https://github.com/cms-outreach/ispy-webgl/issues">Issues</a>
         </p>
-        <p>Contributors: L. Barnard, M. Hategan, C. Logren, T. McCauley, P. Nguyen, M. Saunby</p>
+        <p>Contributors: F. Ali, L. Barnard, M. Hategan, C. Logren, T. McCauley, P. Nguyen, M. Saunby</p>
         <p>Reference: <a target="_blank" href="https://doi.org/10.1088/1742-6596/898/7/072030">T McCauley 2017 J. Phys.: Conf. Ser. 898 072030</a></p>
         <p>This application uses <a target="_blank" href="http://threejs.org/">three.js</a> <span id="threejs"></span></p>
       </div>
@@ -453,8 +453,9 @@
               Select export format <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#" onclick="ispy.exportModel('obj');">Export OBJ</a></li>
-              <li><a href="#" onclick="ispy.exportModel('gltf');">Export GLTF (binary)</a></li>
+              <li><a href="#" onclick="ispy.exportOBJ();">Export OBJ</a></li>
+	      <li><a href="#" onclick="ispy.exportGLTF_text();">Export GLTF (text)</a></li>
+              <li><a href="#" onclick="ispy.exportGLTF_binary();">Export GLTF (binary)</a></li>
             </ul>
           </div>
         </p>
@@ -478,10 +479,10 @@
         <p>
           Select a 3D model to load.
         </p>
-        <p>
-          Currently only .obj format is supported.
+	<p>
+	  Currently only .obj format is supported.
           If an additional .mtl is available and loaded it will be used as well.
-        </p>
+	</p>
         <p>
           <i>Nota bene</i>: a large complicated 3D model may take minutes to load.
         </p>

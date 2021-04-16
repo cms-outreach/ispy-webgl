@@ -414,7 +414,7 @@ ispy.initDetector = function() {
     $('#loading').modal('show');
 
     $.when(
-	ispy.importGLTF()
+	ispy.importDetector()
     ).done(function() {
 	$('#loading').modal('hide')
     });

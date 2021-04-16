@@ -1,35 +1,3 @@
-ispy.web_files = 
-    [
-	"./data/Hto4l_120-130GeV.ig",
-	"./data/BJetPlusX_Run2012C_0.ig",
-	"./data/DoubleMuParked_Run2012C_0.ig",
-	"./data/MET_Run2012C_0.ig",
-	"./data/TauParked_Run2012C_0.ig",
-	"./data/DoubleElectron_Run2012C_0.ig",
-	"./data/DoublePhoton_Run2012B_0.ig",
-	"./data/JetHT_Run2012C_0.ig",
-	"./data/MinimumBias_Run2012C_0.ig"
-     ];
-
-ispy.obj_files = 
-    [
-	'./geometry/obj/EB.obj',
-	'./geometry/obj/EEminus.obj',
-	'./geometry/obj/EEplus.obj',
-	'./geometry/obj/ESminus.obj',
-	'./geometry/obj/ESplus.obj',
-	'./geometry/obj/muon-barrel.obj',
-	'./geometry/obj/muon-endcap-minus.obj',
-	'./geometry/obj/muon-endcap-plus.obj',
-	'./geometry/obj/muon-rphi-minus.obj',
-	'./geometry/obj/muon-rphi-plus.obj',
-	'./geometry/obj/muon-0.obj',
-	'./geometry/obj/muon-1.obj',
-	'./geometry/obj/muon-2.obj',
-	'./geometry/obj/muon-3.obj',
-	'./geometry/obj/HF.obj'
-     ];
-
 ispy.ig_data = null;
 ispy.ievent = 0;
 ispy.isGeometry = false;
@@ -407,14 +375,26 @@ ispy.selectFile = function(filename) {
 
 ispy.loadWebFiles = function() {
 
+    const web_files = [
+	"./data/Hto4l_120-130GeV.ig",
+	"./data/BJetPlusX_Run2012C_0.ig",
+	"./data/DoubleMuParked_Run2012C_0.ig",
+	"./data/MET_Run2012C_0.ig",
+	"./data/TauParked_Run2012C_0.ig",
+	"./data/DoubleElectron_Run2012C_0.ig",
+	"./data/DoublePhoton_Run2012B_0.ig",
+	"./data/JetHT_Run2012C_0.ig",
+	"./data/MinimumBias_Run2012C_0.ig"
+    ];
+
     $('#selected-event').html("Selected event");
     $('#load-event').addClass('disabled');
 
     var tbl = document.getElementById("browser-files");
 
-    for ( var i = 0; i < ispy.web_files.length; i++ ) {
+    for ( var i = 0; i < web_files.length; i++ ) {
 	
-	var e = ispy.web_files[i];
+	var e = web_files[i];
 	var name = e.split("/")[2];
 	var row = tbl.insertRow(tbl.rows.length);
 	var cell = row.insertCell(0);
@@ -459,25 +439,80 @@ ispy.cleanupData = function(d) {
 
 };
 
-// This pattern is starting to appear in several places.
-// I should consolidate them into something more elegant than below.
+ispy.loadGLTFFiles = function() {
+    
+    const gltf_files = [
+	'./geometry/gltf/EB.glb',
+	'./geometry/gltf/EEminus.glb',
+	'./geometry/gltf/EEplus.glb',
+	'./geometry/gltf/ESminus.glb',
+	'./geometry/gltf/ESplus.glb',
+	'./geometry/gltf/muon-barrel.glb',
+	'./geometry/gltf/muon-endcap-minus.glb',
+	'./geometry/gltf/muon-endcap-plus.glb',
+	'./geometry/gltf/muon-rphi-minus.glb',
+	'./geometry/gltf/muon-rphi-plus.glb',
+	'./geometry/gltf/muon-0.glb',
+	'./geometry/gltf/muon-1.glb',
+	'./geometry/gltf/muon-2.glb',
+	'./geometry/gltf/muon-3.glb',
+	'./geometry/gltf/HF.glb'
+    ];
+    
+    ispy.clearTable('obj-files');
+    
+    $('#selected-obj').html("Selected geometry");
+    $('#load-obj').addClass('disabled');
+
+    const tbl = document.getElementById('obj-files');
+    
+    for ( let i = 0; i < gltf_files.length; i++ ) {
+	
+	let e = gltf_files[i];
+	let name = e.split('/')[3];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectGLTF(\'' + name + '\');">' + name + '</a>';
+  
+    }
+
+};
 
 ispy.loadObjFiles = function() {
+
+    const obj_files = [
+	'./geometry/obj/EB.obj',
+	'./geometry/obj/EEminus.obj',
+	'./geometry/obj/EEplus.obj',
+	'./geometry/obj/ESminus.obj',
+	'./geometry/obj/ESplus.obj',
+	'./geometry/obj/muon-barrel.obj',
+	'./geometry/obj/muon-endcap-minus.obj',
+	'./geometry/obj/muon-endcap-plus.obj',
+	'./geometry/obj/muon-rphi-minus.obj',
+	'./geometry/obj/muon-rphi-plus.obj',
+	'./geometry/obj/muon-0.obj',
+	'./geometry/obj/muon-1.obj',
+	'./geometry/obj/muon-2.obj',
+	'./geometry/obj/muon-3.obj',
+	'./geometry/obj/HF.obj'
+     ];
 
     ispy.clearTable('obj-files');
 
     $('#selected-obj').html("Selected geometry");
     $('#load-obj').addClass('disabled');
 
-    var tbl = document.getElementById('obj-files');
+    const tbl = document.getElementById('obj-files');
     
-    for ( var i = 0; i < ispy.obj_files.length; i++ ) {
+    for ( let i = 0; i < obj_files.length; i++ ) {
 	
-	var e = ispy.obj_files[i];
-	var name = e.split('/')[3];
-	var row = tbl.insertRow(tbl.rows.length);
-	var cell = row.insertCell(0);
-	var cls = "file";
+	let e = obj_files[i];
+	let name = e.split('/')[3];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + name + '\');">' + name + '</a>';
   
     }
@@ -658,6 +693,36 @@ ispy.importModel = function() {
 
 };
 
+ispy.selectGLTF = function(gltf_file) {
+    
+    $('#selected-obj').html(gltf_file);
+    $('#load-obj').removeClass('disabled');
+    ispy.selected_gltf = gltf_file;
+    
+};
+
+ispy.loadSelectedGLTF = function() {
+
+    let name = ispy.selected_gltf.split('.')[0];
+    let gltf_file = './geometry/gltf/'+ispy.selected_gltf;
+    
+    const gltf_loader = new THREE.GLTFLoader();
+
+    gltf_loader.load(
+	gltf_file,
+	function(gltf) {
+	    
+	    let object = gltf.scene.children[0];
+
+	    ispy.scene.getObjectByName('Imported').add(object);
+	    ispy.addSelectionRow('Imported', name, name, [], true);
+	    
+	}
+    );
+
+};
+
+
 ispy.selectObj = function(obj_file) {
 
     $('#selected-obj').html(obj_file);
@@ -724,7 +789,7 @@ ispy.importBeampipe = function() {
 
 };
 
-ispy.importGLTF = function() {
+ispy.importDetector = function() {
 
     const gltf_loader = new THREE.GLTFLoader();
     

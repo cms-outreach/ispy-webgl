@@ -311,17 +311,31 @@ ispy.exportArrayBuffer = function(output, filename) {
     
 };
 
-ispy.exportGLTF = function() {
+ispy.exportGLTF_binary = function() {
 
+    ispy.exportGLTF(true);
+
+};
+
+ispy.exportGLTF_text = function() {
+
+    ispy.exportGLTF(false);
+
+};
+
+ispy.exportGLTF = function(binary) {
+
+    $('#export-model').hide();
+    
     const exporter = new THREE.GLTFExporter();
 
     const options = {
-	binary: true
+	binary: binary
     };
 	
     ispy.scene.children.forEach(function(c) {
 	    
-	if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
 	    
 	    c.children.forEach(function(o) {
 
@@ -354,12 +368,14 @@ ispy.exportGLTF = function() {
 
 ispy.exportOBJ = function() {
 
+    $('#export-model').hide();
+    
     const exporter = new THREE.OBJExporter();
 
     ispy.scene.children.forEach(function(c) {
 	    
-	if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
-		
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
+	    
 	    c.children.forEach(function(o) {
 			
 		if ( o.visible ) {
@@ -373,18 +389,5 @@ ispy.exportOBJ = function() {
 	}
 
     });
-    
-};
-
-ispy.exportModel = function(format) {
- 
-    if ( format === 'gltf' ) {
-	
-	ispy.exportGLTF();
-	
-    } else if ( format === 'obj' ) {
-
-	ispy.exportOBJ();
-    }
 
 };
