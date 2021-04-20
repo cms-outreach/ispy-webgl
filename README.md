@@ -79,6 +79,10 @@ Some tips:
 * Find the right combination of zoom level, rotation, and projection ("orthographic" or "perspective"). 
 * Turn off/on different parts of the detector to provide some context and background. The event can often look like it's just there in the black void. The ECAL barrel is a nice one to have on by default. Also you can try some of the more complex geometries found via the "Import 3D Model" button. More on those [here](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SketchUpCMS).
 
+### How do I change the line thickness (i.e. make them thicker)?
+
+The default thickness for lines is "1". To use better (thicker) defaults, unclick "Use pick-able" lines in the "Settings" menu and load your event. 
+
 ### How do I know what's been loaded in the event?
 
 [Recall](https://github.com/cms-outreach/ispy-analyzers) that the `ig` file is a text-based zip archive. To see what's in it you can just unzip it and take a look. 
