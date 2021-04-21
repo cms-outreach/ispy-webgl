@@ -945,39 +945,33 @@ ispy.makeMET = function(data, style, selection) {
 
 ispy.makeJet = function(data, style, selection) {
   
-    var et = data[0];
-    var eta = data[1];
+    const et = data[0];
+    const eta = data[1];
 
-    var theta = data[2];
-    var phi = data[3];
+    const theta = data[2];
+    const phi = data[3];
     
-    var ct = Math.cos(theta);
-    var st = Math.sin(theta);
-    var cp = Math.cos(phi);
-    var sp = Math.sin(phi);
+    let ct = Math.cos(theta);
+    let st = Math.sin(theta);
+    let cp = Math.cos(phi);
+    let sp = Math.sin(phi);
 
-    var maxZ = 2.25;
-    var maxR = 1.10;
+    let maxZ = 2.25;
+    let maxR = 1.10;
     
-    var length1 = ct ? maxZ / Math.abs(ct) : maxZ;
-    var length2 = st ? maxR / Math.abs(st) : maxR;
-    var length = length1 < length2 ? length1 : length2;
-    var radius = 0.3 * (1.0 /(1 + 0.001));
+    let length1 = ct ? maxZ / Math.abs(ct) : maxZ;
+    let length2 = st ? maxR / Math.abs(st) : maxR;
+    let length = length1 < length2 ? length1 : length2;
+    let radius = 0.3 * (1.0 /(1 + 0.001));
     
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
-    var geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
+    const geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
     geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
-    var jcolor = new THREE.Color(style.color);
-
-    if ( Math.abs(eta) > 3 ) {
-
-	jcolor = new THREE.Color("rgb(100%, 100%, 0%)");
-
-    }
+    let jcolor = new THREE.Color(style.color);
     
-    var transp = false;
+    let transp = false;
     
     if ( style.opacity < 1.0 ) {
     
@@ -985,7 +979,7 @@ ispy.makeJet = function(data, style, selection) {
   
     }
 
-    var material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshBasicMaterial({
 	color:jcolor,
 	transparent: transp,
 	opacity:style.opacity
@@ -993,7 +987,7 @@ ispy.makeJet = function(data, style, selection) {
 
     material.side = THREE.DoubleSide;
     
-    var jet = new THREE.Mesh(geometry, material);
+    const jet = new THREE.Mesh(geometry, material);
     jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
     jet.visible = true;
 
@@ -1002,7 +996,7 @@ ispy.makeJet = function(data, style, selection) {
 	jet.visible = false;
   
     }
-  
+ 
     return jet;
 
 };

@@ -230,7 +230,7 @@ ispy.event_description = {
     "EERecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Endcap Rec. Hits",
 	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5},
-	scale: 0.0075, selection: {"min_energy": 0.5}
+	scale: 0.025, selection: {"min_energy": 0.5}
     },
     "ESRecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "Preshower Rec. Hits",
@@ -250,7 +250,7 @@ ispy.event_description = {
     "HFRecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Forward Rec. Hits",
 	fn: ispy.makeHRecHit_V2, style: {color: "rgb(60%, 100%, 100%)", opacity: 0.5, linewidth: 0.25},
-	selection: {"min_energy": 1.0}
+	selection: {"min_energy": 0.0}
     },
     "HORecHits_V2": {
 	type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Outer Rec. Hits",
