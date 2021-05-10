@@ -1406,6 +1406,12 @@ ispy.makeCSC = function(csc) {
 
 };
 
+ispy.makeGEM = function(gem) {
+
+    //return ispy.makeSolidBox(gem, 1);  
+    return ispy.makeWireframeBox(gem, 1);
+
+};
 ispy.makeMuonChamber = function(chamber) {
     
     return ispy.makeSolidBox(chamber, 1);
@@ -1725,6 +1731,11 @@ ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
 
 };
 
+ispy.makeGEMRecHits_V2 = function(data, descr) {
+
+    return ispy.makeRPCRecHits(data, descr);
+
+};
 ispy.makeDTRecSegments = function(data) {
 
     var geometry = new THREE.Geometry();
@@ -1735,6 +1746,12 @@ ispy.makeDTRecSegments = function(data) {
 };
 
 ispy.makeCSCSegments = function(data, geometry) {
+
+    return ispy.makeDTRecSegments(data, geometry);
+
+};
+
+ispy.makeGEMSegments_V2 = function(data, geometry) {
 
     return ispy.makeDTRecSegments(data, geometry);
 
@@ -1787,6 +1804,15 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 };
 
 ispy.makeCSCDigis_V2 = function(data) {
+    
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
+    geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+    return [geometry];
+
+};
+
+ispy.makeGEMDigis_V2 = function(data) {
     
     var geometry = new THREE.Geometry();
     geometry.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
