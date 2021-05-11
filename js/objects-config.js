@@ -240,7 +240,7 @@ ispy.event_description = {
     "EBRecHits_V2": {
 	type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Barrel Rec. Hits",
 	fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5},
-	scale: 0.075, selection: {"min_energy": 0.25}
+	scale: 0.25, selection: {"min_energy": 0.25}
     },
     "HGCEERecHits_V1": {
 	type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "HGC EE Rec. Hits",
@@ -431,13 +431,13 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
-	selection:{"min_pt":1.0, "index":0}
+	selection:{"min_pt":5.0, "index":0}
     },
     "GlobalMuons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
-	selection:{"min_pt":1.0, "index":0}
+	selection:{"min_pt":5.0, "index":0}
     },
     "PATGlobalMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (PAT)",

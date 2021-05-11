@@ -185,9 +185,38 @@ ispy.init = function() {
     $('#invert-colors').prop('checked', false);
 
     const origin = new THREE.Vector3(0,0,0);
-    const rx = new THREE.ArrowHelper(new THREE.Vector3(4,0,0), origin, 4, 0xff0000, 0.01, 0.01);
-    const gy = new THREE.ArrowHelper(new THREE.Vector3(0,4,0), origin, 4, 0x00ff00, 0.01, 0.01);
-    const bz = new THREE.ArrowHelper(new THREE.Vector3(0,0,4), origin, 4, 0x0000ff, 0.01, 0.01);
+
+    // dir, origin, length, hex, headLength, headWidth
+    const length = 3.5;
+    const headLength = 1;
+    const headWidth = 1;
+    
+    const rx = new THREE.ArrowHelper(
+	new THREE.Vector3(4,0,0),
+	origin,
+	length,
+	0xff0000,
+	headLength,
+	headWidth
+    );
+
+    const gy = new THREE.ArrowHelper(
+	new THREE.Vector3(0,4,0),
+	origin,
+	length,
+	0x00ff00,
+	headLength,
+	headWidth
+    );
+
+    const bz = new THREE.ArrowHelper(
+	new THREE.Vector3(0,0,4),
+	origin,
+	length,
+	0x0000ff,
+	headLength,
+	headWidth
+    );
 
     rx.line.material.linewidth = 2.5;
     gy.line.material.linewidth = 2.5;
@@ -242,17 +271,17 @@ ispy.init = function() {
 
 	    const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 	    const x_text = new THREE.Mesh(x_geo, x_material);
-	    x_text.position.x = 4.5;
+	    x_text.position.x = length+headLength;
 	    x_text.name = 'xtext';
 
 	    const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
 	    const y_text = new THREE.Mesh(y_geo, y_material);
-	    y_text.position.y = 4.5;
+	    y_text.position.y = length+headLength;
 	    y_text.name = 'ytext';
 	    
 	    const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
 	    const z_text = new THREE.Mesh(z_geo, z_material);
-	    z_text.position.z = 4.5;
+	    z_text.position.z = length+headLength;
 	    z_text.name = 'ztext';
 
 	    ispy.inset_scene.add(x_text);
@@ -376,10 +405,10 @@ ispy.init = function() {
 
 ispy.initLight = function() {
 
-    var intensity = 1.0;
-    var length = 15.0;
+    const intensity = 1.0;
+    const length = 15.0;
     
-    var lights = new THREE.Object3D();
+    const lights = new THREE.Object3D();
     lights.name = 'Lights';
     ispy.scene.add(lights);
     

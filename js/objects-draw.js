@@ -996,7 +996,7 @@ ispy.makeJet = function(data, style, selection) {
 	jet.visible = false;
   
     }
- 
+    
     return jet;
 
 };

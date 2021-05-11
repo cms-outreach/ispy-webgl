@@ -252,7 +252,7 @@ ispy.addEvent = function(event) {
           
 		var bl = descr.fn(data[i]);
 
-		if ( bl.length == 1 ) {
+		if ( bl.length === 1 ) {
 		    boxes.push(bl[0]);
 		}
 		
