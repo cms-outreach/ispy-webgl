@@ -320,14 +320,18 @@ ispy.addEvent = function(event) {
         
 	    }
 
-	    var meshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		material
-	    );
+	    if ( boxes.length > 0 ) {
+	    
+		var meshes = new THREE.Mesh(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		    material
+		);
 
-	    meshes.name = key;
-	    ispy.scene.getObjectByName(key).add(meshes);
+		meshes.name = key;
+		ispy.scene.getObjectByName(key).add(meshes);
 
+	    }
+		
 	    break;
 
 	case ispy.SCALEDSOLIDTOWER:
@@ -401,13 +405,10 @@ ispy.addEvent = function(event) {
 	    emeshes.name = key;
 	    hmeshes.name = key;
 
-	    if ( is_physics_obj ) {
-
-		if ( emeshes.visible )
-		    emeshed.layers.enable(2);
-
-		if ( hmeshes.visible )
-		    hmeshes.layers.enable(2);
+	    if ( is_physics_obj && visible ) {
+		
+		emeshes.layers.enable(2);
+		hmeshes.layers.enable(2);
 
 	    }
 	    
