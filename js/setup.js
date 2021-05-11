@@ -321,21 +321,12 @@ ispy.init = function() {
 
     window.addEventListener('resize', ispy.onWindowResize, false);
 
-    /*
-      https://github.com/mrdoob/three.js/pull/421#issuecomment-1792008
-      via
-      http://stackoverflow.com/questions/15558418/how-do-you-save-an-image-from-a-three-js-canvas
-    */
     ispy.get_image_data = false;
     ispy.image_data = null;
     
     ispy.raycaster = new THREE.Raycaster();
     ispy.raycaster.layers.set(2);
 
-    //ispy.raycaster.params.Line.threshold = 0.1;
-    //ispy.raycaster.linePrecision = 0.1; // Previously 0.01, but choosing the object was difficult
-
-    ispy.mouse = new THREE.Vector2();
     ispy.intersected = null;
     
     ispy.renderer.domElement.addEventListener('mousemove', ispy.onMouseMove, false);

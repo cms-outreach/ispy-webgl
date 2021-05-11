@@ -257,54 +257,53 @@ ispy.onMouseMove = function(e) {
     const offsetX = $('#display').offset().left - left;
     const offsetY = $('#display').offset().top - top;
 
-    ispy.mouse.x = ((e.clientX-offsetX) / w)*2 - 1;
-    ispy.mouse.y = -((e.clientY-offsetY) / h)*2 +1;
+    const pointer = new THREE.Vector2();
+    
+    pointer.x = ((e.clientX-offsetX) / w)*2 - 1;
+    pointer.y = -((e.clientY-offsetY) / h)*2 +1;
 
-    const vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
-
-    ispy.raycaster.set(
-	ispy.camera.position,
-	vector.subVectors(vector, ispy.camera.position).normalize()
-    );
-
+    ispy.raycaster.setFromCamera(pointer, ispy.camera);
     const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
     
-    // If there is an already-picked object restore its color
-    if ( ispy.intersected ) {	
-	
+    if ( ispy.intersected ) {
+
+	// Undo selection stuff
 	container.css('cursor', 'auto');
+	    
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 	
-	if ( ! ispy.intersected.selected ) {
-	    
-	    const original_color = new THREE.Color(
-		ispy.event_description[ispy.intersected.name].style.color
-	    );
+	const original_color = new THREE.Color(
+	    ispy.event_description[ispy.intersected.name].style.color
+	);
 
-	    ispy.intersected.material.color = original_color;
-	    
-	} else {
-
-	    ispy.intersected.material.color.setHex(0x808080);
-
-	}
+	ispy.intersected.material.color = original_color;
+	ispy.intersected = null;
 	
     }
+    
+    if ( intersects.length > 0 ) {
+
+	const res = intersects.filter( function (res) {
+
+	    return res && res.object;
+	    
+	})[0];
 	
-    if ( intersects.length ) {
+	if ( res && res.object ) {
 
-	// First object should be the closet one
-	ispy.intersected = intersects[0].object;
-
-	if ( ispy.intersected ) {
-
+	    // Selection stuff happens
+	    ispy.intersected = res.object;
+	    
 	    container.css('cursor', 'pointer');
+
+	    var original_color = ispy.intersected.material.color;
+	    ispy.intersected.material.color.set('#cccccc');
 	    
-	    ispy.intersected.material.color.setHex(0xcccccc);
-	    
-	    ispy.displayCollection(ispy.intersected.name, "Physics", 
-				   ispy.event_description[ispy.intersected.name].name, 
-				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
+	    ispy.displayCollection(
+		ispy.intersected.name, "Physics", 
+		ispy.event_description[ispy.intersected.name].name, 
+		ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name))
+	    );
 	    
 	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
 	    

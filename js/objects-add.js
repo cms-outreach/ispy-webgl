@@ -428,7 +428,7 @@ ispy.addEvent = function(event) {
 		    // same name as the parent. this is so picking on an object works
 		    o.name = key;
 
-		    if ( is_physics_obj && o.visible ) {
+		    if ( is_physics_obj && visible ) {
 
 			o.layers.enable(2);
 
@@ -471,25 +471,13 @@ ispy.addEvent = function(event) {
             
 		    shape.name = key;
 
-		    if ( is_physics_obj && shape.visible )
-			shape.layers.enable(2);
-		    
-		    // If the shape is made using something like
-		    // ArrowHelper (e.g. for MET) then there are
-		    // children and they aren't named. This later
-		    // makes picking complain. So make sure the
-		    // children if they exist have names.
-		    if ( shape.children.length > 0 ) {
-		    
-			shape.children.forEach(function(c) {
+		    if ( is_physics_obj && visible ) {
 
-			    c.name = key;
+			shape.traverse(function(s) {
 
-			    if ( is_physics_obj && shape.visible )
-				c.layers.enable(2);
-			    
+			    s.layers.enable(2);
+
 			});
-
 		    }
 		    
 		    // originalIndex works as a link between the original

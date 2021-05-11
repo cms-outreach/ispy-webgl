@@ -994,7 +994,7 @@ ispy.makeJet = function(data, style, selection) {
     if ( et < selection.min_et ) {
     
 	jet.visible = false;
-  
+	  
     }
     
     return jet;

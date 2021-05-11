@@ -33,13 +33,15 @@ ispy.toggle = function(key) {
 
     ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
 
-    // This is for picking
-    // In-principle this would make anything in layer 2 pickable
-    // with the raycaster but we only select for physics objects
-    // (i.e. in the 'Physics' group) so OK
-    ispy.scene.getObjectByName(key).visible ?
-	ispy.scene.getObjectByName(key).layers.enable(2) :
-	ispy.scene.getObjectByName(key).layers.disable(2);
+    // This is for picking. The raycaster is in layer 2.
+    // In-principle this toggle will add other non-pickable
+    // objects to the layer but we only check raycasting for
+    // Physics objects so this is fine.
+    ispy.scene.getObjectByName(key).traverse(function(s) {
+
+	s.layers.toggle(2);
+
+    });
     
 };
 
