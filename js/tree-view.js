@@ -3,10 +3,15 @@ ispy.addGroups = function() {
     ispy.treegui.addFolder("Detector");
     ispy.treegui.addFolder("Imported");
 
+    ispy.subfolders["Detector"] = [];
+    ispy.subfolders["Imported"] = [];
+    
     ispy.data_groups.forEach(function(g) {
 
 	ispy.treegui.addFolder(g);
 
+	ispy.subfolders[g] = [];
+	
     });
     
 };
@@ -70,24 +75,18 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     };
 
     let folder = ispy.treegui.__folders[group];
-    let sb = folder.__folders[name];
+    let sf = folder.__folders[name];
 
-    if ( sb !== undefined ) {
+    ispy.subfolders[group].push(name);
+    
+    sf = folder.addFolder(name);
+    
+    sf.add(row_obj, 'show').onChange(function() {
 
-	ispy.treegui.__folders[group].removeFolder(sb);
+	ispy.toggle(key);
 
-    } else {
+    });
 
-	sb = folder.addFolder(name);
-	
-	sb.add(row_obj, 'show').onChange(function() {
-
-	    ispy.toggle(key);
-
-	});
-
-	sb.add(row_obj, 'key');
-
-    } 
+    sf.add(row_obj, 'key');
 
 };

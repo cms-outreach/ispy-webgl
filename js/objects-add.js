@@ -135,7 +135,22 @@ ispy.addEvent = function(event) {
 
     // remove selectors for last event
     $("tr.Event").remove();
-    
+
+    // Clear the subfolders for event information in the treegui
+    ispy.data_groups.forEach(function(g) {
+
+	let folder = ispy.treegui.__folders[g];
+	
+	ispy.subfolders[g].forEach(function(s) {
+	    
+	    folder.removeFolder(folder.__folders[s]);
+	    
+	});
+
+	ispy.subfolders[g] = [];
+
+    });
+
     for ( let key in ispy.event_description ) {
 	
 	const data = event.Collections[key];
@@ -203,8 +218,8 @@ ispy.addEvent = function(event) {
 
 	console.log(key);
 
-	let is_physics_obj = descr.group === 'Physics' ? true : false; 
-	
+	let is_physics_obj = descr.group === 'Physics' ? true : false;
+		
 	switch(descr.type) {
 	    
 	case ispy.BOX:
@@ -533,5 +548,6 @@ ispy.addEvent = function(event) {
 	ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
     }
+
     
 };

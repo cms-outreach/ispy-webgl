@@ -180,6 +180,12 @@ ispy.init = function() {
     ispy.treegui = new dat.GUI({
 	name: 'Tree View'
     });
+
+    // It seems currently impossible with dat.gui
+    // to fetch the folders as an array and remove them
+    // (without knowing the name beforehand).
+    // Therefore we have to keep track of them by-hand.
+    ispy.subfolders = {};
     
     ispy.inverted_colors = false;
     $('#invert-colors').prop('checked', false);
