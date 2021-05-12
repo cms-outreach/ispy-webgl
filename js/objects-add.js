@@ -201,22 +201,10 @@ ispy.addEvent = function(event) {
 	if ( descr.style.color !== undefined ) {
 	    
 	    ocolor = new THREE.Color();
-
-	    if ( ispy.inverted_colors && descr.style.altColor !== undefined ) {
-		
-		ocolor.setStyle(descr.style.altColor);
-      
-	    } else {
-        
-		ocolor.setStyle(descr.style.color);
-	    
-	    }
-
+	    ocolor.setStyle(descr.style.color);
 	    transp = descr.style.opacity < 1.0 ? true : false;
 
 	}
-
-	console.log(key);
 
 	let is_physics_obj = descr.group === 'Physics' ? true : false;
 		

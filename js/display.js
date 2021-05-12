@@ -8,57 +8,9 @@ ispy.invertColors = function() {
     
 	ispy.renderer.setClearColor(0x000000,1);
 
-	for ( var k in ispy.event_description ) {
-      
-	    var obj = ispy.event_description[k];
-      
-	    if ( obj.style.altColor !== undefined ) {
-        
-		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          
-		    if ( c.name === k ) {
-			    
-			c.children.forEach(function(d) {
-			    
-			    d.material.color.setStyle(obj.style.color);
-            
-			});
-          
-		    }
-        
-		});
-	    
-	    }
-    
-	}
-
     } else {
 
 	ispy.renderer.setClearColor(0xffffff,1);
-
-	for ( var k in ispy.event_description ) {
-      
-	    var obj = ispy.event_description[k];
-      
-	    if ( obj.style.altColor !== undefined ) {
-		
-		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          
-		    if ( c.name === k ) {
-            
-			c.children.forEach(function(d) {
-			    
-			    d.material.color.setStyle(obj.style.altColor);
-            
-			});
-			
-		    }
-        
-		});
-      
-	    }
-    
-	}
 	
     }
 

@@ -394,17 +394,8 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     let distance, scale, curve;
     let curves = [];
 
-    let tcolor = new THREE.Color();
-
-    if ( ispy.inverted_colors ) {
-    
-	tcolor.setStyle(style.altColor);
-  
-    } else {
-    
-	tcolor.setStyle(style.color);
-  
-    }
+    let tcolor = new THREE.Color();    
+    tcolor.setStyle(style.color);
 
     transp = style.opacity < 1.0 ? true : false;
     

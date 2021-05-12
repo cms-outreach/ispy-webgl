@@ -972,7 +972,7 @@ ispy.importDetector = function() {
 		ispy.scene.getObjectByName(g.group).add(object);
 		ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 
-		console.log(g.id+' loaded');
+		//console.log(g.id+' loaded');
 		
 	    }
 	);

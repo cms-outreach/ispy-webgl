@@ -69,9 +69,35 @@ ispy.showObject = function(key, show) {
 
 ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
+    let opacity = 1.0;
+    let color = new THREE.Color();
+    
+    if ( ispy.detector_description.hasOwnProperty(key) ) {
+
+	let style = ispy.detector_description[key].style;
+	opacity = style.opacity;
+	color.set(style.color);
+	
+    }
+
+    if ( ispy.event_description.hasOwnProperty(key) ) {
+	
+	let style = ispy.event_description[key].style;
+
+	if ( style.hasOwnProperty('opacity') ) {
+	
+	    opacity = style.opacity;
+	    color.set(style.color);
+
+	}
+	
+    }
+
     const row_obj = {
 	show: visible,
-	key: key
+	key: key,
+	opacity: opacity,
+	color: color.getHex() 
     };
 
     let folder = ispy.treegui.__folders[group];
@@ -81,12 +107,42 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     
     sf = folder.addFolder(name);
     
+    sf.add(row_obj, 'key');
+    
     sf.add(row_obj, 'show').onChange(function() {
 
 	ispy.toggle(key);
 
     });
 
-    sf.add(row_obj, 'key');
+    // Event is not part of the scene and is
+    // handled with css so no need for the rest
+    if ( key.includes('Event_') )
+	return;
+
+    sf.add(row_obj, 'opacity', 0, 1).onChange(function() {
+
+	let obj = ispy.scene.getObjectByName(key);
+
+	obj.children.forEach(function(o) {
+
+	    o.material.opacity = row_obj.opacity;
+
+	});
+
+    });
+
+    
+    sf.addColor(row_obj, 'color').onChange(function() {
+
+	let obj = ispy.scene.getObjectByName(key);
+
+	obj.children.forEach(function(o) {
+	    
+	    o.material.color = new THREE.Color(row_obj.color);
+	    
+	});
+
+    });
 
 };
