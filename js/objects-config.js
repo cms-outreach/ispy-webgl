@@ -19,6 +19,21 @@ ispy.detector_description = {
 	fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
+    "GEMMinus3D_V1": {
+	type: ispy.BOX, on: false, group: "Detector", name: "Gas Electron Multipliers (-)",
+	fn: ispy.makeGEM, style: {color: "rgb(30%, 70%, 10%)", opacity: 0.5, linewidth: 1.0},
+	threed: true, rphi: false, rhoz: false
+    },
+    "GEMPlus3D_V1": {
+	type: ispy.BOX, on: false, group: "Detector", name: "Gas Electron Multipliers (+)",
+	fn: ispy.makeGEM, style: {color: "rgb(30%, 70%, 10%)", opacity: 0.5, linewidth: 1.0},
+	threed: true, rphi: false, rhoz: false
+    },
+    "GEMRZ_V1": {
+	type: ispy.BOX, on: true, group: "Detector", name: "Gas Electron Multipliers RZ",
+	fn: ispy.makeGEM, style: {color: "rgb(30%, 70%, 10%)", opacity: 0.5, linewidth: 1.0},
+	threed: false, rphi: false, rhoz: true
+    },
     "CSC3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
 	fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 1.0},
@@ -332,6 +347,30 @@ ispy.event_description = {
 	type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
 	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)",
 					 opacity: 1.0, linewidth: 1.5}
+    },
+    "MatchingGEMs_V1": {
+	type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching GEMs",
+	fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,10%)", opacity: 0.1, linewidth: 1}
+    },
+    "GEMDigis_V2": {
+	type: ispy.LINE, on: true, group: "Muon", name: "GEM Strip Digis",
+	fn: ispy.makeGEMDigis_V2, style: {color: "rgb(100%, 10%, 100%)", opacity: 0.8, linewidth: 1}
+    },
+    "GEMRecHits_V2": {
+	type: ispy.LINE, on: true, group: "Muon", name: "GEM Rec. Hits (2D)",
+	fn: ispy.makeGEMRecHits_V2, style: {color: "rgb(60%, 100%, 70%)", opacity: 1.0, linewidth: 1}
+    },
+    "GEMSegments_V1": {
+	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
+    },
+    "GEMSegments_V2": {
+	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
+    },
+    "GEMSegments_V3": {
+	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
     },
     "CSCStripDigis_V1": {
 	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Strip Digis",
