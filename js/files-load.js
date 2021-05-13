@@ -921,6 +921,20 @@ ispy.importDetector = function() {
 	    file: './geometry/gltf/HcalForwardMinus3D_V1.glb'
 	},
 	{
+	    id: 'GEMPlus3D_V1',
+	    name: 'Gas Electron Multipliers (+)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/GEMPlus3D_V1.glb'
+	},
+	{
+	    id: 'GEMMinus3D_V1',
+	    name: 'Gas Electron Multipliers (-)',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/GEMMinus3D_V1.glb'
+	},
+	{
 	    id: 'CSC3D_V1',
 	    name: 'Cathode Strip Chambers',
 	    group: 'Detector',

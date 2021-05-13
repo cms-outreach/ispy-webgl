@@ -1247,9 +1247,11 @@ ispy.makeCSCDigis_V2 = function(data) {
 
 ispy.makeGEMDigis_V2 = function(data) {
     
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(new THREE.Vector3(data[0][0], data[0][1], data[0][2]));
-    geometry.vertices.push(new THREE.Vector3(data[1][0], data[1][1], data[1][2]));
+    var geometry = new THREE.BufferGeometry().setFromPoints([
+	new THREE.Vector3(...data[0]),
+	new THREE.Vector3(...data[1])
+    ]);
+    
     return [geometry];
 
 };

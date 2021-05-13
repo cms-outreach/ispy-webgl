@@ -446,7 +446,7 @@ ispy.initDetector = function() {
     ).done(function() {
 	$('#loading').modal('hide')
     });
-
+    
 };
 
 ispy.initDetector_old = function() {
