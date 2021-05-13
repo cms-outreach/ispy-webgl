@@ -136,7 +136,7 @@ ispy.detector_description = {
     },
     "EcalBarrel3D_V1": {
 	type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
-	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5},
+	fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.01, linewidth: 0.5},
 	threed: true, rphi: false, rhoz: false
     },
     "EcalBarrelRPhi_V1": {
