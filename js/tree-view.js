@@ -117,7 +117,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     // Event is not part of the scene and is
     // handled with css so no need for the rest
-    if ( key.includes('Event_') )
+    if ( key.includes('Event_') || group.includes('Imported') )
 	return;
 
     sf.add(row_obj, 'opacity', 0, 1).onChange(function() {
