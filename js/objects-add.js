@@ -27,7 +27,8 @@ ispy.addDetector = function() {
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
 	const ocolor = new THREE.Color(descr.style.color);
-	const transp = descr.style.opacity < 1.0 ? true : false;
+	//const transp = descr.style.opacity < 1.0 ? true : false;
+	const transp = true; // Make true for all?
 	
 	switch(descr.type) {
 
