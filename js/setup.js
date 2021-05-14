@@ -41,7 +41,7 @@ ispy.initCamera = function() {
     ispy.camera.position.y = 9.5;
     ispy.camera.position.z = 13.0;
 
-    ispy.camera.zoom = ispy.is_perspective ? 2.0 : 20.0;
+    ispy.camera.zoom = 2.0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
     
     ispy.camera.updateProjectionMatrix();
@@ -111,6 +111,8 @@ ispy.init = function() {
 	100
     );
 
+    ispy.p_camera.name = 'PerspectiveCamera';
+
     ispy.o_camera = new THREE.OrthographicCamera(
 	width / -2,
 	width / 2,
@@ -120,6 +122,10 @@ ispy.init = function() {
 	100
     );
 
+    console.log(ispy.o_camera);
+    
+    ispy.o_camera.name = 'OrthographicCamera';
+    
     ispy.is_perspective = true; 
     ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
     ispy.initCamera();
