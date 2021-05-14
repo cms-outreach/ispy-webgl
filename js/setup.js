@@ -255,19 +255,11 @@ ispy.init = function() {
     });
 
     ispy.use_line2 = false;
-    $('#pickable_lines').prop('checked', true);
+    $('#pickable_lines').prop('checked', false);
 
     $('#pickable_lines').change(function() {
 
-	if ( this.checked ) {
-
-	    ispy.use_line2 = false;
-
-	} else {
-
-	    ispy.use_line2 = true;
-
-	}
+	ispy.use_line2 = this.checked ? true : false;
 	
     });
 				

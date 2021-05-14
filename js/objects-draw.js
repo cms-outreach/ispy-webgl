@@ -331,14 +331,8 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     }
     
     let tcolor = new THREE.Color(style.color);
-    let transp = false;
+    let transp = true;
   
-    if ( style.opacity < 1.0 ) {
-	
-	transp = true;
-  
-    }
-
     let lines = [];
     
     for ( var k = 0; k < positions.length; k++ ) {
@@ -397,7 +391,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
     let tcolor = new THREE.Color();    
     tcolor.setStyle(style.color);
 
-    transp = style.opacity < 1.0 ? true : false;
+    const transp = true;
     
     for ( let i = 0; i < assocs.length; i++ ) {
 
@@ -477,23 +471,17 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 ispy.makeVertex = function(data,style) {
 
-    var geometry = new THREE.SphereGeometry(style.radius, 32, 32);
-    var hcolor = new THREE.Color(style.color);
-    var transp = false;
+    const geometry = new THREE.SphereGeometry(style.radius, 32, 32);
+    const hcolor = new THREE.Color(style.color);
+    const transp = true;
     
-    if ( style.opacity < 1.0 ) {
-    
-	transp = true;
-  
-    }
-
-    var material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshBasicMaterial({
 	color:hcolor,
 	transparent: transp,
 	opacity:style.opacity
     });
     
-    var vertex = new THREE.Mesh(geometry, material);
+    const vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[2][0];
     vertex.position.y = data[2][1];
     vertex.position.z = data[2][2];
@@ -504,23 +492,17 @@ ispy.makeVertex = function(data,style) {
 
 ispy.makeVertexCompositeCandidate = function(data,style) {
 
-    var geometry = new THREE.SphereGeometry(style.radius, 32, 32);
-    var hcolor = new THREE.Color(style.color);
-    var transp = false;
+    const geometry = new THREE.SphereGeometry(style.radius, 32, 32);
+    const hcolor = new THREE.Color(style.color);
+    const transp = true;
     
-    if ( style.opacity < 1.0 ) {
-    
-	transp = true;
-  
-    }
-
-    var material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshBasicMaterial({
 	color:hcolor,
 	transparent: transp,
 	opacity:style.opacity
     });
     
-    var vertex = new THREE.Mesh(geometry, material);
+    const vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[0][0];
     vertex.position.y = data[0][1];
     vertex.position.z = data[0][2];
@@ -534,24 +516,18 @@ ispy.makeSimVertex = function(data, style) {
     if ( data[1] !== -1 )
 	return null;
 
-    var geometry = new THREE.SphereGeometry(0.005,32,32);
-    var hcolor = new THREE.Color(style.color);
+    const geometry = new THREE.SphereGeometry(0.005,32,32);
+    const hcolor = new THREE.Color(style.color);
     
-    var transp = false;
+    const transp = true;
   
-    if ( style.opacity < 1.0 ) {
-    
-	transp = true;
-  
-    }
-
-    var material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshBasicMaterial({
 	color:hcolor,
 	transparent: transp,
 	opacity:style.opacity
     });
     
-    var vertex = new THREE.Mesh(geometry, material);
+    const vertex = new THREE.Mesh(geometry, material);
     vertex.position.x = data[0][0];
     vertex.position.y = data[0][1];
     vertex.position.z = data[0][2];

@@ -158,7 +158,27 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	});
 	
     }
-        
+
+    if ( ispy.use_line2 ) {
+
+	if ( key.includes('GlobalMuon') || key.includes('GsfElectron') ) {
+	
+	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
+
+		let obj = ispy.scene.getObjectByName(key);
+
+		obj.children.forEach(function(o) {
+	    
+		    o.material.linewidth = row_obj.linewidth*0.001;
+	    
+		});
+
+	    });
+
+	}
+	
+    }
+    
     sf.addColor(row_obj, 'color').onChange(function() {
 
 	let obj = ispy.scene.getObjectByName(key);

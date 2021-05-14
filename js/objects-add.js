@@ -197,13 +197,12 @@ ispy.addEvent = function(event) {
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
 	let ocolor = null;
-	let transp;
+	const transp = true;
 
 	if ( descr.style.color !== undefined ) {
 	    
 	    ocolor = new THREE.Color();
 	    ocolor.setStyle(descr.style.color);
-	    transp = descr.style.opacity < 1.0 ? true : false;
 
 	}
 
@@ -279,7 +278,7 @@ ispy.addEvent = function(event) {
 	    
 		var line_material = new THREE.LineBasicMaterial({
                     color:0xcccccc,
-                    transparent: false,
+                    transparent: transp,
                     linewidth:1,
                     depthWrite: false  
                 });
