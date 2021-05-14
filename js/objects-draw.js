@@ -1126,18 +1126,29 @@ ispy.makeDTRecHits = function(data) {
 };
 
 ispy.makeRPCRecHits = function(data) {
-  
-    let u1 = new THREE.Vector3(...data[0]);
-    let u2 = new THREE.Vector3(...data[1]);
-    let v1 = new THREE.Vector3(...data[2]);
-    let v2 = new THREE.Vector3(...data[3]);
-    let w1 = new THREE.Vector3(...data[4]);
-    let w2 = new THREE.Vector3(...data[5]);
+
+    /*
+    const u1 = new THREE.Vector3(...data[0]);
+    const u2 = new THREE.Vector3(...data[1]);
+    const v1 = new THREE.Vector3(...data[2]);
+    const v2 = new THREE.Vector3(...data[3]);
+    const w1 = new THREE.Vector3(...data[4]);
+    const w2 = new THREE.Vector3(...data[5]);
 
     const u = new THREE.BufferGeometry().setFromPoints([u1,u2]);
     const v = new THREE.BufferGeometry().setFromPoints([v1,v2]);
     const w = new THREE.BufferGeometry().setFromPoints([w1,w2]);
-   
+    */
+
+    const u = new THREE.LineGeometry();
+    u.setPositions([...data[0], ...data[1]]);
+
+    const v = new THREE.LineGeometry();
+    v.setPositions([...data[2], ...data[3]]);
+
+    const w = new THREE.LineGeometry();
+    w.setPositions([...data[4], ...data[5]]);
+    
     return [u,v,w];
 
 };
@@ -1155,10 +1166,15 @@ ispy.makeGEMRecHits_V2 = function(data, descr) {
 };
 ispy.makeDTRecSegments = function(data) {
 
-    var geometry = new THREE.BufferGeometry().setFromPoints([
+    /*
+    const geometry = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[1]),
 	new THREE.Vector3(...data[2])
     ]);
+    */
+
+    const geometry = new THREE.LineGeometry();
+    geometry.setPositions([...data[1], ...data[2]]);
     
     return [geometry];
 
@@ -1235,21 +1251,36 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 };
 
 ispy.makeCSCDigis_V2 = function(data) {
-    
-    var geometry = new THREE.BufferGeometry().setFromPoints([
+
+    /*
+    const geometry = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[0]),
 	new THREE.Vector3(...data[1])
     ]);
+    */
+    
+    const geometry = new LineGeometry().setPositions([
+	new THREE.Vector3(...data[1]),
+	new THREE.Vector3(...data[2])
+    ]);
+
     
     return [geometry];
 
 };
 
 ispy.makeGEMDigis_V2 = function(data) {
-    
-    var geometry = new THREE.BufferGeometry().setFromPoints([
+
+    /*
+    const geometry = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[0]),
 	new THREE.Vector3(...data[1])
+    ]);
+    */
+    
+    const geometry = new LineGeometry().setPositions([
+	new THREE.Vector3(...data[1]),
+	new THREE.Vector3(...data[2])
     ]);
     
     return [geometry];

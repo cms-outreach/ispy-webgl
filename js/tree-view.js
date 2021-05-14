@@ -71,6 +71,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     let opacity = 1.0;
     let color = new THREE.Color();
+    let linewidth = 1;
     
     if ( ispy.detector_description.hasOwnProperty(key) ) {
 
@@ -90,6 +91,12 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	    color.set(style.color);
 
 	}
+
+	if ( style.hasOwnProperty('linewidth') ) {
+
+	    linewidth = style.linewidth;
+
+	}
 	
     }
 
@@ -97,7 +104,8 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	show: visible,
 	key: key,
 	opacity: opacity,
-	color: color.getHex() 
+	color: color.getHex(),
+	linewidth: linewidth
     };
 
     let folder = ispy.treegui.__folders[group];
@@ -132,7 +140,25 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     });
 
-    
+    // This conditional could / should be improved
+    if ( key.includes('GEMDigis') || key.includes('GEMSegments') || key.includes('GEMRec') ||
+	 key.includes('CSCStrip') || key.includes('CSCSegments') || key.includes('CSCRec') ||
+	 key.includes('CSCWire') || key.includes('RPCRec') || key.includes('DTRecSegment') ) {
+
+	sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
+
+	    let obj = ispy.scene.getObjectByName(key);
+
+	    obj.children.forEach(function(o) {
+	    
+		o.material.linewidth = row_obj.linewidth*0.001;
+	    
+	    });
+
+	});
+	
+    }
+        
     sf.addColor(row_obj, 'color').onChange(function() {
 
 	let obj = ispy.scene.getObjectByName(key);
@@ -144,5 +170,5 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	});
 
     });
-
+    
 };

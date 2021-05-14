@@ -498,28 +498,32 @@ ispy.addEvent = function(event) {
 
 	case ispy.LINE:
 
+	    console.log(key, descr.style.linewidth);
+	    
 	    for ( var i = 0; i < data.length; i++ ) {
 		
-		var lines = descr.fn(data[i]);
+		var geometries = descr.fn(data[i]);
 
-		lines.forEach(function(l) {
+		geometries.forEach(function(g) {
+		    
+		    var line = new THREE.Line2(g, new THREE.LineMaterial({
+			color:ocolor,
+			transparent:transp,
+			linewidth:descr.style.linewidth*0.001,
+			opacity:descr.style.opacity
+		    }));
             
-			var line = new THREE.Line(l, new THREE.LineBasicMaterial({
-				    color:ocolor, transparent:transp,
-				    linewidth:descr.style.linewidth,
-				    opacity:descr.style.opacity
-				}));
+		    line.name = key;
+		    line.computeLineDistances();
             
-			line.name = key;
-            
-			// originalIndex works as a link between the original
-			// data and THREE objects:
-			
-			line.userData.originalIndex = i;
-			objectIds.push(line.id);
-			ispy.scene.getObjectByName(key).add(line);
-		
-		    });
+		    // originalIndex works as a link between the original
+		    // data and THREE objects:
+		    
+		    line.userData.originalIndex = i;
+		    objectIds.push(line.id);
+		    ispy.scene.getObjectByName(key).add(line);
+		    
+		});
 	    
 	    }
 	    

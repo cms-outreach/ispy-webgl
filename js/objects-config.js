@@ -362,23 +362,23 @@ ispy.event_description = {
     },
     "GEMSegments_V1": {
 	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
-	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1}
     },
     "GEMSegments_V2": {
 	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
-	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1}
     },
     "GEMSegments_V3": {
 	type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
-	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1.5}
+	fn: ispy.makeGEMSegments_V2, style: {color: "rgb(100%, 70%, 100%)", opacity: 1.0, linewidth: 1}
     },
     "CSCStripDigis_V1": {
 	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Strip Digis",
-	fn: ispy.makeCSCStripDigis, style: {color: "rgb(100%, 20%, 100%)", opacity: 0.5, linewidth: 0.5}
+	fn: ispy.makeCSCStripDigis, style: {color: "rgb(100%, 20%, 100%)", opacity: 0.5, linewidth: 1}
     },
     "CSCWireDigis_V1": {
 	type: ispy.SOLIDBOX, on: false, group: "Muon", name: "CSC Wire Digis",
-	fn: ispy.makeCSCWireDigis, style: {color: "rgb(100%, 60%, 100%)", opacity: 0.5, linewidth: 0.5}
+	fn: ispy.makeCSCWireDigis, style: {color: "rgb(100%, 60%, 100%)", opacity: 0.5, linewidth: 1}
     },
     "CSCStripDigis_V2": {
 	type: ispy.LINE, on: false, group: "Muon", name: "CSC Strip Digis",
