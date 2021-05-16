@@ -452,7 +452,7 @@ ispy.event_description = {
     },
     "PATJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PAT)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.3}, selection: {"min_et": 34.0}
+	fn: ispy.makeJet, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}
     },
     "Photons_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
@@ -466,13 +466,13 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
-	selection:{"min_pt":5.0, "index":0}
+	selection:{"min_pt":1.0, "index":0}
     },
     "GlobalMuons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
-	selection:{"min_pt":5.0, "index":0}
+	selection:{"min_pt":1.0, "index":0}
     },
     "PATGlobalMuons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (PAT)",
@@ -520,7 +520,7 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
 	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
-	selection: {"min_pt":10.0, "index":0}
+	selection: {"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",

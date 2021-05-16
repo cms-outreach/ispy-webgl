@@ -72,6 +72,8 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     let opacity = 1.0;
     let color = new THREE.Color();
     let linewidth = 1;
+    let min_pt = 1.0;
+    let min_et = 1.0;
     
     if ( ispy.detector_description.hasOwnProperty(key) ) {
 
@@ -100,12 +102,15 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	
     }
 
+    // TO-DO: Fetch pt and et from objects-config
     const row_obj = {
 	show: visible,
 	key: key,
 	opacity: opacity,
 	color: color.getHex(),
-	linewidth: linewidth
+	linewidth: linewidth,
+	min_pt: 1.0,
+	min_et: 10.0
     };
 
     let folder = ispy.treegui.__folders[group];
@@ -177,6 +182,38 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	}
 	
+    }
+
+    if ( key.includes('GlobalMuon') || key.includes('GsfElectron') || key.includes('Tracks_') ) {
+
+	sf.add(row_obj, 'min_pt').onChange(function() {
+
+	    let obj = ispy.scene.getObjectByName(key);
+
+	    obj.children.forEach(function(o) {
+
+		o.visible = o.pt < row_obj.min_pt ? false : true;
+
+	    });
+
+	});
+
+    }
+
+    if ( key.includes('Jet') ) {
+
+	sf.add(row_obj, 'min_et').onChange(function() {
+
+	    let obj = ispy.scene.getObjectByName(key);
+
+	    obj.children.forEach(function(o) {
+
+		o.visible = o.et < row_obj.min_et ? false : true;
+
+	    });
+
+	});
+
     }
     
     sf.addColor(row_obj, 'color').onChange(function() {
