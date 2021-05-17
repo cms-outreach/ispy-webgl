@@ -575,7 +575,7 @@ ispy.readOBJMTL = function(file, mtl_file, cb) {
 
     reader.readAsText(file);
 
-}
+};
 
 ispy.loadOBJMTL = function(obj, mtl_file, name) {
  

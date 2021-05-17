@@ -184,7 +184,8 @@ ispy.init = function() {
 	});
     
     ispy.treegui = new dat.GUI({
-	name: 'Tree View'
+	name: 'Tree View',
+	hideable: false
     });
 
     // It seems currently impossible with dat.gui
@@ -244,7 +245,7 @@ ispy.init = function() {
 
 	if ( this.checked ) {
 
-	    $('#axes').hide()
+	    $('#axes').hide();
 
 	} else {
 
@@ -439,10 +440,8 @@ ispy.initDetector = function() {
 
     $('#loading').modal('show');
 
-    $.when(
-	ispy.importDetector()
-    ).done(function() {
-	$('#loading').modal('hide')
+    $.when(ispy.importDetector()).done(function() {
+	$('#loading').modal('hide');
     });
     
 };

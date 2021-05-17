@@ -92,7 +92,7 @@ ispy.animation_script = {
         {"group":"Tracking", "key":"Tracks_V3", "show":false}
       ]
     }
-}
+};
 
 ispy.toggleAnimation = function() {
   ispy.animating = !ispy.animating;
@@ -225,4 +225,4 @@ ispy.toggleAnimation = function() {
     c1.start();
     c2.start();
   }
-}
+};

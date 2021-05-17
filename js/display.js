@@ -77,7 +77,7 @@ ispy.updateRendererInfo = function() {
 
     html += "<dt><strong> render </strong></dt>";
   
-    for ( var prop in info.render ) {
+    for ( let prop in info.render ) {
     
 	html += "<dd>" + prop + ": " + info.render[prop] + "</dd>";
   
@@ -87,7 +87,7 @@ ispy.updateRendererInfo = function() {
     
 	html += "<dt><strong> memory </strong></dt>";
     
-	for ( var prop in info.memory ) {
+	for ( let prop in info.memory ) {
      
 	    html += "<dd>" + prop + ": " + info.memory[prop] + "</dd>";
     
@@ -266,7 +266,7 @@ ispy.onMouseMove = function(e) {
 };
 
 ispy.selected_objects = new Map();
-ispy.hidden_objects = new Array();
+ispy.hidden_objects = [];
 
 ispy.onMouseDown = function(e) {
 
@@ -388,54 +388,55 @@ document.addEventListener('keydown', function(e) {
 
 	ispy.show = true;
 
-	var hidden_object = ispy.hidden_objects.pop()
+	const hidden_object = ispy.hidden_objects.pop();
 
 	if ( hidden_object ) {
 
 	    hidden_object.visible = true;
 
 	}
+	
     }
     
 });
 
-var mMuon2 = 0.10566*0.10566;
-var mElectron2 = 0.511e-3*0.511e-3;
+const mMuon2 = 0.10566*0.10566;
+const mElectron2 = 0.511e-3*0.511e-3;
 
 ispy.displayCollection = function(key, group, name, objectIds) {
  
     ispy.currentCollection = key;
  
-    var type = ispy.current_event.Types[key];
-    var collection = ispy.current_event.Collections[key];
+    const type = ispy.current_event.Types[key];
+    const collection = ispy.current_event.Collections[key];
 
-    var collectionTable = $('#collection-table');
+    const collectionTable = $('#collection-table');
 
     collectionTable.empty();
     collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
     collectionTable.append('<thead> <tr>');
-    var collectionTableHead = collectionTable.find('thead').find('tr');
+    const collectionTableHead = collectionTable.find('thead').find('tr');
 
-    for ( var t in type ) {
+    for ( let t in type ) {
 
-	var dataSort = type[t][1] === "double" ? "float" : type[t][1];
+	let dataSort = type[t][1] === "double" ? "float" : type[t][1];
 	collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
   
     }
 
-    var index = 0;
+    let index = 0;
     
-    for ( var c in collection ) {
+    for ( let c in collection ) {
 	
-	var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
-	for ( v in collection[c] ) {
+	for ( let v in collection[c] ) {
   
 	    row_content += "<td>"+collection[c][v]+"</td>";
 
 	}
 
-	var rc = $(row_content)
+	let rc = $(row_content);
 	collectionTable.append(rc);
   
     }
@@ -444,13 +445,13 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	   
 	    "v3d":function(a,b) {
 
-		var aV3 = a.split(",");
-		var bV3 = b.split(",");
+		const aV3 = a.split(",");
+		const bV3 = b.split(",");
 
 		if ( aV3.length === 3 && bV3.length === 3 ) {
 
-		    var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
-		    var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
+		    const aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
+		    const bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
 		    
 		    return aLength - bLength;
 		}
@@ -461,7 +462,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	}).bind('aftertablesort', function(event, data){
 	
 		collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
-		var newClass = "fa fa-sort-" + data.direction;
+		const newClass = "fa fa-sort-" + data.direction;
 		collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
   
 	    });

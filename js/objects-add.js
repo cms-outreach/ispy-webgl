@@ -34,7 +34,7 @@ ispy.addDetector = function() {
 
 	case ispy.BOX:
 
-	    var material = new THREE.LineBasicMaterial({
+	    let box_material = new THREE.LineBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    linewidth:descr.style.linewidth, 
@@ -42,40 +42,41 @@ ispy.addDetector = function() {
 		    opacity:descr.style.opacity
 	    });
 	    
-	    var geometries = [];
+	    let box_geometries = [];
 	    
 	    for ( var i = 0; i < data.length; i++ ) {
-		
-		var box = descr.fn(data[i]);
-		geometries.push(box);
+	
+		box_geometries.push(descr.fn(data[i]));
         
 	    }
-
-	    var geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
 	    
-	    var line = new THREE.LineSegments(geometry, material);
-	    line.name = key;
-	    line.renderOrder = 1;
-	    ispy.scene.getObjectByName(key).add(line);
+	    let box = new THREE.LineSegments(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(geometries),
+		box_material
+	    );
+	    
+	    box.name = key;
+	    box.renderOrder = 1;
+	    ispy.scene.getObjectByName(key).add(box);
 
 	    break;
 
 	case ispy.SOLIDBOX:
 
-	    var material = new THREE.MeshBasicMaterial({
+	    let solidbox_material = new THREE.MeshBasicMaterial({
 		    color:ocolor,
 		    transparent: transp,
 		    opacity:descr.style.opacity
 		});
         
-	    material.side = THREE.DoubleSide;
+	    solidbox_material.side = THREE.DoubleSide;
 
-	    var boxes = [];
-	    var lines = [];
+	    let boxes = [];
+	    let lines = [];
 
-	    for ( var i = 0; i < data.length; i++ ) {
+	    for ( let i = 0; i < data.length; i++ ) {
 		
-		var bl = descr.fn(data[i]);
+		const bl = descr.fn(data[i]);
 		
 		if ( bl.length === 0 )
 		    continue;
@@ -85,22 +86,27 @@ ispy.addDetector = function() {
         
 	    }
 
-	    var box = THREE.BufferGeometryUtils.mergeBufferGeometries(boxes);
-	    var line = THREE.BufferGeometryUtils.mergeBufferGeometries(lines);
-	    
-	    var meshes = new THREE.Mesh(box, material);
+	    let meshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		solidbox_material
+	    );
+
 	    meshes.name = key;
 	    meshes.renderOrder = 1;
 	    ispy.scene.getObjectByName(key).add(meshes);
 
-	    var line_material = new THREE.LineBasicMaterial({
+	    let line_material = new THREE.LineBasicMaterial({
 		    color:0x000000,
 		    transparent: false,
 		    linewidth:1,
 		    depthWrite: false
 		});
 
-	    var line_mesh = new THREE.LineSegments(line, line_material);
+	    let line_mesh = new THREE.LineSegments(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
+		line_material
+	    );
+
 	    line_mesh.name = descr.key;
 	    ispy.scene.getObjectByName(key).add(line_mesh);
 
@@ -140,7 +146,7 @@ ispy.addEvent = function(event) {
     // Clear the subfolders for event information in the treegui
     ispy.data_groups.forEach(function(g) {
 
-	let folder = ispy.treegui.__folders[g];
+	const folder = ispy.treegui.__folders[g];
 	
 	ispy.subfolders[g].forEach(function(s) {
 	    
@@ -185,7 +191,7 @@ ispy.addEvent = function(event) {
 	// objectIds contain the ids of 'Physics' THREE objects. Ids are
 	// used when displaying event data in table-view so that we are
 	// able to connect the data somehow with THREE objects.
-	let objectIds = [];
+	const objectIds = [];
 	const visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
 
 	const obj = new THREE.Object3D();
@@ -206,31 +212,28 @@ ispy.addEvent = function(event) {
 
 	}
 
-	let is_physics_obj = descr.group === 'Physics' ? true : false;
+	const is_physics_obj = descr.group === 'Physics' ? true : false;
 		
 	switch(descr.type) {
 	    
 	case ispy.BOX:
 
-	    var material = new THREE.LineBasicMaterial({
+	    const boxes = [];
+
+	    for ( let i = 0; i < data.length; i++ ) {
+		
+		boxes.push(descr.fn(data[i]));
+
+	    }
+
+	    const line = new THREE.LineSegments(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+		new THREE.LineBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    linewidth:descr.style.linewidth,
 		    opacity:descr.style.opacity
-		});
-
-	    var boxes = [];
-
-	    for ( var i = 0; i < data.length; i++ ) {
-		
-		var box = descr.fn(data[i]);
-		boxes.push(box);
-
-	    }
-
-	    var line = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		material
+		})
 	    );
 
 	    line.name = key;
@@ -240,56 +243,56 @@ ispy.addEvent = function(event) {
 
 	case ispy.SOLIDBOX:
 	    
-	    var material = new THREE.MeshBasicMaterial({
+	    const sboxes = [];
+	    const slines = [];
+	    
+	    for ( let j = 0; j < data.length; j++ ) {
+          
+		let bl = descr.fn(data[j]);
+
+		if ( bl.length === 1 ) {
+		    sboxes.push(bl[0]);
+		}
+		
+		if ( bl.length === 2 ) {
+		    sboxes.push(bl[0]);
+		    slines.push(bl[1]);
+		}
+        
+	    }
+	    
+	    const solidbox_material = new THREE.MeshBasicMaterial({
 		    color:ocolor,
 		    transparent: transp,
 		    opacity:descr.style.opacity
 		});
 	    
-	    material.side = THREE.DoubleSide;
-
-	    var boxes = [];
-	    var lines = [];
+	    solidbox_material.side = THREE.DoubleSide;
 	    
-	    for ( var i = 0; i < data.length; i++ ) {
-          
-		var bl = descr.fn(data[i]);
-
-		if ( bl.length === 1 ) {
-		    boxes.push(bl[0]);
-		}
-		
-		if ( bl.length === 2 ) {
-		    boxes.push(bl[0]);
-		    lines.push(bl[1]);
-		}
-        
-	    }
-	    
-	    var meshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		material
+	    const smeshes = new THREE.Mesh(
+		THREE.BufferGeometryUtils.mergeBufferGeometries(sboxes),
+		solidbox_material
 	    );
 
-	    meshes.name = key;
-	    ispy.scene.getObjectByName(key).add(meshes);
+	    smeshes.name = key;
+	    ispy.scene.getObjectByName(key).add(smeshes);
 
-	    if ( lines.length > 0 ) {
+	    if ( slines.length > 0 ) {
 	    
-		var line_material = new THREE.LineBasicMaterial({
+		const sline_material = new THREE.LineBasicMaterial({
                     color:0xcccccc,
                     transparent: transp,
                     linewidth:1,
                     depthWrite: false  
                 });
 
-		var line_mesh = new THREE.LineSegments(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
-		    line_material
+		const sline_mesh = new THREE.LineSegments(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(slines),
+		    sline_material
 		);
 
-		line_mesh.name = descr.key;    
-		ispy.scene.getObjectByName(key).add(line_mesh);
+		sline_mesh.name = descr.key;    
+		ispy.scene.getObjectByName(key).add(sline_mesh);
 
 	    }
 	    
@@ -297,41 +300,41 @@ ispy.addEvent = function(event) {
 
 	case ispy.SCALEDSOLIDBOX:
 
-	    var material = new THREE.MeshBasicMaterial({
-		    color:ocolor, 
-		    transparent: transp,
-		    opacity:descr.style.opacity
-		});
-	    
-	    material.side = THREE.DoubleSide;
+	    const ss_boxes = [];
+	    let maxEnergy = 5.0;
 
-	    var boxes = [];
-	    var maxEnergy = 5.0;
+	    for ( let k = 0; k < data.length; k++ ) {
 
-	    for ( var j = 0; j < data.length; j++ ) {
+		let energy = data[k][0];
 		
-		var energy = data[j][0];
-          
 		if ( energy > maxEnergy )
 		    maxEnergy = energy;
         
 	    }
 
-	    for ( var i = 0; i < data.length; i++ ) {
+	    for ( let l = 0; l < data.length; l++ ) {
 		
-		descr.fn(data[i], boxes, maxEnergy, descr.selection);
+		descr.fn(data[l], ss_boxes, maxEnergy, descr.selection);
         
 	    }
 
-	    if ( boxes.length > 0 ) {
+	    if ( ss_boxes.length > 0 ) {
+
+		const ssb_material = new THREE.MeshBasicMaterial({
+		    color:ocolor, 
+		    transparent: transp,
+		    opacity:descr.style.opacity
+		});
 	    
-		var meshes = new THREE.Mesh(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		    material
+		ssb_material.side = THREE.DoubleSide;
+		
+		const ssb_meshes = new THREE.Mesh(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(ss_boxes),
+		    ssb_material
 		);
 
-		meshes.name = key;
-		ispy.scene.getObjectByName(key).add(meshes);
+		ssb_meshes.name = key;
+		ispy.scene.getObjectByName(key).add(ssb_meshes);
 
 	    }
 		
@@ -339,31 +342,31 @@ ispy.addEvent = function(event) {
 
 	case ispy.SCALEDSOLIDTOWER:
 
-	    var material = new THREE.MeshBasicMaterial({
+	    const sst_boxes = [];
+	    
+	    for ( var m = 0; m < data.length; m++ ) {
+          
+		descr.fn(data[m], sst_boxes, descr.scale, descr.selection);
+        
+	    }
+
+	    if ( sst_boxes.length > 0 ) {
+
+		const sst_material = new THREE.MeshBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    opacity:descr.style.opacity
 		});
 	    
-	    material.side = THREE.DoubleSide;
+		sst_material.side = THREE.DoubleSide;
 
-	    var boxes = [];
-	    
-	    for ( var i = 0; i < data.length; i++ ) {
-          
-		descr.fn(data[i], boxes, descr.scale, descr.selection);
-        
-	    }
-
-	    if ( boxes.length > 0 ) {
-	    
-		var meshes = new THREE.Mesh(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		    material
+		var sst_meshes = new THREE.Mesh(
+		    THREE.BufferGeometryUtils.mergeBufferGeometries(sst_boxes),
+		    sst_material
 		);
 	    
-		meshes.name = key;
-		ispy.scene.getObjectByName(key).add(meshes);
+		sst_meshes.name = key;
+		ispy.scene.getObjectByName(key).add(sst_meshes);
 
 	    }
 	    
@@ -371,13 +374,22 @@ ispy.addEvent = function(event) {
 
 	case ispy.STACKEDTOWER:
 	    
-	    var ematerial = new THREE.MeshBasicMaterial({
+	    const eboxes = [];
+	    const hboxes = [];
+	    
+	    for ( let n = 0; n < data.length; n++ ) {
+
+		descr.fn(data[n], eboxes, hboxes, descr.scale, descr.selection);
+
+	    }
+
+	    const ematerial = new THREE.MeshBasicMaterial({
 		    color: new THREE.Color(descr.style.ecolor),
 		    transparent: transp,
 		    opacity: descr.style.opacity
 		});
 
-	    var hmaterial = new THREE.MeshBasicMaterial({
+	    const hmaterial = new THREE.MeshBasicMaterial({
 		    color: new THREE.Color(descr.style.hcolor),
                     transparent: transp,
                     opacity: descr.style.opacity
@@ -386,21 +398,12 @@ ispy.addEvent = function(event) {
 	    ematerial.side = THREE.DoubleSide;
 	    hmaterial.side = THREE.DoubleSide;
 
-	    var eboxes = [];
-	    var hboxes = [];
-	    
-	    for ( var i = 0; i < data.length; i++ ) {
-
-		descr.fn(data[i], eboxes, hboxes, descr.scale, descr.selection);
-
-	    }
-
-	    var emeshes = new THREE.Mesh(
+	    const emeshes = new THREE.Mesh(
 		THREE.BufferGeometryUtils.mergeBufferGeometries(eboxes),
 		ematerial
 	    );
 	    
-	    var hmeshes = new THREE.Mesh(
+	    const hmeshes = new THREE.Mesh(
 		THREE.BufferGeometryUtils.mergeBufferGeometries(hboxes),
 		hmaterial
 	    );
@@ -422,27 +425,27 @@ ispy.addEvent = function(event) {
 
 	case ispy.ASSOC:
 	    
-	    var objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
+	    const objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
 
 	    if ( objs !== undefined ) {
 
-		objs.forEach(function(o, i) {
+		objs.forEach(function(obj, index) {
 		    
 		    // For event info we want each of the children to have the
 		    // same name as the parent. this is so picking on an object works
-		    o.name = key;
+		    obj.name = key;
 
 		    if ( is_physics_obj && visible ) {
 
-			o.layers.enable(2);
+			obj.layers.enable(2);
 
 		    }
 		    
 		    // originalIndex works as a link between the original
 		    // data and THREE objects:
-		    o.userData.originalIndex = i;
-		    objectIds.push(o.id);
-		    ispy.scene.getObjectByName(key).add(o);
+		    obj.userData.originalIndex = index;
+		    objectIds.push(obj.id);
+		    ispy.scene.getObjectByName(key).add(obj);
 		    
 		});
 		
@@ -452,14 +455,13 @@ ispy.addEvent = function(event) {
 
 	case ispy.POINT:
 	    
-	    // We make a buffer geometry, use a point cloud, and add to the scene.
-	    var material = new THREE.PointsMaterial({
+	    const points = new THREE.Points(
+		descr.fn(data),
+		new THREE.PointsMaterial({
 		    color:ocolor, 
 		    size:descr.style.size
-		});
+		}));
 	    
-	    var geometry = descr.fn(data);
-	    var points = new THREE.Points(geometry, material);
 	    points.name = key;
 	    ispy.scene.getObjectByName(key).add(points);
         
@@ -467,9 +469,9 @@ ispy.addEvent = function(event) {
 
 	case ispy.SHAPE:
 
-	    for ( var i = 0; i < data.length; i++ ) {
+	    for ( let si = 0; si < data.length; si++ ) {
           
-		var shape = descr.fn(data[i], descr.style, descr.selection);
+		const shape = descr.fn(data[si], descr.style, descr.selection);
           
 		if ( shape !== null ) {
             
@@ -486,7 +488,7 @@ ispy.addEvent = function(event) {
 		    
 		    // originalIndex works as a link between the original
 		    // data and THREE objects:
-		    shape.userData.originalIndex = i;
+		    shape.userData.originalIndex = si;
 		    objectIds.push(shape.id);
 		    ispy.scene.getObjectByName(key).add(shape);
 		
@@ -500,28 +502,26 @@ ispy.addEvent = function(event) {
 
 	    console.log(key, descr.style.linewidth);
 	    
-	    for ( var i = 0; i < data.length; i++ ) {
-		
-		var geometries = descr.fn(data[i]);
+	    for ( let li = 0; li < data.length; li++ ) {
 
-		geometries.forEach(function(g) {
+		descr.fn(data[li]).forEach(function(g) {
 		    
-		    var line = new THREE.Line2(g, new THREE.LineMaterial({
+		    const line2 = new THREE.Line2(g, new THREE.LineMaterial({
 			color:ocolor,
 			transparent:transp,
 			linewidth:descr.style.linewidth*0.001,
 			opacity:descr.style.opacity
 		    }));
             
-		    line.name = key;
-		    line.computeLineDistances();
+		    line2.name = key;
+		    line2.computeLineDistances();
             
 		    // originalIndex works as a link between the original
 		    // data and THREE objects:
 		    
-		    line.userData.originalIndex = i;
-		    objectIds.push(line.id);
-		    ispy.scene.getObjectByName(key).add(line);
+		    line2.userData.originalIndex = li;
+		    objectIds.push(line2.id);
+		    ispy.scene.getObjectByName(key).add(line2);
 		    
 		});
 	    

@@ -246,7 +246,7 @@ ispy.toStereo = function () {
 
   }
   
-}
+};
 
 function setOrientationControls(e) {
   
@@ -265,7 +265,6 @@ ispy.setStereo = function() {
 
     $('#perspective').removeClass('active');
     $('#orthographic').removeClass('active');
-
     $('#stereo').addClass('active');
 
     ispy.toStereo();

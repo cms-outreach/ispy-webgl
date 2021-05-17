@@ -307,13 +307,13 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     let mi = 0;  
     let positions = [];
     
-    for ( var i = 0; i < data.length; i++ ) {
+    for ( let i = 0; i < data.length; i++ ) {
 
 	positions[i] = [];
 	
     }
      
-    for ( var j = 0; j < assoc.length; j++ ) {
+    for ( let j = 0; j < assoc.length; j++ ) {
              
 	mi = assoc[j][0][1];
 	pi = assoc[j][1][1];
@@ -335,11 +335,11 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
   
     let lines = [];
     
-    for ( var k = 0; k < positions.length; k++ ) {
+    for ( let k = 0; k < positions.length; k++ ) {
 
 	if ( ispy.use_line2 ) {
 	
-	    var line = new THREE.Line2(
+	    const line2 = new THREE.Line2(
 		new THREE.LineGeometry().setPositions(positions[k]),
 		new THREE.LineMaterial({
 		    color: tcolor,
@@ -349,14 +349,14 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 		})
 	    );
 
-	    line.pt = data[k][selection.index];
-	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
-	    line.computeLineDistances();
-	    lines.push(line);
+	    line2.pt = data[k][selection.index];
+	    line2.visible = data[k][selection.index] < selection.min_pt ? false : true;
+	    line2.computeLineDistances();
+	    lines.push(line2);
 
 	} else {
 
-	    var line = new THREE.Line(
+	    const line = new THREE.Line(
 		new THREE.BufferGeometry().setFromPoints(positions[k]),
 		new THREE.LineBasicMaterial({
 		    color: tcolor,
@@ -1313,15 +1313,15 @@ ispy.makeEvent = function(data) {
       "Event_V2": [["run", "int"],["event", "int"],["ls", "int"],["orbit", "int"],["bx", "int"],["time", "string"],["localtime", "string"]]
       for what we do here, Event_V1 is the same, i.e. we don't show localtime
     */
-    var ei = data[0];
-    var run = ei[0], event = ei[1], ls = ei[2], time = ei[5];
+    let ei = data[0];
+    const run = ei[0], event = ei[1], ls = ei[2], time = ei[5];
     
-    var et = "CMS Experiment at the LHC, CERN<br>";
+    let et = "CMS Experiment at the LHC, CERN<br>";
     et += "Data recorded: " + time + "</br>";
     et += "Run / Event / LS: " + run + " / " + event + " / " + ls + "</br>";
     
     $('#event-text').html(et);
-    var ei = $('#event-info');
+    ei = $('#event-info');
     $('#display').append(ei);
 
 };

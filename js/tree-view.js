@@ -3,8 +3,8 @@ ispy.addGroups = function() {
     ispy.treegui.addFolder("Detector");
     ispy.treegui.addFolder("Imported");
 
-    ispy.subfolders["Detector"] = [];
-    ispy.subfolders["Imported"] = [];
+    ispy.subfolders.Detector = [];
+    ispy.subfolders.Imported = [];
     
     ispy.data_groups.forEach(function(g) {
 
