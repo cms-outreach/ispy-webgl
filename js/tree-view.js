@@ -119,6 +119,28 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     ispy.subfolders[group].push(name);
     
     sf = folder.addFolder(name);
+
+    // For Provenance, ECAL, etc. show table when clicking on
+    // tab for objects in the gui
+    if ( group !== 'Detector' || group !== 'Imported' ) {
+	
+	sf.domElement.onclick = function(e) {
+
+	    // If the dropdown is now open (i.e. clicked)
+	    // then display the information in the table
+	    if ( ! sf.closed ) {
+	    
+		ispy.displayCollection(
+		    key, group, name,
+		    ispy.getObjectIds(ispy.scene.getObjectByName(key))
+		);
+
+	    }	    
+	    
+	};
+	
+    }
+
     
     sf.add(row_obj, 'key');
     
@@ -192,7 +214,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	    obj.children.forEach(function(o) {
 
-		o.visible = o.pt < row_obj.min_pt ? false : true;
+		o.visible = o.userData.pt < row_obj.min_pt ? false : true;
 
 	    });
 
@@ -208,7 +230,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	    obj.children.forEach(function(o) {
 
-		o.visible = o.et < row_obj.min_et ? false : true;
+		o.visible = o.userData.et < row_obj.min_et ? false : true;
 
 	    });
 

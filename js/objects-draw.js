@@ -349,7 +349,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 		})
 	    );
 
-	    line2.pt = data[k][selection.index];
+	    line2.userData.pt = data[k][selection.index];
 	    line2.visible = data[k][selection.index] < selection.min_pt ? false : true;
 	    line2.computeLineDistances();
 	    lines.push(line2);
@@ -365,7 +365,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 		})
 	    );
 
-	    line.pt = data[k][selection.index];
+	    line.userData.pt = data[k][selection.index];
 	    line.visible = data[k][selection.index] < selection.min_pt ? false : true;
 	    lines.push(line);
 
@@ -461,7 +461,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 		})
 	    );
 
-	    line.pt = pt;
+	    line.userData.pt = pt;
 	    line.visible = pt > selection.min_pt ? true : false;
 	    curves.push(line);
 
@@ -968,7 +968,7 @@ ispy.makeJet = function(data, style, selection) {
     jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
     jet.visible = true;
 
-    jet.et = et;
+    jet.userData.et = et;
     
     if ( et < selection.min_et ) {
     
