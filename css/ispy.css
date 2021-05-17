@@ -14,6 +14,14 @@ canvas.hover {
   border:5px dashed #ccc;
 }
 
+.dg .c input[type=text] {                                                       
+
+  line-height:normal;                                                                  
+} 
+.dg .c div {
+  box-sizing: content-box;                                                             
+}
+
 #stats {
   position: absolute;
   top:0;
