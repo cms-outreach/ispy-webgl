@@ -127,17 +127,11 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	 group.includes('Physics') ) {
 	
 	sf.domElement.onclick = function(e) {
-
-	    // If the dropdown is now open (i.e. clicked)
-	    // then display the information in the table
-	    if ( ! sf.closed ) {
 	    
-		ispy.displayCollection(
-		    key, group, name,
-		    ispy.getObjectIds(ispy.scene.getObjectByName(key))
-		);
-
-	    }	    
+	    ispy.displayCollection(
+		key, group, name,
+		ispy.getObjectIds(ispy.scene.getObjectByName(key))
+	    );
 	    
 	};
 	

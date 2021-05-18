@@ -283,7 +283,7 @@ ispy.onMouseDown = function(e) {
 	    if ( ispy.selected_objects.has(ispy.intersected.id) ) {
 
 		ispy.selected_objects.delete(ispy.intersected.id);
-
+		
 	    }
 	    
 	    
@@ -518,10 +518,10 @@ ispy.showMass = function() {
 
 ispy.displayEventObjectData = function() {
 
-    var key = ispy.intersected.name;
+    const key = ispy.intersected.name;
     
-    var isMuon = key.includes('Muon');
-    var isElectron = key.includes('Electron');
+    const isMuon = key.includes('Muon');
+    const isElectron = key.includes('Electron');
 
     if ( ! ( isMuon || isElectron ) ) {
 
@@ -529,12 +529,12 @@ ispy.displayEventObjectData = function() {
 
     }
 
-    var objectUserData = ispy.intersected.userData;
-    var type = ispy.current_event.Types[key];
-    var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
+    const objectUserData = ispy.intersected.userData;
+    const type = ispy.current_event.Types[key];
+    const eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
     
-    var pt, eta, phi;
-    var E, px, py, pz;
+    let pt, eta, phi;
+    let E, px, py, pz;
     
     for ( var t in type ) {
 
@@ -553,7 +553,7 @@ ispy.displayEventObjectData = function() {
 	}
     }
 
-    var ptype;
+    let ptype;
 
     px = pt*Math.cos(phi);
     py = pt*Math.sin(phi);
