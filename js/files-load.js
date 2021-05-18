@@ -981,12 +981,19 @@ ispy.importDetector = function() {
 	
 		object.name = g.id;
 		object.visible = g.show;
+
+		// Set render order for geometries
+		// Otherwise they won't appear "in-front" of Imported geometries
+		object.children.forEach(function(c) {
+
+		    c.renderOrder = 1;
+
+		});
+
 		ispy.disabled[object.name] = ! g.show;
-		
+
 		ispy.scene.getObjectByName(g.group).add(object);
 		ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
-
-		//console.log(g.id+' loaded');
 		
 	    }
 	);

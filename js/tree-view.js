@@ -122,7 +122,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     // For Provenance, ECAL, etc. show table when clicking on
     // tab for objects in the gui
-    if ( group !== 'Detector' || group !== 'Imported' ) {
+    if ( group.includes('Provenance') || group.includes('CAL') ||
+	 group.includes('Tracking') || group.includes('Muon') ||
+	 group.includes('Physics') ) {
 	
 	sf.domElement.onclick = function(e) {
 
@@ -141,7 +143,6 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	
     }
 
-    
     sf.add(row_obj, 'key');
     
     sf.add(row_obj, 'show').onChange(function() {
