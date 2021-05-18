@@ -28,8 +28,10 @@ ispy.invertColors = function() {
     $('#treeview td.collection').toggleClass('white').toggleClass('black');
 
     $('#display').toggleClass('white').toggleClass('black');
+
     $('#tableview').toggleClass('white').toggleClass('black');
-    
+    $('#tableview table thead th').toggleClass('white').toggleClass('black');
+
     $('#browser-table').toggleClass('white').toggleClass('black');
     $('#browser-table th').toggleClass('white').toggleClass('black');
     $('#browser-files').toggleClass('white').toggleClass('black');
@@ -417,10 +419,12 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTable.append('<thead> <tr>');
     const collectionTableHead = collectionTable.find('thead').find('tr');
 
+    const color_class = ispy.inverted_colors ? 'group white' : 'group black';
+    
     for ( let t in type ) {
 
 	let dataSort = type[t][1] === "double" ? "float" : type[t][1];
-	collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
+	collectionTableHead.append($('<th class="'+ color_class +'" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
   
     }
 

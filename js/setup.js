@@ -188,6 +188,8 @@ ispy.init = function() {
 	hideable: false
     });
 
+    ispy.treegui.domElement.id = 'treegui';
+
     // It seems currently impossible with dat.gui
     // to fetch the folders as an array and remove them
     // (without knowing the name beforehand).
