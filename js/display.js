@@ -183,7 +183,7 @@ ispy.onWindowResize = function() {
 // Given an object3d this returns the ids of its children
 ispy.getObjectIds = function(obj) {
 
-    var ids = [];
+    const ids = [];
 
     obj.children.forEach(function(c) {
 	    
@@ -225,19 +225,28 @@ ispy.onMouseMove = function(e) {
 	container.css('cursor', 'auto');
 	    
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-	
-	const original_color = new THREE.Color(
-	    ispy.event_description[ispy.intersected.name].style.color
-	);
 
-	ispy.intersected.material.color = original_color;
+	if ( ! ispy.intersected.selected ) {
+	
+	    const original_color = new THREE.Color(
+		ispy.event_description[ispy.intersected.name].style.color
+	    );
+
+	    ispy.intersected.material.color = original_color;
+
+	} else {
+
+	    ispy.intersected.material.color.setHex(0xcccccc);
+
+	}
+
 	ispy.intersected = null;
 	
     }
     
     if ( intersects.length > 0 ) {
 
-	const res = intersects.filter( function (res) {
+	const res = intersects.filter(function(res) {
 
 	    return res && res.object;
 	    
@@ -251,7 +260,7 @@ ispy.onMouseMove = function(e) {
 	    container.css('cursor', 'pointer');
 
 	    var original_color = ispy.intersected.material.color;
-	    ispy.intersected.material.color.set('#cccccc');
+	    ispy.intersected.material.color.setHex(0xcccccc);
 	    
 	    ispy.displayCollection(
 		ispy.intersected.name, "Physics", 
@@ -271,9 +280,9 @@ ispy.selected_objects = new Map();
 ispy.hidden_objects = [];
 
 ispy.onMouseDown = function(e) {
-
-    if ( ispy.intersected ) {
     
+    if ( ispy.intersected ) {
+
 	if ( ispy.intersected.selected ) {
 	    
 	    const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
@@ -288,7 +297,7 @@ ispy.onMouseDown = function(e) {
 	    
 	    
 	} else {
-	    
+
 	    ispy.intersected.material.color.setHex(0x808080);
 	    ispy.intersected.selected = true;
 	    ispy.displayEventObjectData();

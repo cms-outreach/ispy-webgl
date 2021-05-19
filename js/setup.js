@@ -121,9 +121,7 @@ ispy.init = function() {
 	0.1,
 	100
     );
-
-    console.log(ispy.o_camera);
-    
+ 
     ispy.o_camera.name = 'OrthographicCamera';
     
     ispy.is_perspective = true; 
@@ -338,8 +336,8 @@ ispy.init = function() {
 
     ispy.intersected = null;
     
-    ispy.renderer.domElement.addEventListener('mousemove', ispy.onMouseMove, false);
-    ispy.renderer.domElement.addEventListener('mousedown', ispy.onMouseDown, false);
+    ispy.renderer.domElement.addEventListener('pointermove', ispy.onMouseMove, false);
+    ispy.renderer.domElement.addEventListener('pointerdown', ispy.onMouseDown, false);
     
     // Are we running an animation?
     ispy.animating = false;
