@@ -1,4 +1,3 @@
-
 // ----------- MODALS: settings
 
 ispy.invertColors = function() {
@@ -9,57 +8,9 @@ ispy.invertColors = function() {
     
 	ispy.renderer.setClearColor(0x000000,1);
 
-	for ( var k in ispy.event_description ) {
-      
-	    var obj = ispy.event_description[k];
-      
-	    if ( obj.style.altColor !== undefined ) {
-        
-		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          
-			if ( c.name === k ) {
-			    
-			    c.children.forEach(function(d) {
-				
-				    d.material.color.setStyle(obj.style.color);
-            
-				});
-          
-			}
-        
-		    });
-	    
-	    }
-    
-	}
-
     } else {
 
 	ispy.renderer.setClearColor(0xffffff,1);
-
-	for ( var k in ispy.event_description ) {
-      
-	    var obj = ispy.event_description[k];
-      
-	    if ( obj.style.altColor !== undefined ) {
-        
-		ispy.scene.getObjectByName(obj.group).children.forEach(function(c) {
-          
-			if ( c.name === k ) {
-            
-			    c.children.forEach(function(d) {
-				    
-				    d.material.color.setStyle(obj.style.altColor);
-            
-				});
-			
-			}
-        
-		    });
-      
-	    }
-    
-	}
 	
     }
 
@@ -77,8 +28,10 @@ ispy.invertColors = function() {
     $('#treeview td.collection').toggleClass('white').toggleClass('black');
 
     $('#display').toggleClass('white').toggleClass('black');
+
     $('#tableview').toggleClass('white').toggleClass('black');
-    
+    $('#tableview table thead th').toggleClass('white').toggleClass('black');
+
     $('#browser-table').toggleClass('white').toggleClass('black');
     $('#browser-table th').toggleClass('white').toggleClass('black');
     $('#browser-files').toggleClass('white').toggleClass('black');
@@ -103,14 +56,14 @@ ispy.setTransparency = function(t) {
 
     imported.children.forEach(function(obj) {
     
-	    obj.children.forEach(function(c) {
+	obj.children.forEach(function(c) {
       
-		    c.material.transparent = true;
-		    c.material.opacity = t;
+	    c.material.transparent = true;
+	    c.material.opacity = t;
     
-		});
-	    
 	});
+	    
+    });
 
 };
 
@@ -126,7 +79,7 @@ ispy.updateRendererInfo = function() {
 
     html += "<dt><strong> render </strong></dt>";
   
-    for ( var prop in info.render ) {
+    for ( let prop in info.render ) {
     
 	html += "<dd>" + prop + ": " + info.render[prop] + "</dd>";
   
@@ -136,7 +89,7 @@ ispy.updateRendererInfo = function() {
     
 	html += "<dt><strong> memory </strong></dt>";
     
-	for ( var prop in info.memory ) {
+	for ( let prop in info.memory ) {
      
 	    html += "<dd>" + prop + ": " + info.memory[prop] + "</dd>";
     
@@ -208,16 +161,16 @@ ispy.onWindowResize = function() {
     var w = $('#display').innerWidth();
     var h = $('#display').innerHeight();
 
-    if ( ispy.camera.inPerspectiveMode ) {
+    if ( ispy.is_perspective ) {
 
-	ispy.camera.cameraP.aspect = w/h;
+	ispy.camera.aspect = w/h;
 
     } else {
 
-	ispy.camera.cameraO.left = -w/2;
-	ispy.camera.cameraO.right = w/2;
-	ispy.camera.cameraO.top = h/2;
-	ispy.camera.cameraO.bottom = -h/2;
+	ispy.camera.left = -w/2;
+	ispy.camera.right = w/2;
+	ispy.camera.top = h/2;
+	ispy.camera.bottom = -h/2;
 
     }
 
@@ -230,7 +183,7 @@ ispy.onWindowResize = function() {
 // Given an object3d this returns the ids of its children
 ispy.getObjectIds = function(obj) {
 
-    var ids = [];
+    const ids = [];
 
     obj.children.forEach(function(c) {
 	    
@@ -246,58 +199,74 @@ ispy.onMouseMove = function(e) {
   
     e.preventDefault();
 
-    var container = $("canvas");
+    const container = $("canvas");
 
-    var w = $('#display').innerWidth();
-    var h = $('#display').innerHeight();
+    const w = $('#display').innerWidth();
+    const h = $('#display').innerHeight();
 
-    var doc = document.documentElement;
-    var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    const doc = document.documentElement;
+    const left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+    const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
 
-    var offsetX = $('#display').offset().left - left;
-    var offsetY = $('#display').offset().top - top;
+    const offsetX = $('#display').offset().left - left;
+    const offsetY = $('#display').offset().top - top;
 
-    ispy.mouse.x = ((e.clientX-offsetX) / w)*2 - 1;
-    ispy.mouse.y = -((e.clientY-offsetY) / h)*2 +1;
+    const pointer = new THREE.Vector2();
+    
+    pointer.x = ((e.clientX-offsetX) / w)*2 - 1;
+    pointer.y = -((e.clientY-offsetY) / h)*2 +1;
 
-    var vector = new THREE.Vector3(ispy.mouse.x,ispy.mouse.y,0.5).unproject(ispy.camera);
-    ispy.raycaster.set(ispy.camera.position, vector.subVectors(vector, ispy.camera.position).normalize());
-    var intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
-
-    // If there is an already-picked object restore its color
+    ispy.raycaster.setFromCamera(pointer, ispy.camera);
+    const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
+    
     if ( ispy.intersected ) {
 
+	// Undo selection stuff
 	container.css('cursor', 'auto');
+	    
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
-	
+
 	if ( ! ispy.intersected.selected ) {
-	    
-	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	
+	    const original_color = new THREE.Color(
+		ispy.event_description[ispy.intersected.name].style.color
+	    );
+
 	    ispy.intersected.material.color = original_color;
-	    
+
 	} else {
 
-	    ispy.intersected.material.color.setHex(0x808080);
+	    ispy.intersected.material.color.setHex(0xcccccc);
 
 	}
+
+	ispy.intersected = null;
 	
     }
-	
-    if ( intersects.length ) {
+    
+    if ( intersects.length > 0 ) {
 
-	// First object should be the closet one
-	ispy.intersected = intersects[0].object;
+	const res = intersects.filter(function(res) {
 
-	if ( ispy.intersected ) {
-
-	    container.css('cursor', 'pointer');
+	    return res && res.object;
 	    
+	})[0];
+	
+	if ( res && res.object ) {
+
+	    // Selection stuff happens
+	    ispy.intersected = res.object;
+	    
+	    container.css('cursor', 'pointer');
+
+	    var original_color = ispy.intersected.material.color;
 	    ispy.intersected.material.color.setHex(0xcccccc);
 	    
-	    ispy.displayCollection(ispy.intersected.name, "Physics", 
-				   ispy.event_description[ispy.intersected.name].name, 
-				   ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name)));
+	    ispy.displayCollection(
+		ispy.intersected.name, "Physics", 
+		ispy.event_description[ispy.intersected.name].name, 
+		ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name))
+	    );
 	    
 	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
 	    
@@ -308,27 +277,27 @@ ispy.onMouseMove = function(e) {
 };
 
 ispy.selected_objects = new Map();
-ispy.hidden_objects = new Array();
+ispy.hidden_objects = [];
 
 ispy.onMouseDown = function(e) {
-
-    if ( ispy.intersected ) {
     
+    if ( ispy.intersected ) {
+
 	if ( ispy.intersected.selected ) {
 	    
-	    var original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+	    const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
 	    ispy.intersected.material.color = original_color;
 	    ispy.intersected.selected = false;
 
 	    if ( ispy.selected_objects.has(ispy.intersected.id) ) {
 
 		ispy.selected_objects.delete(ispy.intersected.id);
-
+		
 	    }
 	    
 	    
 	} else {
-	    
+
 	    ispy.intersected.material.color.setHex(0x808080);
 	    ispy.intersected.selected = true;
 	    ispy.displayEventObjectData();
@@ -430,54 +399,57 @@ document.addEventListener('keydown', function(e) {
 
 	ispy.show = true;
 
-	var hidden_object = ispy.hidden_objects.pop()
+	const hidden_object = ispy.hidden_objects.pop();
 
 	if ( hidden_object ) {
 
 	    hidden_object.visible = true;
 
 	}
+	
     }
     
 });
 
-var mMuon2 = 0.10566*0.10566;
-var mElectron2 = 0.511e-3*0.511e-3;
+const mMuon2 = 0.10566*0.10566;
+const mElectron2 = 0.511e-3*0.511e-3;
 
 ispy.displayCollection = function(key, group, name, objectIds) {
  
     ispy.currentCollection = key;
  
-    var type = ispy.current_event.Types[key];
-    var collection = ispy.current_event.Collections[key];
+    const type = ispy.current_event.Types[key];
+    const collection = ispy.current_event.Collections[key];
 
-    var collectionTable = $('#collection-table');
+    const collectionTable = $('#collection-table');
 
     collectionTable.empty();
     collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
     collectionTable.append('<thead> <tr>');
-    var collectionTableHead = collectionTable.find('thead').find('tr');
+    const collectionTableHead = collectionTable.find('thead').find('tr');
 
-    for ( var t in type ) {
+    const color_class = ispy.inverted_colors ? 'group white' : 'group black';
+    
+    for ( let t in type ) {
 
-	var dataSort = type[t][1] === "double" ? "float" : type[t][1];
-	collectionTableHead.append($('<th class="group" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
+	let dataSort = type[t][1] === "double" ? "float" : type[t][1];
+	collectionTableHead.append($('<th class="'+ color_class +'" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
   
     }
 
-    var index = 0;
+    let index = 0;
     
-    for ( var c in collection ) {
+    for ( let c in collection ) {
 	
-	var row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
-	for ( v in collection[c] ) {
+	for ( let v in collection[c] ) {
   
 	    row_content += "<td>"+collection[c][v]+"</td>";
 
 	}
 
-	var rc = $(row_content)
+	let rc = $(row_content);
 	collectionTable.append(rc);
   
     }
@@ -486,13 +458,13 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	   
 	    "v3d":function(a,b) {
 
-		var aV3 = a.split(",");
-		var bV3 = b.split(",");
+		const aV3 = a.split(",");
+		const bV3 = b.split(",");
 
 		if ( aV3.length === 3 && bV3.length === 3 ) {
 
-		    var aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
-		    var bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
+		    const aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
+		    const bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
 		    
 		    return aLength - bLength;
 		}
@@ -503,7 +475,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	}).bind('aftertablesort', function(event, data){
 	
 		collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
-		var newClass = "fa fa-sort-" + data.direction;
+		const newClass = "fa fa-sort-" + data.direction;
 		collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
   
 	    });
@@ -555,10 +527,10 @@ ispy.showMass = function() {
 
 ispy.displayEventObjectData = function() {
 
-    var key = ispy.intersected.name;
+    const key = ispy.intersected.name;
     
-    var isMuon = key.includes('Muon');
-    var isElectron = key.includes('Electron');
+    const isMuon = key.includes('Muon');
+    const isElectron = key.includes('Electron');
 
     if ( ! ( isMuon || isElectron ) ) {
 
@@ -566,12 +538,12 @@ ispy.displayEventObjectData = function() {
 
     }
 
-    var objectUserData = ispy.intersected.userData;
-    var type = ispy.current_event.Types[key];
-    var eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
+    const objectUserData = ispy.intersected.userData;
+    const type = ispy.current_event.Types[key];
+    const eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
     
-    var pt, eta, phi;
-    var E, px, py, pz;
+    let pt, eta, phi;
+    let E, px, py, pz;
     
     for ( var t in type ) {
 
@@ -590,7 +562,7 @@ ispy.displayEventObjectData = function() {
 	}
     }
 
-    var ptype;
+    let ptype;
 
     px = pt*Math.cos(phi);
     py = pt*Math.sin(phi);

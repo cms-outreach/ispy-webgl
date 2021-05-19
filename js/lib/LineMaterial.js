@@ -1,12 +1,11 @@
 /**
- * @author WestLangley / http://github.com/WestLangley
- *
  * parameters = {
  *  color: <hex>,
  *  linewidth: <float>,
  *  dashed: <boolean>,
  *  dashScale: <float>,
  *  dashSize: <float>,
+ *  dashOffset: <float>,
  *  gapSize: <float>,
  *  resolution: <Vector2>, // to be set by renderer
  * }
@@ -18,7 +17,9 @@ THREE.UniformsLib.line = {
 	resolution: { value: new THREE.Vector2( 1, 1 ) },
 	dashScale: { value: 1 },
 	dashSize: { value: 1 },
-	gapSize: { value: 1 } // todo FIX - maybe change to totalSize
+	dashOffset: { value: 0 },
+	gapSize: { value: 1 }, // todo FIX - maybe change to totalSize
+	opacity: { value: 1 }
 
 };
 
@@ -168,9 +169,9 @@ THREE.ShaderLib[ 'line' ] = {
 
 			gl_Position = clip;
 
-			#include <logdepthbuf_vertex>
+			vec4 mvPosition = ( position.y < 0.5 ) ? start : end; // this is an approximation
 
-			#include <worldpos_vertex>
+			#include <logdepthbuf_vertex>
 			#include <clipping_planes_vertex>
 			#include <fog_vertex>
 
@@ -185,6 +186,7 @@ THREE.ShaderLib[ 'line' ] = {
 		#ifdef USE_DASH
 
 			uniform float dashSize;
+			uniform float dashOffset;
 			uniform float gapSize;
 
 		#endif
@@ -205,19 +207,19 @@ THREE.ShaderLib[ 'line' ] = {
 
 			#ifdef USE_DASH
 
-				if ( vUv.y < 0.5 || vUv.y > 0.5 ) discard; // discard endcaps
+				if ( vUv.y < - 1.0 || vUv.y > 1.0 ) discard; // discard endcaps
 
-				if ( mod( vLineDistance, dashSize + gapSize ) > dashSize ) discard; // todo - FIX
+				if ( mod( vLineDistance + dashOffset, dashSize + gapSize ) > dashSize ) discard; // todo - FIX
 
 			#endif
 
-			if ( vUv.y < 0.5 || vUv.y > 0.5 ) {
+			if ( abs( vUv.y ) > 1.0 ) {
 
-				float a = vUv.x - 0.5;
-				float b = vUv.y - 0.5;
+				float a = vUv.x;
+				float b = ( vUv.y > 0.0 ) ? vUv.y - 1.0 : vUv.y + 1.0;
 				float len2 = a * a + b * b;
 
-				if ( len2 > 0.25 ) discard;
+				if ( len2 > 1.0 ) discard;
 
 			}
 
@@ -228,10 +230,10 @@ THREE.ShaderLib[ 'line' ] = {
 
 			gl_FragColor = vec4( diffuseColor.rgb, diffuseColor.a );
 
-			#include <premultiplied_alpha_fragment>
 			#include <tonemapping_fragment>
 			#include <encodings_fragment>
 			#include <fog_fragment>
+			#include <premultiplied_alpha_fragment>
 
 		}
 		`
@@ -246,7 +248,9 @@ THREE.LineMaterial = function ( parameters ) {
 		uniforms: THREE.UniformsUtils.clone( THREE.ShaderLib[ 'line' ].uniforms ),
 
 		vertexShader: THREE.ShaderLib[ 'line' ].vertexShader,
-		fragmentShader: THREE.ShaderLib[ 'line' ].fragmentShader
+		fragmentShader: THREE.ShaderLib[ 'line' ].fragmentShader,
+
+		clipping: true // required for clipping support
 
 	} );
 
@@ -326,6 +330,24 @@ THREE.LineMaterial = function ( parameters ) {
 
 		},
 
+		dashOffset: {
+
+			enumerable: true,
+
+			get: function () {
+
+				return this.uniforms.dashOffset.value;
+
+			},
+
+			set: function ( value ) {
+
+				this.uniforms.dashOffset.value = value;
+
+			}
+
+		},
+
 		gapSize: {
 
 			enumerable: true,
@@ -339,6 +361,24 @@ THREE.LineMaterial = function ( parameters ) {
 			set: function ( value ) {
 
 				this.uniforms.gapSize.value = value;
+
+			}
+
+		},
+
+		opacity: {
+
+			enumerable: true,
+
+			get: function () {
+
+				return this.uniforms.opacity.value;
+
+			},
+
+			set: function ( value ) {
+
+				this.uniforms.opacity.value = value;
 
 			}
 
@@ -372,20 +412,3 @@ THREE.LineMaterial.prototype = Object.create( THREE.ShaderMaterial.prototype );
 THREE.LineMaterial.prototype.constructor = THREE.LineMaterial;
 
 THREE.LineMaterial.prototype.isLineMaterial = true;
-
-THREE.LineMaterial.prototype.copy = function ( source ) {
-
-	THREE.ShaderMaterial.prototype.copy.call( this, source );
-
-	this.color.copy( source.color );
-
-	this.linewidth = source.linewidth;
-
-	this.resolution = source.resolution;
-
-	// todo
-
-	return this;
-
-};
-

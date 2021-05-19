@@ -1,41 +1,46 @@
-
 ispy.resetControls = function() {
-
+  
+  ispy.setPerspective();
   ispy.initCamera();
   ispy.controls.reset();
-  ispy.setPerspective();
 
 };
 
 ispy.setXY = function() {
 
-    var length = ispy.camera.position.length();
+    const length = ispy.camera.position.length();
+
     ispy.camera.position.x = 0;
     ispy.camera.position.y = 0;
     ispy.camera.position.z = length;
     ispy.camera.up = new THREE.Vector3(0,1,0);
+
     ispy.lookAtOrigin();
 
 };
 
 ispy.setZX = function() {
 
-    var length = ispy.camera.position.length();
+    const length = ispy.camera.position.length();
+
     ispy.camera.position.x = 0;
     ispy.camera.position.y = length;
     ispy.camera.position.z = 0;
     ispy.camera.up = new THREE.Vector3(1,0,0);
+
     ispy.lookAtOrigin();
 
 };
 
 ispy.setYZ = function() {
 
-    var length = ispy.camera.position.length();
+    const length = ispy.camera.position.length();
+
     ispy.camera.position.x = -length;
     ispy.camera.position.y = 0;
     ispy.camera.position.z = 0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
+
     ispy.lookAtOrigin();
 
 };
@@ -49,22 +54,68 @@ ispy.autoRotate = function() {
 
 ispy.setOrthographic = function() {
 
-  $('#perspective').removeClass('active');
-  $('#orthographic').addClass('active');
-  $('#stereo').removeClass('active');
+    $('#perspective').removeClass('active');
+    $('#orthographic').addClass('active');
+    $('#stereo').removeClass('active');
+    
+    ispy.is_perspective = false;
+    ispy.camera = ispy.o_camera;
 
-  ispy.camera.toOrthographic();
+    ispy.camera.position.x = ispy.p_camera.position.x;
+    ispy.camera.position.y = ispy.p_camera.position.y;
+    ispy.camera.position.z = ispy.p_camera.position.z;
 
+    ispy.camera.zoom = ispy.p_camera.zoom;
+    ispy.camera.up = ispy.p_camera.up;
+    
+    const fov = ispy.p_camera.fov;
+    const aspect = ispy.p_camera.aspect;
+    const near = ispy.p_camera.near;
+    const far = ispy.p_camera.far;
+    
+    const focus = (near+far)/2;
+
+    let half_height = Math.tan(fov*Math.PI/180/2)*focus;
+    let half_width = half_height*aspect;
+
+    half_height /= ispy.p_camera.zoom;
+    half_width /= ispy.p_camera.zoom;
+    
+    ispy.camera.left = -half_width;
+    ispy.camera.right = half_width;
+    ispy.camera.top = half_height;
+    ispy.camera.bottom = -half_height;
+    
+    ispy.camera.updateProjectionMatrix();
+
+    ispy.controls.object = ispy.camera;
+    ispy.controls.update();
+    
 };
 
 ispy.setPerspective = function() {
 
-  $('#perspective').addClass('active');
-  $('#orthographic').removeClass('active');
-  $('#stereo').removeClass('active');
+    $('#perspective').addClass('active');
+    $('#orthographic').removeClass('active');
+    $('#stereo').removeClass('active');
 
-  ispy.camera.toPerspective();
+    ispy.is_perspective = true;
+    ispy.camera = ispy.p_camera;
+    
+    ispy.camera.position.x = ispy.o_camera.position.x;
+    ispy.camera.position.y = ispy.o_camera.position.y;
+    ispy.camera.position.z = ispy.o_camera.position.z;
 
+    ispy.camera.zoom = ispy.o_camera.zoom;
+    ispy.camera.up = ispy.o_camera.up;
+
+    ispy.camera.aspect = ispy.o_camera.right / ispy.o_camera.top;
+    
+    ispy.camera.updateProjectionMatrix();
+
+    ispy.controls.object = ispy.camera;
+    ispy.controls.update();
+    
 };
 
 ispy.showView = function(view) {
@@ -108,7 +159,7 @@ ispy.showView = function(view) {
 
 ispy.enterFullscreen = function() {
     
-    var container = document.getElementById('ispy');
+    const container = document.getElementById('ispy');
 
     if ( container.requestFullscreen ) {
 	container.requestFullscreen();
@@ -195,7 +246,7 @@ ispy.toStereo = function () {
 
   }
   
-}
+};
 
 function setOrientationControls(e) {
   
@@ -214,7 +265,6 @@ ispy.setStereo = function() {
 
     $('#perspective').removeClass('active');
     $('#orthographic').removeClass('active');
-
     $('#stereo').addClass('active');
 
     ispy.toStereo();
@@ -224,31 +274,15 @@ ispy.setStereo = function() {
 
 ispy.zoomIn = function() {
 
-    if ( ispy.camera.inPerspectiveMode ) {
-	
-	ispy.camera.position.multiplyScalar(0.5);
-  
-    } else {
+    ispy.camera.zoom += 0.5;
+    ispy.camera.updateProjectionMatrix();
     
-	var zoom = ispy.camera.zoom;
-	ispy.camera.setZoom(zoom+0.5);
-	
-  }
-
 };
 
 ispy.zoomOut = function() {
-
-    if ( ispy.camera.inPerspectiveMode ) {
     
-	ispy.camera.position.multiplyScalar(1.5);
-  
-    } else {
-    
-	var zoom = ispy.camera.zoom;
-	ispy.camera.setZoom(zoom-0.5);
-    
-    }
+    ispy.camera.zoom -= 0.5;
+    ispy.camera.updateProjectionMatrix();
 
 };
 
@@ -260,20 +294,39 @@ ispy.printImage = function() {
 
 };
 
+ispy.exportScene = function() {
+
+    const exporter = new THREE.GLTFExporter();
+
+    const options = {
+	onlyVisible: true,
+	binary: true
+    };
+
+    exporter.parse(ispy.scene, function(result) {
+
+	ispy.exportArrayBuffer(result, 'scene.glb'); 
+
+    }, options);
+
+
+    alert('scene.glb created');
+    
+};
+
 ispy.exportString = function(output, filename) {
 
-    // This comes from three.js editor
-    var blob = new Blob([output], {type: 'text/plain'});
-    var objectURL = URL.createObjectURL(blob);
+    const blob = new Blob([output], {type: 'text/plain'});
+    const objectURL = URL.createObjectURL(blob);
 
     console.log(filename);
 
     // Use this to output to file:
-    var link = document.createElement('a');
+    const link = document.createElement('a');
     link.style.display = 'none';
     document.body.appendChild( link );
     link.href = objectURL;
-    link.download = filename || 'data.txt';
+    link.download = filename;
     link.target = '_blank';
     link.click();
     
@@ -283,81 +336,100 @@ ispy.exportString = function(output, filename) {
 
 };
 
-ispy.exportScene = function() {
+ispy.exportArrayBuffer = function(output, filename) {
 
-    // The scene is actually made up of several objects,
-    // one each for major category: e.g. Detector, ECAL, Physics, etc.
-    // This exports a json file for each whether visible or not.
-    ispy.scene.children.forEach(function(c) {
+    const blob = new Blob([output], {type: 'application/octect-stream'});
+    const objectURL = URL.createObjectURL(blob);
+
+    console.log(filename);
+
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    document.body.appendChild( link );
+    link.href = objectURL;
+    link.download = filename;
+    link.target = '_blank';
+    link.click();
     
-	    var output = c.toJSON();
-	    output = JSON.stringify( output, null, '\t' );
-	    output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
-	    ispy.exportString(output, c.name+'.json');
-  
-	});
+};
+
+ispy.exportGLTF_binary = function() {
+
+    ispy.exportGLTF(true);
 
 };
 
-ispy.exportGLTF = function() {
+ispy.exportGLTF_text = function() {
 
-    var exporter = new THREE.GLTFExporter();
-
-    ispy.scene.children.forEach(function(c) {
-	    
-	    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
-
-		c.children.forEach(function(o) {
-
-			if ( o.visible ) {
-			    
-			    exporter.parse(o, function(result) {
-				    
-				    var output = JSON.stringify(result, null, 2);
-				    ispy.exportString(output, o.name+'.gltf');
-				    
-				});
-
-			}
-			
-		    });
-		
-	    }
-	    
-	});
+    ispy.exportGLTF(false);
 
 };
 
-ispy.exportModel = function(format) {
+ispy.exportGLTF = function(binary) {
 
-    var exporter;
+    $('#export-model').hide();
     
-    if ( format === 'obj' ) {
+    const exporter = new THREE.GLTFExporter();
+
+    const options = {
+	binary: binary
+    };
 	
-	exporter = new THREE.OBJExporter();
-	
-    } else if ( format === 'stl' ) {
-	
-	exporter = new THREE.STLExporter();
-	
-    }
+    ispy.scene.children.forEach(function(c) {
+	    
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
+	    
+	    c.children.forEach(function(o) {
+
+		if ( o.visible ) {
+		    
+		    exporter.parse(o, function(result) {
+
+			if ( result instanceof ArrayBuffer ) {
+
+			    ispy.exportArrayBuffer(result, o.name+'.glb'); 
+			    
+			} else {
+
+			    const output = JSON.stringify(result, null, 2);
+			    ispy.exportString(output, o.name+'.gltf');
+
+			}
+			
+		    }, options);
+
+		}
+			
+	    });
+		
+	}
+	    
+    });
+
+};
+
+ispy.exportOBJ = function() {
+
+    $('#export-model').hide();
+    
+    const exporter = new THREE.OBJExporter();
 
     ispy.scene.children.forEach(function(c) {
 	    
-	    if ( c.children.length > 0 && c.name !== 'Lights' ) { // If no children then nothing to export
-		
-		c.children.forEach(function(o) {
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
+	    
+	    c.children.forEach(function(o) {
 			
-			if ( o.visible ) {
+		if ( o.visible ) {
 			    
-			    ispy.exportString(exporter.parse(o), o.name+'.'+format);
+		    ispy.exportString(exporter.parse(o), o.name+'.obj');
 			    
-			}
+		}
 			
-		    });
+	    });
 
-	    }
+	}
 
-	});
-    
+    });
+
 };

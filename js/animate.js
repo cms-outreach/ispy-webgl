@@ -31,8 +31,14 @@ ispy.animation_script = {
         {key:"CSCSegments_V1", show:false},
         {key:"CSCSegments_V2", show:false},
         {key:"CSCSegments_V3", show:false},
+        {key:"GEMRecHits_V2", show:false},
+        {key:"GEMSegments_V1", show:false},
+        {key:"GEMSegments_V2", show:false},
+        {key:"GEMSegments_V3", show:false},
+        {key:"GEMDigis_V2", show:false},
         {key:"MuonChambers_V1", show:false},
         {key:"MatchingCSCs_V1",show:false},
+        {key:"MatchingGEMs_V1",show:false},
         {key:"GlobalMuons_V1", show:false},
         {key:"TrackerMuons_V1", show:false},
         {key:"TrackerMuons_V2", show:false},
@@ -54,6 +60,11 @@ ispy.animation_script = {
         {key:"CSCSegments_V1", show:true},
         {key:"CSCSegments_V2", show:true},
         {key:"CSCSegments_V3", show:true},
+        {key:"GEMRecHits_V2", show:true},
+        {key:"GEMSegments_V1", show:true},
+        {key:"GEMSegments_V2", show:true},
+        {key:"GEMSegments_V3", show:true},
+        {key:"GEMDigis_V2", show:true},
         {key:"MuonChambers_V1", show:true},
         {key:"GlobalMuons_V1", show:true},
         {key:"TrackerMuons_V2", show:true},
@@ -81,7 +92,7 @@ ispy.animation_script = {
         {"group":"Tracking", "key":"Tracks_V3", "show":false}
       ]
     }
-}
+};
 
 ispy.toggleAnimation = function() {
   ispy.animating = !ispy.animating;
@@ -214,4 +225,4 @@ ispy.toggleAnimation = function() {
     c1.start();
     c2.start();
   }
-}
+};
