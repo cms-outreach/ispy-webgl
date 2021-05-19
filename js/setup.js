@@ -185,11 +185,13 @@ ispy.init = function() {
     
     ispy.treegui = new dat.GUI({
 	name: 'Tree View',
-	hideable: false
+	hideable: false,
+	autoPlace: false
     });
 
     ispy.treegui.domElement.id = 'treegui';
-
+    document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
+    
     // It seems currently impossible with dat.gui
     // to fetch the folders as an array and remove them
     // (without knowing the name beforehand).
