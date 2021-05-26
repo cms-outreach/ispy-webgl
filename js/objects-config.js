@@ -446,6 +446,11 @@ ispy.event_description = {
 	fn: ispy.makeJet, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.6},
 	selection: {"min_et": 10.0}, cuts: true
     },
+    "PFJets_V2": {
+	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PF)",
+	fn: ispy.makeJetWithVertex, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.6},
+	selection: {"min_et": 10.0}, cuts: true
+    },
     "GenJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (Sim)",
 	fn: ispy.makeJet, style: {color: "rgb(100%, 75%, 0%)", opacity: 0.8}, selection: {"min_et": 10.0}
@@ -514,6 +519,12 @@ ispy.event_description = {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
 	extra: "Points_V1", assoc: "PATMuonTrackerPoints_V1",
 	fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
+	selection:{"min_pt":1.0, "index":0}
+    },
+    "PATTrackerMuons_V2": {
+	type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
+	extra: "Extras_V1", assoc: "PATMuonTrackExtras_V1",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	selection:{"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V1": {

@@ -162,11 +162,8 @@ ispy.addEvent = function(event) {
 	
 	const data = event.Collections[key];
     
-	if ( ! data || data.length === 0 ) {
-	 
+	if ( ! data || data.length === 0 )
 	    continue;
-	
-	}
 
 	const descr = ispy.event_description[key];
 
@@ -183,7 +180,7 @@ ispy.addEvent = function(event) {
 	    
 	    assoc = event.Associations[descr.assoc];
 
-	    if ( assoc.length === 0 )
+	    if ( ! assoc || assoc.length === 0 ) 
 		continue;
 	    
 	}

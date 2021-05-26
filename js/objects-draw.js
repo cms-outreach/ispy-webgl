@@ -446,7 +446,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 	    line.computeLineDistances();
 
-	    line.pt = pt;
+	    line.userData.pt = pt;
 	    line.visible = pt > selection.min_pt ? true : false;
 	    curves.push(line);
 	    
@@ -968,6 +968,74 @@ ispy.makeJet = function(data, style, selection) {
     jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
     jet.visible = true;
 
+    jet.userData.et = et;
+    
+    if ( et < selection.min_et ) {
+    
+	jet.visible = false;
+	  
+    }
+    
+    return jet;
+
+};
+
+
+ispy.makeJetWithVertex = function(data, style, selection) {
+  
+    const et = data[0];
+    const eta = data[1];
+
+    const theta = data[2];
+    const phi = data[3];
+
+    const vertex = new THREE.Vector3(...data[4]);
+    
+    let ct = Math.cos(theta);
+    let st = Math.sin(theta);
+    let cp = Math.cos(phi);
+    let sp = Math.sin(phi);
+
+    let maxZ = 2.25;
+    let maxR = 1.10;
+    
+    let length1 = ct ? maxZ / Math.abs(ct) : maxZ;
+    let length2 = st ? maxR / Math.abs(st) : maxR;
+    let length = length1 < length2 ? length1 : length2;
+    let radius = 0.3 * (1.0 /(1 + 0.001));
+    
+    // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
+    const geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
+    geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
+    geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
+
+    let jcolor = new THREE.Color(style.color);
+    
+    let transp = false;
+    
+    if ( style.opacity < 1.0 ) {
+    
+	transp = true;
+  
+    }
+
+    const material = new THREE.MeshBasicMaterial({
+	color:jcolor,
+	transparent: transp,
+	opacity:style.opacity
+    });
+
+    material.side = THREE.DoubleSide;
+    
+    const jet = new THREE.Mesh(geometry, material);
+    
+    jet.position.x = vertex.x;
+    jet.position.y = vertex.y;
+    jet.position.z = vertex.z;
+
+    jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
+    jet.visible = true;
+    
     jet.userData.et = et;
     
     if ( et < selection.min_et ) {
