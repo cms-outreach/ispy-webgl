@@ -283,25 +283,33 @@ ispy.onMouseDown = function(e) {
     
     if ( ispy.intersected ) {
 
-	if ( ispy.intersected.selected ) {
+	
+	// We only want to do this for muons and electrons since
+	// it's only to show what objects are selected for invariant mass.
+	if ( ispy.intersected.name.includes('Muon') ||
+	     ispy.intersected.name.includes('Electron') ) {
+
+	    if ( ispy.intersected.selected ) {
 	    
-	    const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
-	    ispy.intersected.material.color = original_color;
-	    ispy.intersected.selected = false;
+		const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+		ispy.intersected.material.color = original_color;
+		ispy.intersected.selected = false;
 
-	    if ( ispy.selected_objects.has(ispy.intersected.id) ) {
+		if ( ispy.selected_objects.has(ispy.intersected.id) ) {
 
-		ispy.selected_objects.delete(ispy.intersected.id);
+		    ispy.selected_objects.delete(ispy.intersected.id);
 		
-	    }
+		}
 	    
 	    
-	} else {
+	    } else {
 
-	    ispy.intersected.material.color.setHex(0x808080);
-	    ispy.intersected.selected = true;
-	    ispy.displayEventObjectData();
+		ispy.intersected.material.color.setHex(0x808080);
+		ispy.intersected.selected = true;
+		ispy.displayEventObjectData();
 	    
+	    }
+
 	}
 	
     }

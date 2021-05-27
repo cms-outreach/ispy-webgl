@@ -90,6 +90,11 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	if ( style.hasOwnProperty('opacity') ) {
 	
 	    opacity = style.opacity;
+
+	}
+
+	if ( style.hasOwnProperty('color') ) {
+
 	    color.set(style.color);
 
 	}
@@ -238,8 +243,25 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	let obj = ispy.scene.getObjectByName(key);
 
 	obj.children.forEach(function(o) {
-	    
-	    o.material.color = new THREE.Color(row_obj.color);
+
+	    o.traverse(function(oc) {
+
+		// Special case to handle
+		if ( oc.type === 'ArrowHelper' ) {
+		    
+		    oc.children.forEach(function(og) {
+
+			og.material.color = new THREE.Color(row_obj.color);
+
+		    });
+		    
+		} else {
+		
+		    oc.material.color = new THREE.Color(row_obj.color);
+
+		}
+		    
+	    });
 	    
 	});
 

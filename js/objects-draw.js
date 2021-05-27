@@ -909,7 +909,7 @@ ispy.makeMET = function(data, style, selection) {
 
     // dir, origin, length, hex, headLength, headWidth
     let met = new THREE.ArrowHelper(dir, origin, length, color.getHex(), 0.2, 0.2);
-
+    
     if ( pt < selection.min_pt ) {
 
 	met.visible = false;

@@ -474,15 +474,18 @@ ispy.addEvent = function(event) {
             
 		    shape.name = key;
 
-		    if ( is_physics_obj && visible ) {
+		    shape.traverse(function(s) {
 
-			shape.traverse(function(s) {
+			s.name = key;
+			
+			if ( is_physics_obj && visible ) {
 
 			    s.layers.enable(2);
 
-			});
-		    }
-		    
+			}
+
+		    });
+		   		    
 		    // originalIndex works as a link between the original
 		    // data and THREE objects:
 		    shape.userData.originalIndex = si;
