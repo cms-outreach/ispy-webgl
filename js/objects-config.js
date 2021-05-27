@@ -457,7 +457,7 @@ ispy.event_description = {
     },
     "PATJets_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Jets (PAT)",
-	fn: ispy.makeJet, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}
+	fn: ispy.makeJet, style: {color: "rgb(100%, 50%, 0%)", opacity: 0.3}, selection: {"min_et": 10.0}
     },
     "Photons_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",

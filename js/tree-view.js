@@ -201,7 +201,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	
     }
 
-    if ( key.includes('GlobalMuon') || key.includes('GsfElectron') || key.includes('Tracks_') ) {
+    if ( key.includes('Muon') || key.includes('Electron') || key.includes('Tracks_') ) {
 
 	sf.add(row_obj, 'min_pt').onChange(function() {
 
