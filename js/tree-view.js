@@ -242,6 +242,15 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	let obj = ispy.scene.getObjectByName(key);
 
+	// Change color in event_decription for objects in
+	// Physics group. Once they are picked (i.e. pointer over)
+	// the color will revert to this new one rather than to the original
+	if ( group.includes('Physics') ) {
+
+	    ispy.event_description[key].style.color = row_obj.color;
+
+	}
+	
 	obj.children.forEach(function(o) {
 
 	    o.traverse(function(oc) {
