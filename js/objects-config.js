@@ -151,72 +151,72 @@ ispy.detector_description = {
     },
     "TrackerRPhi_V1": {
 	type: ispy.BOX, on: true, group: "Detector", name:"Tracker RPhi",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: false, rphi: true, rhoz: false
     },
     "TrackerRZ_V1": {
 	type: ispy.BOX, on: true, group: "Detector", name:"Tracker RZ",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: false, rphi: false, rhoz: true
     },
     "SiStripTECMinus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Endcap (-)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "SiStripTECPlus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Endcap (+)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "SiStripTIDMinus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Detector (-)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "SiStripTIDPlus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Detector (+)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "SiStripTOB3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Outer Barrel",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "SiStripTIB3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Tracker Inner Barrel",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelEndcapMinus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (-)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelEndcapPlus3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (+)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelBarrel3D_V1": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelEndcapMinus3D_V2": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (-)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelEndcapPlus3D_V2": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Endcap (+)",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     },
     "PixelBarrel3D_V2": {
 	type: ispy.BOX, on: false, group: "Detector", name: "Pixel Barrel",
-	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0},
+	fn: ispy.makeTrackerPiece, style: {color: "rgb(100%, 100%, 0%)", opacity: 0.5, linewidth: 1.0},
 	threed: true, rphi: false, rhoz: false
     }
 };
@@ -291,21 +291,28 @@ ispy.event_description = {
     "Tracks_V1": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)",
 				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, index: 2}
     },
     "Tracks_V2": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)",
 				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, "index": 2}
     },
     "Tracks_V3": {
 	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
 	extra: "Extras_V1", assoc: "TrackExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)",
+				     opacity: 0.5, lineCaps: "square", linewidth: 1},
+	selection: {"min_pt": 1.0, "index": 2}
+    },
+    "Tracks_V4": {
+	type: ispy.ASSOC, on: true, group: "Tracking", name: "Tracks (reco.)",
+	extra: "Extras_V1", assoc: "TrackExtras_V1",
+	fn: ispy.makeTracks, style: {color: "rgb(100%, 100%, 0%)",
 				     opacity: 0.5, lineCaps: "square", linewidth: 1},
 	selection: {"min_pt": 1.0, "index": 2}
     },
@@ -340,12 +347,12 @@ ispy.event_description = {
     },
     "DTRecSegment4D_V1": {
 	type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-	fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)", altColor: "rgb(100%, 50%, 0%)",
+	fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)",
 					    opacity: 1.0, linewidth: 1.5}
     },
     "RPCRecHits_V1": {
 	type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)", altColor: "rgb(80%, 50%, 0%)",
+	fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)",
 					 opacity: 1.0, linewidth: 1.5}
     },
     "MatchingGEMs_V1": {
