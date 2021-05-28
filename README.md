@@ -21,7 +21,7 @@ For more information on the input data format and how to create files for the di
 
 Contributors: [F. Ali](https://github.com/9inpachi), [L. Barnard](https://github.com/lukebarnard), [M. Hategan](https://github.com/hategan), [S. Lee](https://github.com/SeungJunLee0), [C. Logrén](https://github.com/carpppa), [T. McCauley](https://github.com/tpmccauley), [P. Nguyen](https://github.com/phongn), [M. Saunby](https://github.com/msaunby)
 
-<img src="https://github.com/cms-outreach/ispy-webgl/blob/r125/graphics/ispy-webgl-screenshot-1.0.0.png"></img>
+<img src="https://github.com/cms-outreach/ispy-webgl/blob/master/graphics/ispy-webgl-screenshot-1.0.0.png"></img>
 
 ## Papers and talks
 
