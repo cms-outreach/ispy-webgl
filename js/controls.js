@@ -259,7 +259,7 @@ function setOrientationControls(e) {
     window.removeEventListener('deviceorientation', setOrientationControls, true);
 }
 
-window.addEventListener('deviceorientation', setOrientationControls, true);
+//window.addEventListener('deviceorientation', setOrientationControls, true);
 
 ispy.setStereo = function() {
 

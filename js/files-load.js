@@ -970,7 +970,11 @@ ispy.importDetector = function() {
 	    file: './geometry/gltf/RPCMinusEndcap3D_V1.glb'
 	}
     ];
+    
+    $('#loading').modal('show');
 
+    let promises = [];
+    
     gltf_objs.forEach(function(g) {
 
 	gltf_loader.load(
@@ -994,12 +998,20 @@ ispy.importDetector = function() {
 
 		ispy.scene.getObjectByName(g.group).add(object);
 		ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
+
+		promises.push(Promise.resolve(g.file));
 		
 	    }
 	);
 
     });
 
-    return;
+    Promise.all(promises).then(function() {
+
+	console.log('Done');
+	
+	$('#loading').modal('hide');
+    
+    });
     
 };

@@ -440,11 +440,7 @@ ispy.getScript = function(scr) {
 
 ispy.initDetector = function() {
 
-    $('#loading').modal('show');
-
-    $.when(ispy.importDetector()).done(function() {
-	$('#loading').modal('hide');
-    });
+    ispy.importDetector();
     
 };
 
@@ -540,10 +536,14 @@ ispy.run = function() {
     ispy.inset_camera.position.setLength(10);
     ispy.inset_camera.lookAt(ispy.inset_scene.position);
 
-    ispy.inset_scene.getObjectByName('xtext').quaternion.copy(ispy.inset_camera.quaternion);
-    ispy.inset_scene.getObjectByName('ytext').quaternion.copy(ispy.inset_camera.quaternion);
-    ispy.inset_scene.getObjectByName('ztext').quaternion.copy(ispy.inset_camera.quaternion);
+    if ( ispy.inset_scene.getObjectByName('xtext') ) {
     
+	ispy.inset_scene.getObjectByName('xtext').quaternion.copy(ispy.inset_camera.quaternion);
+	ispy.inset_scene.getObjectByName('ytext').quaternion.copy(ispy.inset_camera.quaternion);
+	ispy.inset_scene.getObjectByName('ztext').quaternion.copy(ispy.inset_camera.quaternion);
+
+    }
+	
     ispy.render();
 
     if ( ispy.animating ) {
