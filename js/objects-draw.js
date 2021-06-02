@@ -1301,19 +1301,16 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 };
 
 ispy.makeCSCDigis_V2 = function(data) {
-
+    
     /*
     const geometry = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[0]),
 	new THREE.Vector3(...data[1])
     ]);
     */
-    
-    const geometry = new LineGeometry().setPositions([
-	new THREE.Vector3(...data[1]),
-	new THREE.Vector3(...data[2])
-    ]);
 
+    const geometry = new THREE.LineGeometry()
+    geometry.setPositions([...data[0], ...data[1]]);
     
     return [geometry];
 
@@ -1327,12 +1324,10 @@ ispy.makeGEMDigis_V2 = function(data) {
 	new THREE.Vector3(...data[1])
     ]);
     */
-    
-    const geometry = new LineGeometry().setPositions([
-	new THREE.Vector3(...data[1]),
-	new THREE.Vector3(...data[2])
-    ]);
-    
+ 
+    const geometry = new THREE.LineGeometry();
+    geometry.setPositions([...data[0], ...data[1]]);
+       
     return [geometry];
 
 };
@@ -1362,16 +1357,24 @@ ispy.makeCSCLCTDigis = function(data) {
 
 ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
 
-    var l1 = new THREE.BufferGeometry().setFromPoints([
+    /*
+    const l1 = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[0]),
 	new THREE.Vector3(...data[1])
     ]);
 
-    var l2 = new THREE.BufferGeometry().setFromPoints([
+    const l2 = new THREE.BufferGeometry().setFromPoints([
 	new THREE.Vector3(...data[2]),
 	new THREE.Vector3(...data[3])
     ]);
+    */
+    
+    const l1 = new THREE.LineGeometry();
+    l1.setPositions([...data[0], ...data[1]]);
 
+    const l2 = new THREE.LineGeometry();
+    l2.setPositions([...data[2], ...data[3]]);
+    
     return [l1,l2];
 
 };

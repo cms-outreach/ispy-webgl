@@ -973,45 +973,45 @@ ispy.importDetector = function() {
     
     $('#loading').modal('show');
 
-    let promises = [];
-    
-    gltf_objs.forEach(function(g) {
+    async function loadGLTFs() {
 
-	gltf_loader.load(
-	    g.file,
-	    function(gltf) {
-		
-		let object = gltf.scene.children[0];
+	const promises = gltf_objs.map(async g => {
+
+	    console.log(g.file);
+	    
+	    gltf_loader.load(
+		g.file,
+		await function(gltf) {
+		    
+		    let object = gltf.scene.children[0];
 	
-		object.name = g.id;
-		object.visible = g.show;
+		    object.name = g.id;
+		    object.visible = g.show;
 
-		// Set render order for geometries
-		// Otherwise they won't appear "in-front" of Imported geometries
-		object.children.forEach(function(c) {
+		    // Set render order for geometries
+		    // Otherwise they won't appear "in-front" of Imported geometries
+		    object.children.forEach(function(c) {
 
-		    c.renderOrder = 1;
+			c.renderOrder = 1;
 
-		});
+		    });
 
-		ispy.disabled[object.name] = ! g.show;
+		    ispy.disabled[object.name] = ! g.show;
 
-		ispy.scene.getObjectByName(g.group).add(object);
-		ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
-
-		promises.push(Promise.resolve(g.file));
+		    ispy.scene.getObjectByName(g.group).add(object);
+		    ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 		
-	    }
-	);
+		}
+	    
+	    );
 
-    });
+	});
 
-    Promise.all(promises).then(function() {
-
-	console.log('Done');
-	
+	await Promise.all(promises);
 	$('#loading').modal('hide');
-    
-    });
+
+    }
+
+    loadGLTFs();
     
 };
