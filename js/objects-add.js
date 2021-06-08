@@ -51,7 +51,7 @@ ispy.addDetector = function() {
 	    }
 	    
 	    let box = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(geometries),
+		THREE.BufferGeometryUtils.mergeBufferGeometries(box_geometries),
 		box_material
 	    );
 	    

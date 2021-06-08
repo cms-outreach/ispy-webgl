@@ -799,21 +799,21 @@ ispy.importDetector = function() {
 	    name: 'Pixel Barrel',
 	    group: 'Detector',
 	    show: false,
-	    file: './geometry/gltf/PixelBarrel3D_V1.glb'
+	    file: './geometry/gltf/PixelBarrel3D_V2.glb' // V2 for pixels corresponds to phase 1 upgrade
 	},
 	{
 	    id: 'PixelEndcapPlus3D_V1',
 	    name: 'Pixel Endcap (+)',
 	    group: 'Detector',
 	    show: false,
-	    file: './geometry/gltf/PixelEndcapPlus3D_V1.glb'
+	    file: './geometry/gltf/PixelEndcapPlus3D_V2.glb'
 	},
 	{
 	    id: 'PixelEndcapMinus3D_V1',
 	    name: 'Pixel Endcap (-)',
 	    group: 'Detector',
 	    show: false,
-	    file: './geometry/gltf/PixelEndcapMinus3D_V1.glb'
+	    file: './geometry/gltf/PixelEndcapMinus3D_V2.glb'
 	},
 	{
 	    id: 'SiStripTIB3D_V1',
