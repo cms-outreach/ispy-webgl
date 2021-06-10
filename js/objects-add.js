@@ -298,7 +298,7 @@ ispy.addEvent = function(event) {
 	case ispy.SCALEDSOLIDBOX:
 
 	    const ss_boxes = [];
-	    let maxEnergy = 5.0;
+	    let maxEnergy = 0.0;
 
 	    for ( let k = 0; k < data.length; k++ ) {
 
@@ -340,10 +340,20 @@ ispy.addEvent = function(event) {
 	case ispy.SCALEDSOLIDTOWER:
 
 	    const sst_boxes = [];
+	    let maxE = 0.0;
 	    
+	    for ( let ee = 0; ee < data.length; ee++ ) {
+
+		let energy = data[ee][0];
+		
+		if ( energy > maxE )
+		    maxE = energy;
+        
+	    }
+
 	    for ( var m = 0; m < data.length; m++ ) {
           
-		descr.fn(data[m], sst_boxes, descr.scale, descr.selection);
+		descr.fn(data[m], sst_boxes, maxE, descr.selection);
         
 	    }
 

@@ -148,10 +148,10 @@ ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
     let v6 = new THREE.Vector3(...data[ci+6]);
     let v7 = new THREE.Vector3(...data[ci+7]);
  
-    var energy = data[0];
+    const energy = data[0];
     scale = energy/scale;
 
-    var center = new THREE.Vector3();
+    const center = new THREE.Vector3();
 
     center.addVectors(v0,v1);
     center.add(v2).add(v3)
@@ -239,6 +239,9 @@ ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
     let v5 = new THREE.Vector3(...data[ci+5]);
     let v6 = new THREE.Vector3(...data[ci+6]);
     let v7 = new THREE.Vector3(...data[ci+7]);
+
+    const energy = data[0];
+    scale = energy/scale;
 
     v4.sub(v0);
     v5.sub(v1);
@@ -605,7 +608,7 @@ ispy.makeERecHit_V2 = function(data, boxes, scale, selection) {
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTower(data, boxes, 5, scale*energy);
+	return ispy.makeScaledSolidTower(data, boxes, 5, scale);
   
     }
 
