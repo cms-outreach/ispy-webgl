@@ -204,7 +204,7 @@ canvas.hover {
 }
 
 #display {
-  height: 65vh;
+  height: 100vh;
   overflow: hidden;
   padding: 0;
 }
