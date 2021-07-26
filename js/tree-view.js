@@ -143,7 +143,6 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     }
     
-    
     // For Provenance, ECAL, etc. show table when clicking on
     // tab for objects in the gui
     if ( group.includes('Provenance') || group.includes('CAL') ||
