@@ -74,6 +74,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     let linewidth = 1;
     let min_pt = 1.0;
     let min_et = 1.0;
+    let nobjects = 0;
     
     if ( ispy.detector_description.hasOwnProperty(key) ) {
 
@@ -104,12 +105,19 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	    linewidth = style.linewidth;
 
 	}
+
+	if ( ispy.current_event !== undefined ) {
+
+	    nobjects = ispy.current_event.Collections[key].length;
+	    
+	}
 	
     }
 
     // TO-DO: Fetch pt and et from objects-config
     const row_obj = {
 	show: visible,
+	number: nobjects,
 	key: key,
 	opacity: opacity,
 	color: color.getHex(),
@@ -125,6 +133,17 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     
     sf = folder.addFolder(name);
 
+    if ( ! ( group.includes('Detector') ||
+	     group.includes('Imported') ||
+	     group.includes('Provenance')
+	   )
+       ) {
+
+	sf.add(row_obj, 'number');
+
+    }
+    
+    
     // For Provenance, ECAL, etc. show table when clicking on
     // tab for objects in the gui
     if ( group.includes('Provenance') || group.includes('CAL') ||
