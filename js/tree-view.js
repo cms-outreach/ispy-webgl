@@ -120,7 +120,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	number: nobjects,
 	key: key,
 	opacity: opacity,
-	color: color.getHex(),
+	color: '#'+color.getHexString(),
 	linewidth: linewidth,
 	min_pt: 1.0,
 	min_et: 10.0
@@ -255,11 +255,12 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	});
 
     }
-    
+
+
     sf.addColor(row_obj, 'color').onChange(function() {
 
 	let obj = ispy.scene.getObjectByName(key);
-
+	
 	// Change color in event_decription for objects in
 	// Physics group. Once they are picked (i.e. pointer over)
 	// the color will revert to this new one rather than to the original
