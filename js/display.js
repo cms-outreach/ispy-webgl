@@ -434,9 +434,11 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTable.empty();
     collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
     collectionTable.append('<thead> <tr>');
+    
     const collectionTableHead = collectionTable.find('thead').find('tr');
-
     const color_class = ispy.inverted_colors ? 'group white' : 'group black';
+
+    collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
     
     for ( let t in type ) {
 
@@ -451,6 +453,9 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	
 	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
+	let i = index-1;
+	row_content += "<td>"+ i + "</td>";
+	
 	for ( let v in collection[c] ) {
   
 	    row_content += "<td>"+collection[c][v]+"</td>";
