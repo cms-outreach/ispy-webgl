@@ -88,8 +88,8 @@ The default thickness for lines is "1". To use better (thicker) defaults, unclic
 [Recall](https://github.com/cms-outreach/ispy-analyzers) that the `ig` file is a text-based zip archive. To see what's in it you can just unzip it and take a look.
 
 Also, one of the advantages of a browser-based application is the JavaScript console.
-In your browser look for a menu item called "Web developer" or "Developer tools" and open the conosle.
-You should see it open your browser and see some log information such as what's been loaded.
+In your browser look for a menu item called "Web developer" or "Developer tools" and open the console.
+You should see it open in your browser and see some log information such as what's been loaded.
 
 ### How do I see the properties of the individual objects shown in the display?
 
