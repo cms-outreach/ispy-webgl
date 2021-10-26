@@ -862,7 +862,7 @@ ispy.importDetector = function() {
 	    name: 'ECAL Barrel',
 	    group: 'Detector',
 	    show: true,
-	    file: './geometry/gltf/EcalBarrel3D_V1.glb'
+	    file: './geometry/gltf/EcalBarrel3D_V2.glb'
 	},
 	{
 	    id: 'EcalEndcapPlus3D_V1',
