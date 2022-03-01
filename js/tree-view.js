@@ -74,6 +74,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     let linewidth = 1;
     let min_pt = 1.0;
     let min_et = 1.0;
+    let min_energy = 1.0;
     let nobjects = 0;
     
     if ( ispy.detector_description.hasOwnProperty(key) ) {
@@ -123,7 +124,8 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	color: '#'+color.getHexString(),
 	linewidth: linewidth,
 	min_pt: 1.0,
-	min_et: 10.0
+	min_et: 10.0,
+	min_energy: 10.0
     };
 
     let folder = ispy.treegui.__folders[group];
@@ -256,6 +258,21 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     }
 
+    if ( key.includes('Photon') ) {
+
+	sf.add(row_obj, 'min_energy').onChange(function() {
+
+	    let obj = ispy.scene.getObjectByName(key);
+
+	    obj.children.forEach(function(o) {
+
+		o.visible = o.userData.energy < row_obj.min_energy ? false : true;
+
+	    });
+
+	});
+
+    }
 
     sf.addColor(row_obj, 'color').onChange(function() {
 

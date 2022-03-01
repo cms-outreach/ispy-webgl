@@ -1056,23 +1056,23 @@ ispy.makePhoton = function(data, style, selection) {
       Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
       "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
     */
-    var lEB = 3.0;  // half-length of the EB (m)
-    var rEB = 1.24; // inner radius of the EB (m)
+    const lEB = 3.0;  // half-length of the EB (m)
+    const rEB = 1.24; // inner radius of the EB (m)
     
-    var eta = data[2];
-    var phi = data[3];
+    const eta = data[2];
+    const phi = data[3];
     
-    var et = data[1];
+    const energy = data[0];
 
-    var px = Math.cos(phi);
-    var py = Math.sin(phi);
-    var pz = (Math.pow(Math.E, eta) - Math.pow(Math.E, -eta))/2;
+    const px = Math.cos(phi);
+    const py = Math.sin(phi);
+    const pz = (Math.pow(Math.E, eta) - Math.pow(Math.E, -eta))/2;
 
-    var t = 0.0;
+    let t = 0.0;
     
-    var x0 = data[4][0];
-    var y0 = data[4][1];
-    var z0 = data[4][2];
+    const x0 = data[4][0];
+    const y0 = data[4][1];
+    const z0 = data[4][2];
 
     if ( Math.abs(eta) > 1.48 ) { // i.e. not in the EB, so propagate to ES
     
@@ -1080,31 +1080,32 @@ ispy.makePhoton = function(data, style, selection) {
   
     } else { // propagate to EB
     
-	var a = px*px + py*py;
-	var b = 2*x0*px + 2*y0*py;
-	var c = x0*x0 + y0*y0 - rEB*rEB;
+	let a = px*px + py*py;
+	let b = 2*x0*px + 2*y0*py;
+	let c = x0*x0 + y0*y0 - rEB*rEB;
 	t = (-b+Math.sqrt(b*b-4*a*c))/2*a;
   
     }
     
-    var pt1 = new THREE.Vector3(x0, y0, z0);
-    var pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
+    let pt1 = new THREE.Vector3(x0, y0, z0);
+    let pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
     
-    var color = new THREE.Color(style.color);
+    let color = new THREE.Color(style.color);
 
-    var photon = new THREE.Line(
+    const photon = new THREE.LineSegments(
 	new THREE.BufferGeometry().setFromPoints([pt1, pt2]),
 	new THREE.LineDashedMaterial({
 	    color: color,
 	    scale: 1,
-	    dashSize: 1,
-	    gapSize: 1
+	    dashSize: 0.1,
+	    gapSize: 0.1
 	})
     );
 
-    //photon.computeLineDistances();
-
-    if ( et < selection.min_et ) {
+    photon.computeLineDistances();
+    photon.userData.energy = energy;
+   
+    if ( energy < selection.min_energy ) {
 
         photon.visible = false;
 
