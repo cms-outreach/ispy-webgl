@@ -432,29 +432,6 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 	p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
 	
 	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
-	
-	if ( ispy.use_line2 ) {
-	    	
-	    let lg = new THREE.LineGeometry();
-	    let positions = [];
-	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
-	    lg.setPositions(positions);
-
-	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
-		color:tcolor,
-		opacity:style.opacity,
-		transparent:transp,
-		linewidth:style.linewidth*0.001
-	    }));
-
-	    line.computeLineDistances();
-
-	    line.userData.pt = pt;
-	    line.visible = pt > selection.min_pt ? true : false;
-	    curves.push(line);
-	    
-	} else {
-	    
 	    let line = new THREE.Line(
 		new THREE.BufferGeometry().setFromPoints(curve.getPoints(32)),
 		new THREE.LineBasicMaterial({
@@ -464,11 +441,9 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 		})
 	    );
 
-	    line.userData.pt = pt;
-	    line.visible = pt > selection.min_pt ? true : false;
-	    curves.push(line);
-
-	}
+	line.userData.pt = pt;
+	line.visible = pt > selection.min_pt ? true : false;
+	curves.push(line);
 
     }
 
@@ -1093,7 +1068,9 @@ ispy.makePhoton = function(data, style, selection) {
     let color = new THREE.Color(style.color);
 
     const photon = new THREE.LineSegments(
-	new THREE.BufferGeometry().setFromPoints([pt1, pt2]),
+	new THREE.BufferGeometry().setFromPoints(
+	    [pt1, pt2]
+	),
 	new THREE.LineDashedMaterial({
 	    color: color,
 	    scale: 1,
@@ -1104,16 +1081,82 @@ ispy.makePhoton = function(data, style, selection) {
 
     photon.computeLineDistances();
     photon.userData.energy = energy;
-   
+
     if ( energy < selection.min_energy ) {
-
+	
         photon.visible = false;
-
+	
     }
 
     return photon;
 
 };
+
+ispy.makeProtons = function(data, style, selection) {
+    /*
+      Draw a line representing the inferred photon trajectory from the vertex 
+      "ForwardProtons_V1": [["xi", "double"],["thetax", "double"],["thetay", "double"],["vertex", "v3d"],
+                            ["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
+    */
+    const xi = data[0];
+    
+    const x0 = data[3][0];
+    const y0 = data[3][1];
+    const z0 = data[3][2];
+
+    const px = data[5];
+    const py = data[6];
+    const pz = data[7];
+    
+    let dir = new THREE.Vector3(px,py,pz);
+    dir.normalize();
+       
+    let origin = new THREE.Vector3(x0,y0,z0);
+
+    let length = Math.abs(pz)*0.01;
+    length -= 0.75*65;
+    
+    let color = new THREE.Color(style.color);
+
+    // dir, origin, length, hex, headLength, headWidth
+    const proton = new THREE.ArrowHelper(
+	dir, origin, length, color.getHex(),
+	0.2, // head length
+	0.2  // head width
+    );
+    proton.userData.xi = xi;
+
+    const radius = xi*10;
+    const thickness = 0.05;
+
+    const rg = new THREE.RingGeometry(
+	radius, // inner radius
+	radius + thickness, // outer radius
+	32 // theta segments
+    );
+
+    rg.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
+    
+    const rm = new THREE.MeshBasicMaterial({
+	color: color,
+	side: THREE.DoubleSide
+    });
+    
+    const ring = new THREE.Mesh(rg, rm);
+    ring.name = "ring";
+
+    // Note that coordinates are
+    // w.r.t. the arrow 
+    ring.position.x = 0;
+    ring.position.y = length;
+    ring.position.z = 0;
+
+    proton.add(ring);
+    
+    return proton;
+
+};
+
 
 ispy.makeDTRecHits = function(data) {
     /*

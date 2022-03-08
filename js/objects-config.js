@@ -558,6 +558,11 @@ ispy.event_description = {
 	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
 	selection: {"min_pt":1.0, "index":0}
     },
+    "ForwardProtons_V1": {
+	type: ispy.SHAPE, on: false, group: "Physics", name: "Forward Protons",
+	fn: ispy.makeProtons, style: {color: "rgb(10%, 10%, 100%)", opacity: 1.0},
+	selection: {}
+    },
     "Vertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Reco)",
 	fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
