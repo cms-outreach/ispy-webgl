@@ -451,6 +451,102 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 };
 
+ispy.makeThickTracks = function(tracks, extras, assocs, style, selection) {
+  
+    if ( ! assocs ) {
+    
+	throw "No association!";
+  
+    }
+
+    let ti, ei;
+    let p1, d1, p2, d2;
+    let distance, scale, curve;
+    let curves = [];
+
+    let tcolor = new THREE.Color();    
+    tcolor.setStyle(style.color);
+
+    const transp = true;
+    
+    for ( let i = 0; i < assocs.length; i++ ) {
+
+	let pt = tracks[i][selection.index];
+	let eta = tracks[i][4];
+	let phi = tracks[i][3];
+
+	ti = assocs[i][0][1];
+	ei = assocs[i][1][1];
+	
+	p1 = new THREE.Vector3(...extras[ei][0]);
+	d1 = new THREE.Vector3(...extras[ei][1]);
+	d1.normalize();
+	
+	p2 = new THREE.Vector3(...extras[ei][2]);
+	d2 = new THREE.Vector3(...extras[ei][3]);
+	d2.normalize();
+	
+	// What's all this then?
+	// Well, we know the beginning and end points of the track as well
+	// as the directions at each of those points. This in-principle gives
+	// us the 4 control points needed for a cubic bezier spline.
+	// The control points from the directions are determined by moving along 0.25
+	// of the distance between the beginning and end points of the track.
+	// This 0.25 is nothing more than a fudge factor that reproduces closely-enough
+	// the NURBS-based drawing of tracks done in iSpy. At some point it may be nice
+	// to implement the NURBS-based drawing but I value my sanity.
+	
+	distance = p1.distanceTo(p2);
+	scale = distance*0.25;
+	
+	p3 = new THREE.Vector3(p1.x+scale*d1.x, p1.y+scale*d1.y, p1.z+scale*d1.z);
+	p4 = new THREE.Vector3(p2.x-scale*d2.x, p2.y-scale*d2.y, p2.z-scale*d2.z);
+	
+	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
+
+	if ( ispy.use_line2 ) {
+
+	    let lg = new THREE.LineGeometry();
+	    let positions = [];
+	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
+	    lg.setPositions(positions);
+
+	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
+		color:tcolor,
+		opacity:style.opacity,
+		transparent:transp,
+		linewidth:style.linewidth*0.001
+	    }));
+
+	    line.computeLineDistances();
+
+	    line.userData.pt = pt;
+	    line.visible = pt > selection.min_pt ? true : false;
+	    curves.push(line);
+
+	} else {
+
+	    let line = new THREE.Line(
+		new THREE.BufferGeometry().setFromPoints(curve.getPoints(32)),
+		new THREE.LineBasicMaterial({
+		    color:tcolor,
+		    opacity:style.opacity,
+		    transparent: transp,
+		})
+	    );
+
+	    line.userData.pt = pt;
+	    line.visible = pt > selection.min_pt ? true : false;
+	    curves.push(line);
+
+	}
+
+    }
+
+    return curves;
+
+};
+
 ispy.makeVertex = function(data,style) {
 
     const geometry = new THREE.SphereGeometry(style.radius, 32, 32);
@@ -1151,7 +1247,7 @@ ispy.makeProtons = function(data, style, selection) {
     ring.position.y = length;
     ring.position.z = 0;
 
-    proton.add(ring);
+    //proton.add(ring);
     
     return proton;
 

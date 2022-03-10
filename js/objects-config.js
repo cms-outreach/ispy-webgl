@@ -537,25 +537,25 @@ ispy.event_description = {
     "GsfElectrons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
+	fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
 	selection: {"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V2": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
 	selection: {"min_pt":1.0, "index":0}
     },
     "GsfElectrons_V3": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
 	selection: {"min_pt":1.0, "index":0}
     },
     "PATElectrons_V1": {
 	type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (PAT)",
 	extra: "Extras_V1", assoc: "PATElectronExtras_V1",
-	fn: ispy.makeTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
+	fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
 	selection: {"min_pt":1.0, "index":0}
     },
     "ForwardProtons_V1": {
