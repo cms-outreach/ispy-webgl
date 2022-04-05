@@ -565,19 +565,19 @@ ispy.event_description = {
     },
     "Vertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Reco)",
-	fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
+	fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
     },
     "PrimaryVertices_V1": {
         type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-        fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 100%, 0%)", opacity: 1.0}
+        fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
     },
     "SecondaryVertices_V1": {
         type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-        fn:ispy.makeVertex, style: {radius: 0.002, color: "rgb(100%, 40%, 0%)", opacity: 1.0}
+        fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
     },
     "VertexCompositeCandidates_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
-	fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 1.0}
+	fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
     },
     "SimVertices_V1": {
 	type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",

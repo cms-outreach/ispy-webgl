@@ -64,10 +64,11 @@ ispy.addDetector = function() {
 	case ispy.SOLIDBOX:
 
 	    let solidbox_material = new THREE.MeshBasicMaterial({
-		    color:ocolor,
-		    transparent: transp,
-		    opacity:descr.style.opacity
-		});
+		color:ocolor,
+		transparent: transp,
+		opacity:descr.style.opacity,
+		depthTest: false
+	    });
         
 	    solidbox_material.side = THREE.DoubleSide;
 
@@ -99,7 +100,7 @@ ispy.addDetector = function() {
 		    color:0x000000,
 		    transparent: false,
 		    linewidth:1,
-		    depthWrite: false
+		    depthTest: false
 		});
 
 	    let line_mesh = new THREE.LineSegments(
@@ -107,7 +108,7 @@ ispy.addDetector = function() {
 		line_material
 	    );
 
-	    line_mesh.name = descr.key;
+	    line_mesh.name = key;
 	    ispy.scene.getObjectByName(key).add(line_mesh);
 
 	    break;
