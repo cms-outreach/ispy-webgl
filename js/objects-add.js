@@ -260,10 +260,11 @@ ispy.addEvent = function(event) {
 	    }
 	    
 	    const solidbox_material = new THREE.MeshBasicMaterial({
-		    color:ocolor,
-		    transparent: transp,
-		    opacity:descr.style.opacity
-		});
+		color:ocolor,
+		transparent: transp,
+		opacity:descr.style.opacity,
+		depthTest: false
+	    });
 	    
 	    solidbox_material.side = THREE.DoubleSide;
 	    
@@ -279,9 +280,9 @@ ispy.addEvent = function(event) {
 	    
 		const sline_material = new THREE.LineBasicMaterial({
                     color:0xcccccc,
-                    transparent: transp,
+                    transparent: false,
                     linewidth:1,
-                    depthWrite: false  
+                    depthTest: false  
                 });
 
 		const sline_mesh = new THREE.LineSegments(
@@ -289,7 +290,7 @@ ispy.addEvent = function(event) {
 		    sline_material
 		);
 
-		sline_mesh.name = descr.key;    
+		sline_mesh.name = key;    
 		ispy.scene.getObjectByName(key).add(sline_mesh);
 
 	    }
