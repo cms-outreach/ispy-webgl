@@ -1037,6 +1037,7 @@ ispy.makeJet = function(data, style, selection) {
     });
 
     material.side = THREE.DoubleSide;
+    material.depthWrite = false;
     
     const jet = new THREE.Mesh(geometry, material);
     jet.lookAt(new THREE.Vector3(length*0.5*st*cp, length*0.5*st*sp, length*0.5*ct));
@@ -1077,14 +1078,13 @@ ispy.makeJetWithVertex = function(data, style, selection) {
     let length2 = st ? maxR / Math.abs(st) : maxR;
     let length = length1 < length2 ? length1 : length2;
     let radius = 0.3 * (1.0 /(1 + 0.001));
-    
+    	
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
     const geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
     geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
-    let jcolor = new THREE.Color(style.color);
-    
+    let jcolor = new THREE.Color(style.color);    
     let transp = false;
     
     if ( style.opacity < 1.0 ) {
@@ -1100,6 +1100,7 @@ ispy.makeJetWithVertex = function(data, style, selection) {
     });
 
     material.side = THREE.DoubleSide;
+    material.depthWrite = false;
     
     const jet = new THREE.Mesh(geometry, material);
     
@@ -1320,30 +1321,36 @@ ispy.makeDTRecHits = function(data) {
 
 ispy.makeRPCRecHits = function(data) {
 
-    /*
-    const u1 = new THREE.Vector3(...data[0]);
-    const u2 = new THREE.Vector3(...data[1]);
-    const v1 = new THREE.Vector3(...data[2]);
-    const v2 = new THREE.Vector3(...data[3]);
-    const w1 = new THREE.Vector3(...data[4]);
-    const w2 = new THREE.Vector3(...data[5]);
-
-    const u = new THREE.BufferGeometry().setFromPoints([u1,u2]);
-    const v = new THREE.BufferGeometry().setFromPoints([v1,v2]);
-    const w = new THREE.BufferGeometry().setFromPoints([w1,w2]);
-    */
-
-    const u = new THREE.LineGeometry();
-    u.setPositions([...data[0], ...data[1]]);
-
-    const v = new THREE.LineGeometry();
-    v.setPositions([...data[2], ...data[3]]);
-
-    const w = new THREE.LineGeometry();
-    w.setPositions([...data[4], ...data[5]]);
+    var u,v,w;
     
-    return [u,v,w];
+    if ( ispy.use_line2 ) {
+    
+	u = new THREE.LineGeometry();
+	u.setPositions([...data[0], ...data[1]]);
 
+	v = new THREE.LineGeometry();
+	v.setPositions([...data[2], ...data[3]]);
+
+	w = new THREE.LineGeometry();
+	w.setPositions([...data[4], ...data[5]]);
+	
+    } else {
+	
+	const u1 = new THREE.Vector3(...data[0]);
+	const u2 = new THREE.Vector3(...data[1]);
+	const v1 = new THREE.Vector3(...data[2]);
+	const v2 = new THREE.Vector3(...data[3]);
+	const w1 = new THREE.Vector3(...data[4]);
+	const w2 = new THREE.Vector3(...data[5]);
+
+	u = new THREE.BufferGeometry().setFromPoints([u1,u2]);
+	v = new THREE.BufferGeometry().setFromPoints([v1,v2]);
+	w = new THREE.BufferGeometry().setFromPoints([w1,w2]);
+	
+    }
+
+    return [u,v,w];
+        
 };
 
 ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
@@ -1359,18 +1366,24 @@ ispy.makeGEMRecHits_V2 = function(data, descr) {
 };
 ispy.makeDTRecSegments = function(data) {
 
-    /*
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-	new THREE.Vector3(...data[1]),
-	new THREE.Vector3(...data[2])
-    ]);
-    */
-
-    const geometry = new THREE.LineGeometry();
-    geometry.setPositions([...data[1], ...data[2]]);
+    var geometry;
     
-    return [geometry];
+    if ( ispy.use_line2 ) {
+    
+	geometry = new THREE.LineGeometry();
+	geometry.setPositions([...data[1], ...data[2]]);
 
+    } else {
+
+	geometry = new THREE.BufferGeometry().setFromPoints([
+	    new THREE.Vector3(...data[1]),
+	    new THREE.Vector3(...data[2])
+	]);
+
+    }
+
+    return [geometry];
+    
 };
 
 ispy.makeCSCSegments = function(data, geometry) {
@@ -1444,35 +1457,47 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 };
 
 ispy.makeCSCDigis_V2 = function(data) {
-    
-    /*
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-	new THREE.Vector3(...data[0]),
-	new THREE.Vector3(...data[1])
-    ]);
-    */
 
-    const geometry = new THREE.LineGeometry()
-    geometry.setPositions([...data[0], ...data[1]]);
+    var geometry;
     
+    if ( ispy.use_line2 ) {
+	
+	geometry = new THREE.LineGeometry()
+	geometry.setPositions([...data[0], ...data[1]]);
+    
+    } else {
+    
+	geometry = new THREE.BufferGeometry().setFromPoints([
+	    new THREE.Vector3(...data[0]),
+	    new THREE.Vector3(...data[1])
+	]);
+
+    }
+
     return [geometry];
-
+    
 };
 
 ispy.makeGEMDigis_V2 = function(data) {
 
-    /*
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-	new THREE.Vector3(...data[0]),
-	new THREE.Vector3(...data[1])
-    ]);
-    */
- 
-    const geometry = new THREE.LineGeometry();
-    geometry.setPositions([...data[0], ...data[1]]);
-       
-    return [geometry];
+    var geometry;
+    
+    if ( ispy.use_line2) {
+    
+	geometry = new THREE.LineGeometry();
+	geometry.setPositions([...data[0], ...data[1]]);
+	
+    } else {
 
+	geometry = new THREE.BufferGeometry().setFromPoints([
+	    new THREE.Vector3(...data[0]),
+	    new THREE.Vector3(...data[1])
+	]);
+
+    }
+
+    return [geometry];
+    
 };
 
 /*
@@ -1500,23 +1525,29 @@ ispy.makeCSCLCTDigis = function(data) {
 
 ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
 
-    /*
-    const l1 = new THREE.BufferGeometry().setFromPoints([
-	new THREE.Vector3(...data[0]),
-	new THREE.Vector3(...data[1])
-    ]);
+    var l1, l2;
 
-    const l2 = new THREE.BufferGeometry().setFromPoints([
-	new THREE.Vector3(...data[2]),
-	new THREE.Vector3(...data[3])
-    ]);
-    */
-    
-    const l1 = new THREE.LineGeometry();
-    l1.setPositions([...data[0], ...data[1]]);
+    if ( ispy.use_line2 ) {
 
-    const l2 = new THREE.LineGeometry();
-    l2.setPositions([...data[2], ...data[3]]);
+	l1 = new THREE.LineGeometry();
+	l1.setPositions([...data[0], ...data[1]]);
+
+	l2 = new THREE.LineGeometry();
+	l2.setPositions([...data[2], ...data[3]]);
+
+    } else {
+
+	l1 = new THREE.BufferGeometry().setFromPoints([
+	    new THREE.Vector3(...data[0]),
+	    new THREE.Vector3(...data[1])
+	]);
+
+	l2 = new THREE.BufferGeometry().setFromPoints([
+	    new THREE.Vector3(...data[2]),
+	    new THREE.Vector3(...data[3])
+	]);
+
+    }
     
     return [l1,l2];
 

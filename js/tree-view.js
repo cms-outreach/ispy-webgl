@@ -187,23 +187,27 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     });
 
-    // This conditional could / should be improved
-    if ( key.includes('GEMDigis') || key.includes('GEMSegments') || key.includes('GEMRec') ||
-	 key.includes('CSCStrip') || key.includes('CSCSegments') || key.includes('CSCRec') ||
-	 key.includes('CSCWire') || key.includes('RPCRec') || key.includes('DTRecSegment') ) {
+    if ( ispy.use_line2 ) {
+    
+	// This conditional could / should be improved
+	if ( key.includes('GEMDigis') || key.includes('GEMSegments') || key.includes('GEMRec') ||
+	     key.includes('CSCStrip') || key.includes('CSCSegments') || key.includes('CSCRec') ||
+	     key.includes('CSCWire') || key.includes('RPCRec') || key.includes('DTRecSegment') ) {
 
-	sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
+	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 
-	    let obj = ispy.scene.getObjectByName(key);
+		let obj = ispy.scene.getObjectByName(key);
 
-	    obj.children.forEach(function(o) {
+		obj.children.forEach(function(o) {
 	    
-		o.material.linewidth = row_obj.linewidth*0.001;
+		    o.material.linewidth = row_obj.linewidth*0.001;
 	    
+		});
+
 	    });
-
-	});
 	
+	}
+
     }
 
     if ( ispy.use_line2 ) {

@@ -517,24 +517,44 @@ ispy.addEvent = function(event) {
 	    for ( let li = 0; li < data.length; li++ ) {
 
 		descr.fn(data[li]).forEach(function(g) {
+
+		    if ( ispy.use_line2 ) {
 		    
-		    const line2 = new THREE.Line2(g, new THREE.LineMaterial({
-			color:ocolor,
-			transparent:transp,
-			linewidth:descr.style.linewidth*0.001,
-			opacity:descr.style.opacity
-		    }));
+			const line2 = new THREE.Line2(g, new THREE.LineMaterial({
+			    color:ocolor,
+			    transparent:transp,
+			    linewidth:descr.style.linewidth*0.001,
+			    opacity:descr.style.opacity
+			}));
             
-		    line2.name = key;
-		    line2.computeLineDistances();
+			line2.name = key;
+			line2.computeLineDistances();
             
-		    // originalIndex works as a link between the original
-		    // data and THREE objects:
+			// originalIndex works as a link between the original
+			// data and THREE objects:
 		    
-		    line2.userData.originalIndex = li;
-		    objectIds.push(line2.id);
-		    ispy.scene.getObjectByName(key).add(line2);
+			line2.userData.originalIndex = li;
+			objectIds.push(line2.id);
+			ispy.scene.getObjectByName(key).add(line2);
+
+		    } else {
+			
+			const line = new THREE.Line(g, new THREE.LineBasicMaterial({
+			    color:ocolor,
+			    transparent:transp,
+			    opacity:descr.style.opacity
+			}));
+
+			line.name = key;
+            
+			// originalIndex works as a link between the original
+			// data and THREE objects:
 		    
+			line.userData.originalIndex = li;
+			objectIds.push(line.id);
+			ispy.scene.getObjectByName(key).add(line);
+		    }
+			    
 		});
 	    
 	    }
