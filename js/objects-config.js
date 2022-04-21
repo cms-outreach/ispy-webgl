@@ -560,7 +560,7 @@ ispy.event_description = {
     },
     "ForwardProtons_V1": {
 	type: ispy.SHAPE, on: false, group: "Physics", name: "Forward Protons",
-	fn: ispy.makeProtons, style: {color: "rgb(10%, 10%, 100%)", opacity: 1.0},
+	fn: ispy.makeProtons, style: {color: "rgb(0%, 100%, 100%)", opacity: 1.0},
 	selection: {}
     },
     "Vertices_V1": {
