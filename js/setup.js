@@ -74,8 +74,8 @@ ispy.useRenderer = function(type) {
   
     } else {
     
-	renderer.setClearColor(0x000000,1);
-	inset_renderer.setClearColor(0x000000,0);
+	renderer.setClearColor(0x232323,1);
+	inset_renderer.setClearColor(0x232323,0);
   
     }
 

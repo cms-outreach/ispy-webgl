@@ -983,6 +983,12 @@ ispy.makeMET = function(data, style, selection) {
 
     // dir, origin, length, hex, headLength, headWidth
     let met = new THREE.ArrowHelper(dir, origin, length, color.getHex(), 0.2, 0.2);
+
+    // radiusTop, radiusBottom, height, radialSegments, heightSegments
+    // We want more radialSegements beyond the default 8 to make a nicer
+    // arrowhead
+    met.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
+    met.cone.geometry.translate(0, -1, 0);
     
     if ( pt < selection.min_pt ) {
 
@@ -998,7 +1004,7 @@ ispy.makeJet = function(data, style, selection) {
   
     const et = data[0];
     const eta = data[1];
-
+    
     const theta = data[2];
     const phi = data[3];
     
@@ -1221,7 +1227,12 @@ ispy.makeProtons = function(data, style, selection) {
 	0.2, // head length
 	0.2  // head width
     );
+
     proton.userData.xi = xi;
+
+    // See note for MET
+    proton.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
+    proton.cone.geometry.translate(0, -1, 0);
 
     const radius = xi*10;
     const thickness = 0.05;
