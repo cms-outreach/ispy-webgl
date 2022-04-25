@@ -956,6 +956,24 @@ ispy.makeTrackingClusters = function(data) {
 
 };
 
+ispy.makeArrow = function(dir, origin, length, color) {
+
+    // dir, origin, length, hex, headLength, headWidth
+    const arrow = new THREE.ArrowHelper(
+	dir, origin, length, color.getHex(),
+	0.2, 0.2
+    );
+    
+    // radiusTop, radiusBottom, height, radialSegments, heightSegments
+    // We want more radialSegements beyond the default 8 to make a nicer
+    // arrowhead
+    arrow.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
+    arrow.cone.geometry.translate(0, -1, 0);
+
+    return arrow;
+    
+};
+
 ispy.makeMET = function(data, style, selection) {
 
     /*
@@ -981,14 +999,7 @@ ispy.makeMET = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    // dir, origin, length, hex, headLength, headWidth
-    let met = new THREE.ArrowHelper(dir, origin, length, color.getHex(), 0.2, 0.2);
-
-    // radiusTop, radiusBottom, height, radialSegments, heightSegments
-    // We want more radialSegements beyond the default 8 to make a nicer
-    // arrowhead
-    met.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
-    met.cone.geometry.translate(0, -1, 0);
+    let met = ispy.makeArrow(dir, origin, length, color);
     
     if ( pt < selection.min_pt ) {
 
@@ -1221,18 +1232,11 @@ ispy.makeProtons = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    // dir, origin, length, hex, headLength, headWidth
-    const proton = new THREE.ArrowHelper(
-	dir, origin, length, color.getHex(),
-	0.2, // head length
-	0.2  // head width
+    const proton = new ispy.makeArrow(
+	dir, origin, length, color
     );
 
     proton.userData.xi = xi;
-
-    // See note for MET
-    proton.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
-    proton.cone.geometry.translate(0, -1, 0);
 
     const radius = xi*10;
     const thickness = 0.05;
