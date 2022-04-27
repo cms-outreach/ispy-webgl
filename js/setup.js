@@ -1,27 +1,3 @@
-ispy.hasWebGL = function() {
-
-    var canvas = document.createElement('canvas');
-
-    if ( canvas.getContext('webgl') || canvas.getContext('experimental-webgl') ) {
-	
-	if ( ! window.WebGLRenderingContext ) {
-      
-	    return false;
-    
-	} else {
-      
-	    return true;
-	
-	}
-
-    } else {
-    
-	return false;
-  
-    }
-
-};
-
 ispy.lookAtOrigin = function() {
 
     ispy.camera.lookAt(new THREE.Vector3(0,0,0));
@@ -66,18 +42,9 @@ ispy.useRenderer = function(type) {
 
     renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
     inset_renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-
-    if ( ispy.inverted_colors ) {
-   
-	renderer.setClearColor(0xffffff,1);
-	inset_renderer.setClearColor(0xffffff,0);
-  
-    } else {
     
-	renderer.setClearColor(0x232323,1);
-	inset_renderer.setClearColor(0x232323,0);
-  
-    }
+    renderer.setClearColor(0x232323,1);
+    inset_renderer.setClearColor(0x232323,0);
 
     renderer.setSize(width, height);
     inset_renderer.setSize(height/5, height/5);

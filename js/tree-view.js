@@ -230,7 +230,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	
     }
 
-    if ( key.includes('Muon') || key.includes('Electron') || key.includes('Tracks_') ) {
+    if ( key.includes('Muons_') || key.includes('Electron') || key.includes('Tracks_') ) {
 
 	sf.add(row_obj, 'min_pt').onChange(function() {
 
@@ -296,7 +296,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	    o.traverse(function(oc) {
 
 		// Special case to handle
-		if ( oc.type === 'ArrowHelper' ) {
+		if ( oc.type === 'ArrowHelper' || key.includes('MET') || key.includes('Proton') ) {
 		    
 		    oc.children.forEach(function(og) {
 

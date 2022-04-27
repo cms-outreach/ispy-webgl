@@ -6,11 +6,11 @@ ispy.invertColors = function() {
 
     if ( ! ispy.inverted_colors ) {
     
-	ispy.renderer.setClearColor(0x000000,1);
+	ispy.renderer.setClearColor(0x232323,1);
 
     } else {
 
-	ispy.renderer.setClearColor(0xffffff,1);
+	ispy.renderer.setClearColor(0xefefef,1);
 	
     }
 

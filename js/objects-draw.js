@@ -965,10 +965,63 @@ ispy.makeArrow = function(dir, origin, length, color) {
     );
     
     // radiusTop, radiusBottom, height, radialSegments, heightSegments
-    // We want more radialSegements beyond the default 8 to make a nicer
-    // arrowhead
+    // We want more radialSegements beyond the 5 used in ArrowHelper
+    // to make a nicer arrowhead
     arrow.cone.geometry = new THREE.CylinderGeometry(0, 0.5, 1, 24, 1);
     arrow.cone.geometry.translate(0, -1, 0);
+
+    return arrow;
+    
+};
+
+ispy.makeArrowThick = function(dir, origin, length, color, displacement) {
+
+    dir.setLength(length);
+    
+    const positions = [
+	...origin.toArray(),
+	...dir.toArray()
+    ];
+
+    const arrow = new THREE.Object3D();
+    
+    const al = new THREE.Line2(
+	new THREE.LineGeometry().setPositions(
+	    positions
+	),
+	new THREE.LineMaterial({
+	    color: color,
+	    linewidth: 2*0.001
+	})
+    );
+
+    al.computeLineDistances();
+    dir.normalize()
+    al.translateOnAxis(dir, displacement);
+
+    const cl = 0.2;
+    
+    const ac = new THREE.Mesh(
+	new THREE.CylinderGeometry(
+	    0, 0.1, cl, 24, 1
+	),
+	new THREE.MeshBasicMaterial({
+	    color: color
+	})
+    );
+        
+    ac.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,cl*0.5,0));
+    ac.geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
+
+    ac.lookAt(dir);
+    dir.setLength(length+displacement);
+
+    ac.position.x = dir.x;
+    ac.position.y = dir.y;
+    ac.position.z = dir.z;
+    
+    arrow.add(al);
+    arrow.add(ac);
 
     return arrow;
     
@@ -993,19 +1046,29 @@ ispy.makeMET = function(data, style, selection) {
     let dir = new THREE.Vector3(px,py,0);
     dir.normalize();
        
-    let origin = new THREE.Vector3(0,0,0);
-    origin.add(dir);
-    origin.multiplyScalar(1.45);
-    
+    let origin = new THREE.Vector3(0,0,0);    
     let color = new THREE.Color(style.color);
 
-    let met = ispy.makeArrow(dir, origin, length, color);
+    var met;
     
-    if ( pt < selection.min_pt ) {
+    if ( ispy.use_line2 ) {
 
-	met.visible = false;
+	met = ispy.makeArrowThick(
+	    dir, origin,
+	    length, color,
+	    1.45 // displace out to ECAL barrel radius
+	);
+
+    } else {
+
+	origin.add(dir);
+	origin.multiplyScalar(1.45);
+    
+	met = ispy.makeArrow(dir, origin, length, color);
 
     }
+    
+    met.visible = pt < selection.min_pt ? false : true;
 
     return met;
     
@@ -1033,7 +1096,15 @@ ispy.makeJet = function(data, style, selection) {
     let radius = 0.3 * (1.0 /(1 + 0.001));
     
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
-    const geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
+    const geometry = new THREE.CylinderGeometry(
+	radius,
+	0.0,
+	length,
+	16,
+	1,
+	true
+    );
+    
     geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
@@ -1097,7 +1168,15 @@ ispy.makeJetWithVertex = function(data, style, selection) {
     let radius = 0.3 * (1.0 /(1 + 0.001));
     	
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
-    const geometry = new THREE.CylinderGeometry(radius,0.0,length,16,1,true);
+    const geometry = new THREE.CylinderGeometry(
+	radius,
+	0.0,
+	length,
+	16,
+	1,
+	true
+    );
+    
     geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0,length*0.5,0));
     geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2));
 
@@ -1232,9 +1311,21 @@ ispy.makeProtons = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    const proton = new ispy.makeArrow(
-	dir, origin, length, color
-    );
+    var proton;
+
+    if ( ispy.use_line2 ) {
+
+	proton = new ispy.makeArrowThick(
+	    dir, origin, length, color, 0
+	);
+
+    } else {
+    
+	proton = new ispy.makeArrow(
+	    dir, origin, length, color
+	);
+
+    }
 
     proton.userData.xi = xi;
 
