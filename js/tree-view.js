@@ -212,7 +212,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     if ( ispy.use_line2 ) {
 
-	if ( key.includes('GlobalMuon') || key.includes('Electron') ) {
+	if ( key.includes('GlobalMuon') || key.includes('Electron') || key.includes('Photon') ) {
 	
 	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 

@@ -900,6 +900,7 @@ ispy.makeGEM = function(gem) {
     return ispy.makeWireframeBox(gem, 1);
 
 };
+
 ispy.makeMuonChamber = function(chamber) {
     
     return ispy.makeSolidBox(chamber, 1);
@@ -1260,17 +1261,45 @@ ispy.makePhoton = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    const photon = new THREE.LineSegments(
-	new THREE.BufferGeometry().setFromPoints(
-	    [pt1, pt2]
-	),
-	new THREE.LineDashedMaterial({
+    var photon;
+
+    if ( ispy.use_line2 ) {
+
+	// For some reason LineDashedMaterial doesn't
+	// work for Line2 so use this material
+	const ldm =  new THREE.LineMaterial({
 	    color: color,
-	    scale: 1,
+	    dashed: true,
+	    linewidth: style.linewidth*0.001,
 	    dashSize: 0.1,
 	    gapSize: 0.1
-	})
-    );
+	});
+
+	ldm.defines.USE_DASH = ""; 
+	ldm.needsUpdate = true;
+	
+	photon = new THREE.Line2(
+	    new THREE.LineGeometry().setPositions(
+		[...pt1.toArray(), ...pt2.toArray()] 
+	    ),
+	    ldm
+	);
+
+    } else {
+
+	photon = new THREE.LineSegments(
+	    new THREE.BufferGeometry().setFromPoints(
+		[pt1, pt2]
+	    ),
+	    new THREE.LineDashedMaterial({
+		color: color,
+		scale: 1,
+		dashSize: 0.1,
+		gapSize: 0.1
+	    })
+	);
+	
+    }
 
     photon.computeLineDistances();
     photon.userData.energy = energy;
