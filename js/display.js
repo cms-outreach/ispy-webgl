@@ -439,15 +439,46 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     const color_class = ispy.inverted_colors ? 'group white' : 'group black';
 
     collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
+
+    let fourv = ["E", "px", "py", "pz"];
+    let indices = {};
+    
+    if ( key.includes('GsfElectron') || key.includes('GlobalMuon') ) {
+    
+	for ( let c in fourv ) {
+
+	    console.log(key, fourv[c]);
+	    
+	    collectionTableHead.append($('<th class="'+ color_class +'" data-sort="float"><i class="fa fa-sort"></i> ' + fourv[c] + '</th>'));
+		
+	}
+
+    }
     
     for ( let t in type ) {
-
+	
 	let dataSort = type[t][1] === "double" ? "float" : type[t][1];
 	collectionTableHead.append($('<th class="'+ color_class +'" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
-  
+	
+	if ( type[t][0] === 'pt' ) {
+	    
+	    indices['pt'] = t;
+	
+	} else if ( type[t][0] === 'eta' ) {
+      
+	    indices['eta'] = t;
+	
+	} else if ( type[t][0] === 'phi' ) {
+      
+	    indices['phi'] = t;
+    
+	}
+	
     }
 
     let index = 0;
+    console.log(indices);
+    
     
     for ( let c in collection ) {
 	
@@ -455,7 +486,47 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
+
+	if ( key.includes('GsfElectron') || key.includes('GlobalMuon') ) {
+
+	    let pt, eta, phi;
+	    let E, px, py, pz;
+
+	    pt = collection[c][indices['pt']];
+	    eta = collection[c][indices['eta']];
+	    phi = collection[c][indices['phi']];
+	    
+	    px = pt*Math.cos(phi);
+	    py = pt*Math.sin(phi);
+	    pz = pt*Math.sinh(eta);
+    
+	    E = 0;
+
+	    if ( key.includes('Muon') ) {
+		
+		E += mMuon2;
 	
+	    }
+
+	    if ( key.includes('Electron') ) {
+		
+		E += mElectron2;
+		
+	    }
+	   
+	    E += pt*pt*Math.cosh(eta)*Math.cosh(eta);
+	    E = Math.sqrt(E);
+
+	    let fourv = [E.toFixed(3), px.toFixed(3), py.toFixed(3), pz.toFixed(3)];
+	    
+	    for ( let v in fourv ) {
+
+		row_content += "<td>"+fourv[v]+"</td>";
+
+	    }
+	    
+	}
+    	
 	for ( let v in collection[c] ) {
   
 	    row_content += "<td>"+collection[c][v]+"</td>";

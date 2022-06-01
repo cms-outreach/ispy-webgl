@@ -4,7 +4,7 @@ $(function() {
     ispy.addGroups();
     ispy.initLight();
     ispy.initDetector();
-    ispy.importBeampipe();
+    //ispy.importBeampipe();
     ispy.loadWebFiles();
     ispy.run();
 
