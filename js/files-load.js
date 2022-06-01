@@ -376,10 +376,15 @@ ispy.selectFile = function(filename) {
 ispy.loadWebFiles = function() {
 
     const web_files = [
-	"./data/Hto4l_2011A.ig",
-	"./data/Hto4l_2012B.ig",
-	"./data/Hto4l_2012C_1.ig",
-	"./data/Hto4l2012C_1.ig"
+	"./data/Hto4l_0.ig",
+	"./data/Hto4l_1.ig",
+	"./data/Hto4l_2.ig",
+	"./data/Hto4l_3.ig",
+	"./data/Hto4l_4.ig",
+	"./data/Hto4l_5.ig",
+	"./data/Hto4l_6.ig",
+	"./data/Hto4l_7.ig",
+	"./data/Hto4l_8.ig"
     ];
 
     $('#selected-event').html("Selected event");
