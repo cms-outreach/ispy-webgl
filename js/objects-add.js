@@ -263,7 +263,8 @@ ispy.addEvent = function(event) {
 		color:ocolor,
 		transparent: transp,
 		opacity:descr.style.opacity,
-		depthTest: false
+		depthTest: false,
+		depthWrite: false
 	    });
 	    
 	    solidbox_material.side = THREE.DoubleSide;

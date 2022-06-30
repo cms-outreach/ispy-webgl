@@ -1167,7 +1167,7 @@ ispy.makeJetWithVertex = function(data, style, selection) {
     let length2 = st ? maxR / Math.abs(st) : maxR;
     let length = length1 < length2 ? length1 : length2;
     let radius = 0.3 * (1.0 /(1 + 0.001));
-    	
+    
     // radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded
     const geometry = new THREE.CylinderGeometry(
 	radius,
