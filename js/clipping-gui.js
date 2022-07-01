@@ -1,9 +1,3 @@
-ispy.clipgui = new dat.GUI({
-    name: 'Clipping Controls',
-    hideable: false,
-    autoPlace: false
-});
-
 const planeX = ispy.clipgui.addFolder("planeX");
 const planeY = ispy.clipgui.addFolder("planeY");
 const planeZ = ispy.clipgui.addFolder("planeZ");

@@ -162,11 +162,16 @@ ispy.init = function() {
     // (without knowing the name beforehand).
     // Therefore we have to keep track of them by-hand.
     ispy.subfolders = {};
- 
+
+    ispy.clipgui = new dat.GUI({
+	name: 'Clipping Controls',
+	hideable: false,
+	autoPlace: false
+    });
+
     ispy.clipgui.domElement.id = 'clipgui';
     document.getElementById('titlebar').appendChild(ispy.clipgui.domElement);
-    $('#clipgui').hide();
-    
+
     ispy.renderer.clippingPlanes = ispy.planes;
 
     ispy.inverted_colors = false;
@@ -239,6 +244,7 @@ ispy.init = function() {
 	
     });
 
+    $('#clipgui').hide();
     $('#clipping').prop('checked', false);
 
     $('#clipping').change(function() {
