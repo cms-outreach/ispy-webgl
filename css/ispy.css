@@ -108,6 +108,18 @@ canvas.hover {
   font-size: 14px;
 }
 
+#clipgui {
+  position: absolute;
+  top:0;
+  left:65%;
+  z-index: 1002;
+  padding-top: 0px;
+  padding-right: 0px;
+  display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+}   
+
 #toolbar {
   float: left;
 }

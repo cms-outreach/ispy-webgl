@@ -147,7 +147,7 @@ ispy.init = function() {
 	    }
 
 	});
-    
+
     ispy.treegui = new dat.GUI({
 	name: 'Tree View',
 	hideable: false,
@@ -156,13 +156,19 @@ ispy.init = function() {
 
     ispy.treegui.domElement.id = 'treegui';
     document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
-    
+  
     // It seems currently impossible with dat.gui
     // to fetch the folders as an array and remove them
     // (without knowing the name beforehand).
     // Therefore we have to keep track of them by-hand.
     ispy.subfolders = {};
+ 
+    ispy.clipgui.domElement.id = 'clipgui';
+    document.getElementById('titlebar').appendChild(ispy.clipgui.domElement);
+    $('#clipgui').hide();
     
+    ispy.renderer.clippingPlanes = ispy.planes;
+
     ispy.inverted_colors = false;
     $('#invert-colors').prop('checked', false);
 
@@ -231,6 +237,14 @@ ispy.init = function() {
 
 	ispy.use_line2 = this.checked ? true : false;
 	
+    });
+
+    $('#clipping').prop('checked', false);
+
+    $('#clipping').change(function() {
+
+	this.checked ? $('#clipgui').show() : $('#clipgui').hide();
+
     });
 				
     const font_loader = new THREE.FontLoader();
