@@ -714,6 +714,12 @@ ispy.loadSelectedGLTF = function() {
 	    
 	    let object = gltf.scene.children[0];
 
+	    object.children.forEach(function(c) {
+
+		c.material.clippingPlanes = ispy.local_planes;
+			
+	    });
+
 	    ispy.scene.getObjectByName('Imported').add(object);
 	    ispy.addSelectionRow('Imported', name, name, [], true);
 	    
@@ -762,6 +768,7 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
         
 		c.material.transparent = true;
 		c.material.opacity = ispy.importTransparency;
+		c.material.clippingPlanes = ispy.local_planes;
       
 	    });
 
@@ -984,7 +991,7 @@ ispy.importDetector = function() {
 		await function(gltf) {
 		    
 		    let object = gltf.scene.children[0];
-	
+		    
 		    object.name = g.id;
 		    object.visible = g.show;
 
@@ -994,6 +1001,8 @@ ispy.importDetector = function() {
 
 			c.renderOrder = 1;
 
+			c.material.clippingPlanes = ispy.local_planes;
+			
 		    });
 
 		    ispy.disabled[object.name] = ! g.show;
