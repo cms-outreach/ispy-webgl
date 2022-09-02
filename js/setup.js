@@ -156,13 +156,15 @@ ispy.init = function() {
 
     ispy.treegui.domElement.id = 'treegui';
     document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
-  
+
     // It seems currently impossible with dat.gui
     // to fetch the folders as an array and remove them
     // (without knowing the name beforehand).
     // Therefore we have to keep track of them by-hand.
     ispy.subfolders = {};
 
+    // Clipping stuff
+    
     ispy.clipgui = new dat.GUI({
 	name: 'Clipping Controls',
 	hideable: false,
@@ -172,11 +174,37 @@ ispy.init = function() {
     ispy.clipgui.domElement.id = 'clipgui';
     document.getElementById('titlebar').appendChild(ispy.clipgui.domElement);
 
-    const planeX = ispy.clipgui.addFolder("planeX");
-    const planeY = ispy.clipgui.addFolder("planeY");
-    const planeZ = ispy.clipgui.addFolder("planeZ");
+    const localFolder = ispy.clipgui.addFolder("Local Clipping");
+    const globalFolder = ispy.clipgui.addFolder("Global Clipping");
 
-    const clip_params = {
+    const local_planeX = localFolder.addFolder("planeX");
+    const local_planeY = localFolder.addFolder("planeY");
+    const local_planeZ = localFolder.addFolder("planeZ");
+    
+    const global_planeX = globalFolder.addFolder("planeX");
+    const global_planeY = globalFolder.addFolder("planeY");
+    const global_planeZ = globalFolder.addFolder("planeZ");
+
+    const local_params = {
+	
+	planeX: {
+	    constant: 10,
+	    negated: false 
+	},
+    
+	planeY: {
+	    constant: 10,
+	    negated: false
+	},
+    
+	planeZ: {
+	    constant: 30,
+	    negated: false
+	}
+
+    };
+    
+    const global_params = {
     
 	planeX: {
 	    constant: 10,
@@ -195,47 +223,89 @@ ispy.init = function() {
 	
     };
 
-    ispy.planes = [
-	new THREE.Plane( new THREE.Vector3(-1,0,0), clip_params.planeX.constant),
-	new THREE.Plane( new THREE.Vector3(0,-1,0), clip_params.planeY.constant),
-	new THREE.Plane( new THREE.Vector3(0,0,-1), clip_params.planeZ.constant)
+    ispy.local_planes = [
+	new THREE.Plane( new THREE.Vector3(-1,0,0), local_params.planeX.constant),
+	new THREE.Plane( new THREE.Vector3(0,-1,0), local_params.planeY.constant),
+	new THREE.Plane( new THREE.Vector3(0,0,-1), local_params.planeZ.constant)
     ];
     
-    ispy.renderer.clippingPlanes = ispy.planes;
+    ispy.global_planes = [
+	new THREE.Plane( new THREE.Vector3(-1,0,0), global_params.planeX.constant),
+	new THREE.Plane( new THREE.Vector3(0,-1,0), global_params.planeY.constant),
+	new THREE.Plane( new THREE.Vector3(0,0,-1), global_params.planeZ.constant)
+    ];
     
-    planeX.add(clip_params.planeX, 'constant').min(-10).max(10).onChange(
-	d => ispy.planes[0].constant = d
+    ispy.renderer.clippingPlanes = ispy.global_planes;
+    ispy.renderer.localClippingEnabled = true;
+
+    local_planeX.add(local_params.planeX, 'constant').min(-10).max(10).onChange(
+	d => ispy.local_planes[0].constant = d
+    );
+    
+    local_planeX.add(local_params.planeX, 'negated').onChange(() => {
+	ispy.local_planes[0].negate();
+	local_params.planeX.constant = ispy.local_planes[0].constant;
+    });
+    
+    local_planeX.open();
+    
+    global_planeX.add(global_params.planeX, 'constant').min(-10).max(10).onChange(
+	d => ispy.global_planes[0].constant = d
     );
 
-    planeX.add(clip_params.planeX, 'negated').onChange(() => {
-	ispy.planes[0].negate();
-	clip_params.planeX.constant = ispy.planes[0].constant;
+    global_planeX.add(global_params.planeX, 'negated').onChange(() => {
+	ispy.global_planes[0].negate();
+	global_params.planeX.constant = ispy.global_planes[0].constant;
     });
 
-    planeX.open();
-
-    planeY.add(clip_params.planeY, 'constant').min(-10).max(10).onChange(
-	d => ispy.planes[1].constant = d
+    global_planeX.open();
+    
+    local_planeY.add(local_params.planeY, 'constant').min(-10).max(10).onChange(
+	d => ispy.local_planes[1].constant = d
     );
 
-    planeY.add(clip_params.planeY, 'negated').onChange(() => {
-	ispy.planes[1].negate();
-	clip_params.planeY.constant = ispy.planes[1].constant;
+    local_planeY.add(local_params.planeY, 'negated').onChange(() => {
+	ispy.local_planes[1].negate();
+	local_params.planeY.constant = ispy.local_planes[1].constant;
     });
-
-    planeY.open();
-
-    planeZ.add(clip_params.planeZ, 'constant').min(-30).max(30).onChange(
-	d => ispy.planes[2].constant = d
+        
+    local_planeY.open();
+    
+    global_planeY.add(global_params.planeY, 'constant').min(-10).max(10).onChange(
+	d => ispy.global_planes[1].constant = d
     );
 
-    planeZ.add(clip_params.planeZ, 'negated').onChange(() => {
-	ispy.planes[2].negate();
-	clip_params.planeZ.constant = ispy.planes[2].constant;
+    global_planeY.add(global_params.planeY, 'negated').onChange(() => {
+	ispy.global_planes[1].negate();
+	global_params.planeY.constant = ispy.global_planes[1].constant;
     });
 
-    planeZ.open();
+    global_planeY.open();
+    
+    local_planeZ.add(local_params.planeZ, 'constant').min(-30).max(30).onChange(
+	d => ispy.local_planes[2].constant = d
+    );
 
+    local_planeZ.add(local_params.planeZ, 'negated').onChange(() => {
+	ispy.local_planes[2].negate();
+	local_params.planeZ.constant = ispy.local_planes[2].constant;
+    });
+    
+    local_planeZ.open();
+    
+    global_planeZ.add(global_params.planeZ, 'constant').min(-30).max(30).onChange(
+	d => ispy.global_planes[2].constant = d
+    );
+
+    global_planeZ.add(global_params.planeZ, 'negated').onChange(() => {
+	ispy.global_planes[2].negate();
+	global_params.planeZ.constant = ispy.global_planes[2].constant;
+    });
+
+    global_planeZ.open();
+
+    // End of clipping stuff
+    
     ispy.inverted_colors = false;
     $('#invert-colors').prop('checked', false);
 

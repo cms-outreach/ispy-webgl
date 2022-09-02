@@ -35,11 +35,12 @@ ispy.addDetector = function() {
 	case ispy.BOX:
 
 	    let box_material = new THREE.LineBasicMaterial({
-		    color:ocolor, 
-		    transparent: transp,
-		    linewidth:descr.style.linewidth, 
-		    depthWrite: false,
-		    opacity:descr.style.opacity
+		color:ocolor, 
+		transparent: transp,
+		linewidth:descr.style.linewidth, 
+		depthWrite: false,
+		opacity:descr.style.opacity,
+		clippingPlanes: ispy.local_planes
 	    });
 	    
 	    let box_geometries = [];
@@ -67,7 +68,8 @@ ispy.addDetector = function() {
 		color:ocolor,
 		transparent: transp,
 		opacity:descr.style.opacity,
-		depthTest: false
+		depthTest: false,
+		clippingPlanes: ispy.local_planes
 	    });
         
 	    solidbox_material.side = THREE.DoubleSide;
