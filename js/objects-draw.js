@@ -1042,8 +1042,12 @@ ispy.makeMET = function(data, style, selection) {
     const px = data[2];
     const py = data[3];
 
+    let d = 1.45; // ECAL barrel radius
     let length = pt*style.scale;
-   
+
+    // Clamp length of MET
+    length = length+d > 5 ? 5 : length;
+    
     let dir = new THREE.Vector3(px,py,0);
     dir.normalize();
        
@@ -1057,13 +1061,13 @@ ispy.makeMET = function(data, style, selection) {
 	met = ispy.makeArrowThick(
 	    dir, origin,
 	    length, color,
-	    1.45 // displace out to ECAL barrel radius
+	    d // displace out to ECAL barrel radius
 	);
 
     } else {
 
 	origin.add(dir);
-	origin.multiplyScalar(1.45);
+	origin.multiplyScalar(d); // see comment above
     
 	met = ispy.makeArrow(dir, origin, length, color);
 
