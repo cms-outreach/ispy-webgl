@@ -975,48 +975,65 @@ ispy.importDetector = function() {
 	    group: 'Detector',
 	    show: false,
 	    file: './geometry/gltf/RPCMinusEndcap3D_V1.glb'
+	},
+	{
+	    id: 'RhoZ',
+	    name: 'RhoZ',
+	    group: 'Detector',
+	    show: false,
+	    file: './geometry/gltf/RhoZ.glb'
+	},
+	{
+	    id: 'RPhi',
+	    name: 'RPhi',
+	    group: 'Detector',
+	    show: true,
+	    file: './geometry/gltf/RPhi.glb'
 	}
+
     ];
     
     $('#loading').modal('show');
 
-    async function loadGLTFs() {
+    function loadGLTFs() {
 
-	const promises = gltf_objs.map(async g => {
-
-	    console.log(g.file);
+	gltf_objs.map(g => {
 	    
 	    gltf_loader.load(
+
 		g.file,
-		await function(gltf) {
+
+		function(gltf) {
 		    
 		    let object = gltf.scene.children[0];
 		    
 		    object.name = g.id;
 		    object.visible = g.show;
-
+		    
 		    // Set render order for geometries
 		    // Otherwise they won't appear "in-front" of Imported geometries
 		    object.children.forEach(function(c) {
 
 			c.renderOrder = 1;
 
-			c.material.clippingPlanes = ispy.local_planes;
+			if ( c.material ) {
+			    
+			    c.material.clippingPlanes = ispy.local_planes;
+
+			}
 			
 		    });
-
+		    
 		    ispy.disabled[object.name] = ! g.show;
-
-		    ispy.scene.getObjectByName(g.group).add(object);
+		    ispy.scene.getObjectByName(g.group).add(object);		    
 		    ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 		
 		}
-	    
+		
 	    );
 
 	});
 
-	await Promise.all(promises);
 	$('#loading').modal('hide');
 
     }

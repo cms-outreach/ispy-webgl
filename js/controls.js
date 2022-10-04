@@ -1,9 +1,14 @@
 ispy.resetControls = function() {
   
-  ispy.setPerspective();
-  ispy.initCamera();
-  ispy.controls.reset();
+    ispy.setPerspective();
+    ispy.initCamera();
+    ispy.controls.reset();
 
+    $('#3d').addClass('active');
+    $('#rphi').removeClass('active');
+    $('#rhoz').removeClass('active');
+
+    ispy.controls.noRotate = false;
 };
 
 ispy.setXY = function() {
@@ -40,7 +45,7 @@ ispy.setYZ = function() {
     ispy.camera.position.y = 0;
     ispy.camera.position.z = 0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
-
+    
     ispy.lookAtOrigin();
 
 };
@@ -120,41 +125,44 @@ ispy.setPerspective = function() {
 
 ispy.showView = function(view) {
 
-    if ( view === '3d' ) {
-	
+    switch (view) {
+
+    case '3d':
+		
 	$('#3d').addClass('active');
 	$('#rphi').removeClass('active');
 	$('#rhoz').removeClass('active');
-   
-	ispy.setPerspective();
- 
-    } else if ( view === 'rphi' ) {
+
+	ispy.controls.noRotate = false;
+	
+	break;
+
+    case 'rphi':
 	
 	$('#3d').removeClass('active');
         $('#rphi').addClass('active');
 	$('#rhoz').removeClass('active');
 
-	ispy.setXY();
+	ispy.controls.noRotate = true;
 	ispy.setOrthographic();
+	ispy.setXY();
 
-	ispy.viewRPhi.forEach(function(o) {
+	break;
 
-		console.log(o);
-
-	    });
-
-
-    } else {
+    case 'rhoz':
 	
 	$('#3d').removeClass('active');
         $('#rphi').removeClass('active');
 	$('#rhoz').addClass('active');
-    
-	ispy.setZX();
+
+	ispy.controls.noRotate = true;
 	ispy.setOrthographic();
+	ispy.setYZ();
+
+	break;
 	
     }
-
+    
 };
 
 ispy.enterFullscreen = function() {
