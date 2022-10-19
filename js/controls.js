@@ -158,7 +158,7 @@ ispy.showView = function(view) {
         $('#rphi').removeClass('active');
 	$('#rhoz').addClass('active');
 
-	ispy.controls.noRotate = false;
+	ispy.controls.noRotate = true;
 	ispy.setOrthographic();
 	ispy.setYZ();
 		
