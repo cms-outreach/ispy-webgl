@@ -1,6 +1,6 @@
 var ispy = ispy || {};
 ispy.detector = {"Collections":{}};
-ispy.version = "0.9.7";
+ispy.version = "1.0.1-rc";
 
 // These need to be defined before adding objects:
 ispy.POINT = 0;
@@ -20,3 +20,4 @@ ispy.ASSOC = 8;
 ispy.SHAPE = 9;
 ispy.TEXT = 10;
 ispy.BUFFERBOX = 11;
+ispy.STACKEDTOWER = 12;

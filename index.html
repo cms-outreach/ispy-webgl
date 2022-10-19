@@ -2,8 +2,12 @@
 <meta charset="utf-8">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="shortcut icon" href="./graphics/cms-favicon.png" type="image/png" />
+
   <link rel="stylesheet" href="./css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.min.css">
+  <link rel="stylesheet" href="./css/solid.min.css">							    
   <link rel="stylesheet" href="./css/ispy.css">
 
   <script src="js/lib/jquery-1.11.1.min.js"></script>
@@ -11,63 +15,52 @@
   <script src="js/lib/stupidtable.min.js"></script>
   <script src="js/lib/bootstrap.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
-
-  <script src="js/lib/three.min.js"></script>
+  <script src="js/lib/dat.gui.min.js"></script>
+  
+  <script src="js/lib/three.js"></script>
   <script src="js/lib/tween.min.js"></script>
 
-  <script src="js/lib/CombinedCamera.js"></script>
-  <script src="js/lib/TrackballControls.js"></script>
+  <script src="js/lib/BufferGeometryUtils.js"></script>
 
+  <script src="js/lib/TrackballControls.js"></script>
+    
   <script src="js/lib/Projector.js"></script>
-  <script src="js/lib/CanvasRenderer.js"></script>
   <script src="js/lib/SVGRenderer.js"></script>
 
   <script src="js/lib/MTLLoader.js"></script>
   <script src="js/lib/OBJLoader.js"></script>
 
+  <script src="js/lib/GLTFLoader.js"></script>
+  
   <script src="js/lib/OBJExporter.js"></script>
-  <script src="js/lib/STLExporter.js"></script>
   <script src="js/lib/GLTFExporter.js"></script>
-
+ 
   <script src="js/lib/jszip.min.js"></script>
 
   <script src="js/lib/DeviceOrientationControls.js"></script>
   <script src="js/lib/StereoEffect.js"></script>
   <script src="js/lib/StereoCamera.js"></script>
 
+  <script src="js/lib/LineSegments2.js"></script>
+  <script src="js/lib/Line2.js"></script>
+  <script src="js/lib/LineMaterial.js"></script>
+  <script src="js/lib/LineSegmentsGeometry.js"></script>
+  <script src="js/lib/LineGeometry.js"></script>
+
   <script src="js/config.js"></script>
   <script src="js/setup.js"></script>
   <script src="js/animate.js"></script>
-
+  
   <script src="js/files-load.js"></script>
+  
   <script src="js/objects-draw.js"></script>
   <script src="js/objects-add.js"></script>
-
   <script src="js/objects-config.js"></script>
-
-  <!-- These geometries are loaded regardless of the renderer used -->
-  <script src="./geometry/dt.js"></script>
-  <script src="./geometry/csc.js"></script>
-  <script src="./geometry/rpc.js"></script>
-  <!-- Don't load this anymore as we don't use the models for WebGL
-  <script src="./geometry/ecal.js"></script>
-  -->
 
   <script src="js/controls.js"></script>
   <script src="js/tree-view.js"></script>
   <script src="js/display.js"></script>
-
   <script src="js/ispy.js"></script>
-
-
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-58237220-1', 'auto');
-  ga('send', 'pageview');
-  </script>
 
   <title>iSpy WebGL</title>
 </head>
@@ -76,7 +69,7 @@
     <div class="row">
       <div class="col-lg-12 bordered black" id="titlebar">
         <div class=row">
-          <div class="col-lg-6" id="application-name">iSpy WebGL</div>
+          <div class="col-lg-2" id="application-name">iSpy WebGL</div>
           <div class="col-lg-6" id="event-loaded"></div>
         </div>
       </div>
@@ -84,29 +77,34 @@
     <div class="row">
       <div class="col-lg-12 bordered black" id="toolbar">
         <div class="button-toolbar" role="toolbar">
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#open-files" title="Open File">
               <i class="fa fa-folder-open"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.reload();" title="Reload page">
-              <i class="fa fa-refresh"></i>
+              <i class="fa fa-redo"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default disabled" id="prev-event-button" onclick="ispy.prevEvent();" title="Previous Event">
+          
+	  <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default disabled" id="prev-event-button" onclick="ispy.prevEvent();" title="Previous Event [Left Arrow]">
               <i class="fa fa-step-backward"></i>
             </button>
-            <button type="button" class="btn btn-default disabled" id="next-event-button" onclick="ispy.nextEvent();" title="Next Event">
+            <button type="button" class="btn btn-default disabled" id="next-event-button" onclick="ispy.nextEvent();" title="Next Event [Right Arrow]">
               <i class="fa fa-step-forward"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.resetControls();" title="Return to Start View">
               <i class="fa fa-home"></i>
             </button>
           </div>
+
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.zoomIn();" title="Zoom In [Shift + Up Arrow]">
               <i class="fa fa-search-plus"></i>
@@ -115,6 +113,19 @@
               <i class="fa fa-search-minus"></i>
             </button>
           </div>
+
+	  <div class="btn-group" role="group">
+	    <button type="button" id="autorotate" class="btn btn-default" onclick="ispy.autoRotate();" title="Autorotate about Y axis">
+	      <i class="fa fa-undo"></i>
+	      </button>
+	  </div>
+
+	  <div class="btn-group" role="group">
+	    <button type="button" id="3d" class="btn btn-default active" onclick="ispy.showView('3D');" title="3d view">3D</button>
+	    <button type="button" id="rphi" class="btn btn-default" onclick="ispy.showView('RPhi');" title="rphi view">r&phi;</button>
+	    <button type="button" id="rhoz" class="btn btn-default" onclick="ispy.showView('RhoZ');" title="rhoz view">&rho;z</button>
+	  </div>
+
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.setXY();" title="YX Plane">
               <img src="./graphics/yx_small.png" class="img-responsive"/>
@@ -126,14 +137,16 @@
               <img src="./graphics/xz_small.png" class="img-responsive" title=""/>
             </button>
           </div>
+
           <div class="btn-group" role="group">
             <button type="button" id="perspective" class="btn btn-default active" onclick="ispy.setPerspective();" title="Perspective Projection">
-              <img src="./graphics/perspective-projection.png" class="img-responsive"/>
+	      <i class="fa fa-cube"></i>
             </button>
             <button type="button" id="orthographic" class="btn btn-default" onclick="ispy.setOrthographic();" title="Orthographic Projection">
-              <img src="./graphics/orthographic-projection.png" class="img-responsive"/>
+	      <i class="fa fa-dice-d6"></i>
             </button>
           </div>
+
           <div class="btn-group" role="group">
             <button type="button" id="enterFullscreen" class="btn btn-default" onclick="ispy.enterFullscreen();" title="Expand to Fullscreen">
               <i class="fa fa-expand"></i>
@@ -142,44 +155,51 @@
               <i class="fa fa-compress"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#settings" onclick="ispy.updateRendererInfo();" title="Settings">
-              <i class="fa fa-gear"></i>
+          
+	  <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#settings" title="Settings">
+              <i class="fa fa-sliders-h"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#statistics" onclick="ispy.updateRendererInfo();" title="Stats">
+                <i class="fa fa-chart-bar"></i>
+              </button>
+          </div>
+          
+	  <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#about" title="About">
               <i class="fa fa-info"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
             <button type="button" class="btn btn-default" onclick="ispy.printImage();" title="Print Image to File">
-              <i class="fa fa-file-image-o"></i>
+              <i class="fa fa-camera"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
+          
+	  <div class="btn-group" role="group">
             <button type="button" id="animate" class="btn btn-default" onclick="ispy.toggleAnimation();" title="Start/Stop Animation [Shift + A]">
               <i class="fa fa-film"></i>
             </button>
           </div>
-          <!--
+          
+	  <!--
           <div class="btn-group" role="group">
             <button type="button" id="record" class="btn btn-default" onclick="ispy.toggleRecording();" title="Start/Stop Recording">
               <i class="fa fa-video-camera"></i>
             </button>
           </div>
-          -->
           <div class="btn-group" role="group">
             <button type="button" id="stereo" class="btn btn-default" data-toggle="modal" data-target="#stereo-modal" title="Stereo View">
-              <i class="fa fa-binoculars"></i>
+              <i class="fa fa-vr-cardboard"></i>
             </button>
           </div>
-          <div class="btn-group" role="group">
-            <!--
-            <button type="button" class="btn btn-default" onclick="ispy.exportModel();" title="Export 3D Model (obj format)">
-              <i class="fa fa-upload"></i>
-            </button>
-            -->
+	  -->
+          
+	  <div class="btn-group" role="group">  
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
               <i class="fa fa-upload"></i>
             </button>
@@ -187,18 +207,21 @@
               <i class="fa fa-download"></i>
             </button>
           </div>
+
         </div>
       </div>
     </div>
     <div class="row">
+      <!--
       <div class="col-lg-3 bordered black" id="treeview">
         <div class="table-responsive">
         <table class="table table-hover">
         </table>
         </div>
       </div>
+      -->
       <!-- The canvas goes into this div -->
-      <div class="col-lg-9 bordered black" id="display">
+      <div class="col-lg-12 bordered black" id="display">
         <div id="axes"></div>
       </div>
     </div>
@@ -208,6 +231,20 @@
       </div>
     </div>
   </div>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.web.cern.ch/" : "http://piwik.web.cern.ch/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 8061);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.web.cern.ch/piwik.php?idsite=8061" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code --> 
+
 </body>
 
 <div id="event-info" class="black">
@@ -218,7 +255,6 @@
   </tr>
 </table>
 </div>
-
 
 <div id="open-files" role="dialog" class="modal">
   <div class="modal-dialog modal-sm">
@@ -313,14 +349,17 @@
         <p>
           Invert colors: <input id='invert-colors' type='checkbox' onchange='ispy.invertColors();'>
         </p>
+	<p>
+	  Show clipping plane controls: <input id='clipping' type='checkbox'>
+	</p>
         <p>
           Hide axes: <input id='show-axes' type='checkbox'>
         </p>
-        <p>
-          Show information dialogs: <input id='show-info' type='checkbox'>
+	<p>
+	  Enable variable line thickness: <input id='pickable_lines' type='checkbox'>
         </p>
-        <p>
-          Show display statistics: <input id='show-stats' type='checkbox'>
+	<p>
+          Show information dialogs: <input id='show-info' type='checkbox'>
         </p>
         <p>
           Show experiment logo: <input id='show-logo' type='checkbox'>
@@ -340,10 +379,28 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               <li><a href="#" onclick="ispy.updateRenderer('WebGLRenderer');">WebGLRenderer</a></li>
-              <li><a href="#" onclick="ispy.updateRenderer('CanvasRenderer');">CanvasRenderer</a></li>
               <li><a href="#" onclick="ispy.updateRenderer('SVGRenderer');">SVGRenderer</a></li>
             </ul>
           </div>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="statistics" role="dialog" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content bordered black">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
+        <h4 class="modal-title black">Statistics</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Show display statistics: <input id='show-stats' type='checkbox'>
         </p>
         <div id="renderer-info"></div>
       </div>
@@ -369,12 +426,24 @@
           A browser-based event display for the <a target="_blank" href="http://cms.cern/">CMS Experiment</a> at the LHC using WebGL
         </p>
         <p>
-          <a href="mailto:ispy-developers@cern.ch">Questions/comments/problems</a></p>
+          <a href="mailto:ispy-developers@cern.ch">Questions/comments/problems</a>
+	</p>
+	<p>
+	  <a target="_blank" href="https://github.com/cms-outreach/ispy-webgl/tree/master#readme">Documentation and FAQ</a>
         <p>
           <a target="_blank" href="https://github.com/cms-outreach/ispy-webgl">Code</a> and
           <a target="_blank" href="https://github.com/cms-outreach/ispy-webgl/issues">Issues</a>
         </p>
-        <p>Contributors: L. Barnard, M. Hategan, C. Logren, T. McCauley, P. Nguyen, M. Saunby</p>
+        <p>Contributors: 
+	  <a href="https://github.com/9inpachi" target="_blank">F. Ali</a>, 
+	  <a href="https://github.com/lukebarnard1" target="_blank">L. Barnard</a>, 
+	  <a href="https://github.com/hategan" target="_blank">M. Hategan</a>, 
+	  <a href="https://github.com/SeungJunLee0" target="_blank">S. Lee</a>, 
+	  <a href="https://github.com/carpppa" target="_blank">C. Logren</a>, 
+	  <a href="https://github.com/tpmccauley" target="_blank">T. McCauley</a>, 
+	  <a href="https://github.com/phongn" target="_blank"> P. Nguyen</a>, 
+	  <a href="https://github.com/msaunby" target="_blank">M. Saunby</a>
+	</p>
         <p>Reference: <a target="_blank" href="https://doi.org/10.1088/1742-6596/898/7/072030">T McCauley 2017 J. Phys.: Conf. Ser. 898 072030</a></p>
         <p>This application uses <a target="_blank" href="http://threejs.org/">three.js</a> <span id="threejs"></span></p>
       </div>
@@ -425,9 +494,9 @@
               Select export format <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#" onclick="ispy.exportModel('obj');">Export OBJ</a></li>
-              <li><a href="#" onclick="ispy.exportGLTF();">Export GLTF</a></li>
-              <li><a href="#" onclick="ispy.exportModel('stl');">Export STL</a></li>
+              <li><a href="#" onclick="ispy.exportOBJ();">Export OBJ</a></li>
+	      <li><a href="#" onclick="ispy.exportGLTF_text();">Export GLTF (text)</a></li>
+              <li><a href="#" onclick="ispy.exportGLTF_binary();">Export GLTF (binary)</a></li>
             </ul>
           </div>
         </p>
@@ -451,10 +520,10 @@
         <p>
           Select a 3D model to load.
         </p>
-        <p>
-          Currently only .obj format is supported.
+	<p>
+	  Currently only .obj format is supported.
           If an additional .mtl is available and loaded it will be used as well.
-        </p>
+	</p>
         <p>
           <i>Nota bene</i>: a large complicated 3D model may take minutes to load.
         </p>
@@ -502,220 +571,6 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" id="load-obj" class="btn btn-default disabled" onclick="$('#geometry-files').modal('hide'); ispy.loadSelectedObj();">Load</button>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Template me! ["Detector", "Provenance", "Tracking", "ECAL", "HCAL", "Muon", "Physics"] -->
-
-<div id="info-Detector" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Detector</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Tracker:</dt>
-          <dd>Silicon and pixel detectors used to detect passage of charged particles</dd>
-          <dt>ECAL Barrel:</dt>
-          <dd>Central electromagnetic calorimeter; measures energy of electrons and photons</dd>
-          <dt>ECAL Endcap:</dt>
-          <dd>Electromagnetic calorimeters at either end of CMS for measurements close to the beam axis</dd>
-          <dt>HCAL Barrel:</dt>
-          <dd>Central hadronic calorimeter; measures energy of hadrons</dd>
-          <dt>HCAL Endcap:</dt>
-          <dd>Hadronic calorimeters at either end of CMS, close to the beam axis</dd>
-          <dt>HCAL Outer:</dt>
-          <dd>Hadronic calorimeter layer just outside the solenoid magnet</dd>
-          <dt>HCAL Forward:</dt>
-          <dd>Hadronic calorimeters farther down and very close to the beam axis</dd>
-          <dt>Drift Tubes (DT):</dt>
-          <dd>Central muon chambers outside the solenoid and HCAL Outer</dd>
-          <dt>Cathode Strip Chambers (CSC):</dt>
-          <dd>Forward muon detectors</dd>
-          <dt>Resistive Place Chambers (RPC):</dt>
-          <dd>Solid state muon detectors</dd>
-        </dl>
-        <p>Want to know more? Go <a href='http://cms.web.cern.ch/news/cms-detector-design' target='_blank'>here</a>.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-Imported" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Imported</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          Imported geometry models such the beam pipe.
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-Provenance" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Provenance</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Event:</dt>
-          <dd>Each event is distinguished by a run number, event number, luminosity section, and time stamp</dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-Tracking" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Tracking</h4>
-      </div>
-      <div class="modal-body">
-          <dl>
-            <dt>Tracks (reco.):</dt>
-            <dd>Reconstructed particle tracks in the tracker</dd>
-            <dt>Rec. Hits (Tracking):</dt>
-            <dd>All particle hits in the tracker</dd>
-          </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-ECAL" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">ECAL: Electromagnetic calorimeter</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Barrel Rec. Hits:</dt>
-          <dd>Energy in a single ECAL crystal</dd>
-          <dt>Endcap Rec. Hits:</dt>
-          <dd>Hits in ECAL Endcap</dd>
-          <dt>Preshower Rec. Hits:</dt>
-          <dd>Hits in ECAL Preshower</dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-HCAL" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">HCAL: Hadronic calorimeter</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Barrel Rec. Hits:</dt>
-          <dd>Energy in a single HCAL tile</dd>
-          <dt>Endcap Rec. Hits:</dt>
-          <dd>Hits in HCAL Endcap</dd>
-          <dt>Forward Rec. Hits:</dt>
-          <dd>Hits in HCAL Forward</dd>
-          <dt>Outer Rec. Hits:</dt>
-          <dd>Hits in HCAL Outer</dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-Muon" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Muon</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Matching muon chambers:</dt>
-          <dd>The muon chambers (drift tubes and/or cathode strip chambers) that correspond to the reconstructed muon</dd>
-          <dt>DT Rec. Hits:</dt>
-          <dd>Muon hits in Drift Tubes</dd>
-          <dt>DT Rec. Segments:</dt>
-          <dd>Muon track segments in Drift Tubes</dd>
-          <dt>CSC Segments:</dt>
-          <dd>Muon track segments in Cathode Strip Chambers</dd>
-          <dt>RPC Rec. Hits:</dt>
-          <dd>Muon hits in Resistive Plate Chambers</dd>
-          <dt>CSC Rec. Hits:</dt>
-          <dd>Muon hits in Cathode Strip Chambers</dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="info-Physics" role="dialog" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Physics Objects</h4>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Electron Tracks (GSF):</dt>
-          <dd>Reconstructed candidate electron tracks in the tracker</dd>
-          <dt>Photons (Reco):</dt>
-          <dd>Inferred photon trajectories</dd>
-          <dt>Tracker Muons (Reco):</dt>
-          <dd>Reconstructed muon tracks in tracker</dd>
-          <dt>Stand-alone Muons (Reco):</dt>
-          <dd>Reconstructed muon track segments in muon chambers</dd>
-          <dt>Global Muons (Reco):</dt>
-          <dd>Reconstructed complete muon tracks, combining tracker and stand-alone muons</dd>
-          <dt>Jets:</dt>
-          <dd>Collimated streams of particles</dd>
-          <dt>MET:</dt>
-          <dd>Missing transverse energy</dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

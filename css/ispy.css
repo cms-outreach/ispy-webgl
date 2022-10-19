@@ -1,3 +1,7 @@
+body {
+  margin-right: 1px;
+}
+
 body.black {
   background-color: black;
 }
@@ -10,10 +14,18 @@ canvas.hover {
   border:5px dashed #ccc;
 }
 
+.dg .c input[type=text] {                                                       
+
+  line-height:normal;                                                                  
+} 
+.dg .c div {
+  box-sizing: content-box;                                                             
+}
+
 #stats {
   position: absolute;
   top:0;
-  left: 0;
+  right: 0;
 }
 
 #fps-slider {
@@ -71,7 +83,7 @@ canvas.hover {
 }
 
 #titlebar {
-  height: 25px;
+  height: 30px;
 }
 
 #titlebar.black {
@@ -83,6 +95,30 @@ canvas.hover {
   color: black;
   background-color: white;
 }
+
+#treegui {
+  position: absolute;
+  top:0;
+  right:0;
+  z-index: 1002;
+  padding-top: 0px;
+  padding-right: 0px;
+  display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+}
+
+#clipgui {
+  position: absolute;
+  top:0;
+  left:65%;
+  z-index: 1002;
+  padding-top: 0px;
+  padding-right: 0px;
+  display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+}   
 
 #toolbar {
   float: left;
@@ -117,8 +153,8 @@ canvas.hover {
 }
 
 #treeview {
-  height: 500px;
-  overflow: scroll;
+  height: 65vh;
+  overflow: auto;
 }
 
 #treeview.black .table-hover tr:hover {
@@ -180,7 +216,7 @@ canvas.hover {
 }
 
 #display {
-  height: 500px;
+  height: 100vh;
   overflow: hidden;
   padding: 0;
 }
@@ -196,18 +232,53 @@ canvas.hover {
 }
 
 #tableview {
-  height: 140px;
-  overflow: scroll;
+  height: 25vh;
+  overflow: auto;
+}
+
+#tableview table thead th {
+  padding: 3px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 25vw;
+}
+
+#tableview table thead th.black {
+    background: black;
+}
+
+#tableview table thead th.white {
+    background: white;
+}
+
+#tableview table thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+#tableview table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+#tableview caption {
+  text-align: left;
+  padding: 0.25rem;
+  position: sticky;
+  left: 0;
 }
 
 #tableview.black {
   color: white;
-  background-color: black;
+  background: black;
 }
 
 #tableview.white {
   color: black;
-  background-color: white;
+  background: white;
 }
 
 #tableview.black .table-hover tr:hover {
@@ -224,6 +295,15 @@ canvas.hover {
 
 #table-data-eventObject.white.table-hover>tbody>tr:hover {
   background-color: #dfdfdf;
+}
+
+.modal.in .modal-dialog {
+  margin: 0 auto;
+  top: 40%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
 }
 
 .modal-dialog button.close {
@@ -249,6 +329,10 @@ canvas.hover {
 #loading .modal-content {
   width: 50%;
   text-align: center;
+  transform: translateX(50%);
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -moz-transform: translateX(50%);
 }
 
 #browser-events td.black {
@@ -272,6 +356,10 @@ canvas.hover {
 #files .modal-body {
   max-height: 300px;
   overflow-y: scroll;
+}
+
+#files a {
+  cursor: pointer;
 }
 
 #geometry-files .modal-body {

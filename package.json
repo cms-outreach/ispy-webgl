@@ -1,6 +1,6 @@
 {
   "name": "ispy-webgl",
-  "version": "0.9.8",
+  "version": "1.0.1-rc",
   "description": "A browser-based event display for the CMS experiment at the LHC, using WebGL",
   "main": "",
   "scripts": {
@@ -15,5 +15,7 @@
   "bugs": {
     "url": "https://github.com/cms-outreach/ispy-webgl/issues"
   },
-  "homepage": "https://github.com/cms-outreach/ispy-webgl#readme"
+  "homepage": "https://github.com/cms-outreach/ispy-webgl#readme",
+  "dependencies": {
+  }
 }
