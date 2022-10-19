@@ -106,7 +106,7 @@ ispy.loadEvent = function() {
 	ispy.toggleCollapse('Detector');
     }
     
-    var event;
+    let event;
 
     try {
 	
@@ -131,7 +131,7 @@ ispy.loadEvent = function() {
 	ispy.addEvent(event);
 	ispy.enableNextPrev();
 	
-	var ievent = +ispy.event_index + 1; // JavaScript!
+	let ievent = +ispy.event_index + 1; // JavaScript!
 
 	$("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 	
@@ -806,6 +806,7 @@ ispy.importDetector = function() {
 	    name: 'Pixel Barrel',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/PixelBarrel3D_V2.glb' // V2 for pixels corresponds to phase 1 upgrade
 	},
 	{
@@ -813,6 +814,7 @@ ispy.importDetector = function() {
 	    name: 'Pixel Endcap (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/PixelEndcapPlus3D_V2.glb'
 	},
 	{
@@ -820,6 +822,7 @@ ispy.importDetector = function() {
 	    name: 'Pixel Endcap (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/PixelEndcapMinus3D_V2.glb'
 	},
 	{
@@ -827,6 +830,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Inner Barrel',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTIB3D_V1.glb'
 	},
 	{
@@ -834,6 +838,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Outer Barrel',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTOB3D_V1.glb'
 	},
 	{
@@ -841,6 +846,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Inner Detector (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTIDPlus3D_V1.glb'
 	},
 	{
@@ -848,6 +854,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Inner Detector (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTIDMinus3D_V1.glb'
 	},
 	{
@@ -855,6 +862,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Endcap (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTECPlus3D_V1.glb'
 	},
 	{
@@ -862,6 +870,7 @@ ispy.importDetector = function() {
 	    name: 'Tracker Endcap (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/SiStripTECMinus3D_V1.glb'
 	},
 	{
@@ -869,6 +878,7 @@ ispy.importDetector = function() {
 	    name: 'ECAL Barrel',
 	    group: 'Detector',
 	    show: true,
+	    view: '3D',
 	    file: './geometry/gltf/EcalBarrel3D_V2.glb'
 	},
 	{
@@ -876,6 +886,7 @@ ispy.importDetector = function() {
 	    name: 'ECAL Endcap (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/EcalEndcapPlus3D_V1.glb'
 	},
 	{
@@ -883,6 +894,7 @@ ispy.importDetector = function() {
 	    name: 'ECAL Endcap (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/EcalEndcapMinus3D_V1.glb'
 	},
 	{
@@ -890,6 +902,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Barrel',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalBarrel3D_V1.glb',
 	},
 	{
@@ -897,6 +910,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Outer',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalOuter3D_V1.glb'
 	},
 	{
@@ -904,6 +918,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Endcap (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalEndcapPlus3D_V1.glb'
 	},
 	{
@@ -911,6 +926,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Endcap (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalEndcapMinus3D_V1.glb'
 	},
 	{
@@ -918,6 +934,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Forward (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalForwardPlus3D_V1.glb'
 	},
 	{
@@ -925,6 +942,7 @@ ispy.importDetector = function() {
 	    name: 'HCAL Forward (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/HcalForwardMinus3D_V1.glb'
 	},
 	{
@@ -932,6 +950,7 @@ ispy.importDetector = function() {
 	    name: 'Gas Electron Multipliers (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/GEMPlus3D_V1.glb'
 	},
 	{
@@ -939,6 +958,7 @@ ispy.importDetector = function() {
 	    name: 'Gas Electron Multipliers (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/GEMMinus3D_V1.glb'
 	},
 	{
@@ -946,6 +966,7 @@ ispy.importDetector = function() {
 	    name: 'Cathode Strip Chambers',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/CSC3D_V1.glb'
 	},
 	{
@@ -953,6 +974,7 @@ ispy.importDetector = function() {
 	    name: 'Drift Tubes',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/DTs3D_V1.glb'
 	},
 	{
@@ -960,6 +982,7 @@ ispy.importDetector = function() {
 	    name: 'Resistive Plate Chambers (barrel)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/RPCBarrel3D_V1.glb'
 	},
 	{
@@ -967,6 +990,7 @@ ispy.importDetector = function() {
 	    name: 'Resistive Plate Chambers (+)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/RPCPlusEndcap3D_V1.glb'
 	},
 	{
@@ -974,13 +998,15 @@ ispy.importDetector = function() {
 	    name: 'Resistive Plate Chambers (-)',
 	    group: 'Detector',
 	    show: false,
+	    view: '3D',
 	    file: './geometry/gltf/RPCMinusEndcap3D_V1.glb'
 	},
 	{
 	    id: 'RhoZ',
 	    name: 'RhoZ',
 	    group: 'Detector',
-	    show: false,
+	    show: true,
+	    view: 'RhoZ',
 	    file: './geometry/gltf/RhoZ.glb'
 	},
 	{
@@ -988,6 +1014,7 @@ ispy.importDetector = function() {
 	    name: 'RPhi',
 	    group: 'Detector',
 	    show: true,
+	    view: 'RPhi',
 	    file: './geometry/gltf/RPhi.glb'
 	}
 
@@ -1009,6 +1036,7 @@ ispy.importDetector = function() {
 		    
 		    object.name = g.id;
 		    object.visible = g.show;
+		    object.view = g.view;
 		    
 		    // Set render order for geometries
 		    // Otherwise they won't appear "in-front" of Imported geometries
@@ -1024,8 +1052,8 @@ ispy.importDetector = function() {
 			
 		    });
 		    
-		    ispy.disabled[object.name] = ! g.show;
-		    ispy.scene.getObjectByName(g.group).add(object);		    
+		    ispy.disabled[object.name] = ! g.show;		    
+		    ispy.scenes[object.view].getObjectByName(g.group).add(object);
 		    ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 		
 		}
@@ -1037,7 +1065,7 @@ ispy.importDetector = function() {
 	$('#loading').modal('hide');
 
     }
-
+    
     loadGLTFs();
     
 };

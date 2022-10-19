@@ -52,7 +52,7 @@ ispy.setTransparency = function(t) {
     ispy.importTransparency = t;
     $('#trspy').html(t);
 
-    var imported = ispy.scene.getObjectByName('Imported');
+    let imported = ispy.scene.getObjectByName('Imported');
 
     imported.children.forEach(function(obj) {
     
@@ -229,7 +229,7 @@ ispy.onMouseMove = function(e) {
 	if ( ! ispy.intersected.selected ) {
 	
 	    const original_color = new THREE.Color(
-		ispy.event_description[ispy.intersected.name].style.color
+		ispy.event_description[ispy.current_view][ispy.intersected.name].style.color
 	    );
 
 	    ispy.intersected.material.color = original_color;
@@ -264,7 +264,7 @@ ispy.onMouseMove = function(e) {
 	    
 	    ispy.displayCollection(
 		ispy.intersected.name, "Physics", 
-		ispy.event_description[ispy.intersected.name].name, 
+		ispy.event_description[ispy.current_view][ispy.intersected.name].name, 
 		ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name))
 	    );
 	    
@@ -282,7 +282,6 @@ ispy.hidden_objects = [];
 ispy.onMouseDown = function(e) {
     
     if ( ispy.intersected ) {
-
 	
 	// We only want to do this for muons and electrons since
 	// it's only to show what objects are selected for invariant mass.
@@ -291,7 +290,10 @@ ispy.onMouseDown = function(e) {
 
 	    if ( ispy.intersected.selected ) {
 	    
-		const original_color = new THREE.Color(ispy.event_description[ispy.intersected.name].style.color);
+		const original_color = new THREE.Color(
+		    ispy.event_description[ispy.current_view][ispy.intersected.name].style.color
+		);
+		
 		ispy.intersected.material.color = original_color;
 		ispy.intersected.selected = false;
 
@@ -392,7 +394,7 @@ document.addEventListener('keydown', function(e) {
 	if ( ispy.intersected && ispy.intersected.name.includes('Jet') ) {
 
 	    ispy.intersected.material.color = new THREE.Color(
-		ispy.event_description[ispy.intersected.name].style.color
+		ispy.event_description[ispy.current_view][ispy.intersected.name].style.color
 	    );
 
 	    ispy.intersected.visible = false;

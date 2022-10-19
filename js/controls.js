@@ -3,12 +3,16 @@ ispy.resetControls = function() {
     ispy.setPerspective();
     ispy.initCamera();
     ispy.controls.reset();
-
+	
     $('#3d').addClass('active');
     $('#rphi').removeClass('active');
     $('#rhoz').removeClass('active');
 
     ispy.controls.noRotate = false;
+		
+    ispy.current_view = '3D';
+    ispy.scene = ispy.scenes['3D'];
+    
 };
 
 ispy.setXY = function() {
@@ -127,17 +131,13 @@ ispy.showView = function(view) {
 
     switch (view) {
 
-    case '3d':
-		
-	$('#3d').addClass('active');
-	$('#rphi').removeClass('active');
-	$('#rhoz').removeClass('active');
+    case '3D':
 
-	ispy.controls.noRotate = false;
+	ispy.resetControls();
 	
 	break;
 
-    case 'rphi':
+    case 'RPhi':
 	
 	$('#3d').removeClass('active');
         $('#rphi').addClass('active');
@@ -146,19 +146,25 @@ ispy.showView = function(view) {
 	ispy.controls.noRotate = true;
 	ispy.setOrthographic();
 	ispy.setXY();
-
+	
+	ispy.current_view = 'RPhi';
+	ispy.scene = ispy.scenes['RPhi'];
+	
 	break;
 
-    case 'rhoz':
+    case 'RhoZ':
 	
 	$('#3d').removeClass('active');
         $('#rphi').removeClass('active');
 	$('#rhoz').addClass('active');
 
-	ispy.controls.noRotate = true;
+	ispy.controls.noRotate = false;
 	ispy.setOrthographic();
 	ispy.setYZ();
-
+		
+	ispy.current_view = 'RhoZ';
+	ispy.scene = ispy.scenes['RhoZ'];
+	
 	break;
 	
     }
@@ -265,6 +271,7 @@ function setOrientationControls(e) {
     }
 
     window.removeEventListener('deviceorientation', setOrientationControls, true);
+
 }
 
 //window.addEventListener('deviceorientation', setOrientationControls, true);
@@ -316,7 +323,6 @@ ispy.exportScene = function() {
 	ispy.exportArrayBuffer(result, 'scene.glb'); 
 
     }, options);
-
 
     alert('scene.glb created');
     

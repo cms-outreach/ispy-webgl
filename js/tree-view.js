@@ -50,11 +50,11 @@ ispy.toggle = function(key) {
     
 };
 
-// In some cases (e.g. animation) we want to explicitly turn somethings on/off
+// In some cases (e.g. animation) we want to explicitly turn some things on/off
 // It would probably be nice to: do this by group, support wildcards, etc.
-ispy.showObject = function(key, show) {
+ispy.showObject = function(key, view, show) {
 
-    const obj = ispy.scene.getObjectByName(key);
+    const obj = ispy.scenes[view].getObjectByName(key);
     
     if ( obj !== undefined ) {
     

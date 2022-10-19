@@ -31,10 +31,8 @@ ispy.useRenderer = function(type) {
     const height = document.getElementById('display').clientHeight;
 
     const rendererTypes = {
-	
 	'WebGLRenderer': THREE.WebGLRenderer,
 	'SVGRenderer': THREE.SVGRenderer
-    
     };
 
     const renderer = new rendererTypes[type]({antialias:true, alpha:true});
@@ -64,9 +62,21 @@ ispy.init = function() {
 
     const display = document.getElementById('display');
     const inset = document.getElementById('axes');
+
+    ispy.scenes = {
+	'3D': new THREE.Scene(),
+	'RPhi': new THREE.Scene(),
+	'RhoZ': new THREE.Scene()
+    };
+
+    for ( const key in ispy.scenes ) {
+
+	ispy.scenes[key].name = key;
+
+    }
     
-    const scene = new THREE.Scene();
-    ispy.scene = scene;
+    ispy.current_view = '3D';
+    ispy.scene = ispy.scenes[ispy.current_view];
     
     const width = display.clientWidth;
     const height = display.clientHeight;
@@ -224,15 +234,15 @@ ispy.init = function() {
     };
 
     ispy.local_planes = [
-	new THREE.Plane( new THREE.Vector3(-1,0,0), local_params.planeX.constant),
-	new THREE.Plane( new THREE.Vector3(0,-1,0), local_params.planeY.constant),
-	new THREE.Plane( new THREE.Vector3(0,0,-1), local_params.planeZ.constant)
+	new THREE.Plane(new THREE.Vector3(-1,0,0), local_params.planeX.constant),
+	new THREE.Plane(new THREE.Vector3(0,-1,0), local_params.planeY.constant),
+	new THREE.Plane(new THREE.Vector3(0,0,-1), local_params.planeZ.constant)
     ];
     
     ispy.global_planes = [
-	new THREE.Plane( new THREE.Vector3(-1,0,0), global_params.planeX.constant),
-	new THREE.Plane( new THREE.Vector3(0,-1,0), global_params.planeY.constant),
-	new THREE.Plane( new THREE.Vector3(0,0,-1), global_params.planeZ.constant)
+	new THREE.Plane(new THREE.Vector3(-1,0,0), global_params.planeX.constant),
+	new THREE.Plane(new THREE.Vector3(0,-1,0), global_params.planeY.constant),
+	new THREE.Plane(new THREE.Vector3(0,0,-1), global_params.planeZ.constant)
     ];
     
     ispy.renderer.clippingPlanes = ispy.global_planes;
@@ -350,8 +360,9 @@ ispy.init = function() {
     ispy.inset_scene.add(rx);
     ispy.inset_scene.add(gy);
     ispy.inset_scene.add(bz);
-    
-    $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
+
+    // FF keeps the state after a page refresh. Therefore force uncheck.
+    $('#show-axes').prop('checked', false); 
   
     $('#show-axes').change(function() {
 
@@ -425,22 +436,17 @@ ispy.init = function() {
 
     ispy.controls = controls;
 
-    ["Detector", "Imported"].forEach(function(g) {
+    ['3D', 'RPhi', 'RhoZ'].forEach(v => {
 
-	let obj_group = new THREE.Object3D();
-	obj_group.name = g;
-	ispy.scene.add(obj_group);
+	['Detector', 'Imported'].concat(ispy.data_groups).forEach(g => {
+
+	    let obj_group = new THREE.Group();
+	    obj_group.name = g;
+	     ispy.scenes[v].add(obj_group);
+	   
+	});
 
     });
-    
-    // Add a parent object for each group
-    ispy.data_groups.forEach(function(g) {
-
-	    let obj_group = new THREE.Object3D();
-	    obj_group.name = g;
-	    ispy.scene.add(obj_group);
-	    
-	});
 
     $('#version').html("v"+ispy.version);
     $('#threejs').html("r"+THREE.REVISION);
@@ -513,8 +519,6 @@ ispy.init = function() {
 
     canvas.addEventListener('ondragover', canvas.ondragover);
     canvas.addEventListener('ondrop', canvas.ondrop);
-
-    ispy.current_view = 'threed';
     
     ispy.autoRotating = false;
 

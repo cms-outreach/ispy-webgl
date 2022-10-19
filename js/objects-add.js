@@ -22,7 +22,6 @@ ispy.addDetector = function() {
 	
 	obj.name = key;
 	obj.visible = visible;
-	obj.views = [descr.threed, descr.rphi, descr.rhoz];
 	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
@@ -121,8 +120,11 @@ ispy.addDetector = function() {
     
 };
 
-ispy.addEvent = function(event) {
 
+ispy.addToScene = function(event, view) {
+
+    ispy.scene = ispy.scenes[view];
+    
     // remove all but the geometry from the
     // scene before rendering
     ispy.scene.children.forEach(function(c) {
@@ -138,37 +140,14 @@ ispy.addEvent = function(event) {
 	}
     });
 
-    ispy.current_event = event;
-    // Clear table from last event and show default caption
-    $('#collection-table').empty();
-    $('#collection-table').append(ispy.table_caption);
-
-    // remove selectors for last event
-    $("tr.Event").remove();
-
-    // Clear the subfolders for event information in the treegui
-    ispy.data_groups.forEach(function(g) {
-
-	const folder = ispy.treegui.__folders[g];
-	
-	ispy.subfolders[g].forEach(function(s) {
-	    
-	    folder.removeFolder(folder.__folders[s]);
-	    
-	});
-
-	ispy.subfolders[g] = [];
-
-    });
-
-    for ( let key in ispy.event_description ) {
+    for ( let key in ispy.event_description[view] ) {
 	
 	const data = event.Collections[key];
     
 	if ( ! data || data.length === 0 )
 	    continue;
 
-	const descr = ispy.event_description[key];
+	const descr = ispy.event_description[view][key];
 
 	let extra = null;
 	let assoc = null;
@@ -198,7 +177,6 @@ ispy.addEvent = function(event) {
 	
 	obj.name = key;
 	obj.visible = visible;
-	obj.views = [descr.threed, descr.rphi, descr.rhoz];
 	
 	ispy.scene.getObjectByName(descr.group).add(obj);
 
@@ -556,6 +534,7 @@ ispy.addEvent = function(event) {
 			line.userData.originalIndex = li;
 			objectIds.push(line.id);
 			ispy.scene.getObjectByName(key).add(line);
+
 		    }
 			    
 		});
@@ -571,10 +550,45 @@ ispy.addEvent = function(event) {
 	    break;
 	    
 	}
-	
-	ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
+
+	// Fix this
+	//ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
     }
 
+};
+
+ispy.addEvent = function(event) {
     
+    ispy.current_event = event;
+    // Clear table from last event and show default caption
+    $('#collection-table').empty();
+    $('#collection-table').append(ispy.table_caption);
+
+    // remove selectors for last event
+    $("tr.Event").remove();
+
+    // Clear the subfolders for event information in the treegui
+    ispy.data_groups.forEach(function(g) {
+
+	const folder = ispy.treegui.__folders[g];
+	
+	ispy.subfolders[g].forEach(function(s) {
+	    
+	    folder.removeFolder(folder.__folders[s]);
+	    
+	});
+
+	ispy.subfolders[g] = [];
+
+    });
+    
+    ['3D', 'RPhi', 'RhoZ'].forEach(v => {
+
+	ispy.addToScene(event, v);
+
+    });
+
+    ispy.showView(ispy.current_view);
+
 };
