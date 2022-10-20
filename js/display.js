@@ -216,6 +216,7 @@ ispy.onMouseMove = function(e) {
     pointer.x = ((e.clientX-offsetX) / w)*2 - 1;
     pointer.y = -((e.clientY-offsetY) / h)*2 +1;
 
+    /*
     ispy.raycaster.setFromCamera(pointer, ispy.camera);
     const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
     
@@ -273,6 +274,7 @@ ispy.onMouseMove = function(e) {
 	}
 
     }
+    */
 
 };
 

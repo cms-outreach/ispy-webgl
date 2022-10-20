@@ -361,7 +361,34 @@ ispy.init = function() {
     ispy.inset_scene.add(rx);
     ispy.inset_scene.add(gy);
     ispy.inset_scene.add(bz);
+    
+    var axes = new THREE.Group();
+    axes.name = 'Axes';
 
+    // Add guide axes
+    // dir, origin, length, hex, headLength, headWidth
+    let xaxis = new THREE.ArrowHelper(
+	new THREE.Vector3(1,0,0),
+	new THREE.Vector3(-5,0,0),
+	10, 0x909090, 0.01, 0.01
+    );
+
+    let yaxis = new THREE.ArrowHelper(
+	new THREE.Vector3(0,1,0),
+	new THREE.Vector3(0,-5,0),
+	10, 0x909090, 0.01, 0.01
+    );
+
+    let zaxis = new THREE.ArrowHelper(
+	new THREE.Vector3(0,0,1),
+	new THREE.Vector3(0,0,-8),
+	16, 0x909090, 0.01, 0.01
+    );
+
+    axes.add(xaxis);
+    axes.add(yaxis);
+    axes.add(zaxis);
+    
     // FF keeps the state after a page refresh. Therefore force uncheck.
     $('#show-axes').prop('checked', false); 
   
@@ -396,37 +423,64 @@ ispy.init = function() {
 	this.checked ? $('#clipgui').show() : $('#clipgui').hide();
 
     });
-				
+    
     const font_loader = new THREE.FontLoader();
     
     font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
-	    const tps = {size:0.75, height:0.1, font:font};
+	const tps = {size:0.75, height:0.1, font:font};
 
-	    const x_geo = new THREE.TextGeometry('X', tps);
-	    const y_geo = new THREE.TextGeometry('Y', tps);
-	    const z_geo = new THREE.TextGeometry('Z', tps);
+	const x_geo = new THREE.TextGeometry('X', tps);
+	const y_geo = new THREE.TextGeometry('Y', tps);
+	const z_geo = new THREE.TextGeometry('Z', tps);
+	
+	const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	const x_text = new THREE.Mesh(x_geo, x_material);
+	x_text.position.x = length+headLength;
+	x_text.name = 'xtext';
 
-	    const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	    const x_text = new THREE.Mesh(x_geo, x_material);
-	    x_text.position.x = length+headLength;
-	    x_text.name = 'xtext';
-
-	    const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
-	    const y_text = new THREE.Mesh(y_geo, y_material);
-	    y_text.position.y = length+headLength;
-	    y_text.name = 'ytext';
+	const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
+	const y_text = new THREE.Mesh(y_geo, y_material);
+	y_text.position.y = length+headLength;
+	y_text.name = 'ytext';
 	    
-	    const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
-	    const z_text = new THREE.Mesh(z_geo, z_material);
-	    z_text.position.z = length+headLength;
-	    z_text.name = 'ztext';
+	const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
+	const z_text = new THREE.Mesh(z_geo, z_material);
+	z_text.position.z = length+headLength;
+	z_text.name = 'ztext';
 
-	    ispy.inset_scene.add(x_text);
-	    ispy.inset_scene.add(y_text);
-	    ispy.inset_scene.add(z_text);
+	ispy.inset_scene.add(x_text);
+	ispy.inset_scene.add(y_text);
+	ispy.inset_scene.add(z_text);
 
-	});
+	/*
+	const xg = new THREE.TextGeometry('X', {size: 0.5, height: 0.01, font: font});
+	const yg = new THREE.TextGeometry('Y', {size: 0.5, height: 0.01, font: font});
+	const zg = new THREE.TextGeometry('Z', {size: 0.5, height: 0.01, font: font});
+	
+	const am = new THREE.MeshBasicMaterial({color:0x909090});
+
+	const xt = new THREE.Mesh(xg, am);
+	xt.position.x = 5.5;
+
+	const yt = new THREE.Mesh(yg, am);
+	yt.position.y  = 5.5;
+	
+	var zt = new THREE.Mesh(zg, am);
+	zt.position.z = 8.5;
+	
+	axes.add(xt);
+	axes.add(yt);
+	axes.add(zt);
+	*/
+	
+    });
+
+    // We need to clone otherwise the axes only
+    // appear in the last scene
+    ispy.scenes['3D'].add(axes);
+    ispy.scenes['RPhi'].add(axes.clone());
+    ispy.scenes['RhoZ'].add(axes.clone());
 
     // The second argument is necessary to make sure that mouse events are
     // handled only when in the canvas
