@@ -497,7 +497,7 @@ ispy.init = function() {
 
 	    let obj_group = new THREE.Group();
 	    obj_group.name = g;
-	     ispy.scenes[v].add(obj_group);
+	    ispy.scenes[v].add(obj_group);
 	   
 	});
 
