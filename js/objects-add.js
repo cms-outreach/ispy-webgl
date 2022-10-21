@@ -124,22 +124,14 @@ ispy.addDetector = function() {
 ispy.addToScene = function(event, view) {
 
     ispy.scene = ispy.scenes[view];
-    
-    // remove all but the geometry from the
-    // scene before rendering
-    ispy.scene.children.forEach(function(c) {
-    
-	if ( c.name !== 'Detector' ) {
-	    if ( c.name !== 'Imported' ) {
-		if ( c.name !== 'Lights') {
-		    
-		    ispy.scene.getObjectByName(c.name).children.length = 0;
-		    
-		}
-	    }
-	}
-    });
 
+    // Remove data from scene
+    ispy.data_groups.forEach(g => {
+
+	ispy.scene.getObjectByName(g).children.length = 0;
+
+    });
+    
     for ( let key in ispy.event_description[view] ) {
 	
 	const data = event.Collections[key];

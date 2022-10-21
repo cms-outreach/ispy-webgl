@@ -58,122 +58,7 @@ ispy.useRenderer = function(type) {
 
 };
 
-ispy.init = function() {
-
-    const display = document.getElementById('display');
-    const inset = document.getElementById('axes');
-
-    ispy.scenes = {
-	'3D': new THREE.Scene(),
-	'RPhi': new THREE.Scene(),
-	'RhoZ': new THREE.Scene()
-    };
-
-    for ( const key in ispy.scenes ) {
-
-	ispy.scenes[key].name = key;
-
-    }
-    
-    ispy.current_view = '3D';
-    ispy.scene = ispy.scenes[ispy.current_view];
-    
-    const width = display.clientWidth;
-    const height = display.clientHeight;
-    
-    ispy.p_camera = new THREE.PerspectiveCamera(
-	75,
-	width/height,
-	0.1,
-	100
-    );
-
-    ispy.p_camera.name = 'PerspectiveCamera';
-
-    ispy.o_camera = new THREE.OrthographicCamera(
-	width / -2,
-	width / 2,
-	height / 2,
-	height / -2,
-	0.1,
-	100
-    );
- 
-    ispy.o_camera.name = 'OrthographicCamera';
-    
-    ispy.is_perspective = true; 
-    ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
-    ispy.initCamera();
-    
-    ispy.velocity = new THREE.Vector3(0, 0, 0);
-    ispy.acceleration = new THREE.Vector3(0, 0, 0);
-
-    const inset_scene = new THREE.Scene();
-    ispy.inset_scene = inset_scene;
-
-    // fov, aspect, near, far
-    const inset_width = height/5;
-    const inset_height = height/5;
-    const inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
-    ispy.inset_camera = inset_camera;
-    ispy.inset_camera.up = ispy.camera.up;
-
-    ispy.useRenderer('WebGLRenderer', width, height);
-  
-    ispy.stats = new Stats();
-    display.appendChild(ispy.stats.domElement);
-
-    // On page load hide the stats
-    $('#stats').hide();
-    // FF keeps the check state on reload so force an "uncheck"
-    $('#show-stats').prop('checked', false);
-
-    $('#show-stats').change(function() {
-	    
-	    if ( this.checked ) { // if checked then show
-		
-		$('#stats').show();
-    
-	    } else {
-		
-		$('#stats').hide();
-    
-	    }
-
-	});
-
-    $('#show-logo').prop('checked', true);
-    
-    $('#show-logo').change(function() {
-	    
-	    if ( this.checked ) {
-      
-		$('#cms-logo').show();
-    
-	    } else {
-		
-		$('#cms-logo').hide();
-    
-	    }
-
-	});
-
-    ispy.treegui = new dat.GUI({
-	name: 'Tree View',
-	hideable: false,
-	autoPlace: false
-    });
-
-    ispy.treegui.domElement.id = 'treegui';
-    document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
-
-    // It seems currently impossible with dat.gui
-    // to fetch the folders as an array and remove them
-    // (without knowing the name beforehand).
-    // Therefore we have to keep track of them by-hand.
-    ispy.subfolders = {};
-
-    // Clipping stuff
+ispy.setupClipping = function() {
     
     ispy.clipgui = new dat.GUI({
 	name: 'Clipping Controls',
@@ -314,11 +199,39 @@ ispy.init = function() {
 
     global_planeZ.open();
 
-    // End of clipping stuff
-    
-    ispy.inverted_colors = false;
-    $('#invert-colors').prop('checked', false);
+};
 
+ispy.setupGUIs = function() {
+    
+    ispy.treegui = new dat.GUI({
+	name: 'Tree View',
+	hideable: false,
+	autoPlace: false
+    });
+
+    ispy.treegui.domElement.id = 'treegui';
+    document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
+
+    // It seems currently impossible with dat.gui
+    // to fetch the folders as an array and remove them
+    // (without knowing the name beforehand).
+    // Therefore we have to keep track of them by-hand.
+    ispy.subfolders = {};
+
+};
+
+ispy.setupInset = function(height) {
+    
+    const inset_scene = new THREE.Scene();
+    ispy.inset_scene = inset_scene;
+
+    // fov, aspect, near, far
+    const inset_width = height/5;
+    const inset_height = height/5;
+    const inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
+    ispy.inset_camera = inset_camera;
+    ispy.inset_camera.up = ispy.camera.up;
+    
     const origin = new THREE.Vector3(0,0,0);
 
     // dir, origin, length, hex, headLength, headWidth
@@ -360,6 +273,79 @@ ispy.init = function() {
     ispy.inset_scene.add(rx);
     ispy.inset_scene.add(gy);
     ispy.inset_scene.add(bz);
+				
+    const font_loader = new THREE.FontLoader();
+    
+    font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
+
+	const tps = {size:0.75, height:0.1, font:font};
+	
+	const x_geo = new THREE.TextGeometry('X', tps);
+	const y_geo = new THREE.TextGeometry('Y', tps);
+	const z_geo = new THREE.TextGeometry('Z', tps);
+
+	const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	const x_text = new THREE.Mesh(x_geo, x_material);
+	x_text.position.x = length+headLength;
+	x_text.name = 'xtext';
+
+	const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
+	const y_text = new THREE.Mesh(y_geo, y_material);
+	y_text.position.y = length+headLength;
+	y_text.name = 'ytext';
+	    
+	const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
+	const z_text = new THREE.Mesh(z_geo, z_material);
+	z_text.position.z = length+headLength;
+	z_text.name = 'ztext';
+
+	ispy.inset_scene.add(x_text);
+	ispy.inset_scene.add(y_text);
+	ispy.inset_scene.add(z_text);
+
+    });
+    
+};
+
+ispy.handleToggles = function() {
+
+    // On page load hide the stats
+    $('#stats').hide();
+    // FF keeps the check state on reload so force an "uncheck"
+    $('#show-stats').prop('checked', false);
+
+    $('#show-stats').change(function() {
+	    
+	if ( this.checked ) { // if checked then show
+		
+	    $('#stats').show();
+    
+	} else {
+		
+	    $('#stats').hide();
+    
+	}
+
+    });
+
+    $('#show-logo').prop('checked', true);
+    
+    $('#show-logo').change(function() {
+	    
+	if ( this.checked ) {
+      
+	    $('#cms-logo').show();
+    
+	} else {
+		
+	    $('#cms-logo').hide();
+    
+	}
+
+    });
+    
+    ispy.inverted_colors = false;
+    $('#invert-colors').prop('checked', false);
 
     // FF keeps the state after a page refresh. Therefore force uncheck.
     $('#show-axes').prop('checked', false); 
@@ -369,7 +355,7 @@ ispy.init = function() {
 	if ( this.checked ) {
 
 	    $('#axes').hide();
-
+	    
 	} else {
 
 	    $('#axes').show();
@@ -395,38 +381,117 @@ ispy.init = function() {
 	this.checked ? $('#clipgui').show() : $('#clipgui').hide();
 
     });
-				
-    const font_loader = new THREE.FontLoader();
     
-    font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
+    // Info dialogs are hidden by default (see ispy.css)
+    // FF keeps state on reload so force here
+    $('#show-info').prop('checked', false);
 
-	    const tps = {size:0.75, height:0.1, font:font};
-
-	    const x_geo = new THREE.TextGeometry('X', tps);
-	    const y_geo = new THREE.TextGeometry('Y', tps);
-	    const z_geo = new THREE.TextGeometry('Z', tps);
-
-	    const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	    const x_text = new THREE.Mesh(x_geo, x_material);
-	    x_text.position.x = length+headLength;
-	    x_text.name = 'xtext';
-
-	    const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
-	    const y_text = new THREE.Mesh(y_geo, y_material);
-	    y_text.position.y = length+headLength;
-	    y_text.name = 'ytext';
+    $('#show-info').change(function() {
 	    
-	    const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
-	    const z_text = new THREE.Mesh(z_geo, z_material);
-	    z_text.position.z = length+headLength;
-	    z_text.name = 'ztext';
+	if ( this.checked ) { // if checked then already visible, so turn off
+		
+	    $('.info').css('visibility', 'visible');
+    
+	} else {
+		
+	    $('.info').css('visibility', 'hidden');
+	    
+	}
+  
+    });
 
-	    ispy.inset_scene.add(x_text);
-	    ispy.inset_scene.add(y_text);
-	    ispy.inset_scene.add(z_text);
+};
 
-	});
+ispy.handleDragAndDrop = function() {
+    
+    const canvas = ispy.renderer.domElement;
 
+    canvas.ondragover = function() {
+
+	this.classList.add('hover');
+	return false;
+
+    };
+
+    canvas.ondrop = function(e) {
+
+	e.preventDefault();
+	this.classList.remove('hover');
+	
+	var file = e.dataTransfer.files[0];
+	ispy.loadDroppedFile(file);
+
+	return false;
+
+    };
+
+    canvas.addEventListener('ondragover', canvas.ondragover);
+    canvas.addEventListener('ondrop', canvas.ondrop);
+
+};
+
+ispy.init = function() {
+
+    const display = document.getElementById('display');
+    const inset = document.getElementById('axes');
+
+    ispy.scenes = {
+	'3D': new THREE.Scene(),
+	'RPhi': new THREE.Scene(),
+	'RhoZ': new THREE.Scene()
+    };
+
+    for ( const key in ispy.scenes ) {
+
+	ispy.scenes[key].name = key;
+
+    }
+    
+    ispy.current_view = '3D';
+    ispy.scene = ispy.scenes[ispy.current_view];
+    
+    const width = display.clientWidth;
+    const height = display.clientHeight;
+    
+    ispy.p_camera = new THREE.PerspectiveCamera(
+	75,
+	width/height,
+	0.1,
+	100
+    );
+
+    ispy.p_camera.name = 'PerspectiveCamera';
+
+    ispy.o_camera = new THREE.OrthographicCamera(
+	width / -2,
+	width / 2,
+	height / 2,
+	height / -2,
+	0.1,
+	100
+    );
+ 
+    ispy.o_camera.name = 'OrthographicCamera';
+    
+    ispy.is_perspective = true; 
+    ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
+    ispy.initCamera();
+    
+    ispy.velocity = new THREE.Vector3(0, 0, 0);
+    ispy.acceleration = new THREE.Vector3(0, 0, 0);
+
+    ispy.setupInset(height);
+    
+    ispy.useRenderer('WebGLRenderer', width, height);
+  
+    ispy.stats = new Stats();
+    display.appendChild(ispy.stats.domElement);
+
+    ispy.setupGUIs();    
+    ispy.setupClipping();
+    ispy.handleToggles();
+    ispy.handleDragAndDrop();
+    
     // The second argument is necessary to make sure that mouse events are
     // handled only when in the canvas
     const controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
@@ -474,51 +539,9 @@ ispy.init = function() {
     $('#transparency-slider').prop('value', ispy.importTransparency);
     $('#trspy').html(ispy.importTransparency);
 
-    // Info dialogs are hidden by default (see ispy.css)
-    // FF keeps state on reload so force here
-    $('#show-info').prop('checked', false);
-
-    $('#show-info').change(function() {
-	    
-	    if ( this.checked ) { // if checked then already visible, so turn off
-		
-		$('.info').css('visibility', 'visible');
-    
-	    } else {
-		
-		$('.info').css('visibility', 'hidden');
-	    
-	    }
-  
-	});
-
     ispy.stereo = false;
     
     $('#display').append($('#event-info'));
-
-    const canvas = ispy.renderer.domElement;
-
-    canvas.ondragover = function() {
-
-	this.classList.add('hover');
-	return false;
-
-    };
-
-    canvas.ondrop = function(e) {
-
-	e.preventDefault();
-	this.classList.remove('hover');
-	
-	var file = e.dataTransfer.files[0];
-	ispy.loadDroppedFile(file);
-
-	return false;
-
-    };
-
-    canvas.addEventListener('ondragover', canvas.ondragover);
-    canvas.addEventListener('ondrop', canvas.ondrop);
     
     ispy.autoRotating = false;
 
@@ -549,9 +572,9 @@ ispy.getJSON = function(scr) {
 
     return $.ajax({url: scr, dataType: "json", cache: true}).success(function(data) {
 	  
-	    $.extend(true, ispy.detector, data);
+	$.extend(true, ispy.detector, data);
 	
-	});
+    });
     
 };
 
@@ -630,9 +653,9 @@ ispy.run = function() {
 
     setTimeout( function() {
   
-	    requestAnimationFrame(ispy.run);
+	requestAnimationFrame(ispy.run);
   
-	}, 1000/ispy.framerate );
+    }, 1000/ispy.framerate );
 
     ispy.stats.update();
 
