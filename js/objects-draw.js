@@ -2168,12 +2168,8 @@ ispy.makePhotonRZ = function(data, style, selection) {
     }
     
     let pt2 = new THREE.Vector3(x0+px*t, y0+py*t, z0+pz*t);
-    console.log(pt2);
-
     let pt1 = projectVector(new THREE.Vector3(x0, y0, z0), pt2);
     pt2 = projectVector(pt2, pt2);
-
-    console.log(pt2);
     
     let color = new THREE.Color(style.color);
 

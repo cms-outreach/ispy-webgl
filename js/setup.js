@@ -203,15 +203,15 @@ ispy.setupClipping = function() {
 
 ispy.setupGUIs = function() {
     
-    ispy.treegui = new dat.GUI({
-	name: 'Tree View',
+    ispy.gui = new dat.GUI({
+	name: 'Controls',
 	hideable: false,
 	autoPlace: false
     });
 
-    ispy.treegui.domElement.id = 'treegui';
-    document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
-
+    ispy.gui.domElement.id = 'treegui';
+    document.getElementById('titlebar').appendChild(ispy.gui.domElement);
+    
     // It seems currently impossible with dat.gui
     // to fetch the folders as an array and remove them
     // (without knowing the name beforehand).
@@ -441,6 +441,8 @@ ispy.init = function() {
 	'RhoZ': new THREE.Scene()
     };
 
+    ispy.views = ['3D', 'RPhi', 'RhoZ'];
+    
     for ( const key in ispy.scenes ) {
 
 	ispy.scenes[key].name = key;
@@ -501,13 +503,13 @@ ispy.init = function() {
 
     ispy.controls = controls;
 
-    ['3D', 'RPhi', 'RhoZ'].forEach(v => {
+    ispy.views.forEach(v => {
 
 	['Detector', 'Imported'].concat(ispy.data_groups).forEach(g => {
 
 	    let obj_group = new THREE.Group();
 	    obj_group.name = g;
-	     ispy.scenes[v].add(obj_group);
+	    ispy.scenes[v].add(obj_group);
 	   
 	});
 

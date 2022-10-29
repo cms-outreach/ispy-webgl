@@ -267,19 +267,19 @@ ispy.loadDroppedFile = function(file) {
 
 	$.each(zip.files, function(index, zipEntry) {
 
-		if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+	    if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
 
-		    if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
+		if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
 			
-			ispy.isGeometry = true;
+		    ispy.isGeometry = true;
 			
-		    }
-		    
-		    event_list.push(zipEntry.name);
-
 		}
+		    
+		event_list.push(zipEntry.name);
 
-	    });
+	    }
+
+	});
 
 	ispy.event_list = event_list;
 	ispy.event_index = 0;
@@ -352,13 +352,13 @@ ispy.selectFile = function(filename) {
 	    
 	    $.each(zip.files, function(index, zipEntry) {
 		    
-		    if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
+		if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
           
-			event_list.push(zipEntry.name);
+		    event_list.push(zipEntry.name);
         
-		    }
+		}
       
-		});
+	    });
 
 	    ispy.event_list = event_list;
 	    ispy.event_index = 0;
@@ -1054,7 +1054,12 @@ ispy.importDetector = function() {
 		    
 		    ispy.disabled[object.name] = ! g.show;		    
 		    ispy.scenes[object.view].getObjectByName(g.group).add(object);
-		    ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
+
+		    // For now do not add RPhi and RhoZ selection options to
+		    // the controls GUI
+
+		    if ( ! (object.name === 'RPhi' || object.name === 'RhoZ') )
+			ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
 		
 		}
 		

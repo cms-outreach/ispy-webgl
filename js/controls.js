@@ -135,6 +135,10 @@ ispy.showView = function(view) {
 
 	ispy.resetControls();
 	
+	//$('#treegui').show();
+	//$('#rphigui').hide();
+	//$('#rhozgui').hide();
+
 	break;
 
     case 'RPhi':
@@ -149,6 +153,10 @@ ispy.showView = function(view) {
 	
 	ispy.current_view = 'RPhi';
 	ispy.scene = ispy.scenes['RPhi'];
+
+	//$('#treegui').hide();
+	//$('#rphigui').show();
+	//$('#rhozgui').hide();
 	
 	break;
 
@@ -164,6 +172,10 @@ ispy.showView = function(view) {
 		
 	ispy.current_view = 'RhoZ';
 	ispy.scene = ispy.scenes['RhoZ'];
+	
+	//$('#treegui').hide();
+	//$('#rphigui').hide();
+	//$('#rhozgui').show();
 	
 	break;
 	

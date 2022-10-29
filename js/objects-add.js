@@ -484,8 +484,6 @@ ispy.addToScene = function(event, view) {
 	    break;
 
 	case ispy.LINE:
-
-	    console.log(key, descr.style.linewidth);
 	    
 	    for ( let li = 0; li < data.length; li++ ) {
 
@@ -543,8 +541,12 @@ ispy.addToScene = function(event, view) {
 	    
 	}
 
-	// Fix this
-	//ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
+	// Everything in the event is part of the 3D view so we only have to add
+	// the rows in the controls GUI when the view is 3D.
+	// Properties will be changed over the 3 views and their corresponding scenes
+	// in the same place in the controls GUI.
+	if ( view === '3D' )
+	    ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
     }
 
@@ -561,21 +563,9 @@ ispy.addEvent = function(event) {
     $("tr.Event").remove();
 
     // Clear the subfolders for event information in the treegui
-    ispy.data_groups.forEach(function(g) {
-
-	const folder = ispy.treegui.__folders[g];
-	
-	ispy.subfolders[g].forEach(function(s) {
-	    
-	    folder.removeFolder(folder.__folders[s]);
-	    
-	});
-
-	ispy.subfolders[g] = [];
-
-    });
+    ispy.clearSubfolders();
     
-    ['3D', 'RPhi', 'RhoZ'].forEach(v => {
+    ispy.views.forEach(v => {
 
 	ispy.addToScene(event, v);
 
