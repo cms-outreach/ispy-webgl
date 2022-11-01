@@ -787,11 +787,11 @@ ispy.event_description = {
 	},
 	"Photons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
-	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
+	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
 	},
 	"PATPhotons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (PAT)",
-	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
+	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
 	},
 	"GlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
@@ -1142,11 +1142,11 @@ ispy.event_description = {
 	},
 	"Photons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
-	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
+	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
 	},
 	"PATPhotons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (PAT)",
-	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
+	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
 	},
 	"GlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",

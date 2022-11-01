@@ -2078,7 +2078,7 @@ ispy.makePhoton = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    var photon;
+    let photon;
 
     if ( ispy.use_line2 ) {
 
@@ -2173,7 +2173,7 @@ ispy.makePhotonRZ = function(data, style, selection) {
     
     let color = new THREE.Color(style.color);
 
-    var photon;
+    let photon;
 
     if ( ispy.use_line2 ) {
 
