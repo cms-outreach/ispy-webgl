@@ -996,15 +996,15 @@ ispy.event_description = {
 	},
 	"TrackingRecHits_V1": {
 	    type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
-	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
+	    fn:ispy.makeTrackingRecHitsRZ, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
 	},
 	"SiStripClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
 	},
 	"SiPixelClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
 	},
 	"Event_V1":{
 	    type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
@@ -1017,16 +1017,16 @@ ispy.event_description = {
 	},
 	"DTRecHits_V1": {
 	    type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
-	    fn: ispy.makeDTRecHits, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 1}
+	    fn: ispy.makeDTRecHitsRZ, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 1}
 	},
 	"DTRecSegment4D_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-	    fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)",
+	    fn: ispy.makeDTRecSegmentsRZ, style: {color: "rgb(100%, 100%, 0%)",
 						opacity: 1.0, linewidth: 1.5}
 	},
 	"RPCRecHits_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-	    fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)",
+	    fn: ispy.makeRPCRecHitsRZ, style: {color: "rgb(80%, 100%, 0%)",
 					     opacity: 1.0, linewidth: 1.5}
 	},
 	"MatchingGEMs_V1": {
@@ -1077,10 +1077,6 @@ ispy.event_description = {
 	    type: ispy.LINE, on: false, group: "Muon", name: "CSC Correlated LCT Digis",
 	    fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(0%,100%,100%)", opacity:0.8, linewidth: 2}
 	},
-	"MatchingCSCs_V1": {
-	    type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching CSCs",
-	    fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.1, linewidth: 1}
-	},
 	"CSCRecHit2Ds_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
 	    fn: ispy.makeCSCRecHit2Ds_V2, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
@@ -1096,10 +1092,6 @@ ispy.event_description = {
 	"CSCSegments_V3": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
 	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
-	},
-	"MuonChambers_V1": {
-	    type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
-	    fn: ispy.makeMuonChamberRZ, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.1, linewidth: 1}
 	},
 	"CaloTowers_V2":{
 	    type: ispy.STACKEDTOWER, on: false, group: "Physics", name: "Calo Towers",

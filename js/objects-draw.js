@@ -133,7 +133,7 @@ ispy.makeSolidBoxRZ = function(data, ci) {
     const addFace3 = (...vectors) => {
         all_positions = all_positions.concat(...vectors);
     };
-        
+
     // Front vertices
     let f1 = data[ci];
     let f2 = data[ci+1];
@@ -145,42 +145,17 @@ ispy.makeSolidBoxRZ = function(data, ci) {
     let b2 = data[ci+5];
     let b3 = data[ci+6];
     let b4 = data[ci+7];
-    
-    let yf1 = Math.sqrt(f1[0]*f1[0] + f1[1]*f1[1]);
-    let yf2 = Math.sqrt(f2[0]*f2[0] + f2[1]*f2[1]);
-    let yf3 = Math.sqrt(f3[0]*f3[0] + f3[1]*f3[1]);
-    let yf4 = Math.sqrt(f4[0]*f4[0] + f4[1]*f4[1]);
+   
+    let v0 = projectPoint(f1, f1);
+    let v1 = projectPoint(f2, f1);
+    let v2 = projectPoint(f3, f1);
+    let v3 = projectPoint(f4, f1);
 
-    let yb1 = Math.sqrt(b1[0]*b1[0] + b1[1]*b1[1]);
-    let yb2 = Math.sqrt(b2[0]*b2[0] + b2[1]*b2[1]);
-    let yb3 = Math.sqrt(b3[0]*b3[0] + b3[1]*b3[1]);
-    let yb4 = Math.sqrt(b4[0]*b4[0] + b4[1]*b4[1]);
+    let v4 = projectPoint(b1, f1);
+    let v5 = projectPoint(b2, f1);
+    let v6 = projectPoint(b3, f1);
+    let v7 = projectPoint(b4, f1);
 
-    let x = 0.001;
-    
-    if ( f1[1] < 0. )
-    {
-        yf1 = -yf1;
-        yf2 = -yf2;
-        yf3 = -yf3;
-        yf4 = -yf4;
-        yb1 = -yb1;
-        yb2 = -yb2;
-        yb3 = -yb3;
-        yb4 = -yb4;
-        x = -x;
-    }
-
-    let v0 = [x, yf1, f1[2]];
-    let v1 = [2*x, yf2, f2[2]];
-    let v2 = [2*x, yf3, f3[2]];
-    let v3 = [x, yf4, f4[2]];
-
-    let v4 = [x, yb1, b1[2]];
-    let v5 = [2*x, yb2, b2[2]];
-    let v6 = [2*x, yb3, b3[2]];
-    let v7 = [x, yb4, b4[2]];
-    
     // front
     addFace3(v0, v1, v2);
     addFace3(v2, v3, v0);
@@ -196,7 +171,7 @@ ispy.makeSolidBoxRZ = function(data, ci) {
     // bottom
     addFace3(v7, v6, v2);
     addFace3(v2, v3, v7);
-
+    
     // left
     addFace3(v0, v3, v7);
     addFace3(v7, v4, v0);
@@ -1587,6 +1562,36 @@ ispy.makePointCloud = function(data, index) {
 
 };
 
+ispy.makePointCloudRZ = function(data, index) {
+  
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(data.length*3);
+
+    for (var i = 0; i < data.length; i++) {
+
+	let point = [
+	    data[i][index][0],
+	    data[i][index][1],
+	    data[i][index][2]
+	];
+
+	let proj = projectPoint(point, point);
+
+	console.log(proj);
+	
+	positions[i*3 + 0] = proj[0];
+	positions[i*3 + 1] = proj[1];
+	positions[i*3 + 2] = proj[2];
+  
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.computeBoundingSphere();
+    
+    return geometry;
+
+};
+
 ispy.makeTrackingRecHits = function(data) {
 
     return ispy.makePointCloud(data,0);
@@ -1596,6 +1601,18 @@ ispy.makeTrackingRecHits = function(data) {
 ispy.makeTrackingClusters = function(data) {
 
     return ispy.makePointCloud(data,1);
+
+};
+
+ispy.makeTrackingRecHitsRZ = function(data) {
+
+    return ispy.makePointCloudRZ(data,0);
+
+};
+
+ispy.makeTrackingClustersRZ = function(data) {
+
+    return ispy.makePointCloudRZ(data,1);
 
 };
 
@@ -2301,7 +2318,6 @@ ispy.makeProtons = function(data, style, selection) {
 
 };
 
-
 ispy.makeDTRecHits = function(data) {
     /*
       ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
@@ -2333,6 +2349,72 @@ ispy.makeDTRecHits = function(data) {
     let v5 = new THREE.Vector3( w,-h, d);
     let v6 = new THREE.Vector3( w,-h,-d);
     let v7 = new THREE.Vector3(-w,-h,-d);
+    
+    // front
+    addFace3(v0.toArray(), v1.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v0.toArray());
+    //back
+    addFace3(v4.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v7.toArray(), v4.toArray());
+    //top
+    addFace3(v4.toArray(), v5.toArray(), v1.toArray());
+    addFace3(v1.toArray(), v0.toArray(), v4.toArray());
+    //bottom
+    addFace3(v7.toArray(), v6.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v7.toArray());
+    //left
+    addFace3(v0.toArray(), v3.toArray(), v7.toArray());
+    addFace3(v7.toArray(), v4.toArray(), v0.toArray());
+    //right
+    addFace3(v1.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v2.toArray(), v1.toArray());
+
+    const box = new THREE.BufferGeometry();
+    box.attributes.position = new THREE.BufferAttribute(
+	new Float32Array(all_positions),
+	3
+    );
+    
+    box.applyMatrix4(new THREE.Matrix4().makeRotationAxis(axis,angle));
+    box.applyMatrix4(new THREE.Matrix4().makeTranslation(pos.x,pos.y,pos.z));
+    
+    return [box];
+
+};
+
+ispy.makeDTRecHitsRZ = function(data) {
+    /*
+      ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
+      ["digitime", "double"],["wirePos", "v3d"],
+      ["lPlusGlobalPos", "v3d"],["lMinusGlobalPos", "v3d"],["rPlusGlobalPos", "v3d"],["rMinusGlobalPos", "v3d"],
+      ["lGlobalPos", "v3d"],["rGlobalPos", "v3d"],
+      ["axis", "v3d"],["angle", "double"],["cellWidth", "double"],["cellLength", "double"],["cellHeight", "double"]]
+    */
+
+    let all_positions = [];
+
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    let pos = new THREE.Vector3(...data[7]);
+    let axis = new THREE.Vector3(...data[14]);
+    let angle = data[15];
+    
+    let w = data[16]*0.5;
+    let h = data[17]*0.5;
+    let d = data[18]*0.5;
+
+    let lglobalpos = new THREE.Vector3(...data[12]);
+    
+    let v0 = projectVector(new THREE.Vector3(-w, h,-d), lglobalpos);
+    let v1 = projectVector(new THREE.Vector3( w, h,-d), lglobalpos);
+    let v2 = projectVector(new THREE.Vector3( w, h, d), lglobalpos);
+    let v3 = projectVector(new THREE.Vector3(-w, h, d), lglobalpos);
+    let v4 = projectVector(new THREE.Vector3(-w,-h, d), lglobalpos);
+    let v5 = projectVector(new THREE.Vector3( w,-h, d), lglobalpos);
+    let v6 = projectVector(new THREE.Vector3( w,-h,-d), lglobalpos);
+    let v7 = projectVector(new THREE.Vector3(-w,-h,-d), lglobalpos);
     
     // front
     addFace3(v0.toArray(), v1.toArray(), v2.toArray());
@@ -2400,6 +2482,60 @@ ispy.makeRPCRecHits = function(data) {
         
 };
 
+ispy.makeRPCRecHitsRZ = function(data) {
+
+    let u,v,w;
+    
+    if ( ispy.use_line2 ) {
+    
+	u = new THREE.LineGeometry();
+	u.setPositions([
+	    ...projectPoint(data[0], data[0]),
+	    ...projectPoint(data[1], data[0])
+	]);
+
+	v = new THREE.LineGeometry();
+	v.setPositions([
+	    ...projectPoint(data[2], data[0]),
+	    ...projectPoint(data[3], data[0])
+	]);
+
+	w = new THREE.LineGeometry();
+	w.setPositions([
+	    ...projectPoint(data[4], data[0]),
+	    ...projectPoint(data[5], data[0])
+	]);
+	
+    } else {
+	
+	const u1 = new THREE.Vector3(...data[0]);
+	const u2 = new THREE.Vector3(...data[1]);
+	const v1 = new THREE.Vector3(...data[2]);
+	const v2 = new THREE.Vector3(...data[3]);
+	const w1 = new THREE.Vector3(...data[4]);
+	const w2 = new THREE.Vector3(...data[5]);
+	
+	u = new THREE.BufferGeometry().setFromPoints([
+	    projectVector(u1,u1),
+	    projectVector(u2,u1)
+	]);
+
+	v = new THREE.BufferGeometry().setFromPoints([
+	    projectVector(v1,u1),
+	    projectVector(v2,u1)
+	]);
+
+	w = new THREE.BufferGeometry().setFromPoints([
+	    projectVector(w1,u1),
+	    projectVector(w2,u1)
+	]);
+	
+    }
+
+    return [u,v,w];
+        
+};
+
 ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
 
     return ispy.makeRPCRecHits(data, descr);
@@ -2411,6 +2547,7 @@ ispy.makeGEMRecHits_V2 = function(data, descr) {
     return ispy.makeRPCRecHits(data, descr);
 
 };
+
 ispy.makeDTRecSegments = function(data) {
 
     var geometry;
@@ -2419,6 +2556,34 @@ ispy.makeDTRecSegments = function(data) {
     
 	geometry = new THREE.LineGeometry();
 	geometry.setPositions([...data[1], ...data[2]]);
+
+    } else {
+
+	let p1 = new THREE.Vector3(...data[1]);
+	let p2 = new THREE.Vector3(...data[2]);
+	
+	geometry = new THREE.BufferGeometry().setFromPoints([
+	    projectVector(p1,p2),
+	    projectVector(p2,p2)
+	]);
+
+    }
+
+    return [geometry];
+    
+};
+
+ispy.makeDTRecSegmentsRZ = function(data) {
+
+    var geometry;
+    
+    if ( ispy.use_line2 ) {
+    
+	geometry = new THREE.LineGeometry();
+	geometry.setPositions([
+	    ...projectPoint(data[1], data[1]),
+	    ...projectPoint(data[2], data[1])
+	]);
 
     } else {
 
