@@ -1576,8 +1576,6 @@ ispy.makePointCloudRZ = function(data, index) {
 	];
 
 	let proj = projectPoint(point, point);
-
-	console.log(proj);
 	
 	positions[i*3 + 0] = proj[0];
 	positions[i*3 + 1] = proj[1];

@@ -147,16 +147,12 @@ ispy.showView = function(view) {
         $('#rphi').addClass('active');
 	$('#rhoz').removeClass('active');
 
-	ispy.controls.noRotate = true;
+	ispy.controls.noRotate = false;
 	ispy.setOrthographic();
 	ispy.setXY();
 	
 	ispy.current_view = 'RPhi';
 	ispy.scene = ispy.scenes['RPhi'];
-
-	//$('#treegui').hide();
-	//$('#rphigui').show();
-	//$('#rhozgui').hide();
 	
 	break;
 
@@ -172,10 +168,6 @@ ispy.showView = function(view) {
 		
 	ispy.current_view = 'RhoZ';
 	ispy.scene = ispy.scenes['RhoZ'];
-	
-	//$('#treegui').hide();
-	//$('#rphigui').hide();
-	//$('#rhozgui').show();
 	
 	break;
 	

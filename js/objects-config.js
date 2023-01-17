@@ -641,15 +641,15 @@ ispy.event_description = {
 	},
 	"TrackingRecHits_V1": {
 	    type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
-	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
+	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 2}
 	},
 	"SiStripClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 2}
 	},
 	"SiPixelClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 2}
 	},
 	"Event_V1":{
 	    type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
@@ -996,15 +996,15 @@ ispy.event_description = {
 	},
 	"TrackingRecHits_V1": {
 	    type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
-	    fn:ispy.makeTrackingRecHitsRZ, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
+	    fn:ispy.makeTrackingRecHitsRZ, style: {color: "rgb(100%, 100%, 0%)", size: 2}
 	},
 	"SiStripClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
-	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(80%, 20%, 0%)", size: 2}
 	},
 	"SiPixelClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
-	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(100%, 40%, 0%)", size: 2}
 	},
 	"Event_V1":{
 	    type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
