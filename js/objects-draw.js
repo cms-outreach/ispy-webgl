@@ -2348,7 +2348,7 @@ ispy.makeDTRecHits = function(data) {
     let v6 = new THREE.Vector3( w,-h,-d);
     let v7 = new THREE.Vector3(-w,-h,-d);
     
-    // front
+    //front
     addFace3(v0.toArray(), v1.toArray(), v2.toArray());
     addFace3(v2.toArray(), v3.toArray(), v0.toArray());
     //back
@@ -2414,7 +2414,7 @@ ispy.makeDTRecHitsRZ = function(data) {
     let v6 = projectVector(new THREE.Vector3( w,-h,-d), lglobalpos);
     let v7 = projectVector(new THREE.Vector3(-w,-h,-d), lglobalpos);
     
-    // front
+    //front
     addFace3(v0.toArray(), v1.toArray(), v2.toArray());
     addFace3(v2.toArray(), v3.toArray(), v0.toArray());
     //back
@@ -2546,6 +2546,18 @@ ispy.makeGEMRecHits_V2 = function(data, descr) {
 
 };
 
+ispy.makeCSCRecHit2DsRZ = function(data, descr) {
+
+    return ispy.makeRPCRecHitsRZ(data, descr);
+
+};
+
+ispy.makeGEMRecHitsRZ = function(data, descr) {
+
+    return ispy.makeRPCRecHitsRZ(data, descr);
+
+};
+
 ispy.makeDTRecSegments = function(data) {
 
     var geometry;
@@ -2556,13 +2568,10 @@ ispy.makeDTRecSegments = function(data) {
 	geometry.setPositions([...data[1], ...data[2]]);
 
     } else {
-
-	let p1 = new THREE.Vector3(...data[1]);
-	let p2 = new THREE.Vector3(...data[2]);
-	
+		
 	geometry = new THREE.BufferGeometry().setFromPoints([
-	    projectVector(p1,p2),
-	    projectVector(p2,p2)
+	    new THREE.Vector3(...data[1]),
+	    new THREE.Vector3(...data[2])
 	]);
 
     }
@@ -2584,12 +2593,15 @@ ispy.makeDTRecSegmentsRZ = function(data) {
 	]);
 
     } else {
-
+		
+	let p1 = new THREE.Vector3(...data[1]);
+	let p2 = new THREE.Vector3(...data[2]);
+	
 	geometry = new THREE.BufferGeometry().setFromPoints([
-	    new THREE.Vector3(...data[1]),
-	    new THREE.Vector3(...data[2])
+	    projectVector(p1,p2),
+	    projectVector(p2,p2)
 	]);
-
+	
     }
 
     return [geometry];
@@ -2599,6 +2611,12 @@ ispy.makeDTRecSegmentsRZ = function(data) {
 ispy.makeCSCSegments = function(data, geometry) {
 
     return ispy.makeDTRecSegments(data, geometry);
+
+};
+
+ispy.makeCSCSegmentsRZ = function(data, geometry) {
+
+    return ispy.makeDTRecSegmentsRZ(data, geometry);
 
 };
 

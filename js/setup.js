@@ -493,15 +493,20 @@ ispy.init = function() {
     ispy.setupClipping();
     ispy.handleToggles();
     ispy.handleDragAndDrop();
-    
+
     // The second argument is necessary to make sure that mouse events are
     // handled only when in the canvas
-    const controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
-    controls.rotateSpeed = 3.0;
-    controls.zoomSpeed = 0.5;
-    controls.dynamicDampingFactor = 1.0;
+    ispy.tcontrols = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+    ispy.tcontrols.rotateSpeed = 3.0;
+    ispy.tcontrols.zoomSpeed = 0.5;
+    ispy.tcontrols.dynamicDampingFactor = 1.0;
+    ispy.tcontrols.noRotate = false;
+    ispy.tcontrols.noPan = false;
+    
+    ispy.ocontrols = new THREE.OrbitControls(ispy.camera, ispy.renderer.domElement);
+    ispy.ocontrols.enableRotate = false;
 
-    ispy.controls = controls;
+    ispy.controls = ispy.tcontrols;
 
     ispy.views.forEach(v => {
 

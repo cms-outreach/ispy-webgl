@@ -883,15 +883,15 @@ ispy.event_description = {
 	},
 	"PrimaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
 	},
 	"SecondaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
 	},
 	"VertexCompositeCandidates_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
-	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
+	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.02, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
 	},
 	"SimVertices_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",
@@ -1039,7 +1039,7 @@ ispy.event_description = {
 	},
 	"GEMRecHits_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "GEM Rec. Hits (2D)",
-	    fn: ispy.makeGEMRecHits_V2, style: {color: "rgb(60%, 100%, 70%)", opacity: 1.0, linewidth: 1}
+	    fn: ispy.makeGEMRecHitsRZ, style: {color: "rgb(60%, 100%, 70%)", opacity: 1.0, linewidth: 1}
 	},
 	"GEMSegments_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
@@ -1079,19 +1079,19 @@ ispy.event_description = {
 	},
 	"CSCRecHit2Ds_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
-	    fn: ispy.makeCSCRecHit2Ds_V2, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
+	    fn: ispy.makeCSCRecHit2DsRZ, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
 	},
 	"CSCSegments_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CSCSegments_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CSCSegments_V3": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CaloTowers_V2":{
 	    type: ispy.STACKEDTOWER, on: false, group: "Physics", name: "Calo Towers",
@@ -1235,15 +1235,15 @@ ispy.event_description = {
 	},
 	"PrimaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
 	},
 	"SecondaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
 	},
 	"VertexCompositeCandidates_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
-	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
+	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.02, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
 	},
 	"SimVertices_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",
