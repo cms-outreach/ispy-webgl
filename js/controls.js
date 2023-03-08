@@ -144,11 +144,11 @@ ispy.showView = function(view) {
         $('#rphi').addClass('active');
 	$('#rhoz').removeClass('active');
 
-	ispy.controls = ispy.ocontrols;
+	//ispy.controls = ispy.ocontrols;
 	ispy.controls.reset();
 
 	//ispy.controls.noRotate = true;
-	//ispy.controls.enableRotate = false;
+	ispy.controls.enableRotate = false;
 	
 	ispy.setOrthographic();
 	ispy.setXY();
@@ -164,11 +164,11 @@ ispy.showView = function(view) {
         $('#rphi').removeClass('active');
 	$('#rhoz').addClass('active');
 
-	ispy.controls = ispy.ocontrols;
+	//ispy.controls = ispy.ocontrols;
 	ispy.controls.reset();
 
 	//ispy.controls.noRotate = true;
-	//ispy.controls.enableRotate = false;
+	ispy.controls.enableRotate = false;
 
 	ispy.setOrthographic();
 	ispy.setYZ();

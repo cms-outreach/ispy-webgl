@@ -504,9 +504,9 @@ ispy.init = function() {
     ispy.tcontrols.noPan = false;
     
     ispy.ocontrols = new THREE.OrbitControls(ispy.camera, ispy.renderer.domElement);
-    ispy.ocontrols.enableRotate = false;
+    ispy.ocontrols.enableRotate = true;
 
-    ispy.controls = ispy.tcontrols;
+    ispy.controls = ispy.ocontrols;
 
     ispy.views.forEach(v => {
 
