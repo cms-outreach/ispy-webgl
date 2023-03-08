@@ -373,6 +373,80 @@ ispy.selectFile = function(filename) {
 
 };
 
+ispy.loadWebFiles = function(json_file) {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", json_file, true);
+
+    xhr.onload = function() {
+
+	if ( this.status === 200 ) {
+
+	    data = JSON.parse(xhr.responseText);
+	    ispy.web_files = data;
+	
+	    $('#selected-event').html("Selected event");
+	
+	    var tbl = document.getElementById("browser-dirs");
+
+	    for ( var d in data ) {
+
+		tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDir(\'' + data[d].release + '\');">' + data[d].release + '/' + '</a>';
+	   
+	    }
+
+	}
+
+    };
+
+    xhr.send();
+    
+};
+
+ispy.showWebFiles = function() {
+
+  ispy.openDialog('#files');
+  ispy.showWebDirs();
+
+  $('#open-files').modal('hide');
+
+};
+
+ispy.showWebDir = function(dir_name) {
+
+    $('#browser-dirs').hide();
+
+    var tbl = document.getElementById("browser-files");
+    var files = ispy.web_files.filter(function(w){ return w.release === dir_name; })[0].files;
+    tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML = '<a onclick="ispy.showWebDirs();"> ../ </a>';
+    
+    files.forEach(function(f) {
+ 
+	var filename = "./data/"+dir_name+"/"+f;
+
+	tbl.insertRow(tbl.rows.length).insertCell(0).innerHTML =
+	    '<a class="file" onclick="ispy.selectFile(\'' + filename + '\');">' + f + '</a>';
+
+    });
+
+    $('#browser-files').show();
+
+};
+
+ispy.showWebDirs = function() {
+
+  ispy.clearTable('browser-files');
+  ispy.clearTable('browser-events');
+
+  $('#selected-event').html("Selected event");
+  $('#load-event').addClass('disabled');
+
+  $('#browser-files').hide();
+  $('#browser-dirs').show();
+
+};
+
+/*
 ispy.loadWebFiles = function() {
 
     const web_files = [
@@ -425,6 +499,7 @@ ispy.showWebFiles = function() {
     $('#open-files').modal('hide');
 
 };
+*/
 
 ispy.cleanupData = function(d) {
 

@@ -438,7 +438,7 @@ canvas.hover {
   color: black;
 }
 
-#browser-files td, #obj-files td {
+#browser-dirs td, #browser-files td, #obj-files td {
   border: 0;
 }
 
