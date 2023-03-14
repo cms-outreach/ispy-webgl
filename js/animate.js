@@ -101,7 +101,7 @@ ispy.toggleAnimation = function() {
 
   if ( ispy.animating ) {
     var animation = ispy.animation_script;
-    ispy.resetControls();
+    ispy.resetView();
     var home = ispy.camera.position;
 
     var length = ispy.camera.position.length();

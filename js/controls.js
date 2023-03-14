@@ -1,5 +1,5 @@
-ispy.resetControls = function() {
-  
+ispy.resetView = function() {
+
     ispy.setPerspective();
     ispy.initCamera();
 
@@ -131,11 +131,19 @@ ispy.showView = function(view) {
     switch (view) {
 
     case '3D':
-
-	ispy.controls = ispy.tcontrols;
-	ispy.controls.noRotate = false;
-	ispy.resetControls();
 	
+	$('#3d').addClass('active');
+	$('#rphi').removeClass('active');
+	$('#rhoz').removeClass('active');
+
+	ispy.controls.enableRotate = true;
+	ispy.controls.reset();
+	  
+	ispy.setPerspective();
+	
+	ispy.current_view = '3D';
+	ispy.scene = ispy.scenes['3D'];
+
 	break;
 
     case 'RPhi':
@@ -143,12 +151,9 @@ ispy.showView = function(view) {
 	$('#3d').removeClass('active');
         $('#rphi').addClass('active');
 	$('#rhoz').removeClass('active');
-
-	//ispy.controls = ispy.ocontrols;
-	ispy.controls.reset();
-
-	//ispy.controls.noRotate = true;
+	
 	ispy.controls.enableRotate = false;
+	ispy.controls.reset();
 	
 	ispy.setOrthographic();
 	ispy.setXY();
@@ -164,11 +169,8 @@ ispy.showView = function(view) {
         $('#rphi').removeClass('active');
 	$('#rhoz').addClass('active');
 
-	//ispy.controls = ispy.ocontrols;
-	ispy.controls.reset();
-
-	//ispy.controls.noRotate = true;
 	ispy.controls.enableRotate = false;
+	ispy.controls.reset();
 
 	ispy.setOrthographic();
 	ispy.setYZ();
