@@ -16,7 +16,7 @@ pages:
 dfsdeploy:
   stage: deploy
   only:
-    - w2d2
+    - masterclass2019
   image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
   script:
     - deploy-dfs
