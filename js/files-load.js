@@ -1007,7 +1007,7 @@ ispy.importDetector = function() {
 	    group: 'Detector',
 	    show: true,
 	    view: 'RhoZ',
-	    file: './geometry/gltf/RhoZ.glb'
+	    file: './geometry/gltf/RhoZ_V2.glb'
 	},
 	{
 	    id: 'RPhi',
@@ -1015,7 +1015,7 @@ ispy.importDetector = function() {
 	    group: 'Detector',
 	    show: true,
 	    view: 'RPhi',
-	    file: './geometry/gltf/RPhi.glb'
+	    file: './geometry/gltf/RPhi_V2.glb'
 	}
 
     ];
