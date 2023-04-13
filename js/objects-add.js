@@ -553,6 +553,8 @@ ispy.addToScene = function(event, view) {
 };
 
 ispy.addEvent = function(event) {
+
+    console.log(ispy.camera.position);
     
     ispy.current_event = event;
     // Clear table from last event and show default caption
@@ -572,5 +574,5 @@ ispy.addEvent = function(event) {
     });
 
     ispy.showView(ispy.current_view);
-
+    
 };

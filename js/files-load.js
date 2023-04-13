@@ -94,7 +94,7 @@ ispy.enableNextPrev = function() {
 };
 
 ispy.loadEvent = function() {
-
+    
     $("#event-loaded").html("");
     $("#loading").modal("show");
 
@@ -139,9 +139,7 @@ ispy.loadEvent = function() {
 	console.log(ispy.current_event.Collections.Products_V1);
 	
     }
-
-    //ispy.initGUI();
-
+    
 };
 
 ispy.nextEvent = function() {

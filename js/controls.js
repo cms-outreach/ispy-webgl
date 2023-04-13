@@ -106,7 +106,7 @@ ispy.setPerspective = function() {
     $('#perspective').addClass('active');
     $('#orthographic').removeClass('active');
     $('#stereo').removeClass('active');
-
+    
     ispy.is_perspective = true;
     ispy.camera = ispy.p_camera;
     
@@ -138,9 +138,14 @@ ispy.showView = function(view) {
 
 	ispy.controls.enableRotate = true;
 	ispy.controls.reset();
-	  
-	ispy.setPerspective();
-	
+
+	/*
+	  We may have cases where the view is already 3D
+	  but we have switched to/from persepctive/orthographic
+	*/
+	if ( ispy.current_view !== '3D' )
+	    ispy.setPerspective();
+
 	ispy.current_view = '3D';
 	ispy.scene = ispy.scenes['3D'];
 
