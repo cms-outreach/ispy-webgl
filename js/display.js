@@ -218,13 +218,13 @@ ispy.onMouseMove = function(e) {
 
     ispy.raycaster.setFromCamera(pointer, ispy.camera);
     const intersects = ispy.raycaster.intersectObject(ispy.scene.getObjectByName("Physics"), true);
-    
+
     if ( ispy.intersected ) {
 
 	// Undo selection stuff
 	container.css('cursor', 'auto');
 	    
-	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+	//ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 
 	if ( ! ispy.intersected.selected ) {
 	
@@ -261,14 +261,14 @@ ispy.onMouseMove = function(e) {
 
 	    var original_color = ispy.intersected.material.color;
 	    ispy.intersected.material.color.setHex(0xcccccc);
-	    
+
 	    ispy.displayCollection(
 		ispy.intersected.name, "Physics", 
 		ispy.event_description[ispy.current_view][ispy.intersected.name].name, 
 		ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name))
 	    );
 	    
-	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+	    //ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
 	    
 	}
 
