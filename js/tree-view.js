@@ -1,23 +1,4 @@
 ispy.addGroups = function() {
-    /*
-    ['3D', 'RPhi', 'RhoZ'].forEach(g => {
-    
-	ispy.guis[g].addFolder("Detector");
-	ispy.guis[g].addFolder("Imported");
-
-	ispy.subfolders.Detector = [];
-	ispy.subfolders.Imported = [];
-    
-	ispy.data_groups.forEach(function(gr) {
-
-	    ispy.guis[g].addFolder(gr);
-
-	    ispy.subfolders[gr] = [];
-	
-	});
-
-    });
-    */
 
     ispy.gui.addFolder("Detector");
     ispy.gui.addFolder("Imported");
@@ -36,38 +17,6 @@ ispy.addGroups = function() {
 };
 
 ispy.clearSubfolders = function() {
-    /*  
-    ['3D', 'RPhi', 'RhoZ'].forEach(v => {
-	
-	ispy.data_groups.forEach(function(g) {
-
-	    let folder = ispy.guis[v].__folders[g];
-
-	    if ( folder ) {
-	    
-		console.log(folder);
-
-	    } else {
-
-		console.log('folder is undefined');
-
-	    }
-	    
-	    ispy.subfolders[g].forEach(function(s) {
-
-		console.log(v,g);
-		
-		folder.removeFolder(folder.__folders[s]);
-	    
-	    });
-
-	    ispy.subfolders[g] = [];
-	    
-	});
-
-    });
-    */
-
 
     ispy.data_groups.forEach(function(g) {
 
@@ -139,7 +88,6 @@ ispy.showObject = function(key, view, show) {
     
     if ( obj !== undefined ) {
     
-	console.log(key, show);
 	obj.visible = show;
 	ispy.disabled[key] = !show;
 	$('#'+key).prop('checked', show);
