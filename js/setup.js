@@ -545,8 +545,6 @@ ispy.init = function() {
     ispy.importTransparency = 0.75;
     $('#transparency-slider').prop('value', ispy.importTransparency);
     $('#trspy').html(ispy.importTransparency);
-
-    ispy.stereo = false;
     
     $('#display').append($('#event-info'));
     
@@ -628,17 +626,9 @@ ispy.initDetector_old = function() {
 ispy.render = function() {
 
     if ( ispy.renderer !== null ) {
-
-	if ( ispy.stereo ) {
 	    
-	    ispy.stereo_renderer.render(ispy.scene, ispy.camera);
+	ispy.renderer.render(ispy.scene, ispy.camera);
     
-	} else {
-	    
-	    ispy.renderer.render(ispy.scene, ispy.camera);
-    
-	}
-
 	if ( ispy.get_image_data ){
       
 	    ispy.image_data = ispy.renderer.domElement.toDataURL();
@@ -666,24 +656,9 @@ ispy.run = function() {
 
     ispy.stats.update();
 
-    if ( ispy.stereo ) {
-
-	ispy.do_controls.update();
-
-	var width = window.innerWidth;
-	var height = window.innerHeight;
-
-	ispy.camera.aspect = width / height;
-	ispy.camera.updateProjectionMatrix();
-	ispy.stereo_renderer.setSize(width, height);
+    ispy.controls.update();
+    ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
 	
-    } else {
-
-	ispy.controls.update();
-	ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
-	
-    }
-
     ispy.inset_camera.up = ispy.camera.up;
     ispy.inset_camera.quarternion = ispy.camera.quaternion;
     ispy.inset_camera.position.setLength(10);
