@@ -42,17 +42,10 @@ ispy.toggle = function(key) {
     // For event information we display as simple HTML
     // so therefore not part of the scene
     if ( key.includes('Event') ) {
-    
-	if ( ispy.disabled[key] ) {
-      
-	    $('#event-text').hide();
-    
-	} else {
-      
-	    $('#event-text').show();
-    
-	}
-  
+
+	let event_text = document.getElementById('event-text');
+	ispy.disabled[key] ? event_text.style.display = 'none' : event_text.style.display = 'block';
+	
     }
 
     ispy.views.forEach(v => {
@@ -90,7 +83,8 @@ ispy.showObject = function(key, view, show) {
     
 	obj.visible = show;
 	ispy.disabled[key] = !show;
-	$('#'+key).prop('checked', show);
+
+	document.getElementById(key).checked = show;
     
     }
 

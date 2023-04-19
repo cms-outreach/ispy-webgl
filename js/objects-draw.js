@@ -2792,9 +2792,8 @@ ispy.makeEvent = function(data) {
     let et = "CMS Experiment at the LHC, CERN<br>";
     et += "Data recorded: " + time + "</br>";
     et += "Run / Event / LS: " + run + " / " + event + " / " + ls + "</br>";
-    
-    $('#event-text').html(et);
-    ei = $('#event-info');
-    $('#display').append(ei);
 
+    document.getElementById('event-text').innerHTML = et;
+    document.getElementById('display').appendChild(document.getElementById('event-info'));
+    
 };

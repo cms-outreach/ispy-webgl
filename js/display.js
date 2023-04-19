@@ -1,56 +1,53 @@
-// ----------- MODALS: settings
-
 ispy.invertColors = function() {
 
     ispy.inverted_colors = ! ispy.inverted_colors;
 
-    if ( ! ispy.inverted_colors ) {
-    
-	ispy.renderer.setClearColor(0x232323,1);
-
-    } else {
-
-	ispy.renderer.setClearColor(0xefefef,1);
+    ! ispy.inverted_colors ?  ispy.renderer.setClearColor(0x232323,1) : ispy.renderer.setClearColor(0xefefef,1);
 	
-    }
-
-    // Yeeesh I really need to clean up the class, ids, and css
-
-    $('body').toggleClass('white').toggleClass('black');
-
-    $('#event-info').toggleClass('white').toggleClass('black');
+    let body = document.querySelector('body');	
+    body.classList.toggle('white');
+    body.classList.toggle('black');
     
-    $('#titlebar').toggleClass('white').toggleClass('black');
-    $('#toolbar').toggleClass('white').toggleClass('black');
-    
-    $('#treeview').toggleClass('white').toggleClass('black');
-    $('#treeview td.group').toggleClass('white').toggleClass('black');
-    $('#treeview td.collection').toggleClass('white').toggleClass('black');
+    let ids = [
+	'event-info', 'titlebar', 'toolbar',
+	'display', 'tableview', 'browser-table',
+	'browser-files', 'obj-table', 'obj-files'
+    ];
 
-    $('#display').toggleClass('white').toggleClass('black');
+    ids.forEach(id => {
 
-    $('#tableview').toggleClass('white').toggleClass('black');
-    $('#tableview table thead th').toggleClass('white').toggleClass('black');
+	let el = document.getElementById(id);
 
-    $('#browser-table').toggleClass('white').toggleClass('black');
-    $('#browser-table th').toggleClass('white').toggleClass('black');
-    $('#browser-files').toggleClass('white').toggleClass('black');
-    
-    $('#obj-table').toggleClass('white').toggleClass('black');
-    $('#obj-table th').toggleClass('white').toggleClass('black');
-    $('#obj-files').toggleClass('white').toggleClass('black');
-    
-    $('.modal-content').toggleClass('white').toggleClass('black');
-    $('.modal-title').toggleClass('white').toggleClass('black');
-    
-    $('#table-data-eventObject').toggleClass('white').toggleClass('black');
+	el.classList.toggle('white');
+	el.classList.toggle('black');
+
+    });
+
+    let selectors = [
+	'treeview td.group', '#treeview td.collection',
+	'#tableview table thead th', '#browser-table th',
+	'#obj-table th', '.modal-content', '.modal-title',
+	'#table-data-eventObject'
+    ];
+
+    selectors.forEach(sels => {
+
+	document.querySelectorAll(sels).forEach(s => {
+
+	    s.classList.toggle('white');
+	    s.classList.toggle('black');
+
+	});
+
+    });
 
 };
 
 ispy.setTransparency = function(t) {
 
     ispy.importTransparency = t;
-    $('#trspy').html(t);
+
+    document.getElementById('trspy').innerHTML(t);
 
     let imported = ispy.scene.getObjectByName('Imported');
 
@@ -67,16 +64,13 @@ ispy.setTransparency = function(t) {
 
 };
 
-// ---------------------------------
-// ----------- MODALS: info
-
 ispy.updateRendererInfo = function() {
 
     var info = ispy.renderer.info;
 
     var html = "<strong>"+ ispy.renderer_name + " info: </strong>";
+    
     html += "<dl>";
-
     html += "<dt><strong> render </strong></dt>";
   
     for ( let prop in info.render ) {
@@ -97,11 +91,9 @@ ispy.updateRendererInfo = function() {
   
     }
 
-    $("#renderer-info").html(html);
+    document.getElementById('renderer-info').innerHTML = html;
 
 };
-
-// ---------------------------------
 
 ispy.updateRenderer = function(type) {
 
@@ -138,10 +130,12 @@ ispy.updateRenderer = function(type) {
 
 ispy.onWindowResize = function() {
 
-    $('#display').removeAttr('style');
+    let display = document.getElementById('display');
 
-    var w = $('#display').innerWidth();
-    var h = $('#display').innerHeight();
+    display.removeAttribute('style');
+    
+    let w = display.innerWidth;
+    let h = display.innerHeight;
 
     if ( ispy.is_perspective ) {
 
@@ -181,17 +175,18 @@ ispy.onMouseMove = function(e) {
   
     e.preventDefault();
 
-    const container = $("canvas");
+    const container = document.querySelector('canvas');
 
-    const w = $('#display').innerWidth();
-    const h = $('#display').innerHeight();
+    const display = document.getElementById('display');
+    const w = display.clientWidth;
+    const h = display.clientHeight;
 
     const doc = document.documentElement;
     const left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
     const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
 
-    const offsetX = $('#display').offset().left - left;
-    const offsetY = $('#display').offset().top - top;
+    const offsetX = display.getBoundingClientRect().left + window.pageXOffset - left;
+    const offsetY = display.getBoundingClientRect().top + window.pageYOffset - top;
 
     const pointer = new THREE.Vector2();
     
@@ -204,8 +199,8 @@ ispy.onMouseMove = function(e) {
     if ( ispy.intersected ) {
 
 	// Undo selection stuff
-	container.css('cursor', 'auto');
-	    
+	container.style.cursor = 'auto';
+	
 	//ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 
 	if ( ! ispy.intersected.selected ) {
@@ -238,9 +233,9 @@ ispy.onMouseMove = function(e) {
 
 	    // Selection stuff happens
 	    ispy.intersected = res.object;
-	    
-	    container.css('cursor', 'pointer');
 
+	    container.style.cursor = 'pointer';
+	    
 	    var original_color = ispy.intersected.material.color;
 	    ispy.intersected.material.color.setHex(0xcccccc);
 
@@ -414,12 +409,13 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     const collection = ispy.current_event.Collections[key];
 
     const collectionTable = $('#collection-table');
-
+  
     collectionTable.empty();
     collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
     collectionTable.append('<thead> <tr>');
     
     const collectionTableHead = collectionTable.find('thead').find('tr');
+    
     const color_class = ispy.inverted_colors ? 'group white' : 'group black';
 
     collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
@@ -448,34 +444,35 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 
 	let rc = $(row_content);
 	collectionTable.append(rc);
-  
+	
     }
 
     collectionTable.stupidtable({
 	   
-	    "v3d":function(a,b) {
+	"v3d":function(a,b) {
 
-		const aV3 = a.split(",");
-		const bV3 = b.split(",");
+	    const aV3 = a.split(",");
+	    const bV3 = b.split(",");
 
-		if ( aV3.length === 3 && bV3.length === 3 ) {
+	    if ( aV3.length === 3 && bV3.length === 3 ) {
 
-		    const aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
-		    const bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
-		    
-		    return aLength - bLength;
-		}
-
-		return 1;
-    
+		const aLength = Math.sqrt(aV3[0] * aV3[0] + aV3[1] * aV3[1] + aV3[2] * aV3[2]);
+		const bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
+		
+		return aLength - bLength;
 	    }
-	}).bind('aftertablesort', function(event, data){
+
+	    return 1;
+    
+	}
+    }).bind('aftertablesort', function(event, data){
 	
-		collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
-		const newClass = "fa fa-sort-" + data.direction;
-		collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
-  
-	    });
+	collectionTableHead.find('th').find('i').removeClass().addClass('fa fa-sort');
+	
+	const newClass = "fa fa-sort-" + data.direction;
+	collectionTableHead.find('th').eq(data.column).find('i').removeClass().addClass(newClass);
+	
+    });
     
 };
 
@@ -514,8 +511,9 @@ ispy.showMass = function() {
     m = sumE*sumE;
     m -= (sumPx*sumPx + sumPy*sumPy + sumPz*sumPz);
     m = Math.sqrt(m);
-    
-    $('#invariant-mass').html(m.toFixed(2));
+
+    document.getElementById('invariant-mass').innerHTML = m.toFixed(2);
+    //document.getElementById('invariant-mass-modal').style.display = 'block';
     $('#invariant-mass-modal').modal('show');
     
     ispy.selected_objects.clear();

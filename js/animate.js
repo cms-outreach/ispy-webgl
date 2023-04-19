@@ -98,7 +98,7 @@ ispy.toggleAnimation = function() {
 
     ispy.animating = !ispy.animating;
 
-    $('#animate').toggleClass('active');
+    document.getElementById('animate').classList.toggle('active');
 
     if ( ispy.animating ) {
 
@@ -167,7 +167,7 @@ ispy.toggleAnimation = function() {
 	let zoom3 = new TWEEN.Tween(ispy.camera.position)
 	    .to({x:home.x, y:home.y, z:home.z}, 5000)
 	    .onComplete(function() {
-		$('#animate').removeClass('active');
+		document.getElementById('animate').classList.toggle('active');
 	    })
 	    .easing(TWEEN.Easing.Sinusoidal.In);
 

@@ -4,10 +4,10 @@ ispy.resetView = function() {
     ispy.initCamera();
 
     ispy.controls.reset();
-	
-    $('#3d').addClass('active');
-    $('#rphi').removeClass('active');
-    $('#rhoz').removeClass('active');
+
+    document.getElementById('3d').classList.add('active');
+    document.getElementById('rphi').classList.remove('active');
+    document.getElementById('rhoz').classList.remove('active');
 
     ispy.current_view = '3D';
     ispy.scene = ispy.scenes['3D'];
@@ -61,9 +61,9 @@ ispy.autoRotate = function() {
 };
 
 ispy.setOrthographic = function() {
-
-    $('#perspective').removeClass('active');
-    $('#orthographic').addClass('active');
+    
+    document.getElementById('perspective').classList.remove('active');
+    document.getElementById('orthographic').classList.add('active');
     
     ispy.is_perspective = false;
     ispy.camera = ispy.o_camera;
@@ -102,8 +102,8 @@ ispy.setOrthographic = function() {
 
 ispy.setPerspective = function() {
 
-    $('#perspective').addClass('active');
-    $('#orthographic').removeClass('active');
+    document.getElementById('perspective').classList.add('active');
+    document.getElementById('orthographic').classList.remove('active');
     
     ispy.is_perspective = true;
     ispy.camera = ispy.p_camera;
@@ -130,9 +130,9 @@ ispy.showView = function(view) {
 
     case '3D':
 	
-	$('#3d').addClass('active');
-	$('#rphi').removeClass('active');
-	$('#rhoz').removeClass('active');
+	document.getElementById('3d').classList.add('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.remove('active');
 
 	ispy.controls.enableRotate = true;
 	ispy.controls.reset();
@@ -150,10 +150,10 @@ ispy.showView = function(view) {
 	break;
 
     case 'RPhi':
-	
-	$('#3d').removeClass('active');
-        $('#rphi').addClass('active');
-	$('#rhoz').removeClass('active');
+
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.add('active');
+	document.getElementById('rhoz').classList.remove('active');
 	
 	ispy.controls.enableRotate = false;
 	ispy.controls.reset();
@@ -168,9 +168,9 @@ ispy.showView = function(view) {
 
     case 'RhoZ':
 	
-	$('#3d').removeClass('active');
-        $('#rphi').removeClass('active');
-	$('#rhoz').addClass('active');
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.add('active');
 
 	ispy.controls.enableRotate = false;
 	ispy.controls.reset();
@@ -223,8 +223,8 @@ ispy.exitFullscreen = function() {
 
 ispy.toggleFullscreen = function() {
 
-    $('#enterFullscreen').toggleClass('active');
-    $('#exitFullscreen').toggleClass('active');
+    document.getElementById('enterFullscreen').classList.toggle('active');
+    document.getElementById('exitFullscreen').classList.toggle('active');
 
 };
 
@@ -345,7 +345,8 @@ ispy.exportGLTF_text = function() {
 
 ispy.exportGLTF = function(binary) {
 
-    $('#export-model').hide();
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
     
     const exporter = new THREE.GLTFExporter();
 
@@ -388,7 +389,8 @@ ispy.exportGLTF = function(binary) {
 
 ispy.exportOBJ = function() {
 
-    $('#export-model').hide();
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
     
     const exporter = new THREE.OBJExporter();
 

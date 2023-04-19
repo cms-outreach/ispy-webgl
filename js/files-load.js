@@ -4,13 +4,15 @@ ispy.isGeometry = false;
 ispy.loaded_local = false;
 
 ispy.openDialog = function(id) {
-  
+
+    //document.getElementById(id).style.display = 'block';
     $(id).modal('show');
 
 };
 
 ispy.closeDialog = function(id) {
 
+    //document.getElementById(id).style.display = 'none';
     $(id).modal('hide');
 
 };
@@ -27,6 +29,7 @@ ispy.hasFileAPI = function() {
 	console.log("File", window.File);
 	console.log("FileList", window.FileList);
 	console.log("FileSystem", window.FileSystem);
+
 	return false;
   
     }
@@ -35,7 +38,7 @@ ispy.hasFileAPI = function() {
 
 ispy.clearTable = function(id) {
 
-    var tbl = document.getElementById(id);
+    let tbl = document.getElementById(id);
     
     while (tbl.rows.length > 0) {
 	
@@ -46,23 +49,28 @@ ispy.clearTable = function(id) {
 };
 
 ispy.selectEvent = function(index) {
- 
-    $("#selected-event").html(ispy.file_name+': '+ispy.event_list[index]);
+
+    document.getElementById('selected-event').innerHTML = ispy.file_name+': '+ispy.event_list[index];
+    //$("#selected-event").html(ispy.file_name+': '+ispy.event_list[index]);
+    
     ispy.event_index = index;
-    $('#load-event').removeClass('disabled');
+
+    document.getElementById('load-event').classList.remove('disabled');
+    //$('#load-event').removeClass('disabled');
 
 };
 
 ispy.updateEventList = function() {
 
     ispy.clearTable("browser-events");
-    var tbl = document.getElementById("browser-events");
+    let tbl = document.getElementById("browser-events");
 
-    for ( var i = 0; i < ispy.event_list.length; i++ ) {
+    for ( let i = 0; i < ispy.event_list.length; i++ ) {
     
-	var e = ispy.event_list[i];
-	var row = tbl.insertRow(tbl.rows.length);
-	var cell = row.insertCell(0);
+	let e = ispy.event_list[i];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+
 	cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="ispy.selectEvent(\'' + i + '\');">' + e + '</a>';
   
     }
@@ -72,30 +80,37 @@ ispy.updateEventList = function() {
 ispy.enableNextPrev = function() {
 
     if ( ispy.event_index > 0 ) {
-	
-	$("#prev-event-button").removeClass("disabled");
+
+	document.getElementById('prev-event-button').classList.remove('disabled');
+	//$("#prev-event-button").removeClass("disabled");
     
     } else {
-    
-	$("#prev-event-button").addClass("disabled");
+
+	document.getElementById('prev-event-button').classList.add('disabled');
+	//$("#prev-event-button").addClass("disabled");
   
     }
 
     if ( ispy.event_list && ispy.event_list.length - 1 > ispy.event_index ) {
-	
-	$("#next-event-button").removeClass("disabled");
+
+	document.getElementById('next-event-button').classList.remove('disabled');
+	//$("#next-event-button").removeClass("disabled");
     
     } else {
-	
-	$("#next-event-button").addClass("disabled");
+
+	document.getElementById('next-event-button').classList.add('disabled');
+	//$("#next-event-button").addClass("disabled");
     
     }
 
 };
 
 ispy.loadEvent = function() {
+
+    document.getElementById('event-loaded').innerHTML = '';
+    //document.getElementById('loading').style.display = 'block';
     
-    $("#event-loaded").html("");
+    //$("#event-loaded").html("");
     $("#loading").modal("show");
 
     ispy.selected_objects.clear();
@@ -118,6 +133,7 @@ ispy.loadEvent = function() {
     
     }
 
+    //document.getElementById('loading').style.display = 'none';
     $("#loading").modal("hide");
 
     if ( ispy.isGeometry ) {
@@ -133,7 +149,8 @@ ispy.loadEvent = function() {
 	
 	let ievent = +ispy.event_index + 1; // JavaScript!
 
-	$("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+	document.getElementById('event-loaded').innerHTML = ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]";
+	//$("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
 	
 	console.log(ispy.current_event.Types);
 	console.log(ispy.current_event.Collections.Products_V1);
@@ -209,14 +226,15 @@ ispy.selectLocalFile = function(index) {
 ispy.updateLocalFileList = function(list) {
 
     ispy.clearTable("browser-files");
-    var tbl = document.getElementById("browser-files");
+    let tbl = document.getElementById("browser-files");
 
-    for ( var i = 0; i < list.length; i++ ) {
+    for ( let i = 0; i < list.length; i++ ) {
 	
-	var name = list[i].name;
-	var row = tbl.insertRow(tbl.rows.length);
-	var cell = row.insertCell(0);
-	var cls = "file";
+	let name = list[i].name;
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
+
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectLocalFile(\'' + i + '\');">' + name + '</a>';
   
     }
@@ -236,11 +254,14 @@ ispy.loadLocalFiles = function() {
   
     }
 
-    $('#load-event').addClass('disabled');
+    document.getElementById('load-event').classList.add('disabled');
+    //$('#load-event').addClass('disabled');
 
     ispy.clearTable("browser-files");
     ispy.clearTable("browser-events");
-    $('#selected-event').html("Selected event");
+
+    document.getElementById('selected-event').innerHTML = "Selected event";
+    //$('#selected-event').html("Selected event");
     
     ispy.local_files = document.getElementById('local-files').files;
     ispy.updateLocalFileList(ispy.local_files);
@@ -253,7 +274,8 @@ ispy.loadDroppedFile = function(file) {
 
     var reader = new FileReader();
     ispy.file_name = file.name;
-    
+
+    //document.getElementById('loading').style.display = 'block';
     $('#loading').modal('show');
 
     reader.onload = function(e) {
@@ -286,6 +308,7 @@ ispy.loadDroppedFile = function(file) {
 	
 	ispy.loadEvent();
 
+	//document.getElementById('loading').style.display = 'none';
 	$('#loading').modal('hide');
 
     };
@@ -307,6 +330,7 @@ ispy.selectFile = function(filename) {
     var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
     ispy.file_name = new_file_name;
 
+    //document.getElementById('progress').style.display = 'block';
     $('#progress').modal('show');
     
     var xhr = new XMLHttpRequest();
@@ -332,10 +356,20 @@ ispy.selectFile = function(filename) {
     xhr.onreadystatechange = function () {
    
 	if ( this.readyState === 4 ) {
-      
+
+	    //document.getElementById('progress').style.display = 'none';
+
+	    let progress_bars = document.querySelectorAll('progress-bar');
+	    progress_bars.forEach(pb => {
+
+		pb.style.width = '0%';
+		pb.innerHTML = '0%';
+
+	    });
+
 	    $('#progress').modal('hide');
-	    $('.progress-bar').attr('style', 'width:0%;');
-	    $('.progress-bar').html('0%');
+	    //$('.progress-bar').attr('style', 'width:0%;');
+	    //$('.progress-bar').html('0%');
     
 	}
   
@@ -385,18 +419,22 @@ ispy.loadWebFiles = function() {
 	"./data/MinimumBias_Run2012C_0.ig"
     ];
 
-    $('#selected-event').html("Selected event");
-    $('#load-event').addClass('disabled');
+    document.getElementById('selected-event').innerHTML = "Selected event";
+    document.getElementById('load-event').classList.add('disabled');
+    
+    //$('#selected-event').html("Selected event");
+    //$('#load-event').addClass('disabled');
 
-    var tbl = document.getElementById("browser-files");
+    let tbl = document.getElementById("browser-files");
 
-    for ( var i = 0; i < web_files.length; i++ ) {
+    for ( let i = 0; i < web_files.length; i++ ) {
 	
-	var e = web_files[i];
-	var name = e.split("/")[2];
-	var row = tbl.insertRow(tbl.rows.length);
-	var cell = row.insertCell(0);
-	var cls = "file";
+	let e = web_files[i];
+	let name = e.split("/")[2];
+	let row = tbl.insertRow(tbl.rows.length);
+	let cell = row.insertCell(0);
+	let cls = "file";
+
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
   
     }
@@ -420,6 +458,7 @@ ispy.showWebFiles = function() {
   
     }
 
+    //document.getElementById('open-files').style.display = 'none';
     $('#open-files').modal('hide');
 
 };
@@ -458,11 +497,14 @@ ispy.loadGLTFFiles = function() {
     ];
     
     ispy.clearTable('obj-files');
-    
-    $('#selected-obj').html("Selected geometry");
-    $('#load-obj').addClass('disabled');
 
-    const tbl = document.getElementById('obj-files');
+    document.getElementById('selected-obj').innerHTML = "Selected geometry";
+    document.getElementById('load-obj').classList.add('disabled');
+    
+    //$('#selected-obj').html("Selected geometry");
+    //$('#load-obj').addClass('disabled');
+
+    let tbl = document.getElementById('obj-files');
     
     for ( let i = 0; i < gltf_files.length; i++ ) {
 	
@@ -471,6 +513,7 @@ ispy.loadGLTFFiles = function() {
 	let row = tbl.insertRow(tbl.rows.length);
 	let cell = row.insertCell(0);
 	let cls = "file";
+
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectGLTF(\'' + name + '\');">' + name + '</a>';
   
     }
@@ -498,11 +541,14 @@ ispy.loadObjFiles = function() {
      ];
 
     ispy.clearTable('obj-files');
+    
+    document.getElementById('selected-obj').innerHTML = "Selected geometry";
+    document.getElementById('load-obj').classList.add('disabled');
+    
+    //$('#selected-obj').html("Selected geometry");
+    //$('#load-obj').addClass('disabled');
 
-    $('#selected-obj').html("Selected geometry");
-    $('#load-obj').addClass('disabled');
-
-    const tbl = document.getElementById('obj-files');
+    let tbl = document.getElementById('obj-files');
     
     for ( let i = 0; i < obj_files.length; i++ ) {
 	
@@ -511,6 +557,7 @@ ispy.loadObjFiles = function() {
 	let row = tbl.insertRow(tbl.rows.length);
 	let cell = row.insertCell(0);
 	let cls = "file";
+
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + name + '\');">' + name + '</a>';
   
     }
@@ -522,7 +569,8 @@ ispy.readOBJ = function(file, cb) {
     var reader = new FileReader();
 
     reader.onload = function(e) {
-	
+
+	//document.getElementById('loading').style.display = 'none';
 	$('#loading').modal('hide');
 	cb(e.target.result, file.name);
 
@@ -540,7 +588,7 @@ ispy.readOBJ = function(file, cb) {
 
 ispy.loadOBJ = function(contents, name) {
 
-    var object = new THREE.OBJLoader().parse(contents);
+    let object = new THREE.OBJLoader().parse(contents);
     object.name = name;
 
     object.children.forEach(function(c) {
@@ -557,7 +605,7 @@ ispy.loadOBJ = function(contents, name) {
 
 ispy.readOBJMTL = function(file, mtl_file, cb) {
 
-    var reader = new FileReader();
+    let reader = new FileReader();
 
     reader.onload = function(e) {
 	
@@ -577,13 +625,13 @@ ispy.readOBJMTL = function(file, mtl_file, cb) {
 
 ispy.loadOBJMTL = function(obj, mtl_file, name) {
  
-    var object = new THREE.OBJLoader().parse(obj);
-    var reader = new FileReader();
+    let object = new THREE.OBJLoader().parse(obj);
+    let reader = new FileReader();
 
     reader.onload = function(e) {
 
-	var mtl = e.target.result;
-	var materials_creator = new THREE.MTLLoader().parse(e.target.result);
+	let mtl = e.target.result;
+	let materials_creator = new THREE.MTLLoader().parse(e.target.result);
 	materials_creator.preload();
 
 	object.traverse(function (o) {
@@ -606,7 +654,9 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 
 	    });
 
+	//document.getElementById('loading').style.display = 'none';
 	$('#loading').modal('hide');
+
 	object.name = name;
 	object.visible = true;
 	ispy.disabled[name] = false;
@@ -633,8 +683,8 @@ ispy.importModel = function() {
   
     }
 
-    var files = document.getElementById('import-file').files;
-    var extension, file_name;
+    let files = document.getElementById('import-file').files;
+    let extension, file_name;
     
     if ( files.length === 1 ) { // If one file we assume it's an obj file and load it
     
@@ -648,6 +698,9 @@ ispy.importModel = function() {
 	
 	}
 
+	//document.getElementById('loading').style.display = 'block';
+	//document.getElementById('import-model').style.display = 'none';
+	
 	$('#loading').modal('show');
 	$('#import-model').modal('hide');
 
@@ -655,10 +708,10 @@ ispy.importModel = function() {
 
     } else if ( files.length === 2 ) { // We support for now either one obj file or an obj file and an mtl file
     
-	var obj_file, mtl_file;
+	let obj_file, mtl_file;
 
-	var ext1 = files[0].name.split('.').pop().toLowerCase();
-	var ext2 = files[1].name.split('.').pop().toLowerCase();
+	let ext1 = files[0].name.split('.').pop().toLowerCase();
+	let ext2 = files[1].name.split('.').pop().toLowerCase();
 
 	if ( ext1 === 'obj' && ext2 === 'mtl' ) {
       
@@ -676,7 +729,10 @@ ispy.importModel = function() {
 	    return;
 	
 	}
-
+	
+	//document.getElementById('loading').style.display = 'block';
+	//document.getElementById('import-model').style.display = 'none';
+	
 	$('#loading').modal('show');
 	$('#import-model').modal('hide');
 
@@ -692,9 +748,13 @@ ispy.importModel = function() {
 };
 
 ispy.selectGLTF = function(gltf_file) {
+
+    document.getElementById('selected-obj').innerHTML = gltf_file;
+    document.getElementById('load-obj').classList.remove('disabled');
     
-    $('#selected-obj').html(gltf_file);
-    $('#load-obj').removeClass('disabled');
+    //$('#selected-obj').html(gltf_file);
+    //$('#load-obj').removeClass('disabled');
+
     ispy.selected_gltf = gltf_file;
     
 };
@@ -726,11 +786,14 @@ ispy.loadSelectedGLTF = function() {
 
 };
 
-
 ispy.selectObj = function(obj_file) {
+    
+    document.getElementById('selected-obj').innerHTML = obj_file;
+    document.getElementById('load-obj').classList.remove('disabled');
+    
+    //$('#selected-obj').html(obj_file);
+    //$('#load-obj').removeClass('disabled');
 
-    $('#selected-obj').html(obj_file);
-    $('#load-obj').removeClass('disabled');
     ispy.selected_obj = obj_file;
 
 };
@@ -1017,7 +1080,8 @@ ispy.importDetector = function() {
 	}
 
     ];
-    
+
+    //document.getElementById('loading').style.display = 'block';
     $('#loading').modal('show');
 
     function loadGLTFs() {
@@ -1065,6 +1129,7 @@ ispy.importDetector = function() {
 
 	});
 
+	//document.getElementById('loading').style.display = 'none';
 	$('#loading').modal('hide');
 
     }
