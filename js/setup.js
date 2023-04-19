@@ -7,7 +7,8 @@ ispy.lookAtOrigin = function() {
 ispy.setFramerate = function(fr) {
 
     ispy.framerate = fr;  
-    $('#fr').html(fr);
+
+    document.getElementById('fr').innerHTML = fr;
 
 };
 
@@ -53,8 +54,8 @@ ispy.useRenderer = function(type) {
     
     document.getElementById('display').appendChild(ispy.renderer.domElement);
     document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
-    
-    $('#settings').modal('hide');
+
+    document.getElementById('settings').style.display = 'none';
 
 };
 
@@ -310,94 +311,68 @@ ispy.setupInset = function(height) {
 ispy.handleToggles = function() {
 
     // On page load hide the stats
-    $('#stats').hide();
-    // FF keeps the check state on reload so force an "uncheck"
-    $('#show-stats').prop('checked', false);
+    let stats = document.getElementById('stats');
+    stats.style.display = 'none';
 
-    $('#show-stats').change(function() {
-	    
-	if ( this.checked ) { // if checked then show
-		
-	    $('#stats').show();
+    let show_stats = document.getElementById('show-stats');
     
-	} else {
-		
-	    $('#stats').hide();
+    // FF keeps the check state on reload so force an "uncheck"
+    show_stats.checked = false;
     
-	}
+    show_stats.addEventListener('change', () => {
+
+	show_stats.checked == true ? stats.style.display = 'block' : stats.style.display = 'none';
 
     });
+    
 
-    $('#show-logo').prop('checked', true);
-    
-    $('#show-logo').change(function() {
-	    
-	if ( this.checked ) {
-      
-	    $('#cms-logo').show();
-    
-	} else {
-		
-	    $('#cms-logo').hide();
-    
-	}
+    let show_logo = document.getElementById('show-logo');
+    show_logo.checked = true;
 
+    show_logo.addEventListener('change', (event) => {
+
+	let cms_logo = document.getElementById('cms-logo');
+	event.target.checked ? cms_logo.style.display = 'block' : cms_logo.style.display = 'none';
+	   
     });
     
     ispy.inverted_colors = false;
-    $('#invert-colors').prop('checked', false);
+    document.getElementById('invert-colors').checked = false;
 
+    let show_axes = document.getElementById('show-axes');
+    
     // FF keeps the state after a page refresh. Therefore force uncheck.
-    $('#show-axes').prop('checked', false); 
-  
-    $('#show-axes').change(function() {
+    show_axes.checked = false;
 
-	if ( this.checked ) {
+    show_axes.addEventListener('change', (event) => {
 
-	    $('#axes').hide();
-	    
-	} else {
-
-	    $('#axes').show();
-
-	}
+	let axes = document.getElementById('axes');
+	event.target.checked ? axes.style.display = 'none' : axes.style.display = 'block';
 	
     });
 
     ispy.use_line2 = false;
-    $('#pickable_lines').prop('checked', false);
 
-    $('#pickable_lines').change(function() {
+    let pickable_lines = document.getElementById('pickable_lines');
 
-	ispy.use_line2 = this.checked ? true : false;
+    pickable_lines.checked = false;
+
+    pickable_lines.addEventListener('change', (event) => {
+
+	ispy.use_line2 = event.target.checked ? true : false;
 	
     });
 
-    $('#clipgui').hide();
-    $('#clipping').prop('checked', false);
+    let clipgui = document.getElementById('clipgui');
+    clipgui.style.display = 'none';
 
-    $('#clipping').change(function() {
+    let clipping = document.getElementById('clipping');
+    clipping.checked = false;
 
-	this.checked ? $('#clipgui').show() : $('#clipgui').hide();
+    clipping.addEventListener('change', (event) => {
 
-    });
-    
-    // Info dialogs are hidden by default (see ispy.css)
-    // FF keeps state on reload so force here
-    $('#show-info').prop('checked', false);
+	event.target.checked ? clipgui.style.display = 'block' : clipgui.style.display = 'none';
 
-    $('#show-info').change(function() {
-	    
-	if ( this.checked ) { // if checked then already visible, so turn off
-		
-	    $('.info').css('visibility', 'visible');
-    
-	} else {
-		
-	    $('.info').css('visibility', 'hidden');
-	    
-	}
-  
     });
 
 };
@@ -520,9 +495,9 @@ ispy.init = function() {
 
     });
 
-    $('#version').html("v"+ispy.version);
-    $('#threejs').html("r"+THREE.REVISION);
-
+    document.getElementById('version').innerHTML = "v"+ispy.version;
+    document.getElementById('threejs').innerHTML = "r"+THREE.REVISION;
+    
     window.addEventListener('resize', ispy.onWindowResize, false);
 
     ispy.get_image_data = false;
@@ -540,13 +515,15 @@ ispy.init = function() {
     ispy.animating = false;
 
     ispy.setFramerate(30);
-    $('#fps-slider').prop('value', ispy.framerate); // for FF
+
+    document.getElementById('fps-slider').value = ispy.framerate;
     
     ispy.importTransparency = 0.75;
-    $('#transparency-slider').prop('value', ispy.importTransparency);
-    $('#trspy').html(ispy.importTransparency);
+    document.getElementById('transparency-slider').value = ispy.importTransparency;
+   
+    document.getElementById('trspy').innerHTML = ispy.importTransparency;
     
-    $('#display').append($('#event-info'));
+    document.getElementById('display').appendChild(document.getElementById('event-info'));
     
     ispy.autoRotating = false;
 
@@ -573,54 +550,10 @@ ispy.initLight = function() {
 
 };
 
-ispy.getJSON = function(scr) {
-
-    return $.ajax({url: scr, dataType: "json", cache: true}).success(function(data) {
-	  
-	$.extend(true, ispy.detector, data);
-	
-    });
-    
-};
-
-ispy.getScript = function(scr) {
-  
-    return $.ajax({url: scr, dataType: "script", cache: true});
-
-};
-
 ispy.initDetector = function() {
 
     ispy.importDetector();
     
-};
-
-ispy.initDetector_old = function() {
-
-    $('#loading').modal('show');
-
-    $.when(
-	ispy.getJSON('./geometry/json/eb.json'),
-	ispy.getJSON('./geometry/json/ee.json'),
-	ispy.getJSON('./geometry/json/hb.json'),
-	ispy.getJSON('./geometry/json/ho.json'),
-	ispy.getJSON('./geometry/json/hehf.json'),
-	ispy.getJSON('./geometry/json/pixel-phase1.json'),
-	ispy.getJSON('./geometry/json/tec.json'),
-	ispy.getJSON('./geometry/json/tib.json'),
-	ispy.getJSON('./geometry/json/tid.json'),
-	ispy.getJSON('./geometry/json/tob.json')
-
-    ).done(function(){
-		       
-	$.when(ispy.addDetector()).done(function() {
-            
-	    $('#loading').modal('hide');
-			   
-	});
-
-    });
-	
 };
 
 ispy.render = function() {
