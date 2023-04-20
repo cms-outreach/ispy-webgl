@@ -56,7 +56,8 @@ ispy.setYZ = function() {
 ispy.autoRotate = function() {
 
     ispy.autoRotating = !ispy.autoRotating;
-    $('#autorotate').toggleClass('active');
+
+    document.getElementById('autorotate').classList.toggle('active');
 
 };
 
@@ -133,7 +134,14 @@ ispy.showView = function(view) {
 	document.getElementById('3d').classList.add('active');
 	document.getElementById('rphi').classList.remove('active');
 	document.getElementById('rhoz').classList.remove('active');
-
+	
+	document.getElementById('perspective').removeAttribute('disabled', '');
+	document.getElementById('orthographic').removeAttribute('disabled', '');
+	
+	document.getElementById('xy').removeAttribute('disabled', '');
+	document.getElementById('yz').removeAttribute('disabled', '');
+	document.getElementById('xz').removeAttribute('disabled', '');
+	
 	ispy.controls.enableRotate = true;
 	ispy.controls.reset();
 
@@ -154,6 +162,13 @@ ispy.showView = function(view) {
 	document.getElementById('3d').classList.remove('active');
 	document.getElementById('rphi').classList.add('active');
 	document.getElementById('rhoz').classList.remove('active');
+
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
 	
 	ispy.controls.enableRotate = false;
 	ispy.controls.reset();
@@ -171,7 +186,14 @@ ispy.showView = function(view) {
 	document.getElementById('3d').classList.remove('active');
 	document.getElementById('rphi').classList.remove('active');
 	document.getElementById('rhoz').classList.add('active');
-
+	
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
+	
 	ispy.controls.enableRotate = false;
 	ispy.controls.reset();
 

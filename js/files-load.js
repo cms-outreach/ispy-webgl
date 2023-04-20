@@ -82,24 +82,20 @@ ispy.enableNextPrev = function() {
     if ( ispy.event_index > 0 ) {
 
 	document.getElementById('prev-event-button').classList.remove('disabled');
-	//$("#prev-event-button").removeClass("disabled");
     
     } else {
 
 	document.getElementById('prev-event-button').classList.add('disabled');
-	//$("#prev-event-button").addClass("disabled");
   
     }
 
     if ( ispy.event_list && ispy.event_list.length - 1 > ispy.event_index ) {
 
 	document.getElementById('next-event-button').classList.remove('disabled');
-	//$("#next-event-button").removeClass("disabled");
     
     } else {
 
 	document.getElementById('next-event-button').classList.add('disabled');
-	//$("#next-event-button").addClass("disabled");
     
     }
 
