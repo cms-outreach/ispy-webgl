@@ -131,12 +131,11 @@ ispy.updateRenderer = function(type) {
 ispy.onWindowResize = function() {
 
     let display = document.getElementById('display');
-
     display.removeAttribute('style');
-    
-    let w = display.innerWidth;
-    let h = display.innerHeight;
 
+    let w = display.clientWidth;
+    let h = display.clientHeight;
+    
     if ( ispy.is_perspective ) {
 
 	ispy.camera.aspect = w/h;
