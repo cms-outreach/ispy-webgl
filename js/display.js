@@ -47,7 +47,7 @@ ispy.setTransparency = function(t) {
 
     ispy.importTransparency = t;
 
-    document.getElementById('trspy').innerHTML(t);
+    document.getElementById('trspy').innerHTML = t;
 
     let imported = ispy.scene.getObjectByName('Imported');
 
