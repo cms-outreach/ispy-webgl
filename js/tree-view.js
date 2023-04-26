@@ -1,63 +1,66 @@
-ispy.addGroups = function() {
+import { gui, subfolders, views, scenes, use_line2 } from "./setup.js";
+import { detector_description, event_description, disabled, data_groups } from "./objects-config.js";
 
-    ispy.gui.addFolder("Detector");
-    ispy.gui.addFolder("Imported");
-    
-    ispy.subfolders.Detector = [];
-    ispy.subfolders.Imported = [];
-    
-    ispy.data_groups.forEach(function(gr) {
+function addGroups() {
 
-	ispy.gui.addFolder(gr);
+    gui.addFolder("Detector");
+    gui.addFolder("Imported");
+    
+    subfolders.Detector = [];
+    subfolders.Imported = [];
+    
+    data_groups.forEach(function(gr) {
+
+	gui.addFolder(gr);
 	
-	ispy.subfolders[gr] = [];
+	subfolders[gr] = [];
 	
     });
 
 };
 
-ispy.clearSubfolders = function() {
+function clearSubfolders() {
 
-    ispy.data_groups.forEach(function(g) {
+    data_groups.forEach(function(g) {
 
-	let folder = ispy.gui.__folders[g];
+	let folder = gui.__folders[g];
 
-	ispy.subfolders[g].forEach(function(s) {
+	subfolders[g].forEach(function(s) {
 		
 	    folder.removeFolder(folder.__folders[s]);
 	    
 	});
 
-	ispy.subfolders[g] = [];
+	subfolders[g] = [];
 	    
     });
 
     
 };
 
-ispy.toggle = function(key) {
+function toggle(key) {
 
-    ispy.disabled[key] = !ispy.disabled[key];
+    disabled[key] = !disabled[key];
 
     // For event information we display as simple HTML
     // so therefore not part of the scene
     if ( key.includes('Event') ) {
 
 	let event_text = document.getElementById('event-text');
-	ispy.disabled[key] ? event_text.style.display = 'none' : event_text.style.display = 'block';
+	disabled[key] ? event_text.style.display = 'none' : event_text.style.display = 'block';
 	
     }
 
-    ispy.views.forEach(v => {
+    views.forEach(v => {
 	
-	let obj = ispy.scenes[v].getObjectByName(key);
+	let obj = scenes[v].getObjectByName(key);
 
 	// Not every object (and therefore key) is present in
 	// every scene.
 	if ( ! obj )
 	    return;
 	
-	obj.visible = !ispy.disabled[key];
+	obj.visible = !disabled[key];
 
 	// This is for picking. The raycaster is in layer 2.
 	// In-principle this toggle will add other non-pickable
@@ -75,14 +78,14 @@ ispy.toggle = function(key) {
 
 // In some cases (e.g. animation) we want to explicitly turn some things on/off
 // It would probably be nice to: do this by group, support wildcards, etc.
-ispy.showObject = function(key, view, show) {
+function showObject(key, view, show) {
 
-    const obj = ispy.scenes[view].getObjectByName(key);
+    const obj = scenes[view].getObjectByName(key);
     
     if ( obj !== undefined ) {
     
 	obj.visible = show;
-	ispy.disabled[key] = !show;
+	disabled[key] = !show;
 
 	document.getElementById(key).checked = show;
     
@@ -90,7 +93,7 @@ ispy.showObject = function(key, view, show) {
 
 };
 
-ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
+function addSelectionRow(group, key, name, objectIds, visible) {
 
     let opacity = 1.0;
     let color = new THREE.Color();
@@ -102,17 +105,17 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     view = '3D';
     
-    if ( ispy.detector_description[view].hasOwnProperty(key) ) {
+    if ( detector_description[view].hasOwnProperty(key) ) {
 
-	let style = ispy.detector_description[view][key].style;
+	let style = detector_description[view][key].style;
 	opacity = style.opacity;
 	color.set(style.color);
 	
     }
 
-    if ( ispy.event_description[view].hasOwnProperty(key) ) {
+    if ( event_description[view].hasOwnProperty(key) ) {
 	
-	let style = ispy.event_description[view][key].style;
+	let style = event_description[view][key].style;
 
 	if ( style.hasOwnProperty('opacity') ) {
 	
@@ -132,9 +135,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	}
 
-	if ( ispy.current_event !== undefined ) {
+	if ( current_event !== undefined ) {
 
-	    nobjects = ispy.current_event.Collections[key].length;
+	    nobjects = current_event.Collections[key].length;
 	    
 	}
 	
@@ -153,10 +156,10 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	min_energy: 10.0
     };
 
-    let folder = ispy.gui.__folders[group];
+    let folder = gui.__folders[group];
     let sf = folder.__folders[name];
 
-    ispy.subfolders[group].push(name);
+    subfolders[group].push(name);
     
     sf = folder.addFolder(name);
 
@@ -178,9 +181,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	
 	sf.domElement.onclick = function(e) {
 	    
-	    ispy.displayCollection(
+	    displayCollection(
 		key, group, name,
-		ispy.getObjectIds(ispy.scene.getObjectByName(key))
+		getObjectIds(scene.getObjectByName(key))
 	    );
 	    
 	};
@@ -191,7 +194,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     
     sf.add(row_obj, 'show').onChange(function() {
 
-	ispy.toggle(key);
+	toggle(key);
 
     });
 
@@ -202,9 +205,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     sf.add(row_obj, 'opacity', 0, 1).onChange(function() {
 	
-	ispy.views.forEach(v => {
+	views.forEach(v => {
 	    
-	    let obj = ispy.scenes[v].getObjectByName(key);
+	    let obj = scenes[v].getObjectByName(key);
 
 	    if ( ! obj )
 		return;
@@ -219,7 +222,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     });
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
     
 	// This conditional could / should be improved
 	if ( key.includes('GEMDigis') || key.includes('GEMSegments') || key.includes('GEMRec') ||
@@ -228,9 +231,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 
-		ispy.views.forEach(v => {
+		views.forEach(v => {
 		
-		    let obj = ispy.scenes[v].getObjectByName(key);
+		    let obj = scenes[v].getObjectByName(key);
 
 		    if ( ! obj )
 			return;
@@ -249,15 +252,15 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     }
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	if ( key.includes('GlobalMuon') || key.includes('Electron') || key.includes('Photon') ) {
 	
 	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 
-		ispy.views.forEach(v => {
+		views.forEach(v => {
 		
-		    let obj = ispy.scenes[v].getObjectByName(key);
+		    let obj = scenes[v].getObjectByName(key);
 
 		    if ( ! obj )
 			return;
@@ -280,9 +283,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_pt').onChange(function() {
 
-	    ispy.views.forEach(v => {
+	    views.forEach(v => {
 	    
-		let obj = ispy.scenes[v].getObjectByName(key);
+		let obj = scenes[v].getObjectByName(key);
 
 		if ( ! obj )
 		    return;
@@ -303,9 +306,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_et').onChange(function() {
 
-	    ispy.views.forEach(v => {
+	    views.forEach(v => {
 	    
-		let obj = ispy.scenes[v].getObjectByName(key);
+		let obj = scenes[v].getObjectByName(key);
 
 		if ( ! obj )
 		    return;
@@ -326,9 +329,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_energy').onChange(function() {
 
-	    ispy.views.forEach(v => {
+	    views.forEach(v => {
 	    
-		let obj = ispy.scenes[v].getObjectByName(key);
+		let obj = scenes[v].getObjectByName(key);
 
 		if ( ! obj )
 		    return;
@@ -347,9 +350,9 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     sf.addColor(row_obj, 'color').onChange(function() {
 
-	ispy.views.forEach(v => {
+	views.forEach(v => {
 
-	    let obj = ispy.scenes[v].getObjectByName(key);
+	    let obj = scenes[v].getObjectByName(key);
 
 	    if ( ! obj )
 		return;
@@ -359,7 +362,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	    // the color will revert to this new one rather than to the original
 	    if ( group.includes('Physics') ) {
 
-		ispy.event_description[v][key].style.color = row_obj.color;
+		event_description[v][key].style.color = row_obj.color;
 		
 	    }
 	
@@ -393,3 +396,5 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     });
     
 };
+
+export { addSelectionRow, addGroups, showObject };

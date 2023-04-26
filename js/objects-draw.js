@@ -1,4 +1,6 @@
-ispy.makeWireframeBox = function(data, ci) {
+import { use_line2 } from "./setup.js";
+
+export function makeWireframeBox(data, ci) {
 
     let all_positions = [];
 
@@ -41,7 +43,7 @@ ispy.makeWireframeBox = function(data, ci) {
 
 };
 
-ispy.makeWireFace = function(data, ci) {
+export function makeWireFace(data, ci) {
     
     let all_positions = [];
     
@@ -63,7 +65,7 @@ ispy.makeWireFace = function(data, ci) {
 
 };
 
-ispy.makeSolidFace = function(data, ci) {
+export function makeSolidFace(data, ci) {
 
     let all_positions = [];
     
@@ -83,7 +85,7 @@ ispy.makeSolidFace = function(data, ci) {
     
 };
 
-ispy.makeSolidBox = function(data, ci) {
+export function makeSolidBox(data, ci) {
 
     let all_positions = [];
 
@@ -126,7 +128,7 @@ ispy.makeSolidBox = function(data, ci) {
 
 };
 
-ispy.makeSolidBoxRZ = function(data, ci) {
+export function makeSolidBoxRZ(data, ci) {
 
     let all_positions = [];
 
@@ -191,7 +193,7 @@ ispy.makeSolidBoxRZ = function(data, ci) {
 
 };
 
-ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
+export function makeScaledSolidBox(data, boxes, ci, scale) {
 
     let all_positions = [];
 
@@ -280,7 +282,7 @@ ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
 
 };
 
-ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, scale) {
+export function makeScaledSolidBoxRZ(data, boxes, ci, scale) {
 
     let all_positions = [];
 
@@ -406,7 +408,7 @@ ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, scale) {
 
 };
 
-ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
+export function makeScaledSolidTower(data, towers, ci, scale) {
         
     let all_positions = [];
 
@@ -480,7 +482,7 @@ ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
 // Transform energy towers in R-Z view:
 // All hits above XZ plane go up, below - down.
 
-ispy.makeScaledSolidTowerRZ = function(data, towers, ci, scale) {
+export function makeScaledSolidTowerRZ(data, towers, ci, scale) {
         
     let all_positions = [];
 
@@ -590,13 +592,13 @@ ispy.makeScaledSolidTowerRZ = function(data, towers, ci, scale) {
 
 };
 
-ispy.makeTrackerPiece = function(data) {
+export function makeTrackerPiece(data) {
 
-    return ispy.makeWireFace(data, 1);
+    return makeWireFace(data, 1);
     
 };
 
-projectVector = function(v, s) {
+function projectVector(v, s) {
 
     const size = Math.sqrt(v.x*v.x + v.y*v.y);
 
@@ -607,7 +609,7 @@ projectVector = function(v, s) {
 
 };
 
-projectPoint = function(v, s) {
+function projectPoint(v, s) {
     
     const size = Math.sqrt(v[0]*v[0] + v[1]*v[1]);
 
@@ -618,7 +620,7 @@ projectPoint = function(v, s) {
 
 };
 
-ispy.makeTrackPointsRZ = function(data, extra, assoc, style, selection) {
+export function makeTrackPointsRZ(data, extra, assoc, style, selection) {
 
     if ( ! assoc ) {
   
@@ -638,7 +640,7 @@ ispy.makeTrackPointsRZ = function(data, extra, assoc, style, selection) {
 	// Find the last point for the trackpoints collection.
 	// This is needed for projection to determine whether
 	// or not it's above or below the axis.
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 
 	    lps.push(...extra[assoc[20+i*21][1][1]][0]);
 	    
@@ -674,7 +676,7 @@ ispy.makeTrackPointsRZ = function(data, extra, assoc, style, selection) {
     
     for ( let k = 0; k < positions.length; k++ ) {
 
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 	
 	    const line2 = new THREE.Line2(
 		new THREE.LineGeometry().setPositions(positions[k]),
@@ -714,7 +716,7 @@ ispy.makeTrackPointsRZ = function(data, extra, assoc, style, selection) {
 
 };
 
-ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
+export function makeTrackPoints(data, extra, assoc, style, selection) {
 
     if ( ! assoc ) {
   
@@ -737,7 +739,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 	mi = assoc[j][0][1];
 	pi = assoc[j][1][1];
 
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 
 	    positions[mi].push(...extra[pi][0]);
 
@@ -756,7 +758,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
     
     for ( let k = 0; k < positions.length; k++ ) {
 
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 	
 	    const line2 = new THREE.Line2(
 		new THREE.LineGeometry().setPositions(positions[k]),
@@ -796,7 +798,7 @@ ispy.makeTrackPoints = function(data, extra, assoc, style, selection) {
 
 };
 
-ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
+export function makeTracks(tracks, extras, assocs, style, selection) {
   
     if ( ! assocs ) {
     
@@ -867,7 +869,7 @@ ispy.makeTracks = function(tracks, extras, assocs, style, selection) {
 
 };
 
-ispy.makeTracksRZ = function(tracks, extras, assocs, style, selection) {
+export function makeTracksRZ(tracks, extras, assocs, style, selection) {
   
     if ( ! assocs ) {
     
@@ -940,7 +942,7 @@ ispy.makeTracksRZ = function(tracks, extras, assocs, style, selection) {
 
 };
 
-ispy.makeThickTracks = function(tracks, extras, assocs, style, selection) {
+export function makeThickTracks(tracks, extras, assocs, style, selection) {
   
     if ( ! assocs ) {
     
@@ -993,11 +995,11 @@ ispy.makeThickTracks = function(tracks, extras, assocs, style, selection) {
 	
 	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 
 	    let lg = new THREE.LineGeometry();
 	    let positions = [];
-	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
+	    curve.getPoints(32).forEach(p => { positions.push(p.x,p.y,p.z); });
 	    lg.setPositions(positions);
 
 	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
@@ -1036,7 +1038,7 @@ ispy.makeThickTracks = function(tracks, extras, assocs, style, selection) {
 
 };
 
-ispy.makeThickTracksRZ = function(tracks, extras, assocs, style, selection) {
+export function makeThickTracksRZ(tracks, extras, assocs, style, selection) {
   
     if ( ! assocs ) {
     
@@ -1091,11 +1093,11 @@ ispy.makeThickTracksRZ = function(tracks, extras, assocs, style, selection) {
 	
 	curve = new THREE.CubicBezierCurve3(p1,p3,p4,p2);
 
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 
 	    let lg = new THREE.LineGeometry();
 	    let positions = [];
-	    curve.getPoints(32).forEach(function(p) { positions.push(p.x,p.y,p.z); });
+	    curve.getPoints(32).forEach(p => { positions.push(p.x,p.y,p.z); });
 	    lg.setPositions(positions);
 
 	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
@@ -1134,7 +1136,7 @@ ispy.makeThickTracksRZ = function(tracks, extras, assocs, style, selection) {
 
 };
 
-ispy.makeVertex = function(data,style) {
+export function makeVertex(data,style) {
 
     const geometry = new THREE.SphereGeometry(style.radius, 32, 32);
     const hcolor = new THREE.Color(style.color);
@@ -1155,7 +1157,7 @@ ispy.makeVertex = function(data,style) {
 
 };
 
-ispy.makeVertexCompositeCandidate = function(data,style) {
+export function makeVertexCompositeCandidate(data,style) {
 
     const geometry = new THREE.SphereGeometry(style.radius, 32, 32);
     const hcolor = new THREE.Color(style.color);
@@ -1176,7 +1178,7 @@ ispy.makeVertexCompositeCandidate = function(data,style) {
 
 };
 
-ispy.makeSimVertex = function(data, style) {
+export function makeSimVertexfunction(data, style) {
 
     if ( data[1] !== -1 )
 	return null;
@@ -1201,7 +1203,7 @@ ispy.makeSimVertex = function(data, style) {
 
 };
 
-ispy.makeCaloClusters = function(data, extra, assoc, style, selection) {
+export function makeCaloClusters(data, extra, assoc, style, selection) {
   
     if ( ! assoc ) {
 
@@ -1248,79 +1250,79 @@ ispy.makeCaloClusters = function(data, extra, assoc, style, selection) {
 
 };
 
-ispy.makeEcalDigi = function(data, boxes, scale, selection) {
+export function makeEcalDigi(data, boxes, scale, selection) {
   
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTower(data, boxes, 15, scale*energy);
+	return makeScaledSolidTower(data, boxes, 15, scale*energy);
   
     }
 
 };
 
-ispy.makeERecHit_V2 = function(data, boxes, scale, selection) {
+export function makeERecHit_V2(data, boxes, scale, selection) {
 
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTower(data, boxes, 5, scale);
+	return makeScaledSolidTower(data, boxes, 5, scale);
   
     }
 
 };
 
-ispy.makeHRecHit_V2 = function(data, geometry, scale, selection) {
+export function makeHRecHit_V2(data, geometry, scale, selection) {
 
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
    
-	return ispy.makeScaledSolidBox(data, geometry, 5, scale);
+	return makeScaledSolidBox(data, geometry, 5, scale);
   
     }
 
 };
 
-ispy.makeERecHit_RZ = function(data, boxes, scale, selection) {
+export function makeERecHit_RZ(data, boxes, scale, selection) {
 
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTowerRZ(data, boxes, 5, scale);
+	return makeScaledSolidTowerRZ(data, boxes, 5, scale);
   
     }
 
 };
 
-ispy.makeHRecHit_RZ = function(data, geometry, scale, selection) {
+export function makeHRecHit_RZ(data, geometry, scale, selection) {
 
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
    
-	return ispy.makeScaledSolidBoxRZ(data, geometry, 5, scale);
+	return makeScaledSolidBoxRZ(data, geometry, 5, scale);
   
     }
 
 };
 
-ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
+export function makeHGCRecHit(data, geometry, scale, selection) {
 
     var energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidBox(data, geometry, 5, 0.05*scale);
+	return makeScaledSolidBox(data, geometry, 5, 0.05*scale);
   
     }
 
 };
 
-ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
+export function makeCaloTower(data, egeometry, hgeometry, scale, selection) {
     
     let all_positions = [];
 
@@ -1493,56 +1495,56 @@ ispy.makeCaloTower = function(data, egeometry, hgeometry, scale, selection) {
 
 };
 
-ispy.makeDT = function(dt) {
+export function makeDT(dt) {
 
-    return ispy.makeWireframeBox(dt, 1);
+    return makeWireframeBox(dt, 1);
     
 };
 
-ispy.makeCSC = function(csc) {
+export function makeCSC(csc) {
 
-    return ispy.makeWireframeBox(csc, 1);
-
-};
-
-ispy.makeGEM = function(gem) {
-
-    //return ispy.makeSolidBox(gem, 1);  
-    return ispy.makeWireframeBox(gem, 1);
+    return makeWireframeBox(csc, 1);
 
 };
 
-ispy.makeMuonChamber = function(chamber) {
+export function makeGEM(gem) {
+
+    //return makeSolidBox(gem, 1);  
+    return makeWireframeBox(gem, 1);
+
+};
+
+export function makeMuonChamber(chamber) {
     
-    return ispy.makeSolidBox(chamber, 1);
+    return makeSolidBox(chamber, 1);
 
 };
 
-ispy.makeMuonChamberRZ = function(chamber) {
+export function makeMuonChamberRZ(chamber) {
     
-    return ispy.makeSolidBoxRZ(chamber, 1);
+    return makeSolidBoxRZ(chamber, 1);
 
 };
 
-ispy.makeHcal = function(hb) {
+export function makeHcal(hb) {
   
-    return ispy.makeWireframeBox(hb, 1);
+    return makeWireframeBox(hb, 1);
 
 };
 
-ispy.makeEcal = function(ecal) {
+export function makeEcal(ecal) {
 
-    return ispy.makeWireframeBox(ecal, 1);  
+    return makeWireframeBox(ecal, 1);  
 
 };
 
-ispy.makeRPC = function(rpc) {
+export function makeRPC(rpc) {
     
-    return ispy.makeWireFace(rpc, 1);
+    return makeWireFace(rpc, 1);
     
 };
 
-ispy.makePointCloud = function(data, index) {
+export function makePointCloud(data, index) {
   
     var geometry = new THREE.BufferGeometry();
     var positions = new Float32Array(data.length*3);
@@ -1562,7 +1564,7 @@ ispy.makePointCloud = function(data, index) {
 
 };
 
-ispy.makePointCloudRZ = function(data, index) {
+export function makePointCloudRZ(data, index) {
   
     var geometry = new THREE.BufferGeometry();
     var positions = new Float32Array(data.length*3);
@@ -1590,31 +1592,31 @@ ispy.makePointCloudRZ = function(data, index) {
 
 };
 
-ispy.makeTrackingRecHits = function(data) {
+export function makeTrackingRecHits(data) {
 
-    return ispy.makePointCloud(data,0);
-
-};
-
-ispy.makeTrackingClusters = function(data) {
-
-    return ispy.makePointCloud(data,1);
+    return makePointCloud(data,0);
 
 };
 
-ispy.makeTrackingRecHitsRZ = function(data) {
+export function makeTrackingClusters(data) {
 
-    return ispy.makePointCloudRZ(data,0);
-
-};
-
-ispy.makeTrackingClustersRZ = function(data) {
-
-    return ispy.makePointCloudRZ(data,1);
+    return makePointCloud(data,1);
 
 };
 
-ispy.makeArrow = function(dir, origin, length, color) {
+export function makeTrackingRecHitsRZ(data) {
+
+    return makePointCloudRZ(data,0);
+
+};
+
+export function makeTrackingClustersRZ(data) {
+
+    return makePointCloudRZ(data,1);
+
+};
+
+export function makeArrow(dir, origin, length, color) {
 
     // dir, origin, length, hex, headLength, headWidth
     const arrow = new THREE.ArrowHelper(
@@ -1632,7 +1634,7 @@ ispy.makeArrow = function(dir, origin, length, color) {
     
 };
 
-ispy.makeArrowThick = function(dir, origin, length, color, displacement) {
+export function makeArrowThick(dir, origin, length, color, displacement) {
 
     dir.setLength(length);
     
@@ -1685,7 +1687,7 @@ ispy.makeArrowThick = function(dir, origin, length, color, displacement) {
     
 };
 
-ispy.makeMET = function(data, style, selection) {
+export function makeMET(data, style, selection) {
 
     /*
       "METs_V1": [["phi", "double"],["pt", "double"],["px", "double"],["py", "double"],["pz", "double"]]
@@ -1713,7 +1715,7 @@ ispy.makeMET = function(data, style, selection) {
 
     var met;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	met = ispy.makeArrowThick(
 	    dir, origin,
@@ -1736,7 +1738,7 @@ ispy.makeMET = function(data, style, selection) {
     
 };
 
-projectThetaPhi = function(theta, phi) {
+function projectThetaPhi(theta, phi) {
 
     let x = Math.cos(theta)*Math.sin(phi);
     let y = Math.sin(theta)*Math.sin(phi);
@@ -1753,7 +1755,7 @@ projectThetaPhi = function(theta, phi) {
 
 };
 
-ispy.makeJet = function(data, style, selection) {
+export function makeJet(data, style, selection) {
   
     const et = data[0];
     const eta = data[1];
@@ -1822,7 +1824,7 @@ ispy.makeJet = function(data, style, selection) {
 
 };
 
-ispy.makeJetRZ = function(data, style, selection) {
+export function makeJetRZ(data, style, selection) {
   
     const et = data[0];
     const eta = data[1];
@@ -1897,7 +1899,7 @@ ispy.makeJetRZ = function(data, style, selection) {
 
 };
 
-ispy.makeJetWithVertex = function(data, style, selection) {
+export function makeJetWithVertex(data, style, selection) {
   
     const et = data[0];
     const eta = data[1];
@@ -1972,7 +1974,7 @@ ispy.makeJetWithVertex = function(data, style, selection) {
 
 };
 
-ispy.makeJetWithVertexRZ = function(data, style, selection) {
+export function makeJetWithVertexRZ(data, style, selection) {
   
     const et = data[0];
     const eta = data[1];
@@ -2052,7 +2054,7 @@ ispy.makeJetWithVertexRZ = function(data, style, selection) {
 
 };
 
-ispy.makePhoton = function(data, style, selection) {
+export function makePhoton(data, style, selection) {
     /*
       Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
       "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
@@ -2095,7 +2097,7 @@ ispy.makePhoton = function(data, style, selection) {
 
     let photon;
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	// For some reason LineDashedMaterial doesn't
 	// work for Line2 so use this material
@@ -2146,7 +2148,7 @@ ispy.makePhoton = function(data, style, selection) {
 
 };
 
-ispy.makePhotonRZ = function(data, style, selection) {
+export function makePhotonRZ(data, style, selection) {
     /*
       Draw a line representing the inferred photon trajectory from the vertex (IP?) to the extent of the ECAL
       "Photons_V1": [["energy", "double"],["et", "double"],["eta", "double"],["phi", "double"],["pos", "v3d"]
@@ -2190,7 +2192,7 @@ ispy.makePhotonRZ = function(data, style, selection) {
 
     let photon;
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	// For some reason LineDashedMaterial doesn't
 	// work for Line2 so use this material
@@ -2241,7 +2243,7 @@ ispy.makePhotonRZ = function(data, style, selection) {
 
 };
 
-ispy.makeProtons = function(data, style, selection) {
+export function makeProtons(data, style, selection) {
     /*
       Draw a line representing the inferred photon trajectory from the vertex 
       "ForwardProtons_V1": [["xi", "double"],["thetax", "double"],["thetay", "double"],["vertex", "v3d"],
@@ -2269,7 +2271,7 @@ ispy.makeProtons = function(data, style, selection) {
 
     var proton;
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	proton = new ispy.makeArrowThick(
 	    dir, origin, length, color, 0
@@ -2316,7 +2318,7 @@ ispy.makeProtons = function(data, style, selection) {
 
 };
 
-ispy.makeDTRecHits = function(data) {
+export function makeDTRecHits(data) {
     /*
       ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
       ["digitime", "double"],["wirePos", "v3d"],
@@ -2380,7 +2382,7 @@ ispy.makeDTRecHits = function(data) {
 
 };
 
-ispy.makeDTRecHitsRZ = function(data) {
+export function makeDTRecHitsRZ(data) {
     /*
       ["wireId", "int"],["layerId", "int"],["superLayerId", "int"],["sectorId", "int"],["stationId", "int"],["wheelId", "int"],
       ["digitime", "double"],["wirePos", "v3d"],
@@ -2446,11 +2448,11 @@ ispy.makeDTRecHitsRZ = function(data) {
 
 };
 
-ispy.makeRPCRecHits = function(data) {
+export function makeRPCRecHits(data) {
 
     var u,v,w;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
     
 	u = new THREE.LineGeometry();
 	u.setPositions([...data[0], ...data[1]]);
@@ -2480,11 +2482,11 @@ ispy.makeRPCRecHits = function(data) {
         
 };
 
-ispy.makeRPCRecHitsRZ = function(data) {
+export function makeRPCRecHitsRZ(data) {
 
     let u,v,w;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
     
 	u = new THREE.LineGeometry();
 	u.setPositions([
@@ -2534,35 +2536,35 @@ ispy.makeRPCRecHitsRZ = function(data) {
         
 };
 
-ispy.makeCSCRecHit2Ds_V2 = function(data, descr) {
+export function makeCSCRecHit2Ds_V2(data, descr) {
 
-    return ispy.makeRPCRecHits(data, descr);
-
-};
-
-ispy.makeGEMRecHits_V2 = function(data, descr) {
-
-    return ispy.makeRPCRecHits(data, descr);
+    return makeRPCRecHits(data, descr);
 
 };
 
-ispy.makeCSCRecHit2DsRZ = function(data, descr) {
+export function makeGEMRecHits_V2(data, descr) {
 
-    return ispy.makeRPCRecHitsRZ(data, descr);
-
-};
-
-ispy.makeGEMRecHitsRZ = function(data, descr) {
-
-    return ispy.makeRPCRecHitsRZ(data, descr);
+    return makeRPCRecHits(data, descr);
 
 };
 
-ispy.makeDTRecSegments = function(data) {
+export function makeCSCRecHit2DsRZ(data, descr) {
+
+    return makeRPCRecHitsRZ(data, descr);
+
+};
+
+export function makeGEMRecHitsRZ(data, descr) {
+
+    return makeRPCRecHitsRZ(data, descr);
+
+};
+
+export function makeDTRecSegments(data) {
 
     var geometry;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
     
 	geometry = new THREE.LineGeometry();
 	geometry.setPositions([...data[1], ...data[2]]);
@@ -2580,11 +2582,11 @@ ispy.makeDTRecSegments = function(data) {
     
 };
 
-ispy.makeDTRecSegmentsRZ = function(data) {
+export function makeDTRecSegmentsRZ(data) {
 
     var geometry;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
     
 	geometry = new THREE.LineGeometry();
 	geometry.setPositions([
@@ -2608,25 +2610,25 @@ ispy.makeDTRecSegmentsRZ = function(data) {
     
 };
 
-ispy.makeCSCSegments = function(data, geometry) {
+export function makeCSCSegments(data, geometry) {
 
-    return ispy.makeDTRecSegments(data, geometry);
-
-};
-
-ispy.makeCSCSegmentsRZ = function(data, geometry) {
-
-    return ispy.makeDTRecSegmentsRZ(data, geometry);
+    return makeDTRecSegments(data, geometry);
 
 };
 
-ispy.makeGEMSegments_V2 = function(data, geometry) {
+export function makeCSCSegmentsRZ(data, geometry) {
 
-    return ispy.makeDTRecSegments(data, geometry);
+    return makeDTRecSegmentsRZ(data, geometry);
 
 };
 
-ispy.makeCSCDigis = function(data, w, d, rotate) {
+function makeGEMSegments_V2(data, geometry) {
+
+    return makeDTRecSegments(data, geometry);
+
+};
+
+export function makeCSCDigis(data, w, d, rotate) {
     
     let all_positions = [];
 
@@ -2684,11 +2686,11 @@ ispy.makeCSCDigis = function(data, w, d, rotate) {
 
 };
 
-ispy.makeCSCDigis_V2 = function(data) {
+export function makeCSCDigis_V2(data) {
 
     var geometry;
     
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 	
 	geometry = new THREE.LineGeometry()
 	geometry.setPositions([...data[0], ...data[1]]);
@@ -2706,11 +2708,11 @@ ispy.makeCSCDigis_V2 = function(data) {
     
 };
 
-ispy.makeGEMDigis_V2 = function(data) {
+export function makeGEMDigis_V2(data) {
 
     var geometry;
     
-    if ( ispy.use_line2) {
+    if ( use_line2) {
     
 	geometry = new THREE.LineGeometry();
 	geometry.setPositions([...data[0], ...data[1]]);
@@ -2733,29 +2735,29 @@ ispy.makeGEMDigis_V2 = function(data) {
   "CSCWireDigis_V1": [["pos", "v3d"],["length", "double"],["endcap", "int"],["station", "int"],["ring", "int"],["chamber", "int"]]
 */
 
-ispy.makeCSCWireDigis = function(data) {
+export function makeCSCWireDigis(data) {
  
-    return ispy.makeCSCDigis(data, 0.02, 0.01, Math.PI*0.5);
+    return makeCSCDigis(data, 0.02, 0.01, Math.PI*0.5);
 
 };
 
-ispy.makeCSCStripDigis = function(data) {
+export function makeCSCStripDigis(data) {
 
-    return ispy.makeCSCDigis(data, 0.01, 0.01, 0.0);
-
-};
-
-ispy.makeCSCLCTDigis = function(data) {
-
-    return ispy.makePointCloud(data,0);
+    return makeCSCDigis(data, 0.01, 0.01, 0.0);
 
 };
 
-ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
+export function makeCSCLCTDigis(data) {
+
+    return makePointCloud(data,0);
+
+};
+
+export function makeCSCLCTCorrelatedLCTDigis(data) {
 
     var l1, l2;
 
-    if ( ispy.use_line2 ) {
+    if ( use_line2 ) {
 
 	l1 = new THREE.LineGeometry();
 	l1.setPositions([...data[0], ...data[1]]);
@@ -2781,7 +2783,7 @@ ispy.makeCSCLCTCorrelatedLCTDigis = function(data) {
 
 };
 
-ispy.makeEvent = function(data) {
+export function makeEvent(data) {
     /*
       "Event_V2": [["run", "int"],["event", "int"],["ls", "int"],["orbit", "int"],["bx", "int"],["time", "string"],["localtime", "string"]]
       for what we do here, Event_V1 is the same, i.e. we don't show localtime

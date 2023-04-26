@@ -1,23 +1,33 @@
-ispy.ig_data = null;
-ispy.ievent = 0;
-ispy.isGeometry = false;
-ispy.loaded_local = false;
+import { scene, scenes, importTransparency, local_planes } from "./setup.js";
+import { selected_objects } from "./display.js";
+import { current_event } from "./objects-add.js";
+import { addSelectionRow } from "./tree-view.js";
+import { disabled } from "./objects-config.js";
 
-ispy.openDialog = function(id) {
+const ig_data = null;
+const ievent = 0;
+const isGeometry = false;
+const loaded_local = false;
+
+let event_index, event_list, file_name;
+let local_files;
+let selected_gltf;
+
+function openDialog(id) {
 
     //document.getElementById(id).style.display = 'block';
     $(id).modal('show');
 
 };
 
-ispy.closeDialog = function(id) {
+function closeDialog(id) {
 
     //document.getElementById(id).style.display = 'none';
     $(id).modal('hide');
 
 };
 
-ispy.hasFileAPI = function() {
+function hasFileAPI() {
 
     if ( window.FileReader ) {
     
@@ -36,7 +46,7 @@ ispy.hasFileAPI = function() {
 
 };
 
-ispy.clearTable = function(id) {
+function clearTable(id) {
 
     let tbl = document.getElementById(id);
     
@@ -48,38 +58,36 @@ ispy.clearTable = function(id) {
     
 };
 
-ispy.selectEvent = function(index) {
+function selectEvent(index) {
 
-    document.getElementById('selected-event').innerHTML = ispy.file_name+': '+ispy.event_list[index];
-    //$("#selected-event").html(ispy.file_name+': '+ispy.event_list[index]);
+    document.getElementById('selected-event').innerHTML = file_name+': '+event_list[index];
     
-    ispy.event_index = index;
+    event_index = index;
 
     document.getElementById('load-event').classList.remove('disabled');
-    //$('#load-event').removeClass('disabled');
 
 };
 
-ispy.updateEventList = function() {
+function updateEventList() {
 
-    ispy.clearTable("browser-events");
+    clearTable("browser-events");
     let tbl = document.getElementById("browser-events");
 
-    for ( let i = 0; i < ispy.event_list.length; i++ ) {
+    for ( let i = 0; i < event_list.length; i++ ) {
     
-	let e = ispy.event_list[i];
+	let e = event_list[i];
 	let row = tbl.insertRow(tbl.rows.length);
 	let cell = row.insertCell(0);
 
-	cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="ispy.selectEvent(\'' + i + '\');">' + e + '</a>';
+	cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="selectEvent(\'' + i + '\');">' + e + '</a>';
   
     }
 
 };
 
-ispy.enableNextPrev = function() {
+function enableNextPrev() {
 
-    if ( ispy.event_index > 0 ) {
+    if ( event_index > 0 ) {
 
 	document.getElementById('prev-event-button').classList.remove('disabled');
     
@@ -89,7 +97,7 @@ ispy.enableNextPrev = function() {
   
     }
 
-    if ( ispy.event_list && ispy.event_list.length - 1 > ispy.event_index ) {
+    if ( event_list && event_list.length - 1 > event_index ) {
 
 	document.getElementById('next-event-button').classList.remove('disabled');
     
@@ -101,7 +109,7 @@ ispy.enableNextPrev = function() {
 
 };
 
-ispy.loadEvent = function() {
+function loadEvent() {
 
     document.getElementById('event-loaded').innerHTML = '';
     //document.getElementById('loading').style.display = 'block';
@@ -109,19 +117,20 @@ ispy.loadEvent = function() {
     //$("#event-loaded").html("");
     $("#loading").modal("show");
 
-    ispy.selected_objects.clear();
+    selected_objects.clear();
 
     // Hide Detector stuff in tree view if already shown
     if ( $('i.Detector').hasClass('glyphicon-chevron-down') ) {
 	
-	ispy.toggleCollapse('Detector');
+	toggleCollapse('Detector');
+
     }
     
     let event;
 
     try {
 	
-	event = JSON.parse(ispy.cleanupData(ispy.ig_data.file(ispy.event_list[ispy.event_index]).asText()));
+	event = JSON.parse(cleanupData(ig_data.file(event_list[event_index]).asText()));
   
     } catch(err) {
     
@@ -132,55 +141,54 @@ ispy.loadEvent = function() {
     //document.getElementById('loading').style.display = 'none';
     $("#loading").modal("hide");
 
-    if ( ispy.isGeometry ) {
+    if ( isGeometry ) {
 
-	$.extend(ispy.detector, event);
-	ispy.addDetector();
-	ispy.isGeometry = false;
+	$.extend(detector, event);
+	addDetector();
+	isGeometry = false;
 
     } else {
 
-	ispy.addEvent(event);
-	ispy.enableNextPrev();
+	addEvent(event);
+	enableNextPrev();
 	
-	let ievent = +ispy.event_index + 1; // JavaScript!
+	let ievent = +event_index + 1; // JavaScript!
 
-	document.getElementById('event-loaded').innerHTML = ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]";
-	//$("#event-loaded").html(ispy.file_name + ":" + ispy.event_list[ispy.event_index] + "  [" + ievent + " of " + ispy.event_list.length + "]");
+	document.getElementById('event-loaded').innerHTML = file_name + ":" + event_list[event_index] + "  [" + ievent + " of " + event_list.length + "]";
 	
-	console.log(ispy.current_event.Types);
-	console.log(ispy.current_event.Collections.Products_V1);
+	console.log(current_event.Types);
+	console.log(current_event.Collections.Products_V1);
 	
     }
     
 };
 
-ispy.nextEvent = function() {
+function nextEvent() {
 
-    if ( ispy.event_list && ispy.event_list.length-1 > ispy.event_index ) {
+    if ( event_list && event_list.length-1 > event_index ) {
     
-	ispy.event_index++;
-	ispy.loadEvent();
+	event_index++;
+	loadEvent();
   
     }
 
 };
 
-ispy.prevEvent = function() {
+function prevEvent() {
 
-    if ( ispy.event_list && ispy.event_index > 0 ) {
+    if ( event_list && event_index > 0 ) {
 
-	ispy.event_index--;
-	ispy.loadEvent();
+	event_index--;
+	loadEvent();
   
     }
 
 };
 
-ispy.selectLocalFile = function(index) {
+function selectLocalFile(index) {
 
     var reader = new FileReader();
-    ispy.file_name = ispy.local_files[index].name;
+    file_name = local_files[index].name;
 
     reader.onload = function(e) {
     
@@ -194,7 +202,7 @@ ispy.selectLocalFile = function(index) {
 		    
 		    if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
           
-			ispy.isGeometry = true;
+			isGeometry = true;
 		    
 		    }
         
@@ -202,10 +210,10 @@ ispy.selectLocalFile = function(index) {
 		}
 	    });
 
-	ispy.event_list = event_list;
-	ispy.event_index = 0;
-	ispy.updateEventList();
-	ispy.ig_data = zip;
+	event_list = event_list;
+	event_index = 0;
+	updateEventList();
+	ig_data = zip;
     
     };
 
@@ -215,13 +223,13 @@ ispy.selectLocalFile = function(index) {
   
     };
 
-    reader.readAsArrayBuffer(ispy.local_files[index]);
+    reader.readAsArrayBuffer(local_files[index]);
 
 };
 
-ispy.updateLocalFileList = function(list) {
+function updateLocalFileList(list) {
 
-    ispy.clearTable("browser-files");
+    clearTable("browser-files");
     let tbl = document.getElementById("browser-files");
 
     for ( let i = 0; i < list.length; i++ ) {
@@ -231,15 +239,15 @@ ispy.updateLocalFileList = function(list) {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectLocalFile(\'' + i + '\');">' + name + '</a>';
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectLocalFile(\'' + i + '\');">' + name + '</a>';
   
     }
 
 };
 
-ispy.loadLocalFiles = function() {
+function loadLocalFiles() {
 
-    if ( ! ispy.hasFileAPI() ) {
+    if ( ! hasFileAPI() ) {
 	
 	var err_msg = "Sorry. You seeem to be using a browser that does not support FileReader API. ";
 	err_msg += "Please try with Chrome (6.0+), Firefox (3.6+), Safari (6.0+), or IE (10+). ";
@@ -253,23 +261,23 @@ ispy.loadLocalFiles = function() {
     document.getElementById('load-event').classList.add('disabled');
     //$('#load-event').addClass('disabled');
 
-    ispy.clearTable("browser-files");
-    ispy.clearTable("browser-events");
+    clearTable("browser-files");
+    clearTable("browser-events");
 
     document.getElementById('selected-event').innerHTML = "Selected event";
     //$('#selected-event').html("Selected event");
     
-    ispy.local_files = document.getElementById('local-files').files;
-    ispy.updateLocalFileList(ispy.local_files);
-    ispy.loaded_local = true;
-    ispy.openDialog('#files');
+    local_files = document.getElementById('local-files').files;
+    updateLocalFileList(local_files);
+    loaded_local = true;
+    openDialog('#files');
 
 };
 
-ispy.loadDroppedFile = function(file) {
+function loadDroppedFile(file) {
 
     var reader = new FileReader();
-    ispy.file_name = file.name;
+    file_name = file.name;
 
     //document.getElementById('loading').style.display = 'block';
     $('#loading').modal('show');
@@ -287,7 +295,7 @@ ispy.loadDroppedFile = function(file) {
 
 		if ( zipEntry.name.split('/')[0] === 'Geometry' ) {
 			
-		    ispy.isGeometry = true;
+		    isGeometry = true;
 			
 		}
 		    
@@ -297,12 +305,12 @@ ispy.loadDroppedFile = function(file) {
 
 	});
 
-	ispy.event_list = event_list;
-	ispy.event_index = 0;
-	ispy.updateEventList();
-	ispy.ig_data = zip;
+	event_list = event_list;
+	event_index = 0;
+	updateEventList();
+	ig_data = zip;
 	
-	ispy.loadEvent();
+	loadEvent();
 
 	//document.getElementById('loading').style.display = 'none';
 	$('#loading').modal('hide');
@@ -319,12 +327,12 @@ ispy.loadDroppedFile = function(file) {
 
 };
 
-ispy.selectFile = function(filename) {
+function selectFile(filename) {
   
-    ispy.clearTable("browser-events");
+    clearTable("browser-events");
 
     var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
-    ispy.file_name = new_file_name;
+    file_name = new_file_name;
 
     //document.getElementById('progress').style.display = 'block';
     $('#progress').modal('show');
@@ -333,7 +341,7 @@ ispy.selectFile = function(filename) {
     xhr.open("GET", filename, true);
     xhr.overrideMimeType("text/plain; charset=x-user-defined");
     
-    ispy.clearTable("browser-events");
+    clearTable("browser-events");
     var ecell = document.getElementById("browser-events").insertRow(0).insertCell(0);
     ecell.innerHTML = 'Loading events...';
 
@@ -388,10 +396,10 @@ ispy.selectFile = function(filename) {
       
 	    });
 
-	    ispy.event_list = event_list;
-	    ispy.event_index = 0;
-	    ispy.updateEventList();
-	    ispy.ig_data = zip;
+	    event_list = event_list;
+	    event_index = 0;
+	    updateEventList();
+	    ig_data = zip;
 	
 	}
   
@@ -401,7 +409,7 @@ ispy.selectFile = function(filename) {
 
 };
 
-ispy.loadWebFiles = function() {
+function loadWebFiles() {
 
     const web_files = [
 	"./data/Hto4l_120-130GeV.ig",
@@ -431,26 +439,26 @@ ispy.loadWebFiles = function() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectFile(\'' + e + '\');">' + name + '</a>';
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectFile(\'' + e + '\');">' + name + '</a>';
   
     }
 
 };
 
-ispy.showWebFiles = function() {
+function showWebFiles() {
 
-    ispy.openDialog('#files');
+    openDialog('#files');
 
-    if ( ispy.loaded_local === true ) {
+    if ( loaded_local === true ) {
     
 	// If we have previously opened a local file then
 	// we don't want its contents appearing
 	// in the web files dialog
-	ispy.clearTable("browser-files");
-	ispy.clearTable("browser-events");
-	ispy.loaded_local = false;
+	clearTable("browser-files");
+	clearTable("browser-events");
+	loaded_local = false;
 
-	ispy.loadWebFiles();
+	loadWebFiles();
   
     }
 
@@ -459,7 +467,7 @@ ispy.showWebFiles = function() {
 
 };
 
-ispy.cleanupData = function(d) {
+function cleanupData(d) {
 
     // rm non-standard json bits
     // newer files will not have this problem
@@ -472,7 +480,7 @@ ispy.cleanupData = function(d) {
 
 };
 
-ispy.loadGLTFFiles = function() {
+function loadGLTFFiles() {
     
     const gltf_files = [
 	'./geometry/gltf/EB.glb',
@@ -492,7 +500,7 @@ ispy.loadGLTFFiles = function() {
 	'./geometry/gltf/HF.glb'
     ];
     
-    ispy.clearTable('obj-files');
+    clearTable('obj-files');
 
     document.getElementById('selected-obj').innerHTML = "Selected geometry";
     document.getElementById('load-obj').classList.add('disabled');
@@ -510,13 +518,13 @@ ispy.loadGLTFFiles = function() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectGLTF(\'' + name + '\');">' + name + '</a>';
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectGLTF(\'' + name + '\');">' + name + '</a>';
   
     }
 
 };
 
-ispy.loadObjFiles = function() {
+function loadObjFiles() {
 
     const obj_files = [
 	'./geometry/obj/EB.obj',
@@ -536,7 +544,7 @@ ispy.loadObjFiles = function() {
 	'./geometry/obj/HF.obj'
      ];
 
-    ispy.clearTable('obj-files');
+    clearTable('obj-files');
     
     document.getElementById('selected-obj').innerHTML = "Selected geometry";
     document.getElementById('load-obj').classList.add('disabled');
@@ -554,13 +562,13 @@ ispy.loadObjFiles = function() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="ispy.selectObj(\'' + name + '\');">' + name + '</a>';
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectObj(\'' + name + '\');">' + name + '</a>';
   
     }
 
 };
 
-ispy.readOBJ = function(file, cb) {
+function readOBJ(file, cb) {
 
     var reader = new FileReader();
 
@@ -582,7 +590,7 @@ ispy.readOBJ = function(file, cb) {
 
 };
 
-ispy.loadOBJ = function(contents, name) {
+function loadOBJ(contents, name) {
 
     let object = new THREE.OBJLoader().parse(contents);
     object.name = name;
@@ -590,16 +598,16 @@ ispy.loadOBJ = function(contents, name) {
     object.children.forEach(function(c) {
     
 	    c.material.transparency = true;
-	    c.material.opacity = ispy.importTransparency;
+	    c.material.opacity = importTransparency;
   
 	});
 
-    ispy.scene.getObjectByName("Imported").add(object);
-    ispy.addSelectionRow("Imported", object.name, object.name, [], true);
+    scene.getObjectByName("Imported").add(object);
+    addSelectionRow("Imported", object.name, object.name, [], true);
 
 };
 
-ispy.readOBJMTL = function(file, mtl_file, cb) {
+function readOBJMTL(file, mtl_file, cb) {
 
     let reader = new FileReader();
 
@@ -619,7 +627,7 @@ ispy.readOBJMTL = function(file, mtl_file, cb) {
 
 };
 
-ispy.loadOBJMTL = function(obj, mtl_file, name) {
+function loadOBJMTL(obj, mtl_file, name) {
  
     let object = new THREE.OBJLoader().parse(obj);
     let reader = new FileReader();
@@ -642,7 +650,7 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 
 			    o.material = material;
 			    o.material.transparent = true;
-			    o.material.opacity = ispy.importTransparency;
+			    o.material.opacity = importTransparency;
 			    
 			}
 		    }
@@ -655,10 +663,10 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 
 	object.name = name;
 	object.visible = true;
-	ispy.disabled[name] = false;
+	disabled[name] = false;
 
-	ispy.scene.getObjectByName("Imported").add(object);
-	ispy.addSelectionRow("Imported", name, name, [], true);
+	scene.getObjectByName("Imported").add(object);
+	addSelectionRow("Imported", name, name, [], true);
   
     };
 
@@ -666,9 +674,9 @@ ispy.loadOBJMTL = function(obj, mtl_file, name) {
 
 };
 
-ispy.importModel = function() {
+function importModel() {
   
-    if ( ! ispy.hasFileAPI() ) {
+    if ( ! hasFileAPI() ) {
 	
 	var err_msg = "Sorry. You seeem to be using a browser that does not support FileReader API. ";
 	err_msg += "Please try with Chrome (6.0+), Firefox (3.6+), Safari (6.0+), or IE (10+). ";
@@ -700,7 +708,7 @@ ispy.importModel = function() {
 	$('#loading').modal('show');
 	$('#import-model').modal('hide');
 
-	ispy.readOBJ(files[0], ispy.loadOBJ);
+	readOBJ(files[0], loadOBJ);
 
     } else if ( files.length === 2 ) { // We support for now either one obj file or an obj file and an mtl file
     
@@ -732,7 +740,7 @@ ispy.importModel = function() {
 	$('#loading').modal('show');
 	$('#import-model').modal('hide');
 
-	ispy.readOBJMTL(obj_file, mtl_file, ispy.loadOBJMTL);
+	readOBJMTL(obj_file, mtl_file, loadOBJMTL);
 	
     } else {
     
@@ -743,7 +751,7 @@ ispy.importModel = function() {
 
 };
 
-ispy.selectGLTF = function(gltf_file) {
+function selectGLTF(gltf_file) {
 
     document.getElementById('selected-obj').innerHTML = gltf_file;
     document.getElementById('load-obj').classList.remove('disabled');
@@ -751,14 +759,14 @@ ispy.selectGLTF = function(gltf_file) {
     //$('#selected-obj').html(gltf_file);
     //$('#load-obj').removeClass('disabled');
 
-    ispy.selected_gltf = gltf_file;
+    selected_gltf = gltf_file;
     
 };
 
-ispy.loadSelectedGLTF = function() {
+function loadSelectedGLTF() {
 
-    let name = ispy.selected_gltf.split('.')[0];
-    let gltf_file = './geometry/gltf/'+ispy.selected_gltf;
+    let name = selected_gltf.split('.')[0];
+    let gltf_file = './geometry/gltf/'+selected_gltf;
     
     const gltf_loader = new THREE.GLTFLoader();
 
@@ -770,19 +778,19 @@ ispy.loadSelectedGLTF = function() {
 
 	    object.children.forEach(function(c) {
 
-		c.material.clippingPlanes = ispy.local_planes;
+		c.material.clippingPlanes = local_planes;
 			
 	    });
 
-	    ispy.scene.getObjectByName('Imported').add(object);
-	    ispy.addSelectionRow('Imported', name, name, [], true);
+	    scene.getObjectByName('Imported').add(object);
+	    addSelectionRow('Imported', name, name, [], true);
 	    
 	}
     );
 
 };
 
-ispy.selectObj = function(obj_file) {
+function selectObj(obj_file) {
     
     document.getElementById('selected-obj').innerHTML = obj_file;
     document.getElementById('load-obj').classList.remove('disabled');
@@ -790,21 +798,21 @@ ispy.selectObj = function(obj_file) {
     //$('#selected-obj').html(obj_file);
     //$('#load-obj').removeClass('disabled');
 
-    ispy.selected_obj = obj_file;
+    selected_obj = obj_file;
 
 };
 
-ispy.loadSelectedObj = function() {
+function loadSelectedObj() {
 
-    var name = ispy.selected_obj.split('.')[0];
-    var obj_file = './geometry/obj/'+ispy.selected_obj;
+    var name = selected_obj.split('.')[0];
+    var obj_file = './geometry/obj/'+selected_obj;
     var mtl_file = './geometry/obj/'+name+'.mtl';
 
-    ispy.loadOBJMTL_new(obj_file, mtl_file, name, name, 'Imported', true);
+    loadOBJMTL_new(obj_file, mtl_file, name, name, 'Imported', true);
     
 };
 
-ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
+function loadOBJMTL_new(obj_file, mtl_file, id, name, group, show) {
 
     var mtl_loader = new THREE.MTLLoader();
 
@@ -819,18 +827,18 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
 	    object.name = id;
 	    object.visible = show;
-	    ispy.disabled[object.name] = false;
+	    disabled[object.name] = false;
 	    
 	    object.children.forEach(function(c) {
         
 		c.material.transparent = true;
-		c.material.opacity = ispy.importTransparency;
-		c.material.clippingPlanes = ispy.local_planes;
+		c.material.opacity = importTransparency;
+		c.material.clippingPlanes = local_planes;
       
 	    });
 
-	    ispy.scene.getObjectByName(group).add(object);
-	    ispy.addSelectionRow(group, object.name, name, [], show);
+	    scene.getObjectByName(group).add(object);
+	    addSelectionRow(group, object.name, name, [], show);
 
 	});
 
@@ -840,9 +848,9 @@ ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
 
 };
 
-ispy.importBeampipe = function() {
+function importBeampipe() {
 
-    ispy.loadOBJMTL_new(
+    loadOBJMTL_new(
 	'./geometry/obj/beampipe.obj',
 	'./geometry/obj/beampipe.mtl',
 	'BeamPipe',
@@ -853,7 +861,7 @@ ispy.importBeampipe = function() {
 
 };
 
-ispy.importDetector = function() {
+function importDetector() {
 
     const gltf_loader = new THREE.GLTFLoader();
     
@@ -1104,20 +1112,20 @@ ispy.importDetector = function() {
 
 			if ( c.material ) {
 			    
-			    c.material.clippingPlanes = ispy.local_planes;
+			    c.material.clippingPlanes = local_planes;
 
 			}
 			
 		    });
 		    
-		    ispy.disabled[object.name] = ! g.show;		    
-		    ispy.scenes[object.view].getObjectByName(g.group).add(object);
+		    disabled[object.name] = ! g.show;		    
+		    scenes[object.view].getObjectByName(g.group).add(object);
 
 		    // For now do not add RPhi and RhoZ selection options to
 		    // the controls GUI
 
 		    if ( ! (object.name === 'RPhi' || object.name === 'RhoZ') )
-			ispy.addSelectionRow(g.group, object.name, g.name, [], g.show);
+			addSelectionRow(g.group, object.name, g.name, [], g.show);
 		
 		}
 		
@@ -1133,3 +1141,19 @@ ispy.importDetector = function() {
     loadGLTFs();
     
 };
+
+document.getElementById("web-files").onclick = showWebFiles;
+
+document.getElementById("local-files").onchange = loadLocalFiles;
+document.getElementById("local-files").onclick = $('#open-files').modal('hide');
+
+document.getElementById("load-event").onclick = function() {
+
+    $('#files').modal('hide');
+    loadEvent();
+
+};
+    
+
+
+export { loadWebFiles, importDetector };

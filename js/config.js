@@ -1,23 +1,18 @@
-var ispy = ispy || {};
-ispy.detector = {"Collections":{}};
-ispy.version = "1.0.1-rc";
+//var ispy = ispy || {};
 
-// These need to be defined before adding objects:
-ispy.POINT = 0;
-ispy.LINE = 1;
-ispy.BOX = 2;
-ispy.SOLIDBOX = 3;
-ispy.SCALEDBOX = 4;
-ispy.SCALEDSOLIDBOX = 5;
-ispy.SCALEDSOLIDTOWER = 6;
-ispy.MODEL = 7;
+export const detector = {"Collections":{}};
+export const version = "1.0.1-rc";
 
-// This is something with an associated collection (the extras) and the relationship
-// with it and the primary collection is given by association set.
-// The materials and shapes have to be specified in the drawing method.
-ispy.ASSOC = 8;
-
-ispy.SHAPE = 9;
-ispy.TEXT = 10;
-ispy.BUFFERBOX = 11;
-ispy.STACKEDTOWER = 12;
+export const POINT = 0;
+export const LINE = 1;
+export const BOX = 2;
+export const SOLIDBOX = 3;
+export const SCALEDBOX = 4;
+export const SCALEDSOLIDBOX = 5;
+export const SCALEDSOLIDTOWER = 6;
+export const MODEL = 7;
+export const ASSOC = 8;
+export const SHAPE = 9;
+export const TEXT = 10;
+export const BUFFERBOX = 11;
+export const STACKEDTOWER = 12;

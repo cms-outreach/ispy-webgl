@@ -1,3 +1,7 @@
+import { animating, camera, scene } from "./setup.js";
+import { resetView } from "./controls.js";
+import { showObject } from "./tree-view.js";
+
 // This is particular to the sequence below:
 // - Colliding bunch crossings
 // - Zoom into position inside detector
@@ -94,30 +98,30 @@ const animation = {
     }
 };
 
-ispy.toggleAnimation = function() {
+function toggleAnimation() {
 
-    ispy.animating = !ispy.animating;
+    animating = !animating;
 
     document.getElementById('animate').classList.toggle('active');
 
-    if ( ispy.animating ) {
+    if ( animating ) {
 
-	ispy.resetView();
+	resetView();
       
-	let home = ispy.camera.position;
+	let home = camera.position;
 
-	let length = ispy.camera.position.length();
-	let xs = [ispy.camera.position.x, 0];
+	let length = camera.position.length();
+	let xs = [camera.position.x, 0];
 	let ys = [0, 0];
 	let zs = [ispy.camera.position.z, length];
 
-	let zoom1 = new TWEEN.Tween(ispy.camera.position)
+	let zoom1 = new TWEEN.Tween(camera.position)
 	    .to({x:xs, y:ys, z:zs}, animation.zoom.time)
 	    .easing(TWEEN.Easing.Sinusoidal.In);
 
 	let r = animation.rotation.radius;
 
-	let zoom2 = new TWEEN.Tween(ispy.camera.position)
+	let zoom2 = new TWEEN.Tween(camera.position)
 	    .to({x:0, y:0, z:r}, animation.zoom.time)
 	    .easing(TWEEN.Easing.Sinusoidal.In);
 
@@ -143,7 +147,7 @@ ispy.toggleAnimation = function() {
 	let c1y = cy.slice(0,es);
 	let c1z = cz.slice(0,es);
 
-	let rotation1 = new TWEEN.Tween(ispy.camera.position)
+	let rotation1 = new TWEEN.Tween(camera.position)
 	    .to({x:c1x, y:c1y, z:c1z}, animation.rotation.time);
 
 	// Split the rotation in half and
@@ -156,15 +160,15 @@ ispy.toggleAnimation = function() {
 	let c2y = cy.slice(bs, es);
 	let c2z = cz.slice(bs, es);
 
-	let rotation2 = new TWEEN.Tween(ispy.camera.position)
+	let rotation2 = new TWEEN.Tween(camera.position)
 	    .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
 	    .onStart(function(){
 		animation.rotation.objects.forEach(function(o) {
-		    ispy.showObject(o.key, ispy.current_view, o.show);
+		    showObject(o.key, ispy.current_view, o.show);
 		});
 	    });
 
-	let zoom3 = new TWEEN.Tween(ispy.camera.position)
+	let zoom3 = new TWEEN.Tween(camera.position)
 	    .to({x:home.x, y:home.y, z:home.z}, 5000)
 	    .onComplete(function() {
 		document.getElementById('animate').classList.toggle('active');
@@ -186,14 +190,14 @@ ispy.toggleAnimation = function() {
 	proton2.position.y = animation.collision.proton2.pi.y;
 	proton2.position.z = animation.collision.proton2.pi.z;
 	
-	ispy.scene.add(proton1);
-	ispy.scene.add(proton2);
+	scene.add(proton1);
+	scene.add(proton2);
 
 	let c1 = new TWEEN.Tween(proton1.position)
 	    .to({z:0.0}, animation.collision.time)
 	    .onStart(function(){
 		animation.collision.before_objects.forEach(function(o){
-		    ispy.showObject(o.key, ispy.current_view, o.show);
+		    showObject(o.key, ispy.current_view, o.show);
 		});
 	    })
 	    .easing(TWEEN.Easing.Back.In);
@@ -203,7 +207,7 @@ ispy.toggleAnimation = function() {
 	    .onComplete(function(){
 		zoom1.start();
 		animation.collision.after_objects.forEach(function(o) {
-		    ispy.showObject(o.key, ispy.current_view, o.show);
+		    showObject(o.key, ispy.current_view, o.show);
 		});
 	    })
 	    .easing(TWEEN.Easing.Back.In);
@@ -211,13 +215,13 @@ ispy.toggleAnimation = function() {
 	let c3 = new TWEEN.Tween(proton1.position)
 	    .to({z:animation.collision.proton1.pf.z}, animation.collision.time)
 	    .onComplete(function(){
-		ispy.scene.remove(proton1);
+		scene.remove(proton1);
 	    }).easing(TWEEN.Easing.Back.Out);
 
 	let c4 = new TWEEN.Tween(proton2.position)
 	    .to({z:animation.collision.proton2.pf.z}, animation.collision.time)
 	    .onComplete(function(){
-		ispy.scene.remove(proton2);
+		scene.remove(proton2);
 	    }).easing(TWEEN.Easing.Back.Out);
 	
 	c1.chain(c3);
@@ -235,3 +239,5 @@ ispy.toggleAnimation = function() {
     }
     
 };
+
+export { toggleAnimation };

@@ -1,131 +1,134 @@
-ispy.resetView = function() {
+import { controls, current_view, camera, scene, scenes, autoRotating, is_perspective, p_camera, o_camera, get_image_data, image_data, lookAtOrigin } from "./setup.js";
+import { toggleAnimation } from "./animate.js";
 
-    ispy.setPerspective();
-    ispy.initCamera();
+function resetView() {
 
-    ispy.controls.reset();
+    setPerspective();
+    initCamera();
+
+    controls.reset();
 
     document.getElementById('3d').classList.add('active');
     document.getElementById('rphi').classList.remove('active');
     document.getElementById('rhoz').classList.remove('active');
 
-    ispy.current_view = '3D';
-    ispy.scene = ispy.scenes['3D'];
+    current_view = '3D';
+    scene = ispy.scenes['3D'];
     
 };
 
-ispy.setXY = function() {
+function setXY() {
 
-    const length = ispy.camera.position.length();
+    const length = camera.position.length();
 
-    ispy.camera.position.x = 0;
-    ispy.camera.position.y = 0;
-    ispy.camera.position.z = length;
-    ispy.camera.up = new THREE.Vector3(0,1,0);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = length;
+    camera.up = new THREE.Vector3(0,1,0);
 
-    ispy.lookAtOrigin();
-
-};
-
-ispy.setZX = function() {
-
-    const length = ispy.camera.position.length();
-
-    ispy.camera.position.x = 0;
-    ispy.camera.position.y = length;
-    ispy.camera.position.z = 0;
-    ispy.camera.up = new THREE.Vector3(1,0,0);
-
-    ispy.lookAtOrigin();
+    lookAtOrigin();
 
 };
 
-ispy.setYZ = function() {
+function setZX() {
 
-    const length = ispy.camera.position.length();
+    const length = camera.position.length();
 
-    ispy.camera.position.x = -length;
-    ispy.camera.position.y = 0;
-    ispy.camera.position.z = 0;
-    ispy.camera.up = new THREE.Vector3(0,1,0);
+    camera.position.x = 0;
+    camera.position.y = length;
+    camera.position.z = 0;
+    camera.up = new THREE.Vector3(1,0,0);
+
+    lookAtOrigin();
+
+};
+
+function setYZ() {
+
+    const length = camera.position.length();
+
+    camera.position.x = -length;
+    camera.position.y = 0;
+    camera.position.z = 0;
+    camera.up = new THREE.Vector3(0,1,0);
     
-    ispy.lookAtOrigin();
+    lookAtOrigin();
 
 };
 
-ispy.autoRotate = function() {
+function autoRotate() {
 
-    ispy.autoRotating = !ispy.autoRotating;
+    autoRotating = !autoRotating;
 
     document.getElementById('autorotate').classList.toggle('active');
 
 };
 
-ispy.setOrthographic = function() {
+function setOrthographic() {
     
     document.getElementById('perspective').classList.remove('active');
     document.getElementById('orthographic').classList.add('active');
     
-    ispy.is_perspective = false;
-    ispy.camera = ispy.o_camera;
+    is_perspective = false;
+    camera = o_camera;
 
-    ispy.camera.position.x = ispy.p_camera.position.x;
-    ispy.camera.position.y = ispy.p_camera.position.y;
-    ispy.camera.position.z = ispy.p_camera.position.z;
+    camera.position.x = p_camera.position.x;
+    camera.position.y = p_camera.position.y;
+    camera.position.z = p_camera.position.z;
 
-    ispy.camera.zoom = ispy.p_camera.zoom;
-    ispy.camera.up = ispy.p_camera.up;
+    camera.zoom = p_camera.zoom;
+    camera.up = p_camera.up;
     
-    const fov = ispy.p_camera.fov;
-    const aspect = ispy.p_camera.aspect;
-    const near = ispy.p_camera.near;
-    const far = ispy.p_camera.far;
+    const fov = p_camera.fov;
+    const aspect = p_camera.aspect;
+    const near = p_camera.near;
+    const far = p_camera.far;
     
     const focus = (near+far)/2;
 
     let half_height = Math.tan(fov*Math.PI/180/2)*focus;
     let half_width = half_height*aspect;
 
-    half_height /= ispy.p_camera.zoom;
-    half_width /= ispy.p_camera.zoom;
+    half_height /= p_camera.zoom;
+    half_width /= p_camera.zoom;
     
-    ispy.camera.left = -half_width;
-    ispy.camera.right = half_width;
-    ispy.camera.top = half_height;
-    ispy.camera.bottom = -half_height;
+    camera.left = -half_width;
+    camera.right = half_width;
+    camera.top = half_height;
+    camera.bottom = -half_height;
     
-    ispy.camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
 
-    ispy.controls.object = ispy.camera;
-    ispy.controls.update();
+    controls.object = camera;
+    controls.update();
     
 };
 
-ispy.setPerspective = function() {
+function setPerspective() {
 
     document.getElementById('perspective').classList.add('active');
     document.getElementById('orthographic').classList.remove('active');
     
-    ispy.is_perspective = true;
-    ispy.camera = ispy.p_camera;
+    is_perspective = true;
+    camera = p_camera;
     
-    ispy.camera.position.x = ispy.o_camera.position.x;
-    ispy.camera.position.y = ispy.o_camera.position.y;
-    ispy.camera.position.z = ispy.o_camera.position.z;
+    camera.position.x = o_camera.position.x;
+    camera.position.y = o_camera.position.y;
+    camera.position.z = o_camera.position.z;
 
-    ispy.camera.zoom = ispy.o_camera.zoom;
-    ispy.camera.up = ispy.o_camera.up;
+    camera.zoom = o_camera.zoom;
+    camera.up = o_camera.up;
 
-    ispy.camera.aspect = ispy.o_camera.right / ispy.o_camera.top;
+    camera.aspect = o_camera.right / o_camera.top;
     
-    ispy.camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
 
-    ispy.controls.object = ispy.camera;
-    ispy.controls.update();
+    controls.object = camera;
+    controls.update();
     
 };
 
-ispy.showView = function(view) {
+function showView(view) {
 
     switch (view) {
 
@@ -142,18 +145,18 @@ ispy.showView = function(view) {
 	document.getElementById('yz').removeAttribute('disabled', '');
 	document.getElementById('xz').removeAttribute('disabled', '');
 	
-	ispy.controls.enableRotate = true;
-	ispy.controls.reset();
+	controls.enableRotate = true;
+	controls.reset();
 
 	/*
 	  We may have cases where the view is already 3D
 	  but we have switched to/from persepctive/orthographic
 	*/
-	if ( ispy.current_view !== '3D' )
-	    ispy.setPerspective();
+	if ( current_view !== '3D' )
+	    setPerspective();
 
-	ispy.current_view = '3D';
-	ispy.scene = ispy.scenes['3D'];
+	current_view = '3D';
+	scene = scenes['3D'];
 
 	break;
 
@@ -170,14 +173,14 @@ ispy.showView = function(view) {
 	document.getElementById('yz').setAttribute('disabled', '');
 	document.getElementById('xz').setAttribute('disabled', '');
 	
-	ispy.controls.enableRotate = false;
-	ispy.controls.reset();
+	controls.enableRotate = false;
+	controls.reset();
 	
-	ispy.setOrthographic();
-	ispy.setXY();
+	setOrthographic();
+	setXY();
 	
-	ispy.current_view = 'RPhi';
-	ispy.scene = ispy.scenes['RPhi'];
+	current_view = 'RPhi';
+	scene = scenes['RPhi'];
 	
 	break;
 
@@ -194,14 +197,14 @@ ispy.showView = function(view) {
 	document.getElementById('yz').setAttribute('disabled', '');
 	document.getElementById('xz').setAttribute('disabled', '');
 	
-	ispy.controls.enableRotate = false;
-	ispy.controls.reset();
+	controls.enableRotate = false;
+	controls.reset();
 
-	ispy.setOrthographic();
-	ispy.setYZ();
+	setOrthographic();
+	setYZ();
 		
-	ispy.current_view = 'RhoZ';
-	ispy.scene = ispy.scenes['RhoZ'];
+	current_view = 'RhoZ';
+	scene = scenes['RhoZ'];
 	
 	break;
 	
@@ -209,7 +212,7 @@ ispy.showView = function(view) {
     
 };
 
-ispy.enterFullscreen = function() {
+function enterFullscreen() {
     
     const container = document.getElementById('ispy');
 
@@ -227,7 +230,7 @@ ispy.enterFullscreen = function() {
     
 };
 
-ispy.exitFullscreen = function() {
+function exitFullscreen() {
   
     if ( document.exitFullscreen ) {
 	document.exitFullscreen();
@@ -243,19 +246,19 @@ ispy.exitFullscreen = function() {
 
 };
 
-ispy.toggleFullscreen = function() {
+function toggleFullscreen() {
 
     document.getElementById('enterFullscreen').classList.toggle('active');
     document.getElementById('exitFullscreen').classList.toggle('active');
 
 };
 
-document.addEventListener('webkitfullscreenchange', ispy.toggleFullscreen, false);
-document.addEventListener('mozfullscreenchange', ispy.toggleFullscreen, false);
-document.addEventListener('fullscreenchange', ispy.toggleFullscreen, false);
-document.addEventListener('MSFullscreenChange', ispy.toggleFullscreen, false);
+document.addEventListener('webkitfullscreenchange', toggleFullscreen, false);
+document.addEventListener('mozfullscreenchange', toggleFullscreen, false);
+document.addEventListener('fullscreenchange', toggleFullscreen, false);
+document.addEventListener('MSFullscreenChange', toggleFullscreen, false);
 
-ispy.reload = function() {
+function reload() {
 
     location.reload();
 
@@ -273,29 +276,29 @@ function setOrientationControls(e) {
 
 }
 
-ispy.zoomIn = function() {
+function zoomIn() {
 
-    ispy.camera.zoom += 0.5;
-    ispy.camera.updateProjectionMatrix();
+    camera.zoom += 0.5;
+    camera.updateProjectionMatrix();
     
 };
 
-ispy.zoomOut = function() {
+function zoomOut() {
     
-    ispy.camera.zoom -= 0.5;
-    ispy.camera.updateProjectionMatrix();
+    camera.zoom -= 0.5;
+    camera.updateProjectionMatrix();
 
 };
 
-ispy.printImage = function() {
+function printImage() {
   
-    ispy.get_image_data = true;
-    ispy.render();
-    window.open(ispy.image_data, "toDataURL() image", "width=1600, height=900");
+    get_image_data = true;
+    render();
+    window.open(image_data, "toDataURL() image", "width=1600, height=900");
 
 };
 
-ispy.exportScene = function() {
+function exportScene() {
 
     const exporter = new THREE.GLTFExporter();
 
@@ -304,9 +307,9 @@ ispy.exportScene = function() {
 	binary: true
     };
 
-    exporter.parse(ispy.scene, function(result) {
+    exporter.parse(scene, function(result) {
 
-	ispy.exportArrayBuffer(result, 'scene.glb'); 
+	exportArrayBuffer(result, 'scene.glb'); 
 
     }, options);
 
@@ -314,7 +317,7 @@ ispy.exportScene = function() {
     
 };
 
-ispy.exportString = function(output, filename) {
+function exportString(output, filename) {
 
     const blob = new Blob([output], {type: 'text/plain'});
     const objectURL = URL.createObjectURL(blob);
@@ -336,7 +339,7 @@ ispy.exportString = function(output, filename) {
 
 };
 
-ispy.exportArrayBuffer = function(output, filename) {
+function exportArrayBuffer(output, filename) {
 
     const blob = new Blob([output], {type: 'application/octect-stream'});
     const objectURL = URL.createObjectURL(blob);
@@ -353,19 +356,19 @@ ispy.exportArrayBuffer = function(output, filename) {
     
 };
 
-ispy.exportGLTF_binary = function() {
+function exportGLTF_binary() {
 
-    ispy.exportGLTF(true);
-
-};
-
-ispy.exportGLTF_text = function() {
-
-    ispy.exportGLTF(false);
+    exportGLTF(true);
 
 };
 
-ispy.exportGLTF = function(binary) {
+function exportGLTF_text() {
+
+    exportGLTF(false);
+
+};
+
+function exportGLTF(binary) {
 
     document.getElementById('export-model').style.display = 'none';
     //$('#export-model').hide();
@@ -376,7 +379,7 @@ ispy.exportGLTF = function(binary) {
 	binary: binary
     };
 	
-    ispy.scene.children.forEach(function(c) {
+    scene.children.forEach(function(c) {
 	    
 	if ( c.children.length > 0 && c.name !== 'Lights' ) {
 	    
@@ -388,12 +391,12 @@ ispy.exportGLTF = function(binary) {
 
 			if ( result instanceof ArrayBuffer ) {
 
-			    ispy.exportArrayBuffer(result, o.name+'.glb'); 
+			    exportArrayBuffer(result, o.name+'.glb'); 
 			    
 			} else {
 
 			    const output = JSON.stringify(result, null, 2);
-			    ispy.exportString(output, o.name+'.gltf');
+			    exportString(output, o.name+'.gltf');
 
 			}
 			
@@ -409,14 +412,14 @@ ispy.exportGLTF = function(binary) {
 
 };
 
-ispy.exportOBJ = function() {
+function exportOBJ() {
 
     document.getElementById('export-model').style.display = 'none';
     //$('#export-model').hide();
     
     const exporter = new THREE.OBJExporter();
 
-    ispy.scene.children.forEach(function(c) {
+    scene.children.forEach(function(c) {
 	    
 	if ( c.children.length > 0 && c.name !== 'Lights' ) {
 	    
@@ -424,7 +427,7 @@ ispy.exportOBJ = function() {
 			
 		if ( o.visible ) {
 			    
-		    ispy.exportString(exporter.parse(o), o.name+'.obj');
+		    exportString(exporter.parse(o), o.name+'.obj');
 			    
 		}
 			
@@ -435,3 +438,29 @@ ispy.exportOBJ = function() {
     });
 
 };
+
+document.getElementById("reset_view").onclick = resetView;
+document.getElementById("zoom_in").onclick = zoomIn;
+document.getElementById("zoom_out").onclick = zoomOut;
+document.getElementById("autorotate").onclick = autoRotate;
+
+document.getElementById("xy").onclick = setXY;
+document.getElementById("yz").onclick = setYZ;
+document.getElementById("xz").onclick = setZX;
+
+document.getElementById("perspective").onclick = setPerspective;
+document.getElementById("orthographic").onclick = setOrthographic;
+
+document.getElementById("enterFullscreen").onclick = enterFullscreen;
+document.getElementById("exitFullscreen").onclick = exitFullscreen;
+
+document.getElementById("print").onclick = printImage;
+document.getElementById("animate").onclick = toggleAnimation;
+
+/*
+document.getElementById("3d").addEventListener("click", showView("3D"));
+document.getElementById("rphi").addEventListener("click", showView("RPhi"));
+document.getElementById("rhoz").addEventListener("click", showView("RhoZ"));
+*/
+
+export { zoomIn, zoomOut, exportScene, resetView };

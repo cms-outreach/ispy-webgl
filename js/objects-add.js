@@ -1,8 +1,15 @@
-ispy.addDetector = function() {
+import { scene, camera, views, local_planes, use_line2 } from "./setup.js";
+import { detector_description, event_description, disabled, data_groups } from "./objects-config.js";
 
-    for ( let key in ispy.detector_description ) {
+import * as config from "./config.js";
 
-	const data = ispy.detector.Collections[key];
+let current_event;
+
+function addDetector() {
+
+    for ( let key in detector_description ) {
+
+	const data = detector.Collections[key];
 	
 	if ( ! data || data.length === 0 ) {
       
@@ -10,20 +17,20 @@ ispy.addDetector = function() {
 	
 	}
 
-	const descr = ispy.detector_description[key];
+	const descr = detector_description[key];
 
 	// If something is already disabled via the toggle then this
 	// should override what comes from the description
 	// -- However it is not used in addSelectionRow()? - C
-	const visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
-	ispy.addSelectionRow(descr.group, key, descr.name, [], visible);
+	const visible = ! disabled[key] ? descr.on = true : descr.on = false;
+	addSelectionRow(descr.group, key, descr.name, [], visible);
 
 	const obj = new THREE.Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
 	
-	ispy.scene.getObjectByName(descr.group).add(obj);
+	scene.getObjectByName(descr.group).add(obj);
 
 	const ocolor = new THREE.Color(descr.style.color);
 	//const transp = descr.style.opacity < 1.0 ? true : false;
@@ -31,7 +38,7 @@ ispy.addDetector = function() {
 	
 	switch(descr.type) {
 
-	case ispy.BOX:
+	case config.BOX:
 
 	    let box_material = new THREE.LineBasicMaterial({
 		color:ocolor, 
@@ -39,7 +46,7 @@ ispy.addDetector = function() {
 		linewidth:descr.style.linewidth, 
 		depthWrite: false,
 		opacity:descr.style.opacity,
-		clippingPlanes: ispy.local_planes
+		clippingPlanes: local_planes
 	    });
 	    
 	    let box_geometries = [];
@@ -57,18 +64,18 @@ ispy.addDetector = function() {
 	    
 	    box.name = key;
 	    box.renderOrder = 1;
-	    ispy.scene.getObjectByName(key).add(box);
+	    scene.getObjectByName(key).add(box);
 
 	    break;
 
-	case ispy.SOLIDBOX:
+	case config.SOLIDBOX:
 
 	    let solidbox_material = new THREE.MeshBasicMaterial({
 		color:ocolor,
 		transparent: transp,
 		opacity:descr.style.opacity,
 		depthTest: false,
-		clippingPlanes: ispy.local_planes
+		clippingPlanes: local_planes
 	    });
         
 	    solidbox_material.side = THREE.DoubleSide;
@@ -95,7 +102,7 @@ ispy.addDetector = function() {
 
 	    meshes.name = key;
 	    meshes.renderOrder = 1;
-	    ispy.scene.getObjectByName(key).add(meshes);
+	    scene.getObjectByName(key).add(meshes);
 
 	    let line_material = new THREE.LineBasicMaterial({
 		    color:0x000000,
@@ -110,7 +117,7 @@ ispy.addDetector = function() {
 	    );
 
 	    line_mesh.name = key;
-	    ispy.scene.getObjectByName(key).add(line_mesh);
+	    scene.getObjectByName(key).add(line_mesh);
 
 	    break;
 	
@@ -120,26 +127,25 @@ ispy.addDetector = function() {
     
 };
 
+function addToScene(event, view) {
 
-ispy.addToScene = function(event, view) {
-
-    ispy.scene = ispy.scenes[view];
+    scene = scenes[view];
 
     // Remove data from scene
-    ispy.data_groups.forEach(g => {
+    data_groups.forEach(g => {
 
-	ispy.scene.getObjectByName(g).children.length = 0;
+	scene.getObjectByName(g).children.length = 0;
 
     });
     
-    for ( let key in ispy.event_description[view] ) {
+    for ( let key in event_description[view] ) {
 	
 	const data = event.Collections[key];
     
 	if ( ! data || data.length === 0 )
 	    continue;
 
-	const descr = ispy.event_description[view][key];
+	const descr = event_description[view][key];
 
 	let extra = null;
 	let assoc = null;
@@ -163,14 +169,14 @@ ispy.addToScene = function(event, view) {
 	// used when displaying event data in table-view so that we are
 	// able to connect the data somehow with THREE objects.
 	const objectIds = [];
-	const visible = ! ispy.disabled[key] ? descr.on = true : descr.on = false;
+	const visible = ! disabled[key] ? descr.on = true : descr.on = false;
 
 	const obj = new THREE.Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
 	
-	ispy.scene.getObjectByName(descr.group).add(obj);
+	scene.getObjectByName(descr.group).add(obj);
 
 	let ocolor = null;
 	const transp = true;
@@ -186,7 +192,7 @@ ispy.addToScene = function(event, view) {
 		
 	switch(descr.type) {
 	    
-	case ispy.BOX:
+	case config.BOX:
 
 	    const boxes = [];
 
@@ -207,11 +213,11 @@ ispy.addToScene = function(event, view) {
 	    );
 
 	    line.name = key;
-	    ispy.scene.getObjectByName(key).add(line);
+	    scene.getObjectByName(key).add(line);
 
 	    break;
 
-	case ispy.SOLIDBOX:
+	case config.SOLIDBOX:
 	    
 	    const sboxes = [];
 	    const slines = [];
@@ -247,7 +253,7 @@ ispy.addToScene = function(event, view) {
 	    );
 
 	    smeshes.name = key;
-	    ispy.scene.getObjectByName(key).add(smeshes);
+	    scene.getObjectByName(key).add(smeshes);
 
 	    if ( slines.length > 0 ) {
 	    
@@ -264,13 +270,13 @@ ispy.addToScene = function(event, view) {
 		);
 
 		sline_mesh.name = key;    
-		ispy.scene.getObjectByName(key).add(sline_mesh);
+		scene.getObjectByName(key).add(sline_mesh);
 
 	    }
 	    
 	    break;
 
-	case ispy.SCALEDSOLIDBOX:
+	case config.SCALEDSOLIDBOX:
 
 	    const ss_boxes = [];
 	    let maxEnergy = 0.0;
@@ -306,13 +312,13 @@ ispy.addToScene = function(event, view) {
 		);
 
 		ssb_meshes.name = key;
-		ispy.scene.getObjectByName(key).add(ssb_meshes);
+		scene.getObjectByName(key).add(ssb_meshes);
 
 	    }
 		
 	    break;
 
-	case ispy.SCALEDSOLIDTOWER:
+	case config.SCALEDSOLIDTOWER:
 
 	    const sst_boxes = [];
 	    let maxE = 0.0;
@@ -348,13 +354,13 @@ ispy.addToScene = function(event, view) {
 		);
 	    
 		sst_meshes.name = key;
-		ispy.scene.getObjectByName(key).add(sst_meshes);
+		scene.getObjectByName(key).add(sst_meshes);
 
 	    }
 	    
 	    break;
 
-	case ispy.STACKEDTOWER:
+	case config.STACKEDTOWER:
 	    
 	    const eboxes = [];
 	    const hboxes = [];
@@ -400,12 +406,12 @@ ispy.addToScene = function(event, view) {
 
 	    }
 	    
-	    ispy.scene.getObjectByName(key).add(emeshes);
-	    ispy.scene.getObjectByName(key).add(hmeshes);
+	    scene.getObjectByName(key).add(emeshes);
+	    scene.getObjectByName(key).add(hmeshes);
 
 	    break;
 
-	case ispy.ASSOC:
+	case config.ASSOC:
 	    
 	    const objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
 
@@ -427,7 +433,7 @@ ispy.addToScene = function(event, view) {
 		    // data and THREE objects:
 		    obj.userData.originalIndex = index;
 		    objectIds.push(obj.id);
-		    ispy.scene.getObjectByName(key).add(obj);
+		    scene.getObjectByName(key).add(obj);
 		    
 		});
 		
@@ -435,7 +441,7 @@ ispy.addToScene = function(event, view) {
 	    
 	    break;
 
-	case ispy.POINT:
+	case config.POINT:
 	    
 	    const points = new THREE.Points(
 		descr.fn(data),
@@ -445,11 +451,11 @@ ispy.addToScene = function(event, view) {
 		}));
 	    
 	    points.name = key;
-	    ispy.scene.getObjectByName(key).add(points);
+	    scene.getObjectByName(key).add(points);
         
 	    break;
 
-	case ispy.SHAPE:
+	case config.SHAPE:
 
 	    for ( let si = 0; si < data.length; si++ ) {
           
@@ -475,7 +481,7 @@ ispy.addToScene = function(event, view) {
 		    // data and THREE objects:
 		    shape.userData.originalIndex = si;
 		    objectIds.push(shape.id);
-		    ispy.scene.getObjectByName(key).add(shape);
+		    scene.getObjectByName(key).add(shape);
 		
 		}
         
@@ -483,13 +489,13 @@ ispy.addToScene = function(event, view) {
 	    
 	    break;
 
-	case ispy.LINE:
+	case config.LINE:
 	    
 	    for ( let li = 0; li < data.length; li++ ) {
 
 		descr.fn(data[li]).forEach(function(g) {
 
-		    if ( ispy.use_line2 ) {
+		    if ( use_line2 ) {
 		    
 			const line2 = new THREE.Line2(g, new THREE.LineMaterial({
 			    color:ocolor,
@@ -506,7 +512,7 @@ ispy.addToScene = function(event, view) {
 		    
 			line2.userData.originalIndex = li;
 			objectIds.push(line2.id);
-			ispy.scene.getObjectByName(key).add(line2);
+			scene.getObjectByName(key).add(line2);
 
 		    } else {
 			
@@ -523,7 +529,7 @@ ispy.addToScene = function(event, view) {
 		    
 			line.userData.originalIndex = li;
 			objectIds.push(line.id);
-			ispy.scene.getObjectByName(key).add(line);
+			scene.getObjectByName(key).add(line);
 
 		    }
 			    
@@ -533,7 +539,7 @@ ispy.addToScene = function(event, view) {
 	    
 	    break;
 	
-	case ispy.TEXT:
+	case config.TEXT:
 
 	    descr.fn(data);
 
@@ -546,33 +552,35 @@ ispy.addToScene = function(event, view) {
 	// Properties will be changed over the 3 views and their corresponding scenes
 	// in the same place in the controls GUI.
 	if ( view === '3D' )
-	    ispy.addSelectionRow(descr.group, key, descr.name, objectIds, visible);
+	    addSelectionRow(descr.group, key, descr.name, objectIds, visible);
 
     }
 
 };
 
-ispy.addEvent = function(event) {
+function addEvent(event) {
 
-    console.log(ispy.camera.position);
+    console.log(camera.position);
     
-    ispy.current_event = event;
+    current_event = event;
     // Clear table from last event and show default caption
     $('#collection-table').empty();
-    $('#collection-table').append(ispy.table_caption);
+    $('#collection-table').append(table_caption);
 
     // remove selectors for last event
     $("tr.Event").remove();
 
     // Clear the subfolders for event information in the treegui
-    ispy.clearSubfolders();
+    clearSubfolders();
     
-    ispy.views.forEach(v => {
+    views.forEach(v => {
 
-	ispy.addToScene(event, v);
+	addToScene(event, v);
 
     });
 
-    ispy.showView(ispy.current_view);
+    showView(current_view);
     
 };
+
+export { current_event };
