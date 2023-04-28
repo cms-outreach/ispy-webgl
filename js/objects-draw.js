@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import { use_line2 } from "./setup.js";
 
 export function makeWireframeBox(data, ci) {
@@ -629,7 +631,8 @@ export function makeTrackPointsRZ(data, extra, assoc, style, selection) {
     }
     
     let cut = [];
-    let mi = 0;  
+    let mi = 0;
+    let pi = 0;
     let positions = [];
     let lps = [];
     
@@ -657,7 +660,7 @@ export function makeTrackPointsRZ(data, extra, assoc, style, selection) {
 	mi = assoc[j][0][1];
 	pi = assoc[j][1][1];
 	
-	if ( ispy.use_line2 ) {
+	if ( use_line2 ) {
 
 	    positions[mi].push(projectPoint(...extra[pi][0], lps[mi]));
 
@@ -725,7 +728,8 @@ export function makeTrackPoints(data, extra, assoc, style, selection) {
     }
     
     let cut = [];
-    let mi = 0;  
+    let mi = 0;
+    let pi = 0;
     let positions = [];
     
     for ( let i = 0; i < data.length; i++ ) {
@@ -808,6 +812,7 @@ export function makeTracks(tracks, extras, assocs, style, selection) {
 
     let ti, ei;
     let p1, d1, p2, d2;
+    let p3, p4;
     let distance, scale, curve;
     let curves = [];
 
@@ -879,6 +884,7 @@ export function makeTracksRZ(tracks, extras, assocs, style, selection) {
 
     let ti, ei;
     let p1, d1, p2, d2;
+    let p3, p4;
     let distance, scale, curve;
     let curves = [];
 
@@ -952,6 +958,7 @@ export function makeThickTracks(tracks, extras, assocs, style, selection) {
 
     let ti, ei;
     let p1, d1, p2, d2;
+    let p3, p4;
     let distance, scale, curve;
     let curves = [];
 
@@ -1048,6 +1055,7 @@ export function makeThickTracksRZ(tracks, extras, assocs, style, selection) {
 
     let ti, ei;
     let p1, d1, p2, d2;
+    let p3, p4;
     let distance, scale, curve;
     let curves = [];
 
@@ -1217,7 +1225,7 @@ export function makeCaloClusters(data, extra, assoc, style, selection) {
     for ( var j = 0; j < assoc.length; j++ ) {
 	
 	ri = assoc[j][1][1];
-	boxes[j] = ispy.makeSolidFace(extra[ri], 2);
+	boxes[j] = makeSolidFace(extra[ri], 2);
 
     }
 
@@ -1717,7 +1725,7 @@ export function makeMET(data, style, selection) {
     
     if ( use_line2 ) {
 
-	met = ispy.makeArrowThick(
+	met = makeArrowThick(
 	    dir, origin,
 	    length, color,
 	    d // displace out to ECAL barrel radius
@@ -1728,7 +1736,7 @@ export function makeMET(data, style, selection) {
 	origin.add(dir);
 	origin.multiplyScalar(d); // see comment above
     
-	met = ispy.makeArrow(dir, origin, length, color);
+	met = makeArrow(dir, origin, length, color);
 
     }
     
@@ -2273,13 +2281,13 @@ export function makeProtons(data, style, selection) {
 
     if ( use_line2 ) {
 
-	proton = new ispy.makeArrowThick(
+	proton = new makeArrowThick(
 	    dir, origin, length, color, 0
 	);
 
     } else {
     
-	proton = new ispy.makeArrow(
+	proton = new makeArrow(
 	    dir, origin, length, color
 	);
 

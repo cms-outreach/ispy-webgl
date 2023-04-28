@@ -1,17 +1,30 @@
-import { scene, scenes, importTransparency, local_planes } from "./setup.js";
+import { Mesh, Line } from 'three';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+import {
+    scene,
+    scenes,
+    import_transparency,
+    local_planes
+} from "./setup.js";
+
 import { selected_objects } from "./display.js";
-import { current_event } from "./objects-add.js";
+import { current_event, addEvent } from "./objects-add.js";
 import { addSelectionRow } from "./tree-view.js";
 import { disabled } from "./objects-config.js";
 
-const ig_data = null;
-const ievent = 0;
-const isGeometry = false;
-const loaded_local = false;
+let ig_data = null;
+let ievent = 0;
+let isGeometry = false;
+let loaded_local = false;
 
-let event_index, event_list, file_name;
+let event_index, file_name;
+let event_list = [];
+
 let local_files;
-let selected_gltf;
+let selected_gltf, selected_obj;
 
 function openDialog(id) {
 
@@ -68,19 +81,31 @@ function selectEvent(index) {
 
 };
 
-function updateEventList() {
+function updateEventList(event_list) {
 
     clearTable("browser-events");
     let tbl = document.getElementById("browser-events");
 
-    for ( let i = 0; i < event_list.length; i++ ) {
+    console.log(event_list);
     
+    for ( let i = 0; i < event_list.length; i++ ) {
+	
 	let e = event_list[i];
 	let row = tbl.insertRow(tbl.rows.length);
 	let cell = row.insertCell(0);
 
+	/*
 	cell.innerHTML = '<a id="browser-event-' + i + '" class="event" onclick="selectEvent(\'' + i + '\');">' + e + '</a>';
-  
+	*/
+
+	cell.innerHTML = '<a id="browser-event-' + i + '" class="event">' + e + '</a>';
+
+	document.getElementById("browser-event-"+i).onclick = function() {
+
+	    selectEvent(i)
+
+	};
+
     }
 
 };
@@ -194,7 +219,7 @@ function selectLocalFile(index) {
     
 	var data = e.target.result;
 	var zip = new JSZip(data);
-	var event_list = [];
+	event_list = [];
 
 	$.each(zip.files, function(index, zipEntry) {
 
@@ -210,9 +235,9 @@ function selectLocalFile(index) {
 		}
 	    });
 
-	event_list = event_list;
+	//event_list = event_list;
 	event_index = 0;
-	updateEventList();
+	updateEventList(event_list);
 	ig_data = zip;
     
     };
@@ -239,8 +264,18 @@ function updateLocalFileList(list) {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
+	/*
 	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectLocalFile(\'' + i + '\');">' + name + '</a>';
-  
+	*/
+
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '">' + name + '</a>';
+	
+	document.getElementById("browser-file-"+i).onclick = function() {
+
+	    selectLocalFile(i)
+
+	};
+	
     }
 
 };
@@ -287,7 +322,7 @@ function loadDroppedFile(file) {
 	var data = e.target.result;
 	var zip = new JSZip(data);
 
-	var event_list = [];
+	event_list = [];
 
 	$.each(zip.files, function(index, zipEntry) {
 
@@ -305,9 +340,9 @@ function loadDroppedFile(file) {
 
 	});
 
-	event_list = event_list;
+	//event_list = event_list;
 	event_index = 0;
-	updateEventList();
+	updateEventList(event_list);
 	ig_data = zip;
 	
 	loadEvent();
@@ -328,7 +363,9 @@ function loadDroppedFile(file) {
 };
 
 function selectFile(filename) {
-  
+
+    console.log(filename);
+    
     clearTable("browser-events");
 
     var new_file_name = filename.split('/')[2]; // of course this isn't a general case for files
@@ -384,21 +421,23 @@ function selectFile(filename) {
 	if ( this.status === 200 ) {
 
 	    var zip = JSZip(xhr.responseText);
-	    var event_list = [];
+	    event_list = [];
 	    
 	    $.each(zip.files, function(index, zipEntry) {
 		    
 		if ( zipEntry._data !== null && zipEntry.name !== 'Header' ) {
-          
+
+		    console.log(zipEntry.name);
+		    
 		    event_list.push(zipEntry.name);
         
 		}
       
 	    });
 
-	    event_list = event_list;
+	    //event_list = event_list;
 	    event_index = 0;
-	    updateEventList();
+	    updateEventList(event_list);
 	    ig_data = zip;
 	
 	}
@@ -439,8 +478,14 @@ function loadWebFiles() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectFile(\'' + e + '\');">' + name + '</a>';
-  
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '">' + name + '</a>';
+
+	document.getElementById("browser-file-"+i).onclick = function() {
+
+	    selectFile(e)
+
+	};
+	
     }
 
 };
@@ -562,8 +607,20 @@ function loadObjFiles() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectObj(\'' + name + '\');">' + name + '</a>';
-  
+	console.log(name);
+	
+	//cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectObj(\'' + name + '\');">' + name + '</a>';
+
+	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" >' + name + '</a>';
+	
+	document.getElementById("browser-file-"+i).onclick = function() {
+
+	    //console.log(name);
+	    
+	    selectObj(name);
+
+	};
+	
     }
 
 };
@@ -592,13 +649,13 @@ function readOBJ(file, cb) {
 
 function loadOBJ(contents, name) {
 
-    let object = new THREE.OBJLoader().parse(contents);
+    let object = new OBJLoader().parse(contents);
     object.name = name;
 
     object.children.forEach(function(c) {
     
 	    c.material.transparency = true;
-	    c.material.opacity = importTransparency;
+	    c.material.opacity = import_transparency;
   
 	});
 
@@ -629,18 +686,18 @@ function readOBJMTL(file, mtl_file, cb) {
 
 function loadOBJMTL(obj, mtl_file, name) {
  
-    let object = new THREE.OBJLoader().parse(obj);
+    let object = new OBJLoader().parse(obj);
     let reader = new FileReader();
 
     reader.onload = function(e) {
 
 	let mtl = e.target.result;
-	let materials_creator = new THREE.MTLLoader().parse(e.target.result);
+	let materials_creator = new MTLLoader().parse(e.target.result);
 	materials_creator.preload();
 
 	object.traverse(function (o) {
 
-		if ( o instanceof THREE.Mesh || o instanceof THREE.Line ) {
+		if ( o instanceof Mesh || o instanceof Line ) {
        
 		    if ( o.material.name ) {
 
@@ -650,7 +707,7 @@ function loadOBJMTL(obj, mtl_file, name) {
 
 			    o.material = material;
 			    o.material.transparent = true;
-			    o.material.opacity = importTransparency;
+			    o.material.opacity = import_transparency;
 			    
 			}
 		    }
@@ -768,7 +825,7 @@ function loadSelectedGLTF() {
     let name = selected_gltf.split('.')[0];
     let gltf_file = './geometry/gltf/'+selected_gltf;
     
-    const gltf_loader = new THREE.GLTFLoader();
+    const gltf_loader = new GLTFLoader();
 
     gltf_loader.load(
 	gltf_file,
@@ -814,13 +871,13 @@ function loadSelectedObj() {
 
 function loadOBJMTL_new(obj_file, mtl_file, id, name, group, show) {
 
-    var mtl_loader = new THREE.MTLLoader();
+    var mtl_loader = new MTLLoader();
 
     mtl_loader.load(mtl_file, function(materials) {
 
 	materials.preload();
 
-	var obj_loader = new THREE.OBJLoader();
+	var obj_loader = new OBJLoader();
 	obj_loader.setMaterials(materials);
 
 	obj_loader.load(obj_file, function(object) {
@@ -832,7 +889,7 @@ function loadOBJMTL_new(obj_file, mtl_file, id, name, group, show) {
 	    object.children.forEach(function(c) {
         
 		c.material.transparent = true;
-		c.material.opacity = importTransparency;
+		c.material.opacity = import_transparency;
 		c.material.clippingPlanes = local_planes;
       
 	    });
@@ -863,7 +920,7 @@ function importBeampipe() {
 
 function importDetector() {
 
-    const gltf_loader = new THREE.GLTFLoader();
+    const gltf_loader = new GLTFLoader();
     
     const gltf_objs = [
 	{
@@ -1153,7 +1210,27 @@ document.getElementById("load-event").onclick = function() {
     loadEvent();
 
 };
+
+document.getElementById("import-button").onclick = function() {
+
+    openDialog('#geometry-files');
+    loadObjFiles();
+    $('#import-model').modal('hide');
+
+};
+
+document.getElementById("import-file").onchange = importModel;
+
+document.getElementById("load-obj").onclick = function() {
+
+    $('#geometry-files').modal('hide');
+    loadSelectedObj();
+
+};
     
-
-
-export { loadWebFiles, importDetector };
+export {
+    loadWebFiles,
+    importDetector,
+    nextEvent,
+    prevEvent
+};

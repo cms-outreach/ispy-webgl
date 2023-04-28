@@ -16,10 +16,13 @@
   <script src="js/lib/bootstrap.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
   <script src="js/lib/dat.gui.min.js"></script>
-  
+
+  <!--
   <script src="js/lib/three.js"></script>
+  -->
   <script src="js/lib/tween.min.js"></script>
 
+  <!--
   <script src="js/lib/BufferGeometryUtils.js"></script>
 
   <script src="js/lib/TrackballControls.js"></script>
@@ -35,9 +38,11 @@
   
   <script src="js/lib/OBJExporter.js"></script>
   <script src="js/lib/GLTFExporter.js"></script>
- 
+  -->
+  
   <script src="js/lib/jszip.min.js"></script>
 
+  <!--
   <script src="js/lib/DeviceOrientationControls.js"></script>
   <script src="js/lib/StereoEffect.js"></script>
   <script src="js/lib/StereoCamera.js"></script>
@@ -47,7 +52,8 @@
   <script src="js/lib/LineMaterial.js"></script>
   <script src="js/lib/LineSegmentsGeometry.js"></script>
   <script src="js/lib/LineGeometry.js"></script>
-
+  -->
+  
   <!--
   <script src="js/config.js"></script>
   <script src="js/setup.js"></script>
@@ -62,6 +68,17 @@
   <script src="js/ispy.js"></script>
   -->
 
+  <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+  <script type="importmap">
+    {
+	"imports": {
+	    "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+	    "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+	}
+    }
+  </script>
+  
   <script type="module" src="js/ispy.js"></script> 
   
   <title>iSpy WebGL</title>
@@ -165,7 +182,7 @@
           </div>
           
 	  <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#statistics" onclick="updateRendererInfo();" title="Stats">
+            <button type="button" id="stats-button" class="btn btn-default" data-toggle="modal" data-target="#statistics" title="Stats">
                 <i class="fa fa-chart-bar"></i>
               </button>
           </div>
@@ -349,7 +366,7 @@ piwikTracker.enableLinkTracking();
       </div>
       <div class="modal-body">
         <p>
-          Invert colors: <input id='invert-colors' type='checkbox' onchange='invertColors();'>
+          Invert colors: <input id='invert-colors' type='checkbox'>
         </p>
 	<p>
 	  Show clipping plane controls: <input id='clipping' type='checkbox'>
@@ -535,9 +552,9 @@ piwikTracker.enableLinkTracking();
         </p>
         </p>
         <table>
-          <p><button type="button" class="btn btn-default" onclick="openDialog('#geometry-files'); loadObjFiles(); $('#import-model').modal('hide');">Open file(s) from the Web</button></p>
+          <p><button id="import-button" type="button" class="btn btn-default">Open file(s) from the Web</button></p>
           <p>
-            Open local file(s): <input type="file" id="import-file" onchange="importModel();" multiple/>
+            Open local file(s): <input type="file" id="import-file" multiple/>
           </p>
         </table>
       </div>
@@ -571,7 +588,7 @@ piwikTracker.enableLinkTracking();
         <div class="bordered" id="selected-obj"> </div>
         <div id="event-buttons">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" id="load-obj" class="btn btn-default disabled" onclick="$('#geometry-files').modal('hide'); ispy.loadSelectedObj();">Load</button>
+          <button type="button" id="load-obj" class="btn btn-default disabled">Load</button>
         </div>
       </div>
     </div>

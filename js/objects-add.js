@@ -1,9 +1,42 @@
-import { scene, camera, views, local_planes, use_line2 } from "./setup.js";
-import { detector_description, event_description, disabled, data_groups } from "./objects-config.js";
+import {
+    Object3D,
+    Color,
+    LineBasicMaterial,
+    LineSegments,
+    MeshBasicMaterial,
+    DoubleSide,
+    Mesh,
+    Points,
+    PointsMaterial
+} from "three";
 
+import { Line2 } from "three/addons/lines/Line2.js";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { mergeBufferGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+
+import {
+    scene,
+    scenes,
+    camera,
+    views,
+    local_planes,
+    use_line2,
+    showView,
+    current_view
+} from "./setup.js";
+
+import {
+    detector_description,
+    event_description,
+    disabled,
+    data_groups,
+    table_caption
+} from "./objects-config.js";
+
+import { clearSubfolders, addSelectionRow } from "./tree-view.js";
 import * as config from "./config.js";
 
-let current_event;
+let current_event, current_scene;
 
 function addDetector() {
 
@@ -25,14 +58,14 @@ function addDetector() {
 	const visible = ! disabled[key] ? descr.on = true : descr.on = false;
 	addSelectionRow(descr.group, key, descr.name, [], visible);
 
-	const obj = new THREE.Object3D();
+	const obj = new Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
 	
 	scene.getObjectByName(descr.group).add(obj);
 
-	const ocolor = new THREE.Color(descr.style.color);
+	const ocolor = new Color(descr.style.color);
 	//const transp = descr.style.opacity < 1.0 ? true : false;
 	const transp = true; // Make true for all?
 	
@@ -40,7 +73,7 @@ function addDetector() {
 
 	case config.BOX:
 
-	    let box_material = new THREE.LineBasicMaterial({
+	    let box_material = new LineBasicMaterial({
 		color:ocolor, 
 		transparent: transp,
 		linewidth:descr.style.linewidth, 
@@ -57,8 +90,8 @@ function addDetector() {
         
 	    }
 	    
-	    let box = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(box_geometries),
+	    let box = new LineSegments(
+		mergeBufferGeometries(box_geometries),
 		box_material
 	    );
 	    
@@ -70,7 +103,7 @@ function addDetector() {
 
 	case config.SOLIDBOX:
 
-	    let solidbox_material = new THREE.MeshBasicMaterial({
+	    let solidbox_material = new MeshBasicMaterial({
 		color:ocolor,
 		transparent: transp,
 		opacity:descr.style.opacity,
@@ -78,7 +111,7 @@ function addDetector() {
 		clippingPlanes: local_planes
 	    });
         
-	    solidbox_material.side = THREE.DoubleSide;
+	    solidbox_material.side = DoubleSide;
 
 	    let boxes = [];
 	    let lines = [];
@@ -95,8 +128,8 @@ function addDetector() {
         
 	    }
 
-	    let meshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
+	    let meshes = new Mesh(
+		mergeBufferGeometries(boxes),
 		solidbox_material
 	    );
 
@@ -104,15 +137,15 @@ function addDetector() {
 	    meshes.renderOrder = 1;
 	    scene.getObjectByName(key).add(meshes);
 
-	    let line_material = new THREE.LineBasicMaterial({
+	    let line_material = new LineBasicMaterial({
 		    color:0x000000,
 		    transparent: false,
 		    linewidth:1,
 		    depthTest: false
 		});
 
-	    let line_mesh = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(lines),
+	    let line_mesh = new LineSegments(
+		mergeBufferGeometries(lines),
 		line_material
 	    );
 
@@ -129,12 +162,12 @@ function addDetector() {
 
 function addToScene(event, view) {
 
-    scene = scenes[view];
+    current_scene = scenes[view];
 
     // Remove data from scene
     data_groups.forEach(g => {
 
-	scene.getObjectByName(g).children.length = 0;
+	current_scene.getObjectByName(g).children.length = 0;
 
     });
     
@@ -171,19 +204,19 @@ function addToScene(event, view) {
 	const objectIds = [];
 	const visible = ! disabled[key] ? descr.on = true : descr.on = false;
 
-	const obj = new THREE.Object3D();
+	const obj = new Object3D();
 	
 	obj.name = key;
 	obj.visible = visible;
 	
-	scene.getObjectByName(descr.group).add(obj);
+	current_scene.getObjectByName(descr.group).add(obj);
 
 	let ocolor = null;
 	const transp = true;
 
 	if ( descr.style.color !== undefined ) {
 	    
-	    ocolor = new THREE.Color();
+	    ocolor = new Color();
 	    ocolor.setStyle(descr.style.color);
 
 	}
@@ -202,9 +235,9 @@ function addToScene(event, view) {
 
 	    }
 
-	    const line = new THREE.LineSegments(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(boxes),
-		new THREE.LineBasicMaterial({
+	    const line = new LineSegments(
+		mergeBufferGeometries(boxes),
+		new LineBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    linewidth:descr.style.linewidth,
@@ -213,7 +246,7 @@ function addToScene(event, view) {
 	    );
 
 	    line.name = key;
-	    scene.getObjectByName(key).add(line);
+	    current_scene.getObjectByName(key).add(line);
 
 	    break;
 
@@ -237,7 +270,7 @@ function addToScene(event, view) {
         
 	    }
 	    
-	    const solidbox_material = new THREE.MeshBasicMaterial({
+	    const solidbox_material = new MeshBasicMaterial({
 		color:ocolor,
 		transparent: transp,
 		opacity:descr.style.opacity,
@@ -245,32 +278,32 @@ function addToScene(event, view) {
 		depthWrite: false
 	    });
 	    
-	    solidbox_material.side = THREE.DoubleSide;
+	    solidbox_material.side = DoubleSide;
 	    
-	    const smeshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(sboxes),
+	    const smeshes = new Mesh(
+		mergeBufferGeometries(sboxes),
 		solidbox_material
 	    );
 
 	    smeshes.name = key;
-	    scene.getObjectByName(key).add(smeshes);
+	    current_scene.getObjectByName(key).add(smeshes);
 
 	    if ( slines.length > 0 ) {
 	    
-		const sline_material = new THREE.LineBasicMaterial({
+		const sline_material = new LineBasicMaterial({
                     color:0xcccccc,
                     transparent: false,
                     linewidth:1,
                     depthTest: false  
                 });
 
-		const sline_mesh = new THREE.LineSegments(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(slines),
+		const sline_mesh = new LineSegments(
+		    mergeBufferGeometries(slines),
 		    sline_material
 		);
 
 		sline_mesh.name = key;    
-		scene.getObjectByName(key).add(sline_mesh);
+		current_scene.getObjectByName(key).add(sline_mesh);
 
 	    }
 	    
@@ -298,21 +331,21 @@ function addToScene(event, view) {
 
 	    if ( ss_boxes.length > 0 ) {
 
-		const ssb_material = new THREE.MeshBasicMaterial({
+		const ssb_material = new MeshBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    opacity:descr.style.opacity
 		});
 	    
-		ssb_material.side = THREE.DoubleSide;
+		ssb_material.side = DoubleSide;
 		
-		const ssb_meshes = new THREE.Mesh(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(ss_boxes),
+		const ssb_meshes = new Mesh(
+		    mergeBufferGeometries(ss_boxes),
 		    ssb_material
 		);
 
 		ssb_meshes.name = key;
-		scene.getObjectByName(key).add(ssb_meshes);
+		current_scene.getObjectByName(key).add(ssb_meshes);
 
 	    }
 		
@@ -340,21 +373,21 @@ function addToScene(event, view) {
 
 	    if ( sst_boxes.length > 0 ) {
 
-		const sst_material = new THREE.MeshBasicMaterial({
+		const sst_material = new MeshBasicMaterial({
 		    color:ocolor, 
 		    transparent: transp,
 		    opacity:descr.style.opacity
 		});
 	    
-		sst_material.side = THREE.DoubleSide;
+		sst_material.side = DoubleSide;
 
-		var sst_meshes = new THREE.Mesh(
-		    THREE.BufferGeometryUtils.mergeBufferGeometries(sst_boxes),
+		var sst_meshes = new Mesh(
+		    mergeBufferGeometries(sst_boxes),
 		    sst_material
 		);
 	    
 		sst_meshes.name = key;
-		scene.getObjectByName(key).add(sst_meshes);
+		current_scene.getObjectByName(key).add(sst_meshes);
 
 	    }
 	    
@@ -371,28 +404,28 @@ function addToScene(event, view) {
 
 	    }
 
-	    const ematerial = new THREE.MeshBasicMaterial({
-		    color: new THREE.Color(descr.style.ecolor),
+	    const ematerial = new MeshBasicMaterial({
+		    color: new Color(descr.style.ecolor),
 		    transparent: transp,
 		    opacity: descr.style.opacity
 		});
 
-	    const hmaterial = new THREE.MeshBasicMaterial({
-		    color: new THREE.Color(descr.style.hcolor),
+	    const hmaterial = new MeshBasicMaterial({
+		    color: new Color(descr.style.hcolor),
                     transparent: transp,
                     opacity: descr.style.opacity
 		});
 	    
-	    ematerial.side = THREE.DoubleSide;
-	    hmaterial.side = THREE.DoubleSide;
+	    ematerial.side = DoubleSide;
+	    hmaterial.side = DoubleSide;
 
-	    const emeshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(eboxes),
+	    const emeshes = new Mesh(
+		mergeBufferGeometries(eboxes),
 		ematerial
 	    );
 	    
-	    const hmeshes = new THREE.Mesh(
-		THREE.BufferGeometryUtils.mergeBufferGeometries(hboxes),
+	    const hmeshes = new Mesh(
+		mergeBufferGeometries(hboxes),
 		hmaterial
 	    );
 
@@ -406,8 +439,8 @@ function addToScene(event, view) {
 
 	    }
 	    
-	    scene.getObjectByName(key).add(emeshes);
-	    scene.getObjectByName(key).add(hmeshes);
+	    current_scene.getObjectByName(key).add(emeshes);
+	    current_scene.getObjectByName(key).add(hmeshes);
 
 	    break;
 
@@ -433,7 +466,7 @@ function addToScene(event, view) {
 		    // data and THREE objects:
 		    obj.userData.originalIndex = index;
 		    objectIds.push(obj.id);
-		    scene.getObjectByName(key).add(obj);
+		    current_scene.getObjectByName(key).add(obj);
 		    
 		});
 		
@@ -443,15 +476,15 @@ function addToScene(event, view) {
 
 	case config.POINT:
 	    
-	    const points = new THREE.Points(
+	    const points = new Points(
 		descr.fn(data),
-		new THREE.PointsMaterial({
+		new PointsMaterial({
 		    color:ocolor, 
 		    size:descr.style.size
 		}));
 	    
 	    points.name = key;
-	    scene.getObjectByName(key).add(points);
+	    current_scene.getObjectByName(key).add(points);
         
 	    break;
 
@@ -481,7 +514,7 @@ function addToScene(event, view) {
 		    // data and THREE objects:
 		    shape.userData.originalIndex = si;
 		    objectIds.push(shape.id);
-		    scene.getObjectByName(key).add(shape);
+		    current_scene.getObjectByName(key).add(shape);
 		
 		}
         
@@ -497,7 +530,7 @@ function addToScene(event, view) {
 
 		    if ( use_line2 ) {
 		    
-			const line2 = new THREE.Line2(g, new THREE.LineMaterial({
+			const line2 = new Line2(g, new LineMaterial({
 			    color:ocolor,
 			    transparent:transp,
 			    linewidth:descr.style.linewidth*0.001,
@@ -512,11 +545,11 @@ function addToScene(event, view) {
 		    
 			line2.userData.originalIndex = li;
 			objectIds.push(line2.id);
-			scene.getObjectByName(key).add(line2);
+			current_scene.getObjectByName(key).add(line2);
 
 		    } else {
 			
-			const line = new THREE.Line(g, new THREE.LineBasicMaterial({
+			const line = new Line(g, new LineBasicMaterial({
 			    color:ocolor,
 			    transparent:transp,
 			    opacity:descr.style.opacity
@@ -529,7 +562,7 @@ function addToScene(event, view) {
 		    
 			line.userData.originalIndex = li;
 			objectIds.push(line.id);
-			scene.getObjectByName(key).add(line);
+			current_scene.getObjectByName(key).add(line);
 
 		    }
 			    
@@ -579,8 +612,9 @@ function addEvent(event) {
 
     });
 
+    console.log(current_view);
     showView(current_view);
     
 };
 
-export { current_event };
+export { current_event, addEvent };

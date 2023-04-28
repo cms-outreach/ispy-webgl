@@ -1,26 +1,58 @@
+import {
+    Vector3,
+    Plane,
+    Mesh,
+    MeshBasicMaterial,
+    Scene,
+    Object3D,
+    PerspectiveCamera,
+    OrthographicCamera,
+    ArrowHelper,
+    Group,
+    Raycaster,
+    DirectionalLight,
+    WebGLRenderer,
+    REVISION
+} from 'three';
+
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { SVGRenderer } from 'three/addons/renderers/SVGRenderer.js';
+
 import { data_groups } from "./objects-config.js";
-import { onWindowResize, onMouseMove, onMouseDown } from "./display.js";
+
+import {
+    onMouseMove,
+    onMouseDown,
+    updateRendererInfo
+} from "./display.js";
+
 import { importDetector } from "./files-load.js";
 
 let camera, framerate;
 let renderer, inset_renderer, renderer_name;
 let clipgui, local_planes, global_planes;
 let gui, subfolders;
+let is_perspective;
 let inset_scene, inset_camera;
 let inverted_colors, use_line2;
 let scenes, views, current_view, scene;
-let p_camera, o_camera, is_perspective;
+let p_camera, o_camera;
 let velocity, acceleration, stats;
 let tcontrols, ocontrols, controls;
 let get_image_data, image_data;
 let raycaster, intersected;
-let animating, autoRotating;
-let importTransparency;
+let animating, auto_rotating;
+let import_transparency;
 let light1, light2;
 
 function lookAtOrigin() {
 
-    camera.lookAt(new THREE.Vector3(0,0,0));
+    camera.lookAt(new Vector3(0,0,0));
 
 };
 
@@ -39,7 +71,7 @@ function initCamera() {
     camera.position.z = 13.0;
 
     camera.zoom = 2.0;
-    camera.up = new THREE.Vector3(0,1,0);
+    camera.up = new Vector3(0,1,0);
     
     camera.updateProjectionMatrix();
     lookAtOrigin();
@@ -52,8 +84,8 @@ function useRenderer(type) {
     const height = document.getElementById('display').clientHeight;
 
     const rendererTypes = {
-	'WebGLRenderer': THREE.WebGLRenderer,
-	'SVGRenderer': THREE.SVGRenderer
+	'WebGLRenderer': WebGLRenderer,
+	'SVGRenderer': SVGRenderer
     };
 
     renderer = new rendererTypes[type]({antialias:true, alpha:true});
@@ -140,15 +172,15 @@ function setupClipping() {
     };
 
     local_planes = [
-	new THREE.Plane(new THREE.Vector3(-1,0,0), local_params.planeX.constant),
-	new THREE.Plane(new THREE.Vector3(0,-1,0), local_params.planeY.constant),
-	new THREE.Plane(new THREE.Vector3(0,0,-1), local_params.planeZ.constant)
+	new Plane(new Vector3(-1,0,0), local_params.planeX.constant),
+	new Plane(new Vector3(0,-1,0), local_params.planeY.constant),
+	new Plane(new Vector3(0,0,-1), local_params.planeZ.constant)
     ];
     
     global_planes = [
-	new THREE.Plane(new THREE.Vector3(-1,0,0), global_params.planeX.constant),
-	new THREE.Plane(new THREE.Vector3(0,-1,0), global_params.planeY.constant),
-	new THREE.Plane(new THREE.Vector3(0,0,-1), global_params.planeZ.constant)
+	new Plane(new Vector3(-1,0,0), global_params.planeX.constant),
+	new Plane(new Vector3(0,-1,0), global_params.planeY.constant),
+	new Plane(new Vector3(0,0,-1), global_params.planeZ.constant)
     ];
     
     renderer.clippingPlanes = global_planes;
@@ -243,23 +275,23 @@ function setupGUIs() {
 
 function setupInset(height) {
     
-    inset_scene = new THREE.Scene();
+    inset_scene = new Scene();
    
     // fov, aspect, near, far
     const inset_width = height/5;
     const inset_height = height/5;
-    inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
+    inset_camera = new PerspectiveCamera(70, inset_width / inset_height, 1, 100);
     inset_camera.up = camera.up;
     
-    const origin = new THREE.Vector3(0,0,0);
+    const origin = new Vector3(0,0,0);
 
     // dir, origin, length, hex, headLength, headWidth
     const length = 3.5;
     const headLength = 1;
     const headWidth = 1;
     
-    const rx = new THREE.ArrowHelper(
-	new THREE.Vector3(4,0,0),
+    const rx = new ArrowHelper(
+	new Vector3(4,0,0),
 	origin,
 	length,
 	0xff0000,
@@ -267,8 +299,8 @@ function setupInset(height) {
 	headWidth
     );
 
-    const gy = new THREE.ArrowHelper(
-	new THREE.Vector3(0,4,0),
+    const gy = new ArrowHelper(
+	new Vector3(0,4,0),
 	origin,
 	length,
 	0x00ff00,
@@ -276,8 +308,8 @@ function setupInset(height) {
 	headWidth
     );
 
-    const bz = new THREE.ArrowHelper(
-	new THREE.Vector3(0,0,4),
+    const bz = new ArrowHelper(
+	new Vector3(0,0,4),
 	origin,
 	length,
 	0x0000ff,
@@ -293,28 +325,28 @@ function setupInset(height) {
     inset_scene.add(gy);
     inset_scene.add(bz);
 				
-    const font_loader = new THREE.FontLoader();
+    const font_loader = new FontLoader();
     
     font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
 	const tps = {size:0.75, height:0.1, font:font};
 	
-	const x_geo = new THREE.TextGeometry('X', tps);
-	const y_geo = new THREE.TextGeometry('Y', tps);
-	const z_geo = new THREE.TextGeometry('Z', tps);
+	const x_geo = new TextGeometry('X', tps);
+	const y_geo = new TextGeometry('Y', tps);
+	const z_geo = new TextGeometry('Z', tps);
 
-	const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	const x_text = new THREE.Mesh(x_geo, x_material);
+	const x_material = new MeshBasicMaterial({ color: 0xff0000 });
+	const x_text = new Mesh(x_geo, x_material);
 	x_text.position.x = length+headLength;
 	x_text.name = 'xtext';
 
-	const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
-	const y_text = new THREE.Mesh(y_geo, y_material);
+	const y_material = new MeshBasicMaterial({ color: 0x00ff00});
+	const y_text = new Mesh(y_geo, y_material);
 	y_text.position.y = length+headLength;
 	y_text.name = 'ytext';
 	    
-	const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
-	const z_text = new THREE.Mesh(z_geo, z_material);
+	const z_material = new MeshBasicMaterial({ color: 0x0000ff});
+	const z_text = new Mesh(z_geo, z_material);
 	z_text.position.z = length+headLength;
 	z_text.name = 'ztext';
 
@@ -343,7 +375,6 @@ function handleToggles() {
 
     });
     
-
     let show_logo = document.getElementById('show-logo');
     show_logo.checked = true;
 
@@ -429,9 +460,9 @@ function init() {
     const inset = document.getElementById('axes');
 
     scenes = {
-	'3D': new THREE.Scene(),
-	'RPhi': new THREE.Scene(),
-	'RhoZ': new THREE.Scene()
+	'3D': new Scene(),
+	'RPhi': new Scene(),
+	'RhoZ': new Scene()
     };
 
     views = ['3D', 'RPhi', 'RhoZ'];
@@ -448,7 +479,7 @@ function init() {
     const width = display.clientWidth;
     const height = display.clientHeight;
     
-    p_camera = new THREE.PerspectiveCamera(
+    p_camera = new PerspectiveCamera(
 	75,
 	width/height,
 	0.1,
@@ -457,7 +488,7 @@ function init() {
 
     p_camera.name = 'PerspectiveCamera';
 
-    o_camera = new THREE.OrthographicCamera(
+    o_camera = new OrthographicCamera(
 	width / -2,
 	width / 2,
 	height / 2,
@@ -472,8 +503,8 @@ function init() {
     camera = is_perspective ? p_camera : o_camera;
     initCamera();
     
-    velocity = new THREE.Vector3(0, 0, 0);
-    acceleration = new THREE.Vector3(0, 0, 0);
+    velocity = new Vector3(0, 0, 0);
+    acceleration = new Vector3(0, 0, 0);
 
     setupInset(height);
     
@@ -489,23 +520,27 @@ function init() {
 
     // The second argument is necessary to make sure that mouse events are
     // handled only when in the canvas
-    tcontrols = new THREE.TrackballControls(camera, renderer.domElement);
+    tcontrols = new TrackballControls(camera, renderer.domElement);
     tcontrols.rotateSpeed = 3.0;
     tcontrols.zoomSpeed = 0.5;
     tcontrols.dynamicDampingFactor = 1.0;
     tcontrols.noRotate = false;
     tcontrols.noPan = false;
     
-    ocontrols = new THREE.OrbitControls(camera, renderer.domElement);
+    ocontrols = new OrbitControls(camera, renderer.domElement);
     ocontrols.enableRotate = true;
 
     controls = ocontrols;
+    
+    document.getElementById("3d").onclick = function() { showView("3D") };
+    document.getElementById("rphi").onclick = function() { showView("RPhi") };
+    document.getElementById("rhoz").onclick = function () { showView("RhoZ") };
 
     views.forEach(v => {
 
 	['Detector', 'Imported'].concat(data_groups).forEach(g => {
 
-	    let obj_group = new THREE.Group();
+	    let obj_group = new Group();
 	    obj_group.name = g;
 	    scenes[v].add(obj_group);
 	   
@@ -514,14 +549,14 @@ function init() {
     });
 
     document.getElementById('version').innerHTML = "v"+version;
-    document.getElementById('threejs').innerHTML = "r"+THREE.REVISION;
+    document.getElementById('threejs').innerHTML = "r"+REVISION;
     
     window.addEventListener('resize', onWindowResize, false);
 
     get_image_data = false;
     image_data = null;
     
-    raycaster = new THREE.Raycaster();
+    raycaster = new Raycaster();
     raycaster.layers.set(2);
 
     intersected = null;
@@ -533,17 +568,16 @@ function init() {
     animating = false;
 
     setFramerate(30);
-
     document.getElementById('fps-slider').value = framerate;
     
-    importTransparency = 0.75;
-    document.getElementById('transparency-slider').value = importTransparency;
+    import_transparency = 0.75;
+    document.getElementById('transparency-slider').value = import_transparency;
    
-    document.getElementById('trspy').innerHTML = importTransparency;
+    document.getElementById('trspy').innerHTML = import_transparency;
     
     document.getElementById('display').appendChild(document.getElementById('event-info'));
     
-    autoRotating = false;
+    auto_rotating = false;
 
 };
 
@@ -552,16 +586,16 @@ function initLight() {
     const intensity = 1.0;
     const length = 15.0;
     
-    const lights = new THREE.Object3D();
+    const lights = new Object3D();
     lights.name = 'Lights';
     scene.add(lights);
     
-    light1 = new THREE.DirectionalLight(0xffffff, intensity);
+    light1 = new DirectionalLight(0xffffff, intensity);
     light1.name = 'Light1';
     light1.position.set(-length, length, length);
     scene.getObjectByName('Lights').add(light1);
     
-    light2 = new THREE.DirectionalLight(0xffffff, intensity);
+    light2 = new DirectionalLight(0xffffff, intensity);
     light2.name = 'Light2';
     light2.position.set(length, -length, -length);
     scene.getObjectByName('Lights').add(light2);
@@ -598,7 +632,7 @@ function render() {
 };
 
 function run() {
-
+    
     setTimeout( function() {
   
 	requestAnimationFrame(run);
@@ -631,7 +665,7 @@ function run() {
 	
     }
 
-    if ( autoRotating ) {
+    if ( auto_rotating ) {
 	
 	var speed = Date.now()*0.0005;
 	camera.position.x = Math.cos(speed)*10;
@@ -641,19 +675,589 @@ function run() {
 
 };
 
-export { camera, framerate,
-	 renderer, inset_renderer, renderer_name,
-	 clipgui, local_planes, global_planes,
-	 gui, subfolders,
-	 inverted_colors, use_line2,
-	 scenes, views, current_view, scene,
-	 p_camera, o_camera, is_perspective,
-	 velocity, acceleration, stats,
-	 tcontrols, ocontrols, controls,
-	 get_image_data, image_data,
-	 raycaster, intersected,
-	 animating, autoRotating,
-	 importTransparency,
-	 light1, light2, render, run,
-	 init, initLight, initDetector, lookAtOrigin };
+function resetView() {
+
+    setPerspective();
+    initCamera();
+
+    controls.reset();
+
+    document.getElementById('3d').classList.add('active');
+    document.getElementById('rphi').classList.remove('active');
+    document.getElementById('rhoz').classList.remove('active');
+
+    current_view = '3D';
+    scene = scenes['3D'];
+    
+};
+
+function setXY() {
+
+    const length = camera.position.length();
+
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = length;
+    camera.up = new Vector3(0,1,0);
+
+    lookAtOrigin();
+
+};
+
+function setZX() {
+
+    const length = camera.position.length();
+
+    camera.position.x = 0;
+    camera.position.y = length;
+    camera.position.z = 0;
+    camera.up = new Vector3(1,0,0);
+
+    lookAtOrigin();
+
+};
+
+function setYZ() {
+
+    const length = camera.position.length();
+
+    camera.position.x = -length;
+    camera.position.y = 0;
+    camera.position.z = 0;
+    camera.up = new Vector3(0,1,0);
+    
+    lookAtOrigin();
+
+};
+
+function autoRotate() {
+
+    auto_rotating = !auto_rotating;
+
+    document.getElementById('autorotate').classList.toggle('active');
+
+};
+
+function setOrthographic() {
+    
+    document.getElementById('perspective').classList.remove('active');
+    document.getElementById('orthographic').classList.add('active');
+    
+    is_perspective = false;
+    camera = o_camera;
+
+    camera.position.x = p_camera.position.x;
+    camera.position.y = p_camera.position.y;
+    camera.position.z = p_camera.position.z;
+
+    camera.zoom = p_camera.zoom;
+    camera.up = p_camera.up;
+    
+    const fov = p_camera.fov;
+    const aspect = p_camera.aspect;
+    const near = p_camera.near;
+    const far = p_camera.far;
+    
+    const focus = (near+far)/2;
+
+    let half_height = Math.tan(fov*Math.PI/180/2)*focus;
+    let half_width = half_height*aspect;
+
+    half_height /= p_camera.zoom;
+    half_width /= p_camera.zoom;
+    
+    camera.left = -half_width;
+    camera.right = half_width;
+    camera.top = half_height;
+    camera.bottom = -half_height;
+    
+    camera.updateProjectionMatrix();
+
+    controls.object = camera;
+    controls.update();
+    
+};
+
+function setPerspective() {
+
+    document.getElementById('perspective').classList.add('active');
+    document.getElementById('orthographic').classList.remove('active');
+    
+    is_perspective = true;
+    camera = p_camera;
+    
+    camera.position.x = o_camera.position.x;
+    camera.position.y = o_camera.position.y;
+    camera.position.z = o_camera.position.z;
+
+    camera.zoom = o_camera.zoom;
+    camera.up = o_camera.up;
+
+    camera.aspect = o_camera.right / o_camera.top;
+    
+    camera.updateProjectionMatrix();
+
+    controls.object = camera;
+    controls.update();
+    
+};
+
+
+function invertColors() {
+
+    inverted_colors = ! inverted_colors;
+
+    ! inverted_colors ?  renderer.setClearColor(0x232323,1) : renderer.setClearColor(0xefefef,1);
+	
+    let body = document.querySelector('body');	
+    body.classList.toggle('white');
+    body.classList.toggle('black');
+    
+    let ids = [
+	'event-info', 'titlebar', 'toolbar',
+	'display', 'tableview', 'browser-table',
+	'browser-files', 'obj-table', 'obj-files'
+    ];
+
+    ids.forEach(id => {
+
+	let el = document.getElementById(id);
+
+	el.classList.toggle('white');
+	el.classList.toggle('black');
+
+    });
+
+    let selectors = [
+	'treeview td.group', '#treeview td.collection',
+	'#tableview table thead th', '#browser-table th',
+	'#obj-table th', '.modal-content', '.modal-title',
+	'#table-data-eventObject'
+    ];
+
+    selectors.forEach(sels => {
+
+	document.querySelectorAll(sels).forEach(s => {
+
+	    s.classList.toggle('white');
+	    s.classList.toggle('black');
+
+	});
+
+    });
+
+};
+
+function showView(view) {
+
+    console.log(view);
+    
+    switch (view) {
+
+    case '3D':
+	
+	document.getElementById('3d').classList.add('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.remove('active');
+	
+	document.getElementById('perspective').removeAttribute('disabled', '');
+	document.getElementById('orthographic').removeAttribute('disabled', '');
+	
+	document.getElementById('xy').removeAttribute('disabled', '');
+	document.getElementById('yz').removeAttribute('disabled', '');
+	document.getElementById('xz').removeAttribute('disabled', '');
+	
+	controls.enableRotate = true;
+	controls.reset();
+
+	/*
+	  We may have cases where the view is already 3D
+	  but we have switched to/from persepctive/orthographic
+	*/
+	if ( current_view !== '3D' )
+	    setPerspective();
+
+	current_view = '3D';
+	scene = scenes['3D'];
+
+	break;
+
+    case 'RPhi':
+
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.add('active');
+	document.getElementById('rhoz').classList.remove('active');
+
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
+	
+	controls.enableRotate = false;
+	controls.reset();
+	
+	setOrthographic();
+	setXY();
+	
+	current_view = 'RPhi';
+	scene = scenes['RPhi'];
+	
+	break;
+
+    case 'RhoZ':
+	
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.add('active');
+	
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
+	
+	controls.enableRotate = false;
+	controls.reset();
+
+	setOrthographic();
+	setYZ();
+		
+	current_view = 'RhoZ';
+	scene = scenes['RhoZ'];
+	
+	break;
+	
+    }
+    
+};
+
+function enterFullscreen() {
+    
+    const container = document.getElementById('ispy');
+
+    if ( container.requestFullscreen ) {
+	container.requestFullscreen();
+    } else if ( container.msRequestFullscreen ) {
+	container.msRequestFullscreen();
+    } else if ( container.mozRequestFullScreen ) {
+	container.mozRequestFullScreen();
+    } else if ( container.webkitRequestFullscreen ) {
+	container.webkitRequestFullscreen();
+    } else {
+	alert('Cannot go to full screen!');
+    }
+    
+};
+
+function exitFullscreen() {
+  
+    if ( document.exitFullscreen ) {
+	document.exitFullscreen();
+    } else if ( document.msExitFullscreen ) {
+	document.msExitFullscreen();
+    } else if ( document.mozCancelFullScreen ) {
+	document.mozCancelFullScreen();
+    } else if ( document.webkitExitFullscreen ) {
+	document.webkitExitFullscreen();
+    } else {
+	alert('Cannot exit full screen. Try Esc?');
+    }
+
+};
+
+function toggleFullscreen() {
+
+    document.getElementById('enterFullscreen').classList.toggle('active');
+    document.getElementById('exitFullscreen').classList.toggle('active');
+
+};
+
+document.addEventListener('webkitfullscreenchange', toggleFullscreen, false);
+document.addEventListener('mozfullscreenchange', toggleFullscreen, false);
+document.addEventListener('fullscreenchange', toggleFullscreen, false);
+document.addEventListener('MSFullscreenChange', toggleFullscreen, false);
+
+function onWindowResize() {
+
+    let display = document.getElementById('display');
+    display.removeAttribute('style');
+
+    let w = display.clientWidth;
+    let h = display.clientHeight;
+    
+    if ( is_perspective ) {
+
+	camera.aspect = w/h;
+
+    } else {
+
+	camera.left = -w/2;
+	camera.right = w/2;
+	camera.top = h/2;
+	camera.bottom = -h/2;
+
+    }
+
+    camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+    render();
+
+};
+
+function reload() {
+
+    location.reload();
+
+};
+
+function setOrientationControls(e) {
+  
+    if ( ! e.alpha ) {
+	
+	return;
+    
+    }
+
+    window.removeEventListener('deviceorientation', setOrientationControls, true);
+
+}
+
+function zoomIn() {
+
+    camera.zoom += 0.5;
+    camera.updateProjectionMatrix();
+    
+};
+
+function zoomOut() {
+    
+    camera.zoom -= 0.5;
+    camera.updateProjectionMatrix();
+
+};
+
+function printImage() {
+  
+    get_image_data = true;
+    render();
+    window.open(image_data, "toDataURL() image", "width=1600, height=900");
+
+};
+
+function exportScene() {
+
+    const exporter = new GLTFExporter();
+
+    const options = {
+	onlyVisible: true,
+	binary: true
+    };
+
+    exporter.parse(scene, function(result) {
+
+	exportArrayBuffer(result, 'scene.glb'); 
+
+    }, options);
+
+    alert('scene.glb created');
+    
+};
+
+function exportString(output, filename) {
+
+    const blob = new Blob([output], {type: 'text/plain'});
+    const objectURL = URL.createObjectURL(blob);
+
+    console.log(filename);
+
+    // Use this to output to file:
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    document.body.appendChild( link );
+    link.href = objectURL;
+    link.download = filename;
+    link.target = '_blank';
+    link.click();
+    
+    // Use this to output to tab:
+    //window.open(objectURL, '_blank');
+    //window.focus();
+
+};
+
+function exportArrayBuffer(output, filename) {
+
+    const blob = new Blob([output], {type: 'application/octect-stream'});
+    const objectURL = URL.createObjectURL(blob);
+
+    console.log(filename);
+
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    document.body.appendChild( link );
+    link.href = objectURL;
+    link.download = filename;
+    link.target = '_blank';
+    link.click();
+    
+};
+
+function exportGLTF_binary() {
+
+    exportGLTF(true);
+
+};
+
+function exportGLTF_text() {
+
+    exportGLTF(false);
+
+};
+
+function exportGLTF(binary) {
+
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
+    
+    const exporter = new GLTFExporter();
+
+    const options = {
+	binary: binary
+    };
+	
+    scene.children.forEach(function(c) {
+	    
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
+	    
+	    c.children.forEach(function(o) {
+
+		if ( o.visible ) {
+		    
+		    exporter.parse(o, function(result) {
+
+			if ( result instanceof ArrayBuffer ) {
+
+			    exportArrayBuffer(result, o.name+'.glb'); 
+			    
+			} else {
+
+			    const output = JSON.stringify(result, null, 2);
+			    exportString(output, o.name+'.gltf');
+
+			}
+			
+		    }, options);
+
+		}
+			
+	    });
+		
+	}
+	    
+    });
+
+};
+
+function exportOBJ() {
+
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
+    
+    const exporter = new OBJExporter();
+
+    scene.children.forEach(function(c) {
+	    
+	if ( c.children.length > 0 && c.name !== 'Lights' ) {
+	    
+	    c.children.forEach(function(o) {
+			
+		if ( o.visible ) {
+			    
+		    exportString(exporter.parse(o), o.name+'.obj');
+			    
+		}
+			
+	    });
+
+	}
+
+    });
+
+};
+
+function setTransparency(t) {
+
+    import_transparency = t;
+
+    document.getElementById('trspy').innerHTML = t;
+
+    let imported = scene.getObjectByName('Imported');
+
+    imported.children.forEach(function(obj) {
+    
+	obj.children.forEach(function(c) {
+      
+	    c.material.transparent = true;
+	    c.material.opacity = t;
+    
+	});
+	    
+    });
+
+};
+
+
+document.getElementById("reset_view").onclick = resetView;
+document.getElementById("zoom_in").onclick = zoomIn;
+document.getElementById("zoom_out").onclick = zoomOut;
+document.getElementById("autorotate").onclick = autoRotate;
+
+document.getElementById("xy").onclick = setXY;
+document.getElementById("yz").onclick = setYZ;
+document.getElementById("xz").onclick = setZX;
+
+document.getElementById("perspective").onclick = setPerspective;
+document.getElementById("orthographic").onclick = setOrthographic;
+
+document.getElementById("enterFullscreen").onclick = enterFullscreen;
+document.getElementById("exitFullscreen").onclick = exitFullscreen;
+
+document.getElementById("print").onclick = printImage;
+document.getElementById("stats-button").onclick = updateRendererInfo;
+document.getElementById("invert-colors").onclick = invertColors;
+
+document.getElementById("fps-slider").oninput = function() {
+
+    setFramerate(document.getElementById("fps-slider").value);
+
+};
+
+document.getElementById("transparency-slider").oninput = function() {
+
+    setTransparency(this.value);
+
+}
+
+export {
+    zoomIn, zoomOut,
+    exportScene, resetView, onWindowResize,
+    camera, framerate,
+    renderer, inset_renderer, renderer_name,
+    clipgui, local_planes, global_planes,
+    gui, subfolders,
+    inverted_colors, use_line2,
+    scenes, views, current_view, scene,
+    p_camera, o_camera,
+    velocity, acceleration, stats,
+    tcontrols, ocontrols, controls,
+    get_image_data, image_data,
+    raycaster, intersected,
+    animating, import_transparency,
+    light1, light2, render, run,
+    init, initLight, initDetector,
+    lookAtOrigin, showView
+};
 

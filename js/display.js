@@ -1,74 +1,26 @@
-import { inverted_colors, render, renderer, renderer_name, importTransparency, scene, camera, is_perspective, raycaster } from "./setup.js";
-import { zoomIn, zoomOut, exportScene } from "./controls.js";
+import { Color, Vector2 } from "three";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+
+import {
+    inverted_colors,
+    render,
+    renderer,
+    renderer_name,
+    scene,
+    camera,
+    raycaster,
+    zoomIn,
+    zoomOut,
+    exportScene,
+    current_view
+} from "./setup.js";
+
+import { current_event } from "./objects-add.js";
 import { event_description } from "./objects-config.js";
+import { nextEvent, prevEvent } from "./files-load.js";
 
 let intersected = null;
-
-function invertColors() {
-
-    inverted_colors = ! inverted_colors;
-
-    ! inverted_colors ?  renderer.setClearColor(0x232323,1) : renderer.setClearColor(0xefefef,1);
-	
-    let body = document.querySelector('body');	
-    body.classList.toggle('white');
-    body.classList.toggle('black');
-    
-    let ids = [
-	'event-info', 'titlebar', 'toolbar',
-	'display', 'tableview', 'browser-table',
-	'browser-files', 'obj-table', 'obj-files'
-    ];
-
-    ids.forEach(id => {
-
-	let el = document.getElementById(id);
-
-	el.classList.toggle('white');
-	el.classList.toggle('black');
-
-    });
-
-    let selectors = [
-	'treeview td.group', '#treeview td.collection',
-	'#tableview table thead th', '#browser-table th',
-	'#obj-table th', '.modal-content', '.modal-title',
-	'#table-data-eventObject'
-    ];
-
-    selectors.forEach(sels => {
-
-	document.querySelectorAll(sels).forEach(s => {
-
-	    s.classList.toggle('white');
-	    s.classList.toggle('black');
-
-	});
-
-    });
-
-};
-
-function setTransparency(t) {
-
-    importTransparency = t;
-
-    document.getElementById('trspy').innerHTML = t;
-
-    let imported = scene.getObjectByName('Imported');
-
-    imported.children.forEach(function(obj) {
-    
-	obj.children.forEach(function(c) {
-      
-	    c.material.transparent = true;
-	    c.material.opacity = t;
-    
-	});
-	    
-    });
-
-};
+let currentCollection;
 
 function updateRendererInfo() {
 
@@ -126,39 +78,12 @@ function updateRenderer(type) {
     useRenderer(type);
 
     // Fix this
-    var ncontrols = new THREE.TrackballControls(camera, renderer.domElement);
+    var ncontrols = new TrackballControls(camera, renderer.domElement);
     ncontrols.rotateSpeed = 3.0;
     ncontrols.zoomSpeed = 0.5;
     controls = ncontrols;
     
     updateRendererInfo();
-
-};
-
-function onWindowResize() {
-
-    let display = document.getElementById('display');
-    display.removeAttribute('style');
-
-    let w = display.clientWidth;
-    let h = display.clientHeight;
-    
-    if ( is_perspective ) {
-
-	camera.aspect = w/h;
-
-    } else {
-
-	camera.left = -w/2;
-	camera.right = w/2;
-	camera.top = h/2;
-	camera.bottom = -h/2;
-
-    }
-
-    camera.updateProjectionMatrix();
-    renderer.setSize(w,h);
-    render();
 
 };
 
@@ -194,7 +119,7 @@ function onMouseMove(e) {
     const offsetX = display.getBoundingClientRect().left + window.pageXOffset - left;
     const offsetY = display.getBoundingClientRect().top + window.pageYOffset - top;
 
-    const pointer = new THREE.Vector2();
+    const pointer = new Vector2();
     
     pointer.x = ((e.clientX-offsetX) / w)*2 - 1;
     pointer.y = -((e.clientY-offsetY) / h)*2 +1;
@@ -209,7 +134,7 @@ function onMouseMove(e) {
 	
 	if ( ! intersected.selected ) {
 	
-	    const original_color = new THREE.Color(
+	    const original_color = new Color(
 		event_description[current_view][intersected.name].style.color
 	    );
 
@@ -270,7 +195,7 @@ function onMouseDown(e) {
 
 	    if ( intersected.selected ) {
 	    
-		const original_color = new THREE.Color(
+		const original_color = new Color(
 		    event_description[current_view][intersected.name].style.color
 		);
 		
@@ -371,7 +296,7 @@ document.addEventListener('keydown', function(e) {
 
 	if ( intersected && intersected.name.includes('Jet') ) {
 
-	    intersected.material.color = new THREE.Color(
+	    intersected.material.color = new Color(
 		event_description[current_view][intersected.name].style.color
 	    );
 
@@ -430,8 +355,10 @@ function displayCollection(key, group, name, objectIds) {
     
     for ( let c in collection ) {
 	
-	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	//let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
+	let row_content = "<tr id='" + key.concat(index++) + "' >";
+	
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
 	
@@ -443,6 +370,16 @@ function displayCollection(key, group, name, objectIds) {
 
 	let rc = $(row_content);
 	collectionTable.append(rc);
+
+	/*
+	  FIXME
+
+	document.getElementById(key.concat(index++)).onmouseenter = function() {
+	    highlightObject(objectIds[c])
+	};
+	
+	document.getElementById(key.concat(index++)).onmouseout = unHighlightObject;
+	*/
 	
     }
 
@@ -650,4 +587,11 @@ function unHighlightObject() {
 
 };
 
-export { selected_objects, onWindowResize, onMouseMove, onMouseDown };
+export {
+    selected_objects,
+    onMouseMove,
+    onMouseDown,
+    displayCollection,
+    getObjectIds,
+    updateRendererInfo
+};

@@ -1,5 +1,22 @@
-import { gui, subfolders, views, scenes, use_line2 } from "./setup.js";
-import { detector_description, event_description, disabled, data_groups } from "./objects-config.js";
+import { Color } from 'three';
+
+import {
+    gui,
+    subfolders,
+    views,
+    scenes,
+    use_line2
+} from "./setup.js";
+
+import {
+    detector_description,
+    event_description,
+    disabled,
+    data_groups
+} from "./objects-config.js";
+
+import { current_event } from "./objects-add.js";
+import { displayCollection, getObjectIds } from "./display.js";
 
 function addGroups() {
 
@@ -96,14 +113,14 @@ function showObject(key, view, show) {
 function addSelectionRow(group, key, name, objectIds, visible) {
 
     let opacity = 1.0;
-    let color = new THREE.Color();
+    let color = new Color();
     let linewidth = 1;
     let min_pt = 1.0;
     let min_et = 1.0;
     let min_energy = 1.0;
     let nobjects = 0;
 
-    view = '3D';
+    let view = '3D';
     
     if ( detector_description[view].hasOwnProperty(key) ) {
 
@@ -183,7 +200,7 @@ function addSelectionRow(group, key, name, objectIds, visible) {
 	    
 	    displayCollection(
 		key, group, name,
-		getObjectIds(scene.getObjectByName(key))
+		getObjectIds(scenes[view].getObjectByName(key))
 	    );
 	    
 	};
@@ -377,13 +394,13 @@ function addSelectionRow(group, key, name, objectIds, visible) {
 		    
 			oc.children.forEach(function(og) {
 
-			    og.material.color = new THREE.Color(row_obj.color);
+			    og.material.color = new Color(row_obj.color);
 
 			});
 		    
 		    } else {
 		
-			oc.material.color = new THREE.Color(row_obj.color);
+			oc.material.color = new Color(row_obj.color);
 			
 		    }
 		    
@@ -397,4 +414,4 @@ function addSelectionRow(group, key, name, objectIds, visible) {
     
 };
 
-export { addSelectionRow, addGroups, showObject };
+export { addSelectionRow, addGroups, showObject, clearSubfolders };

@@ -240,4 +240,4 @@ function toggleAnimation() {
     
 };
 
-export { toggleAnimation };
+document.getElementById("animate").onclick = toggleAnimation;
