@@ -16,57 +16,8 @@
   <script src="js/lib/bootstrap.min.js"></script>
   <script src="js/lib/stats.min.js"></script>
   <script src="js/lib/dat.gui.min.js"></script>
-
-  <!--
-  <script src="js/lib/three.js"></script>
-  -->
-  <script src="js/lib/tween.min.js"></script>
-
-  <!--
-  <script src="js/lib/BufferGeometryUtils.js"></script>
-
-  <script src="js/lib/TrackballControls.js"></script>
-  <script src="js/lib/OrbitControls.js"></script>
-  
-  <script src="js/lib/Projector.js"></script>
-  <script src="js/lib/SVGRenderer.js"></script>
-
-  <script src="js/lib/MTLLoader.js"></script>
-  <script src="js/lib/OBJLoader.js"></script>
-
-  <script src="js/lib/GLTFLoader.js"></script>
-  
-  <script src="js/lib/OBJExporter.js"></script>
-  <script src="js/lib/GLTFExporter.js"></script>
-  -->
-  
+  <script src="js/lib/tween.min.js"></script>  
   <script src="js/lib/jszip.min.js"></script>
-
-  <!--
-  <script src="js/lib/DeviceOrientationControls.js"></script>
-  <script src="js/lib/StereoEffect.js"></script>
-  <script src="js/lib/StereoCamera.js"></script>
-
-  <script src="js/lib/LineSegments2.js"></script>
-  <script src="js/lib/Line2.js"></script>
-  <script src="js/lib/LineMaterial.js"></script>
-  <script src="js/lib/LineSegmentsGeometry.js"></script>
-  <script src="js/lib/LineGeometry.js"></script>
-  -->
-  
-  <!--
-  <script src="js/config.js"></script>
-  <script src="js/setup.js"></script>
-  <script src="js/animate.js"></script>
-  <script src="js/files-load.js"></script>
-  <script src="js/objects-draw.js"></script>
-  <script src="js/objects-add.js"></script>
-  <script src="js/objects-config.js"></script>
-  <script src="js/controls.js"></script>
-  <script src="js/tree-view.js"></script>
-  <script src="js/display.js"></script>
-  <script src="js/ispy.js"></script>
-  -->
 
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 
@@ -104,16 +55,16 @@
           </div>
           
 	  <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" onclick="reload();" title="Reload page">
+            <button type="button" id="reload" class="btn btn-default" title="Reload page">
               <i class="fa fa-redo"></i>
             </button>
           </div>
           
 	  <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default disabled" id="prev-event-button" onclick="prevEvent();" title="Previous Event [Left Arrow]">
+            <button type="button" class="btn btn-default disabled" id="prev-event-button" title="Previous Event [Left Arrow]">
               <i class="fa fa-step-backward"></i>
             </button>
-            <button type="button" class="btn btn-default disabled" id="next-event-button" onclick="nextEvent();" title="Next Event [Right Arrow]">
+            <button type="button" class="btn btn-default disabled" id="next-event-button" title="Next Event [Right Arrow]">
               <i class="fa fa-step-forward"></i>
             </button>
           </div>
@@ -211,12 +162,13 @@
               <i class="fa fa-video-camera"></i>
             </button>
           </div>
+	  -->
+	  
           <div class="btn-group" role="group">
-            <button type="button" id="stereo" class="btn btn-default" data-toggle="modal" data-target="#stereo-modal" title="Stereo View">
+            <button type="button" id="stereo" class="btn btn-default" title="Enable VR Button">
               <i class="fa fa-vr-cardboard"></i>
             </button>
           </div>
-	  -->
           
 	  <div class="btn-group" role="group">  
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
@@ -377,9 +329,6 @@ piwikTracker.enableLinkTracking();
 	<p>
 	  Enable variable line thickness: <input id='pickable_lines' type='checkbox'>
         </p>
-	<p>
-          Show information dialogs: <input id='show-info' type='checkbox'>
-        </p>
         <p>
           Show experiment logo: <input id='show-logo' type='checkbox'>
         </p>
@@ -473,32 +422,6 @@ piwikTracker.enableLinkTracking();
   </div>
 </div>
 
-<div id="stereo-modal" role="dialog" class="modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content bordered black">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i><span class="sr-only">Close</span></button>
-        <h4 class="modal-title black">Set to Stereo View</h4>
-      </div>
-      <div class="modal-body">
-        <p>
-          This view is specifically designed for use in a
-          <a href="https://www.google.com/get/cardboard/" target="_blank">Google Cardboard</a> viewer
-          and therefore requires a viewer and a suitable mobile phone.
-        </p>
-        <p>
-          To use with the viewer, rotate the phone to landscape, press the button below, and insert into the viewer. The view automatically
-          pans forward in the direction of view. To exit, tap the screen.
-        </p>
-        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="setStereo();">Start</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div id="export-model" role="dialog" class="modal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content bordered black">
@@ -513,9 +436,9 @@ piwikTracker.enableLinkTracking();
               Select export format <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#" onclick="exportOBJ();">Export OBJ</a></li>
-	      <li><a href="#" onclick="exportGLTF_text();">Export GLTF (text)</a></li>
-              <li><a href="#" onclick="exportGLTF_binary();">Export GLTF (binary)</a></li>
+              <li><a href="#" id="export-obj">Export OBJ</a></li>
+	      <li><a href="#" id="export-gltf">Export GLTF (text)</a></li>
+              <li><a href="#" id="export-glb">Export GLTF (binary)</a></li>
             </ul>
           </div>
         </p>

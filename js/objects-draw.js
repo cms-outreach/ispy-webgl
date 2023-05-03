@@ -2,6 +2,10 @@ import * as THREE from "three";
 
 import { use_line2 } from "./setup.js";
 
+import { Line2 } from "three/addons/lines/Line2.js";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { LineGeometry } from "three/addons/lines/LineGeometry.js";
+
 export function makeWireframeBox(data, ci) {
 
     let all_positions = [];
@@ -681,9 +685,9 @@ export function makeTrackPointsRZ(data, extra, assoc, style, selection) {
 
 	if ( use_line2 ) {
 	
-	    const line2 = new THREE.Line2(
-		new THREE.LineGeometry().setPositions(positions[k]),
-		new THREE.LineMaterial({
+	    const line2 = new Line2(
+		new LineGeometry().setPositions(positions[k]),
+		new LineMaterial({
 		    color: tcolor,
 		    linewidth: style.linewidth*0.001,
 		    transparent: transp,
@@ -764,9 +768,9 @@ export function makeTrackPoints(data, extra, assoc, style, selection) {
 
 	if ( use_line2 ) {
 	
-	    const line2 = new THREE.Line2(
-		new THREE.LineGeometry().setPositions(positions[k]),
-		new THREE.LineMaterial({
+	    const line2 = new Line2(
+		new LineGeometry().setPositions(positions[k]),
+		new LineMaterial({
 		    color: tcolor,
 		    linewidth: style.linewidth*0.001,
 		    transparent: transp,
@@ -1004,12 +1008,12 @@ export function makeThickTracks(tracks, extras, assocs, style, selection) {
 
 	if ( use_line2 ) {
 
-	    let lg = new THREE.LineGeometry();
+	    let lg = new LineGeometry();
 	    let positions = [];
 	    curve.getPoints(32).forEach(p => { positions.push(p.x,p.y,p.z); });
 	    lg.setPositions(positions);
 
-	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
+	    let line = new Line2(lg, new LineMaterial({
 		color:tcolor,
 		opacity:style.opacity,
 		transparent:transp,
@@ -1103,12 +1107,12 @@ export function makeThickTracksRZ(tracks, extras, assocs, style, selection) {
 
 	if ( use_line2 ) {
 
-	    let lg = new THREE.LineGeometry();
+	    let lg = new LineGeometry();
 	    let positions = [];
 	    curve.getPoints(32).forEach(p => { positions.push(p.x,p.y,p.z); });
 	    lg.setPositions(positions);
 
-	    let line = new THREE.Line2(lg, new THREE.LineMaterial({
+	    let line = new Line2(lg, new LineMaterial({
 		color:tcolor,
 		opacity:style.opacity,
 		transparent:transp,
@@ -1653,11 +1657,11 @@ export function makeArrowThick(dir, origin, length, color, displacement) {
 
     const arrow = new THREE.Object3D();
     
-    const al = new THREE.Line2(
-	new THREE.LineGeometry().setPositions(
+    const al = new Line2(
+	new LineGeometry().setPositions(
 	    positions
 	),
-	new THREE.LineMaterial({
+	new LineMaterial({
 	    color: color,
 	    linewidth: 2*0.001
 	})
@@ -2109,7 +2113,7 @@ export function makePhoton(data, style, selection) {
 
 	// For some reason LineDashedMaterial doesn't
 	// work for Line2 so use this material
-	const ldm =  new THREE.LineMaterial({
+	const ldm =  new LineMaterial({
 	    color: color,
 	    dashed: true,
 	    linewidth: style.linewidth*0.001,
@@ -2120,8 +2124,8 @@ export function makePhoton(data, style, selection) {
 	ldm.defines.USE_DASH = ""; 
 	ldm.needsUpdate = true;
 	
-	photon = new THREE.Line2(
-	    new THREE.LineGeometry().setPositions(
+	photon = new Line2(
+	    new LineGeometry().setPositions(
 		[...pt1.toArray(), ...pt2.toArray()] 
 	    ),
 	    ldm
@@ -2204,7 +2208,7 @@ export function makePhotonRZ(data, style, selection) {
 
 	// For some reason LineDashedMaterial doesn't
 	// work for Line2 so use this material
-	const ldm =  new THREE.LineMaterial({
+	const ldm =  new LineMaterial({
 	    color: color,
 	    dashed: true,
 	    linewidth: style.linewidth*0.001,
@@ -2215,8 +2219,8 @@ export function makePhotonRZ(data, style, selection) {
 	ldm.defines.USE_DASH = ""; 
 	ldm.needsUpdate = true;
 	
-	photon = new THREE.Line2(
-	    new THREE.LineGeometry().setPositions(
+	photon = new Line2(
+	    new LineGeometry().setPositions(
 		[...pt1.toArray(), ...pt2.toArray()] 
 	    ),
 	    ldm
@@ -2462,13 +2466,13 @@ export function makeRPCRecHits(data) {
     
     if ( use_line2 ) {
     
-	u = new THREE.LineGeometry();
+	u = new LineGeometry();
 	u.setPositions([...data[0], ...data[1]]);
 
-	v = new THREE.LineGeometry();
+	v = new LineGeometry();
 	v.setPositions([...data[2], ...data[3]]);
 
-	w = new THREE.LineGeometry();
+	w = new LineGeometry();
 	w.setPositions([...data[4], ...data[5]]);
 	
     } else {
@@ -2496,19 +2500,19 @@ export function makeRPCRecHitsRZ(data) {
     
     if ( use_line2 ) {
     
-	u = new THREE.LineGeometry();
+	u = new LineGeometry();
 	u.setPositions([
 	    ...projectPoint(data[0], data[0]),
 	    ...projectPoint(data[1], data[0])
 	]);
 
-	v = new THREE.LineGeometry();
+	v = new LineGeometry();
 	v.setPositions([
 	    ...projectPoint(data[2], data[0]),
 	    ...projectPoint(data[3], data[0])
 	]);
 
-	w = new THREE.LineGeometry();
+	w = new LineGeometry();
 	w.setPositions([
 	    ...projectPoint(data[4], data[0]),
 	    ...projectPoint(data[5], data[0])
@@ -2574,7 +2578,7 @@ export function makeDTRecSegments(data) {
     
     if ( use_line2 ) {
     
-	geometry = new THREE.LineGeometry();
+	geometry = new LineGeometry();
 	geometry.setPositions([...data[1], ...data[2]]);
 
     } else {
@@ -2596,7 +2600,7 @@ export function makeDTRecSegmentsRZ(data) {
     
     if ( use_line2 ) {
     
-	geometry = new THREE.LineGeometry();
+	geometry = new LineGeometry();
 	geometry.setPositions([
 	    ...projectPoint(data[1], data[1]),
 	    ...projectPoint(data[2], data[1])
@@ -2700,7 +2704,7 @@ export function makeCSCDigis_V2(data) {
     
     if ( use_line2 ) {
 	
-	geometry = new THREE.LineGeometry()
+	geometry = new LineGeometry()
 	geometry.setPositions([...data[0], ...data[1]]);
     
     } else {
@@ -2722,7 +2726,7 @@ export function makeGEMDigis_V2(data) {
     
     if ( use_line2) {
     
-	geometry = new THREE.LineGeometry();
+	geometry = new LineGeometry();
 	geometry.setPositions([...data[0], ...data[1]]);
 	
     } else {
@@ -2767,10 +2771,10 @@ export function makeCSCLCTCorrelatedLCTDigis(data) {
 
     if ( use_line2 ) {
 
-	l1 = new THREE.LineGeometry();
+	l1 = new LineGeometry();
 	l1.setPositions([...data[0], ...data[1]]);
 
-	l2 = new THREE.LineGeometry();
+	l2 = new LineGeometry();
 	l2.setPositions([...data[2], ...data[3]]);
 
     } else {

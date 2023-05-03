@@ -1,6 +1,7 @@
 import {
     Object3D,
     Color,
+    Line,
     LineBasicMaterial,
     LineSegments,
     MeshBasicMaterial,

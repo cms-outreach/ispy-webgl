@@ -331,15 +331,13 @@ function displayCollection(key, group, name, objectIds) {
  
     const type = current_event.Types[key];
     const collection = current_event.Collections[key];
-
     const collectionTable = $('#collection-table');
   
     collectionTable.empty();
     collectionTable.append('<caption>' + group + ': ' + name + '</caption>');
     collectionTable.append('<thead> <tr>');
     
-    const collectionTableHead = collectionTable.find('thead').find('tr');
-    
+    const collectionTableHead = collectionTable.find('thead').find('tr');  
     const color_class = inverted_colors ? 'group white' : 'group black';
 
     collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
@@ -371,11 +369,12 @@ function displayCollection(key, group, name, objectIds) {
 	let rc = $(row_content);
 	collectionTable.append(rc);
 
-	/*
-	  FIXME
+	/* FIXME
 
 	document.getElementById(key.concat(index++)).onmouseenter = function() {
+	    
 	    highlightObject(objectIds[c])
+
 	};
 	
 	document.getElementById(key.concat(index++)).onmouseout = unHighlightObject;
@@ -396,6 +395,7 @@ function displayCollection(key, group, name, objectIds) {
 		const bLength = Math.sqrt(bV3[0] * bV3[0] + bV3[1] * bV3[1] + bV3[2] * bV3[2]);
 		
 		return aLength - bLength;
+
 	    }
 
 	    return 1;

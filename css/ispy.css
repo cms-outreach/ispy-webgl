@@ -144,6 +144,10 @@ canvas.hover {
   font-size: 14px;
 }   
 
+#VRButton {
+    display: none;
+}
+
 #toolbar {
   float: left;
 }

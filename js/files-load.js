@@ -593,9 +593,6 @@ function loadObjFiles() {
     
     document.getElementById('selected-obj').innerHTML = "Selected geometry";
     document.getElementById('load-obj').classList.add('disabled');
-    
-    //$('#selected-obj').html("Selected geometry");
-    //$('#load-obj').addClass('disabled');
 
     let tbl = document.getElementById('obj-files');
     
@@ -607,15 +604,9 @@ function loadObjFiles() {
 	let cell = row.insertCell(0);
 	let cls = "file";
 
-	console.log(name);
+	cell.innerHTML = '<a id="obj-file-' + i + '" class="' + cls + '" >' + name + '</a>';
 	
-	//cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" onclick="selectObj(\'' + name + '\');">' + name + '</a>';
-
-	cell.innerHTML = '<a id="browser-file-' + i + '" class="' + cls + '" >' + name + '</a>';
-	
-	document.getElementById("browser-file-"+i).onclick = function() {
-
-	    //console.log(name);
+	document.getElementById("obj-file-"+i).onclick = function() {
 	    
 	    selectObj(name);
 
@@ -1199,10 +1190,17 @@ function importDetector() {
     
 };
 
+document.getElementById("prev-event-button").onclick = prevEvent;
+document.getElementById("next-event-button").onclick = nextEvent;
+
 document.getElementById("web-files").onclick = showWebFiles;
 
 document.getElementById("local-files").onchange = loadLocalFiles;
-document.getElementById("local-files").onclick = $('#open-files').modal('hide');
+document.getElementById("local-files").onclick = function() {
+
+    $('#open-files').modal('hide');
+
+};
 
 document.getElementById("load-event").onclick = function() {
 

@@ -12,6 +12,7 @@ import {
     Raycaster,
     DirectionalLight,
     WebGLRenderer,
+    SphereGeometry,
     REVISION
 } from 'three';
 
@@ -22,6 +23,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SVGRenderer } from 'three/addons/renderers/SVGRenderer.js';
+import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 import { data_groups } from "./objects-config.js";
 
@@ -32,6 +34,9 @@ import {
 } from "./display.js";
 
 import { importDetector } from "./files-load.js";
+import { animation } from "./animate.js";
+import { showObject } from "./tree-view.js";
+
 
 let camera, framerate;
 let renderer, inset_renderer, renderer_name;
@@ -49,6 +54,7 @@ let raycaster, intersected;
 let animating, auto_rotating;
 let import_transparency;
 let light1, light2;
+let dolly;
 
 function lookAtOrigin() {
 
@@ -109,6 +115,31 @@ function useRenderer(type) {
 
     document.getElementById('settings').style.display = 'none';
 
+    renderer.xr.enabled = true;
+    document.getElementById("display").appendChild(VRButton.createButton(renderer));
+
+    dolly = new Group();
+
+    dolly.position.set(
+	camera.position.x,
+	camera.position.y,
+	camera.position.z
+    );
+
+    scene.add(dolly);
+
+    renderer.xr.addEventListener('sessionstart', function(e) {
+
+	dolly.add(camera);
+
+    });
+
+    renderer.xr.addEventListener('sessionend', function(e) {
+
+	dolly.remove(camera);
+
+    });
+    
 };
 
 function setupClipping() {
@@ -532,9 +563,23 @@ function init() {
 
     controls = ocontrols;
     
-    document.getElementById("3d").onclick = function() { showView("3D") };
-    document.getElementById("rphi").onclick = function() { showView("RPhi") };
-    document.getElementById("rhoz").onclick = function () { showView("RhoZ") };
+    document.getElementById("3d").onclick = function() {
+
+	showView("3D")
+
+    };
+
+    document.getElementById("rphi").onclick = function() {
+
+	showView("RPhi")
+
+    };
+
+    document.getElementById("rhoz").onclick = function () {
+
+	showView("RhoZ")
+
+    };
 
     views.forEach(v => {
 
@@ -608,13 +653,23 @@ function initDetector() {
     
 };
 
+let dir = new Vector3();
+
 function render() {
 
     if ( renderer !== null ) {
-	    
+
+	if ( renderer.xr.enabled === true &&
+	     renderer.xr.isPresenting === true ) {
+
+	    renderer.xr.getCamera().getWorldDirection(dir)
+	    dolly.translateOnAxis(dir, 0.02);
+
+	}
+	
 	renderer.render(scene, camera);
     
-	if ( get_image_data ){
+	if ( get_image_data ) {
       
 	    image_data = renderer.domElement.toDataURL();
 	    get_image_data = false;
@@ -635,15 +690,15 @@ function run() {
     
     setTimeout( function() {
   
-	requestAnimationFrame(run);
-  
+	//requestAnimationFrame(run);
+	renderer.setAnimationLoop(run);
+	
     }, 1000/framerate );
 
     stats.update();
-
     controls.update();
-    inset_camera.position.subVectors(camera.position, controls.target);
-	
+    
+    inset_camera.position.subVectors(camera.position, controls.target);	
     inset_camera.up = camera.up;
     inset_camera.quarternion = camera.quaternion;
     inset_camera.position.setLength(10);
@@ -801,7 +856,6 @@ function setPerspective() {
     controls.update();
     
 };
-
 
 function invertColors() {
 
@@ -1047,6 +1101,150 @@ function printImage() {
 
 };
 
+function toggleAnimation() {
+
+    console.log('animating');
+    
+    animating = !animating;
+
+    document.getElementById('animate').classList.toggle('active');
+
+    if ( animating ) {
+
+	resetView();
+      
+	let home = camera.position;
+
+	let length = camera.position.length();
+	let xs = [camera.position.x, 0];
+	let ys = [0, 0];
+	let zs = [camera.position.z, length];
+
+	let zoom1 = new TWEEN.Tween(camera.position)
+	    .to({x:xs, y:ys, z:zs}, animation.zoom.time)
+	    .easing(TWEEN.Easing.Sinusoidal.In);
+
+	let r = animation.rotation.radius;
+
+	let zoom2 = new TWEEN.Tween(camera.position)
+	    .to({x:0, y:0, z:r}, animation.zoom.time)
+	    .easing(TWEEN.Easing.Sinusoidal.In);
+
+	let ns = animation.rotation.nsteps;
+	let s = animation.rotation.angle/ns;
+
+	let cx = [];
+	let cy = [];
+	let cz = [];
+
+	for ( let i = 1; i <= ns; i++ ) {
+
+	    cx.push(r*Math.sin(s*i));
+	    cy.push(0.0);
+	    cz.push(r*Math.cos(s*i));
+
+	}
+
+	let bs = 0;
+	let es = ns/2;
+
+	let c1x = cx.slice(0,es);
+	let c1y = cy.slice(0,es);
+	let c1z = cz.slice(0,es);
+
+	let rotation1 = new TWEEN.Tween(camera.position)
+	    .to({x:c1x, y:c1y, z:c1z}, animation.rotation.time);
+
+	// Split the rotation in half and
+	// turn off tracks and turn on electrons/muons/jets
+	
+	bs = ns/2 + 1;
+	es = ns;
+
+	let c2x = cx.slice(bs, es);
+	let c2y = cy.slice(bs, es);
+	let c2z = cz.slice(bs, es);
+
+	let rotation2 = new TWEEN.Tween(camera.position)
+	    .to({x:c2x, y:c2y, z:c2z}, animation.rotation.time)
+	    .onStart(function(){
+		animation.rotation.objects.forEach(function(o) {
+		    showObject(o.key, current_view, o.show);
+		});
+	    });
+
+	let zoom3 = new TWEEN.Tween(camera.position)
+	    .to({x:home.x, y:home.y, z:home.z}, 5000)
+	    .onComplete(function() {
+		document.getElementById('animate').classList.toggle('active');
+	    })
+	    .easing(TWEEN.Easing.Sinusoidal.In);
+
+	zoom3.delay(1000);
+
+	let pgeometry = new SphereGeometry(0.25,32,32);
+	let pmaterial = new MeshBasicMaterial({color: 0xffff00});
+
+	let proton1 = new Mesh(pgeometry, pmaterial);
+	proton1.position.x = animation.collision.proton1.pi.x;
+	proton1.position.y = animation.collision.proton1.pi.y;
+	proton1.position.z = animation.collision.proton1.pi.z;
+
+	let proton2 = new Mesh(pgeometry, pmaterial);
+	proton2.position.x = animation.collision.proton2.pi.x;
+	proton2.position.y = animation.collision.proton2.pi.y;
+	proton2.position.z = animation.collision.proton2.pi.z;
+	
+	scene.add(proton1);
+	scene.add(proton2);
+
+	let c1 = new TWEEN.Tween(proton1.position)
+	    .to({z:0.0}, animation.collision.time)
+	    .onStart(function(){
+		animation.collision.before_objects.forEach(function(o){
+		    showObject(o.key, current_view, o.show);
+		});
+	    })
+	    .easing(TWEEN.Easing.Back.In);
+
+	let c2 = new TWEEN.Tween(proton2.position)
+	    .to({z:0.0}, animation.collision.time)
+	    .onComplete(function(){
+		zoom1.start();
+		animation.collision.after_objects.forEach(function(o) {
+		    showObject(o.key, current_view, o.show);
+		});
+	    })
+	    .easing(TWEEN.Easing.Back.In);
+
+	let c3 = new TWEEN.Tween(proton1.position)
+	    .to({z:animation.collision.proton1.pf.z}, animation.collision.time)
+	    .onComplete(function(){
+		scene.remove(proton1);
+	    }).easing(TWEEN.Easing.Back.Out);
+
+	let c4 = new TWEEN.Tween(proton2.position)
+	    .to({z:animation.collision.proton2.pf.z}, animation.collision.time)
+	    .onComplete(function(){
+		scene.remove(proton2);
+	    }).easing(TWEEN.Easing.Back.Out);
+	
+	c1.chain(c3);
+	c2.chain(c4);
+
+	zoom1.chain(zoom2);
+	zoom2.chain(rotation1);
+	
+	rotation1.chain(rotation2);
+	rotation2.chain(zoom3);
+
+	c1.start();
+	c2.start();
+	
+    }
+    
+};
+
 function exportScene() {
 
     const exporter = new GLTFExporter();
@@ -1105,15 +1303,15 @@ function exportArrayBuffer(output, filename) {
     
 };
 
-function exportGLTF_binary() {
-
-    exportGLTF(true);
-
-};
-
 function exportGLTF_text() {
 
     exportGLTF(false);
+
+};
+
+function exportGLTF_binary() {
+
+    exportGLTF(true);
 
 };
 
@@ -1125,6 +1323,7 @@ function exportGLTF(binary) {
     const exporter = new GLTFExporter();
 
     const options = {
+	onlyVisible: true,
 	binary: binary
     };
 	
@@ -1135,11 +1334,11 @@ function exportGLTF(binary) {
 	    c.children.forEach(function(o) {
 
 		if ( o.visible ) {
-		    
+
 		    exporter.parse(o, function(result) {
 
 			if ( result instanceof ArrayBuffer ) {
-
+			
 			    exportArrayBuffer(result, o.name+'.glb'); 
 			    
 			} else {
@@ -1149,8 +1348,8 @@ function exportGLTF(binary) {
 
 			}
 			
-		    }, options);
-
+		    }, options);		   
+		    
 		}
 			
 	    });
@@ -1191,7 +1390,6 @@ function exportOBJ() {
 function setTransparency(t) {
 
     import_transparency = t;
-
     document.getElementById('trspy').innerHTML = t;
 
     let imported = scene.getObjectByName('Imported');
@@ -1209,7 +1407,18 @@ function setTransparency(t) {
 
 };
 
+function toggleVR() {
 
+    let stereo_button = document.getElementById("stereo");    
+    let vrbutton = document.getElementById("VRButton");
+
+    stereo_button.classList.toggle("active");
+    
+    stereo_button.classList.contains("active") ? vrbutton.style.display = 'block' : vrbutton.style.display = 'none';
+    
+};
+
+document.getElementById("reload").onclick = reload;
 document.getElementById("reset_view").onclick = resetView;
 document.getElementById("zoom_in").onclick = zoomIn;
 document.getElementById("zoom_out").onclick = zoomOut;
@@ -1239,7 +1448,14 @@ document.getElementById("transparency-slider").oninput = function() {
 
     setTransparency(this.value);
 
-}
+};
+
+document.getElementById("export-obj").onclick = exportOBJ;
+document.getElementById("export-gltf").onclick = exportGLTF_text;
+document.getElementById("export-glb").onclick = exportGLTF_binary;
+
+document.getElementById("stereo").onclick = toggleVR;
+document.getElementById("animate").onclick = toggleAnimation;
 
 export {
     zoomIn, zoomOut,
