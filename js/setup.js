@@ -117,7 +117,7 @@ function useRenderer(type) {
 
     renderer.xr.enabled = true;
     document.getElementById("display").appendChild(VRButton.createButton(renderer));
-
+    
     dolly = new Group();
 
     dolly.position.set(

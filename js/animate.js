@@ -5,8 +5,6 @@ import {
     resetView
 } from "./setup.js";
 
-import { showObject } from "./tree-view.js";
-
 // This is particular to the sequence below:
 // - Colliding bunch crossings
 // - Zoom into position inside detector
