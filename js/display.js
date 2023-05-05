@@ -200,7 +200,7 @@ ispy.onMouseMove = function(e) {
 	// Undo selection stuff
 	container.style.cursor = 'auto';
 	
-	//ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
+	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 
 	if ( ! ispy.intersected.selected ) {
 	
@@ -244,7 +244,7 @@ ispy.onMouseMove = function(e) {
 		ispy.getObjectIds(ispy.scene.getObjectByName(ispy.intersected.name))
 	    );
 	    
-	    //ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
+	    ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, true);
 	    
 	}
 
@@ -601,7 +601,7 @@ ispy.highlightTableRow = function(key, objectUserData, doEffect) {
 		
 		var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
 		row.css("background-color", color);
-		row.scrollintoview();
+		//row.scrollintoview();
 
 	    } else {
 		
