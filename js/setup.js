@@ -920,7 +920,13 @@ function showView(view) {
 	document.getElementById('xy').removeAttribute('disabled', '');
 	document.getElementById('yz').removeAttribute('disabled', '');
 	document.getElementById('xz').removeAttribute('disabled', '');
-	
+		
+	document.getElementById('autorotate').removeAttribute('disabled', '');
+	document.getElementById('animate').removeAttribute('disabled', '');
+	document.getElementById('stereo').removeAttribute('disabled', '');
+	document.getElementById('export-model-button').removeAttribute('disabled', '');
+	document.getElementById('import-model-button').removeAttribute('disabled', '');
+
 	controls.enableRotate = true;
 	controls.reset();
 
@@ -949,6 +955,12 @@ function showView(view) {
 	document.getElementById('yz').setAttribute('disabled', '');
 	document.getElementById('xz').setAttribute('disabled', '');
 	
+	document.getElementById('autorotate').setAttribute('disabled', '');
+	document.getElementById('animate').setAttribute('disabled', '');
+	document.getElementById('stereo').setAttribute('disabled', '');
+	document.getElementById('export-model-button').setAttribute('disabled', '');
+	document.getElementById('import-model-button').setAttribute('disabled', '');
+
 	controls.enableRotate = false;
 	controls.reset();
 	
@@ -973,6 +985,12 @@ function showView(view) {
 	document.getElementById('yz').setAttribute('disabled', '');
 	document.getElementById('xz').setAttribute('disabled', '');
 	
+	document.getElementById('autorotate').setAttribute('disabled', '');
+	document.getElementById('animate').setAttribute('disabled', '');
+	document.getElementById('stereo').setAttribute('disabled', '');
+	document.getElementById('export-model-button').setAttribute('disabled', '');
+	document.getElementById('import-model-button').setAttribute('disabled', '');
+
 	controls.enableRotate = false;
 	controls.reset();
 

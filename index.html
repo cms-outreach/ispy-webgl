@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+  
+  <script type="importmap">
+    {
+	"imports": {
+	    "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+	    "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+	}
+    }
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="shortcut icon" href="./graphics/cms-favicon.png" type="image/png" />
@@ -21,15 +31,6 @@
   <!--
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
   -->
-
-  <script type="importmap">
-    {
-	"imports": {
-	    "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
-	    "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
-	}
-    }
-  </script>
   
   <script type="module" src="js/ispy.js"></script> 
   
@@ -172,10 +173,10 @@
           </div>
           
 	  <div class="btn-group" role="group">  
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
+            <button type="button" id="export-model-button" class="btn btn-default" data-toggle="modal" data-target="#export-model" title="Export 3D Model">
               <i class="fa fa-upload"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#import-model" title="Import 3D Model (obj format)">
+            <button type="button" id="import-model-button" class="btn btn-default" data-toggle="modal" data-target="#import-model" title="Import 3D Model (obj format)">
               <i class="fa fa-download"></i>
             </button>
           </div>
