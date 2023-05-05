@@ -21,6 +21,7 @@ import { nextEvent, prevEvent } from "./files-load.js";
 
 let intersected = null;
 let currentCollection;
+let highlighted;
 
 function updateRendererInfo() {
 
@@ -131,6 +132,8 @@ function onMouseMove(e) {
 
 	// Undo selection stuff
 	container.style.cursor = 'auto';
+
+	highlightTableRow(intersected.name, intersected.userData, false);
 	
 	if ( ! intersected.selected ) {
 	
@@ -173,6 +176,8 @@ function onMouseMove(e) {
 		event_description[current_view][intersected.name].name, 
 		getObjectIds(scene.getObjectByName(intersected.name))
 	    );
+
+	    highlightTableRow(intersected.name, intersected.userData, true);
 	    
 	}
 
@@ -353,9 +358,8 @@ function displayCollection(key, group, name, objectIds) {
     
     for ( let c in collection ) {
 	
-	//let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
-
-	let row_content = "<tr id='" + key.concat(index++) + "' >";
+	let k = key.concat(index++);
+	let row_content = "<tr id='" + k + "' >";
 	
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
@@ -368,17 +372,14 @@ function displayCollection(key, group, name, objectIds) {
 
 	let rc = $(row_content);
 	collectionTable.append(rc);
-
-	/* FIXME
-
-	document.getElementById(key.concat(index++)).onmouseenter = function() {
+	
+	document.getElementById(k).onmouseenter = function() {
 	    
 	    highlightObject(objectIds[c])
 
 	};
 	
-	document.getElementById(key.concat(index++)).onmouseout = unHighlightObject;
-	*/
+	document.getElementById(k).onmouseout = unHighlightObject;
 	
     }
 
@@ -538,7 +539,6 @@ function highlightTableRow(key, objectUserData, doEffect) {
 		
 		var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
 		row.css("background-color", color);
-		row.scrollintoview();
 
 	    } else {
 		

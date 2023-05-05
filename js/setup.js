@@ -36,7 +36,7 @@ import {
 import { importDetector } from "./files-load.js";
 import { animation } from "./animate.js";
 import { showObject } from "./tree-view.js";
-
+import { version } from "./config.js";
 
 let camera, framerate;
 let renderer, inset_renderer, renderer_name;

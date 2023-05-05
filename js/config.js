@@ -1,7 +1,5 @@
-//var ispy = ispy || {};
-
 export const detector = {"Collections":{}};
-export const version = "1.0.1-rc";
+export const version = "1.0.2-rc";
 
 export const POINT = 0;
 export const LINE = 1;
