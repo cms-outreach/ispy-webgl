@@ -406,8 +406,6 @@ ispy.addToScene = function(event, view) {
 	    break;
 
 	case ispy.ASSOC:
-
-	    console.log(key);
 	    
 	    const objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
 
