@@ -630,21 +630,32 @@ ispy.makeTrackPointsRZ = function(data, extra, assoc, style, selection) {
     let mi = 0;  
     let positions = [];
     let lps = [];
+    let ap, ai;
     
     for ( let i = 0; i < data.length; i++ ) {
 
 	positions[i] = [];
 
+	ai = 20+i*21;
+
+	if ( ai > assoc.length ) {
+
+	    ai = assoc.length - 1;
+
+	}
+	
+	ap = assoc[ai];
+	
 	// Find the last point for the trackpoints collection.
 	// This is needed for projection to determine whether
 	// or not it's above or below the axis.
 	if ( ispy.use_line2 ) {
 
-	    lps.push(...extra[assoc[20+i*21][1][1]][0]);
+	    lps.push(...extra[ap[1][1]][0]);
 	    
 	} else {
 
-	    lps.push(new THREE.Vector3(...extra[assoc[20+i*21][1][1]][0]));
+	    lps.push(new THREE.Vector3(...extra[ap[1][1]][0]));
 	    
 	}
 	

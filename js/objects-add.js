@@ -406,6 +406,8 @@ ispy.addToScene = function(event, view) {
 	    break;
 
 	case ispy.ASSOC:
+
+	    console.log(key);
 	    
 	    const objs = descr.fn(data, extra, assoc, descr.style, descr.selection);
 
@@ -553,8 +555,6 @@ ispy.addToScene = function(event, view) {
 };
 
 ispy.addEvent = function(event) {
-
-    console.log(ispy.camera.position);
     
     ispy.current_event = event;
     // Clear table from last event and show default caption
