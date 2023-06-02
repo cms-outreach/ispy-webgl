@@ -8,15 +8,15 @@ ispy.detector_description = {
 	
 	"RPCMinusEndcap3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"RPCPlusEndcap3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (+)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"RPCBarrel3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"GEMMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Gas Electron Multipliers (-)",
@@ -28,35 +28,35 @@ ispy.detector_description = {
 	},	
 	"CSC3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
-	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.2, linewidth: 1.0}
 	},	
 	"DTs3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
-	    fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},	
 	"HcalForwardMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (-)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"HcalForwardPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (+)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},
 	"HcalOuter3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Outer",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},	
 	"HcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (-)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},
 	"HcalEndcapPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (+)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},	
 	"HcalBarrel3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},
 	"EcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
