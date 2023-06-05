@@ -36,15 +36,15 @@ ispy.detector_description = {
 	},	
 	"HcalForwardMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (-)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.2, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.1, linewidth: 1.0}
 	},
 	"HcalForwardPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (+)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.1, linewidth: 1.0}
 	},
 	"HcalOuter3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Outer",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.04, linewidth: 1.0}
 	},	
 	"HcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (-)",
@@ -60,11 +60,11 @@ ispy.detector_description = {
 	},
 	"EcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5}
+	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5}
 	},
 	"EcalEndcapPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5}
+	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5}
 	},	
 	"EcalBarrel3D_V1": {
 	    type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
