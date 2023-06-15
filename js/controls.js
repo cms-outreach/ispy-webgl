@@ -1,9 +1,17 @@
-ispy.resetControls = function() {
-  
-  ispy.setPerspective();
-  ispy.initCamera();
-  ispy.controls.reset();
+ispy.resetView = function() {
 
+    ispy.setPerspective();
+    ispy.initCamera();
+
+    ispy.controls.reset();
+
+    document.getElementById('3d').classList.add('active');
+    document.getElementById('rphi').classList.remove('active');
+    document.getElementById('rhoz').classList.remove('active');
+
+    ispy.current_view = '3D';
+    ispy.scene = ispy.scenes['3D'];
+    
 };
 
 ispy.setXY = function() {
@@ -40,7 +48,7 @@ ispy.setYZ = function() {
     ispy.camera.position.y = 0;
     ispy.camera.position.z = 0;
     ispy.camera.up = new THREE.Vector3(0,1,0);
-
+    
     ispy.lookAtOrigin();
 
 };
@@ -48,15 +56,15 @@ ispy.setYZ = function() {
 ispy.autoRotate = function() {
 
     ispy.autoRotating = !ispy.autoRotating;
-    $('#autorotate').toggleClass('active');
+
+    document.getElementById('autorotate').classList.toggle('active');
 
 };
 
 ispy.setOrthographic = function() {
-
-    $('#perspective').removeClass('active');
-    $('#orthographic').addClass('active');
-    $('#stereo').removeClass('active');
+    
+    document.getElementById('perspective').classList.remove('active');
+    document.getElementById('orthographic').classList.add('active');
     
     ispy.is_perspective = false;
     ispy.camera = ispy.o_camera;
@@ -95,10 +103,9 @@ ispy.setOrthographic = function() {
 
 ispy.setPerspective = function() {
 
-    $('#perspective').addClass('active');
-    $('#orthographic').removeClass('active');
-    $('#stereo').removeClass('active');
-
+    document.getElementById('perspective').classList.add('active');
+    document.getElementById('orthographic').classList.remove('active');
+    
     ispy.is_perspective = true;
     ispy.camera = ispy.p_camera;
     
@@ -120,41 +127,85 @@ ispy.setPerspective = function() {
 
 ispy.showView = function(view) {
 
-    if ( view === '3d' ) {
-	
-	$('#3d').addClass('active');
-	$('#rphi').removeClass('active');
-	$('#rhoz').removeClass('active');
-   
-	ispy.setPerspective();
- 
-    } else if ( view === 'rphi' ) {
-	
-	$('#3d').removeClass('active');
-        $('#rphi').addClass('active');
-	$('#rhoz').removeClass('active');
+    switch (view) {
 
+    case '3D':
+	
+	document.getElementById('3d').classList.add('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.remove('active');
+	
+	document.getElementById('perspective').removeAttribute('disabled', '');
+	document.getElementById('orthographic').removeAttribute('disabled', '');
+	
+	document.getElementById('xy').removeAttribute('disabled', '');
+	document.getElementById('yz').removeAttribute('disabled', '');
+	document.getElementById('xz').removeAttribute('disabled', '');
+	
+	ispy.controls.enableRotate = true;
+	
+	/*
+	  We may have cases where the view is already 3D
+	  but we have switched to/from perspective/orthographic
+	*/
+	if ( ispy.current_view !== '3D' )
+	    ispy.setPerspective();
+
+	ispy.current_view = '3D';
+	ispy.scene = ispy.scenes['3D'];
+	
+	break;
+
+    case 'RPhi':
+
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.add('active');
+	document.getElementById('rhoz').classList.remove('active');
+
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
+	
+	ispy.controls.enableRotate = false;
+	ispy.controls.reset();
+	
+	ispy.setOrthographic();
 	ispy.setXY();
-	ispy.setOrthographic();
-
-	ispy.viewRPhi.forEach(function(o) {
-
-		console.log(o);
-
-	    });
-
-
-    } else {
 	
-	$('#3d').removeClass('active');
-        $('#rphi').removeClass('active');
-	$('#rhoz').addClass('active');
-    
-	ispy.setZX();
+	ispy.current_view = 'RPhi';
+	ispy.scene = ispy.scenes['RPhi'];
+	
+	break;
+
+    case 'RhoZ':
+	
+	document.getElementById('3d').classList.remove('active');
+	document.getElementById('rphi').classList.remove('active');
+	document.getElementById('rhoz').classList.add('active');
+	
+	document.getElementById('perspective').setAttribute('disabled', '');
+	document.getElementById('orthographic').setAttribute('disabled', '');
+	
+	document.getElementById('xy').setAttribute('disabled', '');
+	document.getElementById('yz').setAttribute('disabled', '');
+	document.getElementById('xz').setAttribute('disabled', '');
+	
+	ispy.controls.enableRotate = false;
+	ispy.controls.reset();
+
 	ispy.setOrthographic();
+	ispy.setYZ();
+		
+	ispy.current_view = 'RhoZ';
+	ispy.scene = ispy.scenes['RhoZ'];
+	
+	break;
 	
     }
-
+    
 };
 
 ispy.enterFullscreen = function() {
@@ -193,8 +244,8 @@ ispy.exitFullscreen = function() {
 
 ispy.toggleFullscreen = function() {
 
-    $('#enterFullscreen').toggleClass('active');
-    $('#exitFullscreen').toggleClass('active');
+    document.getElementById('enterFullscreen').classList.toggle('active');
+    document.getElementById('exitFullscreen').classList.toggle('active');
 
 };
 
@@ -209,45 +260,6 @@ ispy.reload = function() {
 
 };
 
-ispy.toStereo = function () {
-
-  if ( ! ispy.stereo ) {
-
-    ispy.stereo = true;
-
-    ispy.camera.position.x = 5;
-    ispy.camera.position.y = 5;
-    ispy.camera.position.z = 10;
-
-    ispy.stereo_renderer = new THREE.StereoEffect(ispy.renderer);
-    ispy.do_controls = new THREE.DeviceOrientationControls(ispy.camera);
-
-    $('#axes').hide();
-    $('#event-info').hide();
-
-    $('#display')[0].addEventListener('click', ispy.toStereo, false);
-
-    ispy.do_controls.connect();
-
-    ispy.onWindowResize();
-
-  } else {
-
-    ispy.stereo = false;
-
-    $('#axes').show();
-    $('#event-info').show();
-
-    $('#display')[0].removeEventListener('click', ispy.toStereo, false);
-
-    ispy.setPerspective();
-    ispy.initCamera();
-    ispy.onWindowResize();
-
-  }
-  
-};
-
 function setOrientationControls(e) {
   
     if ( ! e.alpha ) {
@@ -257,20 +269,8 @@ function setOrientationControls(e) {
     }
 
     window.removeEventListener('deviceorientation', setOrientationControls, true);
+
 }
-
-//window.addEventListener('deviceorientation', setOrientationControls, true);
-
-ispy.setStereo = function() {
-
-    $('#perspective').removeClass('active');
-    $('#orthographic').removeClass('active');
-    $('#stereo').addClass('active');
-
-    ispy.toStereo();
-    ispy.enterFullscreen();
-
-};
 
 ispy.zoomIn = function() {
 
@@ -308,7 +308,6 @@ ispy.exportScene = function() {
 	ispy.exportArrayBuffer(result, 'scene.glb'); 
 
     }, options);
-
 
     alert('scene.glb created');
     
@@ -367,7 +366,8 @@ ispy.exportGLTF_text = function() {
 
 ispy.exportGLTF = function(binary) {
 
-    $('#export-model').hide();
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
     
     const exporter = new THREE.GLTFExporter();
 
@@ -410,7 +410,8 @@ ispy.exportGLTF = function(binary) {
 
 ispy.exportOBJ = function() {
 
-    $('#export-model').hide();
+    document.getElementById('export-model').style.display = 'none';
+    //$('#export-model').hide();
     
     const exporter = new THREE.OBJExporter();
 

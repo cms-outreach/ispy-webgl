@@ -1,18 +1,37 @@
 ispy.addGroups = function() {
 
-    ispy.treegui.addFolder("Detector");
-    ispy.treegui.addFolder("Imported");
-
+    ispy.gui.addFolder("Detector");
+    ispy.gui.addFolder("Imported");
+    
     ispy.subfolders.Detector = [];
     ispy.subfolders.Imported = [];
     
-    ispy.data_groups.forEach(function(g) {
+    ispy.data_groups.forEach(function(gr) {
 
-	ispy.treegui.addFolder(g);
-
-	ispy.subfolders[g] = [];
+	ispy.gui.addFolder(gr);
+	
+	ispy.subfolders[gr] = [];
 	
     });
+
+};
+
+ispy.clearSubfolders = function() {
+
+    ispy.data_groups.forEach(function(g) {
+
+	let folder = ispy.gui.__folders[g];
+
+	ispy.subfolders[g].forEach(function(s) {
+		
+	    folder.removeFolder(folder.__folders[s]);
+	    
+	});
+
+	ispy.subfolders[g] = [];
+	    
+    });
+
     
 };
 
@@ -23,45 +42,49 @@ ispy.toggle = function(key) {
     // For event information we display as simple HTML
     // so therefore not part of the scene
     if ( key.includes('Event') ) {
-    
-	if ( ispy.disabled[key] ) {
-      
-	    $('#event-text').hide();
-    
-	} else {
-      
-	    $('#event-text').show();
-    
-	}
-  
+
+	let event_text = document.getElementById('event-text');
+	ispy.disabled[key] ? event_text.style.display = 'none' : event_text.style.display = 'block';
+	
     }
 
-    ispy.scene.getObjectByName(key).visible = !ispy.disabled[key];
+    ispy.views.forEach(v => {
+	
+	let obj = ispy.scenes[v].getObjectByName(key);
 
-    // This is for picking. The raycaster is in layer 2.
-    // In-principle this toggle will add other non-pickable
-    // objects to the layer but we only check raycasting for
-    // Physics objects so this is fine.
-    ispy.scene.getObjectByName(key).traverse(function(s) {
+	// Not every object (and therefore key) is present in
+	// every scene.
+	if ( ! obj )
+	    return;
+	
+	obj.visible = !ispy.disabled[key];
 
-	s.layers.toggle(2);
+	// This is for picking. The raycaster is in layer 2.
+	// In-principle this toggle will add other non-pickable
+	// objects to the layer but we only check raycasting for
+	// Physics objects so this is fine.
+	obj.traverse(function(s) {
+
+	    s.layers.toggle(2);
+
+	});
 
     });
     
 };
 
-// In some cases (e.g. animation) we want to explicitly turn somethings on/off
+// In some cases (e.g. animation) we want to explicitly turn some things on/off
 // It would probably be nice to: do this by group, support wildcards, etc.
-ispy.showObject = function(key, show) {
+ispy.showObject = function(key, view, show) {
 
-    const obj = ispy.scene.getObjectByName(key);
+    const obj = ispy.scenes[view].getObjectByName(key);
     
     if ( obj !== undefined ) {
     
-	console.log(key, show);
 	obj.visible = show;
 	ispy.disabled[key] = !show;
-	$('#'+key).prop('checked', show);
+
+	document.getElementById(key).checked = show;
     
     }
 
@@ -76,18 +99,20 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
     let min_et = 1.0;
     let min_energy = 1.0;
     let nobjects = 0;
-    
-    if ( ispy.detector_description.hasOwnProperty(key) ) {
 
-	let style = ispy.detector_description[key].style;
+    view = '3D';
+    
+    if ( ispy.detector_description[view].hasOwnProperty(key) ) {
+
+	let style = ispy.detector_description[view][key].style;
 	opacity = style.opacity;
 	color.set(style.color);
 	
     }
 
-    if ( ispy.event_description.hasOwnProperty(key) ) {
+    if ( ispy.event_description[view].hasOwnProperty(key) ) {
 	
-	let style = ispy.event_description[key].style;
+	let style = ispy.event_description[view][key].style;
 
 	if ( style.hasOwnProperty('opacity') ) {
 	
@@ -128,7 +153,7 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	min_energy: 10.0
     };
 
-    let folder = ispy.treegui.__folders[group];
+    let folder = ispy.gui.__folders[group];
     let sf = folder.__folders[name];
 
     ispy.subfolders[group].push(name);
@@ -176,12 +201,19 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 	return;
 
     sf.add(row_obj, 'opacity', 0, 1).onChange(function() {
+	
+	ispy.views.forEach(v => {
+	    
+	    let obj = ispy.scenes[v].getObjectByName(key);
 
-	let obj = ispy.scene.getObjectByName(key);
+	    if ( ! obj )
+		return;
 
-	obj.children.forEach(function(o) {
+	    obj.children.forEach(function(o) {
 
-	    o.material.opacity = row_obj.opacity;
+		o.material.opacity = row_obj.opacity;
+
+	    });
 
 	});
 
@@ -196,12 +228,19 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 
-		let obj = ispy.scene.getObjectByName(key);
+		ispy.views.forEach(v => {
+		
+		    let obj = ispy.scenes[v].getObjectByName(key);
 
-		obj.children.forEach(function(o) {
+		    if ( ! obj )
+			return;
+		    
+		    obj.children.forEach(function(o) {
 	    
-		    o.material.linewidth = row_obj.linewidth*0.001;
+			o.material.linewidth = row_obj.linewidth*0.001;
 	    
+		    });
+
 		});
 
 	    });
@@ -212,16 +251,23 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     if ( ispy.use_line2 ) {
 
-	if ( key.includes('GlobalMuon') || key.includes('Electron') ) {
+	if ( key.includes('GlobalMuon') || key.includes('Electron') || key.includes('Photon') ) {
 	
 	    sf.add(row_obj, 'linewidth', 1, 5).onChange(function() {
 
-		let obj = ispy.scene.getObjectByName(key);
+		ispy.views.forEach(v => {
+		
+		    let obj = ispy.scenes[v].getObjectByName(key);
 
-		obj.children.forEach(function(o) {
+		    if ( ! obj )
+			return;
+		    
+		    obj.children.forEach(function(o) {
 	    
-		    o.material.linewidth = row_obj.linewidth*0.001;
+			o.material.linewidth = row_obj.linewidth*0.001;
 	    
+		    });
+
 		});
 
 	    });
@@ -234,11 +280,18 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_pt').onChange(function() {
 
-	    let obj = ispy.scene.getObjectByName(key);
+	    ispy.views.forEach(v => {
+	    
+		let obj = ispy.scenes[v].getObjectByName(key);
 
-	    obj.children.forEach(function(o) {
+		if ( ! obj )
+		    return;
+		
+		obj.children.forEach(function(o) {
 
-		o.visible = o.userData.pt < row_obj.min_pt ? false : true;
+		    o.visible = o.userData.pt < row_obj.min_pt ? false : true;
+
+		});
 
 	    });
 
@@ -250,11 +303,18 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_et').onChange(function() {
 
-	    let obj = ispy.scene.getObjectByName(key);
+	    ispy.views.forEach(v => {
+	    
+		let obj = ispy.scenes[v].getObjectByName(key);
 
-	    obj.children.forEach(function(o) {
+		if ( ! obj )
+		    return;
+		
+		obj.children.forEach(function(o) {
 
-		o.visible = o.userData.et < row_obj.min_et ? false : true;
+		    o.visible = o.userData.et < row_obj.min_et ? false : true;
+		    
+		});
 
 	    });
 
@@ -266,11 +326,18 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
 	sf.add(row_obj, 'min_energy').onChange(function() {
 
-	    let obj = ispy.scene.getObjectByName(key);
+	    ispy.views.forEach(v => {
+	    
+		let obj = ispy.scenes[v].getObjectByName(key);
 
-	    obj.children.forEach(function(o) {
+		if ( ! obj )
+		    return;
+		
+		obj.children.forEach(function(o) {
 
-		o.visible = o.userData.energy < row_obj.min_energy ? false : true;
+		    o.visible = o.userData.energy < row_obj.min_energy ? false : true;
+
+		});
 
 	    });
 
@@ -280,36 +347,45 @@ ispy.addSelectionRow = function(group, key, name, objectIds, visible) {
 
     sf.addColor(row_obj, 'color').onChange(function() {
 
-	let obj = ispy.scene.getObjectByName(key);
-	
-	// Change color in event_decription for objects in
-	// Physics group. Once they are picked (i.e. pointer over)
-	// the color will revert to this new one rather than to the original
-	if ( group.includes('Physics') ) {
+	ispy.views.forEach(v => {
 
-	    ispy.event_description[key].style.color = row_obj.color;
+	    let obj = ispy.scenes[v].getObjectByName(key);
 
-	}
-	
-	obj.children.forEach(function(o) {
+	    if ( ! obj )
+		return;
+	    
+	    // Change color in event_decription for objects in
+	    // Physics group. Once they are picked (i.e. pointer over)
+	    // the color will revert to this new one rather than to the original
+	    if ( group.includes('Physics') ) {
 
-	    o.traverse(function(oc) {
-
-		// Special case to handle
-		if ( oc.type === 'ArrowHelper' || key.includes('MET') || key.includes('Proton') ) {
-		    
-		    oc.children.forEach(function(og) {
-
-			og.material.color = new THREE.Color(row_obj.color);
-
-		    });
-		    
-		} else {
+		ispy.event_description[v][key].style.color = row_obj.color;
 		
-		    oc.material.color = new THREE.Color(row_obj.color);
+	    }
+	
+	    obj.children.forEach(function(o) {
 
-		}
+		o.traverse(function(oc) {
+
+		    // Special case to handle
+		    if ( oc.type === 'ArrowHelper' ||
+			 key.includes('MET') ||
+			 key.includes('Proton') ) {
 		    
+			oc.children.forEach(function(og) {
+
+			    og.material.color = new THREE.Color(row_obj.color);
+
+			});
+		    
+		    } else {
+		
+			oc.material.color = new THREE.Color(row_obj.color);
+			
+		    }
+		    
+		});
+	    
 	    });
 	    
 	});

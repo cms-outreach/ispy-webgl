@@ -7,7 +7,8 @@ ispy.lookAtOrigin = function() {
 ispy.setFramerate = function(fr) {
 
     ispy.framerate = fr;  
-    $('#fr').html(fr);
+
+    document.getElementById('fr').innerHTML = fr;
 
 };
 
@@ -31,10 +32,8 @@ ispy.useRenderer = function(type) {
     const height = document.getElementById('display').clientHeight;
 
     const rendererTypes = {
-	
 	'WebGLRenderer': THREE.WebGLRenderer,
 	'SVGRenderer': THREE.SVGRenderer
-    
     };
 
     const renderer = new rendererTypes[type]({antialias:true, alpha:true});
@@ -55,49 +54,175 @@ ispy.useRenderer = function(type) {
     
     document.getElementById('display').appendChild(ispy.renderer.domElement);
     document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
-    
-    $('#settings').modal('hide');
+
+    document.getElementById('settings').style.display = 'none';
 
 };
 
-ispy.init = function() {
+ispy.setupClipping = function() {
+    
+    ispy.clipgui = new dat.GUI({
+	name: 'Clipping Controls',
+	hideable: false,
+	autoPlace: false
+    });
 
-    const display = document.getElementById('display');
-    const inset = document.getElementById('axes');
+    ispy.clipgui.domElement.id = 'clipgui';
+    document.getElementById('titlebar').appendChild(ispy.clipgui.domElement);
+
+    const localFolder = ispy.clipgui.addFolder("Local Clipping");
+    const globalFolder = ispy.clipgui.addFolder("Global Clipping");
+
+    const local_planeX = localFolder.addFolder("planeX");
+    const local_planeY = localFolder.addFolder("planeY");
+    const local_planeZ = localFolder.addFolder("planeZ");
     
-    const scene = new THREE.Scene();
-    ispy.scene = scene;
+    const global_planeX = globalFolder.addFolder("planeX");
+    const global_planeY = globalFolder.addFolder("planeY");
+    const global_planeZ = globalFolder.addFolder("planeZ");
+
+    const local_params = {
+	
+	planeX: {
+	    constant: 10,
+	    negated: false 
+	},
     
-    const width = display.clientWidth;
-    const height = display.clientHeight;
+	planeY: {
+	    constant: 10,
+	    negated: false
+	},
     
-    ispy.p_camera = new THREE.PerspectiveCamera(
-	75,
-	width/height,
-	0.1,
-	100
+	planeZ: {
+	    constant: 30,
+	    negated: false
+	}
+
+    };
+    
+    const global_params = {
+    
+	planeX: {
+	    constant: 10,
+	    negated: false 
+	},
+    
+	planeY: {
+	    constant: 10,
+	    negated: false
+	},
+    
+	planeZ: {
+	    constant: 30,
+	    negated: false
+	}
+	
+    };
+
+    ispy.local_planes = [
+	new THREE.Plane(new THREE.Vector3(-1,0,0), local_params.planeX.constant),
+	new THREE.Plane(new THREE.Vector3(0,-1,0), local_params.planeY.constant),
+	new THREE.Plane(new THREE.Vector3(0,0,-1), local_params.planeZ.constant)
+    ];
+    
+    ispy.global_planes = [
+	new THREE.Plane(new THREE.Vector3(-1,0,0), global_params.planeX.constant),
+	new THREE.Plane(new THREE.Vector3(0,-1,0), global_params.planeY.constant),
+	new THREE.Plane(new THREE.Vector3(0,0,-1), global_params.planeZ.constant)
+    ];
+    
+    ispy.renderer.clippingPlanes = ispy.global_planes;
+    ispy.renderer.localClippingEnabled = true;
+
+    local_planeX.add(local_params.planeX, 'constant').min(-10).max(10).onChange(
+	d => ispy.local_planes[0].constant = d
+    );
+    
+    local_planeX.add(local_params.planeX, 'negated').onChange(() => {
+	ispy.local_planes[0].negate();
+	local_params.planeX.constant = ispy.local_planes[0].constant;
+    });
+    
+    local_planeX.open();
+    
+    global_planeX.add(global_params.planeX, 'constant').min(-10).max(10).onChange(
+	d => ispy.global_planes[0].constant = d
     );
 
-    ispy.p_camera.name = 'PerspectiveCamera';
+    global_planeX.add(global_params.planeX, 'negated').onChange(() => {
+	ispy.global_planes[0].negate();
+	global_params.planeX.constant = ispy.global_planes[0].constant;
+    });
 
-    ispy.o_camera = new THREE.OrthographicCamera(
-	width / -2,
-	width / 2,
-	height / 2,
-	height / -2,
-	0.1,
-	100
+    global_planeX.open();
+    
+    local_planeY.add(local_params.planeY, 'constant').min(-10).max(10).onChange(
+	d => ispy.local_planes[1].constant = d
     );
- 
-    ispy.o_camera.name = 'OrthographicCamera';
-    
-    ispy.is_perspective = true; 
-    ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
-    ispy.initCamera();
-    
-    ispy.velocity = new THREE.Vector3(0, 0, 0);
-    ispy.acceleration = new THREE.Vector3(0, 0, 0);
 
+    local_planeY.add(local_params.planeY, 'negated').onChange(() => {
+	ispy.local_planes[1].negate();
+	local_params.planeY.constant = ispy.local_planes[1].constant;
+    });
+        
+    local_planeY.open();
+    
+    global_planeY.add(global_params.planeY, 'constant').min(-10).max(10).onChange(
+	d => ispy.global_planes[1].constant = d
+    );
+
+    global_planeY.add(global_params.planeY, 'negated').onChange(() => {
+	ispy.global_planes[1].negate();
+	global_params.planeY.constant = ispy.global_planes[1].constant;
+    });
+
+    global_planeY.open();
+    
+    local_planeZ.add(local_params.planeZ, 'constant').min(-30).max(30).onChange(
+	d => ispy.local_planes[2].constant = d
+    );
+
+    local_planeZ.add(local_params.planeZ, 'negated').onChange(() => {
+	ispy.local_planes[2].negate();
+	local_params.planeZ.constant = ispy.local_planes[2].constant;
+    });
+    
+    local_planeZ.open();
+    
+    global_planeZ.add(global_params.planeZ, 'constant').min(-30).max(30).onChange(
+	d => ispy.global_planes[2].constant = d
+    );
+
+    global_planeZ.add(global_params.planeZ, 'negated').onChange(() => {
+	ispy.global_planes[2].negate();
+	global_params.planeZ.constant = ispy.global_planes[2].constant;
+    });
+
+    global_planeZ.open();
+
+};
+
+ispy.setupGUIs = function() {
+    
+    ispy.gui = new dat.GUI({
+	name: 'Controls',
+	hideable: false,
+	autoPlace: false
+    });
+
+    ispy.gui.domElement.id = 'treegui';
+    document.getElementById('titlebar').appendChild(ispy.gui.domElement);
+    
+    // It seems currently impossible with dat.gui
+    // to fetch the folders as an array and remove them
+    // (without knowing the name beforehand).
+    // Therefore we have to keep track of them by-hand.
+    ispy.subfolders = {};
+
+};
+
+ispy.setupInset = function(height) {
+    
     const inset_scene = new THREE.Scene();
     ispy.inset_scene = inset_scene;
 
@@ -107,65 +232,7 @@ ispy.init = function() {
     const inset_camera = new THREE.PerspectiveCamera(70, inset_width / inset_height, 1, 100);
     ispy.inset_camera = inset_camera;
     ispy.inset_camera.up = ispy.camera.up;
-
-    ispy.useRenderer('WebGLRenderer', width, height);
-  
-    ispy.stats = new Stats();
-    display.appendChild(ispy.stats.domElement);
-
-    // On page load hide the stats
-    $('#stats').hide();
-    // FF keeps the check state on reload so force an "uncheck"
-    $('#show-stats').prop('checked', false);
-
-    $('#show-stats').change(function() {
-	    
-	    if ( this.checked ) { // if checked then show
-		
-		$('#stats').show();
     
-	    } else {
-		
-		$('#stats').hide();
-    
-	    }
-
-	});
-
-    $('#show-logo').prop('checked', true);
-    
-    $('#show-logo').change(function() {
-	    
-	    if ( this.checked ) {
-      
-		$('#cms-logo').show();
-    
-	    } else {
-		
-		$('#cms-logo').hide();
-    
-	    }
-
-	});
-    
-    ispy.treegui = new dat.GUI({
-	name: 'Tree View',
-	hideable: false,
-	autoPlace: false
-    });
-
-    ispy.treegui.domElement.id = 'treegui';
-    document.getElementById('titlebar').appendChild(ispy.treegui.domElement);
-    
-    // It seems currently impossible with dat.gui
-    // to fetch the folders as an array and remove them
-    // (without knowing the name beforehand).
-    // Therefore we have to keep track of them by-hand.
-    ispy.subfolders = {};
-    
-    ispy.inverted_colors = false;
-    $('#invert-colors').prop('checked', false);
-
     const origin = new THREE.Vector3(0,0,0);
 
     // dir, origin, length, hex, headLength, headWidth
@@ -207,137 +274,111 @@ ispy.init = function() {
     ispy.inset_scene.add(rx);
     ispy.inset_scene.add(gy);
     ispy.inset_scene.add(bz);
-    
-    $('#show-axes').prop('checked', false); // FF keeps the state after a page refresh. Therefore force uncheck.
-  
-    $('#show-axes').change(function() {
-
-	if ( this.checked ) {
-
-	    $('#axes').hide();
-
-	} else {
-
-	    $('#axes').show();
-
-	}
-	
-    });
-
-    ispy.use_line2 = false;
-    $('#pickable_lines').prop('checked', false);
-
-    $('#pickable_lines').change(function() {
-
-	ispy.use_line2 = this.checked ? true : false;
-	
-    });
 				
     const font_loader = new THREE.FontLoader();
     
     font_loader.load('./fonts/helvetiker_regular.typeface.json', function(font) {
 
-	    const tps = {size:0.75, height:0.1, font:font};
+	const tps = {size:0.75, height:0.1, font:font};
+	
+	const x_geo = new THREE.TextGeometry('X', tps);
+	const y_geo = new THREE.TextGeometry('Y', tps);
+	const z_geo = new THREE.TextGeometry('Z', tps);
 
-	    const x_geo = new THREE.TextGeometry('X', tps);
-	    const y_geo = new THREE.TextGeometry('Y', tps);
-	    const z_geo = new THREE.TextGeometry('Z', tps);
+	const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	const x_text = new THREE.Mesh(x_geo, x_material);
+	x_text.position.x = length+headLength;
+	x_text.name = 'xtext';
 
-	    const x_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	    const x_text = new THREE.Mesh(x_geo, x_material);
-	    x_text.position.x = length+headLength;
-	    x_text.name = 'xtext';
-
-	    const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
-	    const y_text = new THREE.Mesh(y_geo, y_material);
-	    y_text.position.y = length+headLength;
-	    y_text.name = 'ytext';
+	const y_material = new THREE.MeshBasicMaterial({ color: 0x00ff00});
+	const y_text = new THREE.Mesh(y_geo, y_material);
+	y_text.position.y = length+headLength;
+	y_text.name = 'ytext';
 	    
-	    const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
-	    const z_text = new THREE.Mesh(z_geo, z_material);
-	    z_text.position.z = length+headLength;
-	    z_text.name = 'ztext';
+	const z_material = new THREE.MeshBasicMaterial({ color: 0x0000ff});
+	const z_text = new THREE.Mesh(z_geo, z_material);
+	z_text.position.z = length+headLength;
+	z_text.name = 'ztext';
 
-	    ispy.inset_scene.add(x_text);
-	    ispy.inset_scene.add(y_text);
-	    ispy.inset_scene.add(z_text);
-
-	});
-
-    // The second argument is necessary to make sure that mouse events are
-    // handled only when in the canvas
-    const controls = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
-    controls.rotateSpeed = 3.0;
-    controls.zoomSpeed = 0.5;
-    controls.dynamicDampingFactor = 1.0;
-
-    ispy.controls = controls;
-
-    ["Detector", "Imported"].forEach(function(g) {
-
-	let obj_group = new THREE.Object3D();
-	obj_group.name = g;
-	ispy.scene.add(obj_group);
+	ispy.inset_scene.add(x_text);
+	ispy.inset_scene.add(y_text);
+	ispy.inset_scene.add(z_text);
 
     });
     
-    // Add a parent object for each group
-    ispy.data_groups.forEach(function(g) {
+};
 
-	    let obj_group = new THREE.Object3D();
-	    obj_group.name = g;
-	    ispy.scene.add(obj_group);
-	    
-	});
+ispy.handleToggles = function() {
 
-    $('#version').html("v"+ispy.version);
-    $('#threejs').html("r"+THREE.REVISION);
+    // On page load hide the stats
+    let stats = document.getElementById('stats');
+    stats.style.display = 'none';
 
-    window.addEventListener('resize', ispy.onWindowResize, false);
-
-    ispy.get_image_data = false;
-    ispy.image_data = null;
+    let show_stats = document.getElementById('show-stats');
     
-    ispy.raycaster = new THREE.Raycaster();
-    ispy.raycaster.layers.set(2);
-
-    ispy.intersected = null;
+    // FF keeps the check state on reload so force an "uncheck"
+    show_stats.checked = false;
     
-    ispy.renderer.domElement.addEventListener('pointermove', ispy.onMouseMove, false);
-    ispy.renderer.domElement.addEventListener('pointerdown', ispy.onMouseDown, false);
+    show_stats.addEventListener('change', () => {
+
+	show_stats.checked == true ? stats.style.display = 'block' : stats.style.display = 'none';
+
+    });
     
-    // Are we running an animation?
-    ispy.animating = false;
 
-    ispy.setFramerate(30);
-    $('#fps-slider').prop('value', ispy.framerate); // for FF
+    let show_logo = document.getElementById('show-logo');
+    show_logo.checked = true;
+
+    show_logo.addEventListener('change', (event) => {
+
+	let cms_logo = document.getElementById('cms-logo');
+	event.target.checked ? cms_logo.style.display = 'block' : cms_logo.style.display = 'none';
+	   
+    });
     
-    ispy.importTransparency = 0.75;
-    $('#transparency-slider').prop('value', ispy.importTransparency);
-    $('#trspy').html(ispy.importTransparency);
+    ispy.inverted_colors = false;
+    document.getElementById('invert-colors').checked = false;
 
-    // Info dialogs are hidden by default (see ispy.css)
-    // FF keeps state on reload so force here
-    $('#show-info').prop('checked', false);
-
-    $('#show-info').change(function() {
-	    
-	    if ( this.checked ) { // if checked then already visible, so turn off
-		
-		$('.info').css('visibility', 'visible');
+    let show_axes = document.getElementById('show-axes');
     
-	    } else {
-		
-		$('.info').css('visibility', 'hidden');
-	    
-	    }
-  
-	});
+    // FF keeps the state after a page refresh. Therefore force uncheck.
+    show_axes.checked = false;
 
-    ispy.stereo = false;
+    show_axes.addEventListener('change', (event) => {
+
+	let axes = document.getElementById('axes');
+	event.target.checked ? axes.style.display = 'none' : axes.style.display = 'block';
+	
+    });
+
+    ispy.use_line2 = false;
+
+    let pickable_lines = document.getElementById('pickable_lines');
+
+    pickable_lines.checked = false;
+
+    pickable_lines.addEventListener('change', (event) => {
+
+	ispy.use_line2 = event.target.checked ? true : false;
+	
+    });
+
+    let clipgui = document.getElementById('clipgui');
+    clipgui.style.display = 'none';
+
+    let clipping = document.getElementById('clipping');
+    clipping.checked = false;
+
+    clipping.addEventListener('change', (event) => {
+
+	event.target.checked ? clipgui.style.display = 'block' : clipgui.style.display = 'none';
+
+    });
+
+};
+
+ispy.handleDragAndDrop = function() {
     
-    $('#display').append($('#event-info'));
-
     const canvas = ispy.renderer.domElement;
 
     canvas.ondragover = function() {
@@ -362,7 +403,127 @@ ispy.init = function() {
     canvas.addEventListener('ondragover', canvas.ondragover);
     canvas.addEventListener('ondrop', canvas.ondrop);
 
-    ispy.current_view = 'threed';
+};
+
+ispy.init = function() {
+
+    const display = document.getElementById('display');
+    const inset = document.getElementById('axes');
+
+    ispy.scenes = {
+	'3D': new THREE.Scene(),
+	'RPhi': new THREE.Scene(),
+	'RhoZ': new THREE.Scene()
+    };
+
+    ispy.views = ['3D', 'RPhi', 'RhoZ'];
+    
+    for ( const key in ispy.scenes ) {
+
+	ispy.scenes[key].name = key;
+
+    }
+    
+    ispy.current_view = '3D';
+    ispy.scene = ispy.scenes[ispy.current_view];
+    
+    const width = display.clientWidth;
+    const height = display.clientHeight;
+    
+    ispy.p_camera = new THREE.PerspectiveCamera(
+	75,
+	width/height,
+	0.1,
+	100
+    );
+
+    ispy.p_camera.name = 'PerspectiveCamera';
+
+    ispy.o_camera = new THREE.OrthographicCamera(
+	width / -2,
+	width / 2,
+	height / 2,
+	height / -2,
+	0.1,
+	100
+    );
+ 
+    ispy.o_camera.name = 'OrthographicCamera';
+    
+    ispy.is_perspective = true; 
+    ispy.camera = ispy.is_perspective ? ispy.p_camera : ispy.o_camera;
+    ispy.initCamera();
+    
+    ispy.velocity = new THREE.Vector3(0, 0, 0);
+    ispy.acceleration = new THREE.Vector3(0, 0, 0);
+
+    ispy.setupInset(height);
+    
+    ispy.useRenderer('WebGLRenderer', width, height);
+  
+    ispy.stats = new Stats();
+    display.appendChild(ispy.stats.domElement);
+
+    ispy.setupGUIs();    
+    ispy.setupClipping();
+    ispy.handleToggles();
+    ispy.handleDragAndDrop();
+
+    // The second argument is necessary to make sure that mouse events are
+    // handled only when in the canvas
+    ispy.tcontrols = new THREE.TrackballControls(ispy.camera, ispy.renderer.domElement);
+    ispy.tcontrols.rotateSpeed = 3.0;
+    ispy.tcontrols.zoomSpeed = 0.5;
+    ispy.tcontrols.dynamicDampingFactor = 1.0;
+    ispy.tcontrols.noRotate = false;
+    ispy.tcontrols.noPan = false;
+    
+    ispy.ocontrols = new THREE.OrbitControls(ispy.camera, ispy.renderer.domElement);
+    ispy.ocontrols.enableRotate = true;
+
+    ispy.controls = ispy.ocontrols;
+
+    ispy.views.forEach(v => {
+
+	['Detector', 'Imported'].concat(ispy.data_groups).forEach(g => {
+
+	    let obj_group = new THREE.Group();
+	    obj_group.name = g;
+	    ispy.scenes[v].add(obj_group);
+	   
+	});
+
+    });
+
+    document.getElementById('version').innerHTML = ispy.version;
+    document.getElementById('threejs').innerHTML = "r"+THREE.REVISION;
+    
+    window.addEventListener('resize', ispy.onWindowResize, false);
+
+    ispy.get_image_data = false;
+    ispy.image_data = null;
+    
+    ispy.raycaster = new THREE.Raycaster();
+    ispy.raycaster.layers.set(2);
+
+    ispy.intersected = null;
+    
+    ispy.renderer.domElement.addEventListener('pointermove', ispy.onMouseMove, false);
+    ispy.renderer.domElement.addEventListener('pointerdown', ispy.onMouseDown, false);
+    
+    // Are we running an animation?
+    ispy.animating = false;
+
+    ispy.setFramerate(30);
+
+    document.getElementById('fps-slider').value = ispy.framerate;
+    
+    ispy.importTransparency = 0.75;
+    document.getElementById('transparency-slider').value = ispy.importTransparency;
+   
+    document.getElementById('trspy').innerHTML = ispy.importTransparency;
+    
+    document.getElementById('display').appendChild(document.getElementById('event-info'));
     
     ispy.autoRotating = false;
 
@@ -389,70 +550,18 @@ ispy.initLight = function() {
 
 };
 
-ispy.getJSON = function(scr) {
-
-    return $.ajax({url: scr, dataType: "json", cache: true}).success(function(data) {
-	  
-	    $.extend(true, ispy.detector, data);
-	
-	});
-    
-};
-
-ispy.getScript = function(scr) {
-  
-    return $.ajax({url: scr, dataType: "script", cache: true});
-
-};
-
 ispy.initDetector = function() {
 
     ispy.importDetector();
     
 };
 
-ispy.initDetector_old = function() {
-
-    $('#loading').modal('show');
-
-    $.when(
-	ispy.getJSON('./geometry/json/eb.json'),
-	ispy.getJSON('./geometry/json/ee.json'),
-	ispy.getJSON('./geometry/json/hb.json'),
-	ispy.getJSON('./geometry/json/ho.json'),
-	ispy.getJSON('./geometry/json/hehf.json'),
-	ispy.getJSON('./geometry/json/pixel-phase1.json'),
-	ispy.getJSON('./geometry/json/tec.json'),
-	ispy.getJSON('./geometry/json/tib.json'),
-	ispy.getJSON('./geometry/json/tid.json'),
-	ispy.getJSON('./geometry/json/tob.json')
-
-    ).done(function(){
-		       
-	$.when(ispy.addDetector()).done(function() {
-            
-	    $('#loading').modal('hide');
-			   
-	});
-
-    });
-	
-};
-
 ispy.render = function() {
 
     if ( ispy.renderer !== null ) {
-
-	if ( ispy.stereo ) {
 	    
-	    ispy.stereo_renderer.render(ispy.scene, ispy.camera);
+	ispy.renderer.render(ispy.scene, ispy.camera);
     
-	} else {
-	    
-	    ispy.renderer.render(ispy.scene, ispy.camera);
-    
-	}
-
 	if ( ispy.get_image_data ){
       
 	    ispy.image_data = ispy.renderer.domElement.toDataURL();
@@ -474,30 +583,15 @@ ispy.run = function() {
 
     setTimeout( function() {
   
-	    requestAnimationFrame(ispy.run);
+	requestAnimationFrame(ispy.run);
   
-	}, 1000/ispy.framerate );
+    }, 1000/ispy.framerate );
 
     ispy.stats.update();
 
-    if ( ispy.stereo ) {
-
-	ispy.do_controls.update();
-
-	var width = window.innerWidth;
-	var height = window.innerHeight;
-
-	ispy.camera.aspect = width / height;
-	ispy.camera.updateProjectionMatrix();
-	ispy.stereo_renderer.setSize(width, height);
+    ispy.controls.update();
+    ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
 	
-    } else {
-
-	ispy.controls.update();
-	ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
-	
-    }
-
     ispy.inset_camera.up = ispy.camera.up;
     ispy.inset_camera.quarternion = ispy.camera.quaternion;
     ispy.inset_camera.position.setLength(10);
