@@ -120,7 +120,6 @@ ispy.addDetector = function() {
     
 };
 
-
 ispy.addToScene = function(event, view) {
 
     ispy.scene = ispy.scenes[view];

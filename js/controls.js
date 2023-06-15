@@ -143,18 +143,17 @@ ispy.showView = function(view) {
 	document.getElementById('xz').removeAttribute('disabled', '');
 	
 	ispy.controls.enableRotate = true;
-	ispy.controls.reset();
-
+	
 	/*
 	  We may have cases where the view is already 3D
-	  but we have switched to/from persepctive/orthographic
+	  but we have switched to/from perspective/orthographic
 	*/
 	if ( ispy.current_view !== '3D' )
 	    ispy.setPerspective();
 
 	ispy.current_view = '3D';
 	ispy.scene = ispy.scenes['3D'];
-
+	
 	break;
 
     case 'RPhi':
