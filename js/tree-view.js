@@ -84,8 +84,11 @@ ispy.showObject = function(key, view, show) {
 	obj.visible = show;
 	ispy.disabled[key] = !show;
 
-	document.getElementById(key).checked = show;
-    
+	let elem = document.getElementById(key);
+
+	if ( elem !== null )
+	    elem.checked = show;
+	
     }
 
 };

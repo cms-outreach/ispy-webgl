@@ -495,7 +495,7 @@ ispy.init = function() {
 
     });
 
-    document.getElementById('version').innerHTML = "v"+ispy.version;
+    document.getElementById('version').innerHTML = ispy.version;
     document.getElementById('threejs').innerHTML = "r"+THREE.REVISION;
     
     window.addEventListener('resize', ispy.onWindowResize, false);
