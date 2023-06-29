@@ -8,15 +8,15 @@ ispy.detector_description = {
 	
 	"RPCMinusEndcap3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (-)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"RPCPlusEndcap3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (+)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"RPCBarrel3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Resistive Plate Chambers (barrel)",
-	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeRPC, style: {color: "rgb(60%, 80%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},
 	"GEMMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Gas Electron Multipliers (-)",
@@ -28,43 +28,43 @@ ispy.detector_description = {
 	},	
 	"CSC3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
-	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.2, linewidth: 1.0}
 	},	
 	"DTs3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Drift Tubes",
-	    fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeDT, style: {color: "rgb(80%, 40%, 0%)", opacity: 0.2, linewidth: 1.0}
 	},	
 	"HcalForwardMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (-)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.1, linewidth: 1.0}
 	},
 	"HcalForwardPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Forward (+)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.1, linewidth: 1.0}
 	},
 	"HcalOuter3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Outer",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.04, linewidth: 1.0}
 	},	
 	"HcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (-)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},
 	"HcalEndcapPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Endcap (+)",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},	
 	"HcalBarrel3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "HCAL Barrel",
-	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.5, linewidth: 1.0}
+	    fn: ispy.makeHcal, style: {color: "rgb(70%, 70%, 0%)", opacity: 0.01, linewidth: 1.0}
 	},
 	"EcalEndcapMinus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (-)",
-	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5}
+	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5}
 	},
 	"EcalEndcapPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "ECAL Endcap (+)",
-	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.1, linewidth: 0.5}
+	    fn: ispy.makeEcal, style: {color: "rgb(50%, 80%, 100%)", opacity: 0.05, linewidth: 0.5}
 	},	
 	"EcalBarrel3D_V1": {
 	    type: ispy.BOX, on: true, group: "Detector", name: "ECAL Barrel",
@@ -641,15 +641,15 @@ ispy.event_description = {
 	},
 	"TrackingRecHits_V1": {
 	    type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
-	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
+	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 2}
 	},
 	"SiStripClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 2}
 	},
 	"SiPixelClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 2}
 	},
 	"Event_V1":{
 	    type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
@@ -787,11 +787,11 @@ ispy.event_description = {
 	},
 	"Photons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
-	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
+	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
 	},
 	"PATPhotons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (PAT)",
-	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
+	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
 	},
 	"GlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
@@ -883,15 +883,15 @@ ispy.event_description = {
 	},
 	"PrimaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
 	},
 	"SecondaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
 	},
 	"VertexCompositeCandidates_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
-	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
+	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.02, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
 	},
 	"SimVertices_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",
@@ -996,15 +996,15 @@ ispy.event_description = {
 	},
 	"TrackingRecHits_V1": {
 	    type:ispy.POINT, on:false, group:"Tracking", name: "Tracking Rec Hits",
-	    fn:ispy.makeTrackingRecHits, style: {color: "rgb(100%, 100%, 0%)", size: 0.05}
+	    fn:ispy.makeTrackingRecHitsRZ, style: {color: "rgb(100%, 100%, 0%)", size: 2}
 	},
 	"SiStripClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Strip Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(80%, 20%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(80%, 20%, 0%)", size: 2}
 	},
 	"SiPixelClusters_V1": {
 	    type: ispy.POINT, on:false, group:"Tracking", name: "Si Pixel Clusters",
-	    fn: ispy.makeTrackingClusters, style:{color: "rgb(100%, 40%, 0%)", size: 0.05}
+	    fn: ispy.makeTrackingClustersRZ, style:{color: "rgb(100%, 40%, 0%)", size: 2}
 	},
 	"Event_V1":{
 	    type: ispy.TEXT, on: true, group: "Provenance", name: "Event", fn: ispy.makeEvent, style: {}
@@ -1017,16 +1017,16 @@ ispy.event_description = {
 	},
 	"DTRecHits_V1": {
 	    type: ispy.SOLIDBOX, on: false, group: "Muon", name: "DT Rec. Hits",
-	    fn: ispy.makeDTRecHits, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 1}
+	    fn: ispy.makeDTRecHitsRZ, style: {color: "rgb(0%, 100%, 0%)", opacity: 0.5, linewidth: 1}
 	},
 	"DTRecSegment4D_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "DT Rec. Segments (4D)",
-	    fn: ispy.makeDTRecSegments, style: {color: "rgb(100%, 100%, 0%)",
+	    fn: ispy.makeDTRecSegmentsRZ, style: {color: "rgb(100%, 100%, 0%)",
 						opacity: 1.0, linewidth: 1.5}
 	},
 	"RPCRecHits_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "RPC Rec. Hits",
-	    fn: ispy.makeRPCRecHits, style: {color: "rgb(80%, 100%, 0%)",
+	    fn: ispy.makeRPCRecHitsRZ, style: {color: "rgb(80%, 100%, 0%)",
 					     opacity: 1.0, linewidth: 1.5}
 	},
 	"MatchingGEMs_V1": {
@@ -1039,7 +1039,7 @@ ispy.event_description = {
 	},
 	"GEMRecHits_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "GEM Rec. Hits (2D)",
-	    fn: ispy.makeGEMRecHits_V2, style: {color: "rgb(60%, 100%, 70%)", opacity: 1.0, linewidth: 1}
+	    fn: ispy.makeGEMRecHitsRZ, style: {color: "rgb(60%, 100%, 70%)", opacity: 1.0, linewidth: 1}
 	},
 	"GEMSegments_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "GEM Segments",
@@ -1077,29 +1077,21 @@ ispy.event_description = {
 	    type: ispy.LINE, on: false, group: "Muon", name: "CSC Correlated LCT Digis",
 	    fn: ispy.makeCSCLCTCorrelatedLCTDigis, style: {color: "rgb(0%,100%,100%)", opacity:0.8, linewidth: 2}
 	},
-	"MatchingCSCs_V1": {
-	    type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching CSCs",
-	    fn: ispy.makeMuonChamber, style: {color: "rgb(100%,0%,0%)", opacity: 0.1, linewidth: 1}
-	},
 	"CSCRecHit2Ds_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Rec. Hits (2D)",
-	    fn: ispy.makeCSCRecHit2Ds_V2, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
+	    fn: ispy.makeCSCRecHit2DsRZ, style: {color: "rgb(60%, 100%, 90%)", opacity: 1.0, linewidth: 1}
 	},
 	"CSCSegments_V1": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CSCSegments_V2": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CSCSegments_V3": {
 	    type: ispy.LINE, on: true, group: "Muon", name: "CSC Segments",
-	    fn: ispy.makeCSCSegments, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
-	},
-	"MuonChambers_V1": {
-	    type: ispy.SOLIDBOX, on: true, group: "Muon", name: "Matching muon chambers",
-	    fn: ispy.makeMuonChamberRZ, style: {color: "rgb(100%, 0%, 0%)", opacity: 0.1, linewidth: 1}
+	    fn: ispy.makeCSCSegmentsRZ, style: {color: "rgb(100%, 60%, 100%)", opacity: 1.0, linewidth: 1.5}
 	},
 	"CaloTowers_V2":{
 	    type: ispy.STACKEDTOWER, on: false, group: "Physics", name: "Calo Towers",
@@ -1142,11 +1134,11 @@ ispy.event_description = {
 	},
 	"Photons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (Reco)",
-	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
+	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy": 10.0}
 	},
 	"PATPhotons_V1": {
 	    type: ispy.SHAPE, on: false, group: "Physics", name: "Photons (PAT)",
-	    fn: ispy.makePhoton, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
+	    fn: ispy.makePhotonRZ, style: {color: "rgb(100%, 80%, 0%)", opacity: 1.0, linewidth: 2}, selection: {"min_energy":10.0}
 	},
 	"GlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
@@ -1243,15 +1235,15 @@ ispy.event_description = {
 	},
 	"PrimaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Primary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 100%, 0%)", opacity: 0.9}
 	},
 	"SecondaryVertices_V1": {
             type:ispy.SHAPE, on:false, group:"Physics", name: "Secondary Vertices (Reco)",
-            fn:ispy.makeVertex, style: {radius: 0.001, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
+            fn:ispy.makeVertex, style: {radius: 0.01, color: "rgb(100%, 40%, 0%)", opacity: 0.9}
 	},
 	"VertexCompositeCandidates_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "V0Vertices (Reco)",
-	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.002, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
+	    fn:ispy.makeVertexCompositeCandidate, style: {radius: 0.02, color: "rgb(100%, 0%, 0%)", opacity: 0.9}
 	},
 	"SimVertices_V1": {
 	    type:ispy.SHAPE, on:false, group:"Physics", name: "Vertices (Sim)",

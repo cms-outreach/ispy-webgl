@@ -1,10 +1,9 @@
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
 
     ispy.init();
     ispy.addGroups();
     ispy.initLight();
     ispy.initDetector();
-    //ispy.importBeampipe();
     ispy.loadWebFiles();
     ispy.run();
 

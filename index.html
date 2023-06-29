@@ -23,7 +23,8 @@
   <script src="js/lib/BufferGeometryUtils.js"></script>
 
   <script src="js/lib/TrackballControls.js"></script>
-    
+  <script src="js/lib/OrbitControls.js"></script>
+  
   <script src="js/lib/Projector.js"></script>
   <script src="js/lib/SVGRenderer.js"></script>
 
@@ -100,7 +101,7 @@
           </div>
           
 	  <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" onclick="ispy.resetControls();" title="Return to Start View">
+            <button type="button" class="btn btn-default" onclick="ispy.resetView();" title="Return to Start View">
               <i class="fa fa-home"></i>
             </button>
           </div>
@@ -127,13 +128,13 @@
 	  </div>
 
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" onclick="ispy.setXY();" title="YX Plane">
+            <button type="button" id="xy" class="btn btn-default" onclick="ispy.setXY();" title="YX Plane">
               <img src="./graphics/yx_small.png" class="img-responsive"/>
             </button>
-            <button type="button" class="btn btn-default" onclick="ispy.setYZ();" title="YZ plane">
+            <button type="button" id="yz" class="btn btn-default" onclick="ispy.setYZ();" title="YZ plane">
               <img src="./graphics/yz_small.png" class="img-responsive"/>
             </button>
-            <button type="button" class="btn btn-default" onclick="ispy.setZX();" title="XZ plane">
+            <button type="button" id="xz" class="btn btn-default" onclick="ispy.setZX();" title="XZ plane">
               <img src="./graphics/xz_small.png" class="img-responsive" title=""/>
             </button>
           </div>
