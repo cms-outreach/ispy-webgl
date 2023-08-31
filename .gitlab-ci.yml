@@ -1,6 +1,5 @@
 stages:
   - build
-  - deploy
 
 pages:
   stage: build
@@ -12,11 +11,3 @@ pages:
   artifacts:
     paths:
       - public
-
-dfsdeploy:
-  stage: deploy
-  only:
-    - deploy
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
-  script:
-    - deploy-dfs
