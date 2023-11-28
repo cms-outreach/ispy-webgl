@@ -622,7 +622,7 @@ ispy.highlightTableRow = function(key, objectUserData, doEffect) {
 		
 		var color = ispy.inverted_colors ? "#dfdfdf" : "#777";
 		row.css("background-color", color);
-		row.scrollintoview();
+		//row.scrollintoview();
 
 	    } else {
 		
