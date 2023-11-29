@@ -513,11 +513,10 @@ ispy.init = function() {
     
     // Are we running an animation?
     ispy.animating = false;
-
-    ispy.setFramerate(30);
-
-    document.getElementById('fps-slider').value = ispy.framerate;
     
+    ispy.setFramerate(30);
+    document.getElementById('fps-slider').value = ispy.framerate;
+
     ispy.importTransparency = 0.75;
     document.getElementById('transparency-slider').value = ispy.importTransparency;
    
