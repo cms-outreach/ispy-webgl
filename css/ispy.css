@@ -240,7 +240,7 @@ canvas.hover {
 }
 
 #display {
-  height: 100vh;
+  height: 75vh;
   overflow: hidden;
   padding: 0;
 }
