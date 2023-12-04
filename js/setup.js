@@ -4,6 +4,36 @@ ispy.lookAtOrigin = function() {
 
 };
 
+ispy.setDisplayVerticalHeight = function(vh) {
+
+    ispy.vh = vh;
+
+    document.getElementById('vh').innerHTML = vh;
+    let display = document.getElementById('display');
+
+    display.style.setProperty('height', vh+'vh');
+
+    let w = display.clientWidth;
+    let h = display.clientHeight;
+    
+    if ( ispy.is_perspective ) {
+
+        ispy.camera.aspect = w/h;
+
+    } else {
+
+        ispy.camera.left = -w/2;
+	ispy.camera.right = w/2;
+        ispy.camera.top = h/2;
+	ispy.camera.bottom = -h/2;
+
+    }
+
+    ispy.camera.updateProjectionMatrix();
+    ispy.renderer.setSize(w,h);
+     
+};
+
 ispy.setFramerate = function(fr) {
 
     ispy.framerate = fr;  
@@ -514,10 +544,12 @@ ispy.init = function() {
     // Are we running an animation?
     ispy.animating = false;
 
-    ispy.setFramerate(30);
-
-    document.getElementById('fps-slider').value = ispy.framerate;
+    ispy.setDisplayVerticalHeight(75);
+    document.getElementById('vh-slider').value = ispy.vh;
     
+    ispy.setFramerate(30);
+    document.getElementById('fps-slider').value = ispy.framerate;
+
     ispy.importTransparency = 0.75;
     document.getElementById('transparency-slider').value = ispy.importTransparency;
    
