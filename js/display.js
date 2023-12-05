@@ -464,7 +464,9 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     
     for ( let c in collection ) {
 	
-	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	let row_content = "<tr id='" +
+	    key.concat(index++) +  
+	    "' onclick='ispy.clickRow(\""+objectIds[c]+"\")' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
 
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
@@ -659,6 +661,8 @@ ispy.highlightObject = function(objectId) {
 
     var selected = ispy.scene.getObjectById(Number(objectId), true);
 
+    document.body.style.cursor = "pointer";
+    
     if ( selected ) {
     
 	if ( ispy.highlighted != selected && selected.visible ) {
@@ -680,6 +684,8 @@ ispy.highlightObject = function(objectId) {
 };
 
 ispy.unHighlightObject = function() {
+
+    document.body.style.cursor = "default";
     
     if ( ispy.highlighted ) {
 	
@@ -688,4 +694,42 @@ ispy.unHighlightObject = function() {
   
     }
 
+};
+
+
+ispy.clickRow = function(objectId) {
+
+    console.log(objectId);
+    
+    ispy.intersected = ispy.scene.getObjectById(Number(objectId), true);
+
+    // We only want to do this for muons and electrons since
+    // it's only to show what objects are selected for invariant mass.
+    if ( ispy.intersected.name.includes('Muon') ||
+	 ispy.intersected.name.includes('Electron') ) {
+	
+	if ( ispy.intersected.selected ) {
+	    
+	    const original_color = new THREE.Color(
+		ispy.event_description[ispy.current_view][ispy.intersected.name].style.color
+	    );
+	    
+	    ispy.intersected.material.color = original_color;
+	    ispy.intersected.selected = false;
+	    
+	    if ( ispy.selected_objects.has(ispy.intersected.id) ) {
+		
+		ispy.selected_objects.delete(ispy.intersected.id);
+		
+	    }
+	    	    
+	} else {
+
+	    ispy.intersected.material.color.setHex(0x808080);
+	    ispy.intersected.selected = true;
+	    ispy.displayEventObjectData();
+	    
+	}
+
+    }
 };
