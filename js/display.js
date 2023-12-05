@@ -532,7 +532,7 @@ ispy.displayEventObjectData = function() {
 	return;
 
     }
-
+    
     const objectUserData = ispy.intersected.userData;
     const type = ispy.current_event.Types[key];
     const eventObjectData = ispy.current_event.Collections[key][objectUserData.originalIndex];
@@ -620,6 +620,8 @@ ispy.highlightObject = function(objectId) {
 
     var selected = ispy.scene.getObjectById(Number(objectId), true);
 
+    document.body.style.cursor = "pointer";
+    
     if ( selected ) {
     
 	if ( ispy.highlighted != selected && selected.visible ) {
@@ -641,6 +643,8 @@ ispy.highlightObject = function(objectId) {
 };
 
 ispy.unHighlightObject = function() {
+
+    document.body.style.cursor = "default";
     
     if ( ispy.highlighted ) {
 	
