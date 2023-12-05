@@ -539,7 +539,7 @@ ispy.init = function() {
     // Are we running an animation?
     ispy.animating = false;
 
-    ispy.setFramerate(30);
+    ispy.setFramerate(60);
     $('#fps-slider').prop('value', ispy.framerate); // for FF
     
     ispy.importTransparency = 0.75;
