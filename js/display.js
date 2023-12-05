@@ -198,7 +198,8 @@ ispy.onMouseMove = function(e) {
     if ( ispy.intersected ) {
 
 	// Undo selection stuff
-	container.style.cursor = 'auto';
+	
+	document.body.style.cursor = 'auto';
 	
 	ispy.highlightTableRow(ispy.intersected.name, ispy.intersected.userData, false);
 
@@ -209,11 +210,11 @@ ispy.onMouseMove = function(e) {
 	    );
 
 	    ispy.intersected.material.color = original_color;
-
+	    
 	} else {
 
 	    ispy.intersected.material.color.setHex(0xcccccc);
-
+	  
 	}
 
 	ispy.intersected = null;
@@ -233,11 +234,11 @@ ispy.onMouseMove = function(e) {
 	    // Selection stuff happens
 	    ispy.intersected = res.object;
 
-	    container.style.cursor = 'pointer';
+	    document.body.style.cursor = 'pointer';
 	    
 	    var original_color = ispy.intersected.material.color;
 	    ispy.intersected.material.color.setHex(0xcccccc);
-
+	    
 	    ispy.displayCollection(
 		ispy.intersected.name, "Physics", 
 		ispy.event_description[ispy.current_view][ispy.intersected.name].name, 
@@ -272,7 +273,7 @@ ispy.onMouseDown = function(e) {
 		
 		ispy.intersected.material.color = original_color;
 		ispy.intersected.selected = false;
-
+		
 		if ( ispy.selected_objects.has(ispy.intersected.id) ) {
 
 		    ispy.selected_objects.delete(ispy.intersected.id);
