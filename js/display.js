@@ -466,7 +466,10 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	
 	let row_content = "<tr id='" +
 	    key.concat(index++) +  
-	    "' onclick='ispy.clickRow(\""+objectIds[c]+"\")' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	    "' onclick='ispy.clickRow(\""+
+	    objectIds[c]+"\")' onmouseenter='ispy.highlightObject(\"" +
+	    objectIds[c]+"\")' onmouseout='ispy.unHighlightObject(\""+
+	    objectIds[c]+"\")'>";
 
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
@@ -670,9 +673,9 @@ ispy.highlightObject = function(objectId) {
 	    if ( ispy.highlighted ) {
 
 		ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
-      
+		
 	    }
-
+	    
 	    ispy.highlighted = selected;
 	    ispy.highlighted.current_color = ispy.highlighted.material.color.getHex();
 	    ispy.highlighted.material.color.setHex(0xcccccc);
@@ -683,23 +686,20 @@ ispy.highlightObject = function(objectId) {
 
 };
 
-ispy.unHighlightObject = function() {
+ispy.unHighlightObject = function(objectId) {
 
     document.body.style.cursor = "default";
     
     if ( ispy.highlighted ) {
-	
+
 	ispy.highlighted.material.color.setHex(ispy.highlighted.current_color);
 	ispy.highlighted = null;
-  
+	
     }
 
 };
 
-
 ispy.clickRow = function(objectId) {
-
-    console.log(objectId);
     
     ispy.intersected = ispy.scene.getObjectById(Number(objectId), true);
 
@@ -728,6 +728,8 @@ ispy.clickRow = function(objectId) {
 	    ispy.intersected.material.color.setHex(0x808080);
 	    ispy.intersected.selected = true;
 	    ispy.displayEventObjectData();
+
+	    ispy.intersected.row_clicked = true;
 	    
 	}
 
