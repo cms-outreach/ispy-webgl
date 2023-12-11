@@ -373,6 +373,15 @@ ispy.handleToggles = function() {
 	
     });
 
+    $('#curve-guide').prop('checked', false);
+    
+    $('#curve-guide').change(function() {
+	
+	this.checked ? ispy.scene.getObjectByName('Axes').visible = true : ispy.scene.getObjectByName('Axes').visible = false;
+
+    });
+
+    
     $('#clipgui').hide();
     $('#clipping').prop('checked', false);
 
@@ -552,6 +561,35 @@ ispy.init = function() {
     
     ispy.autoRotating = false;
 
+    let axes = new THREE.Group();
+    axes.name = 'Axes';
+    axes.visible = false;
+
+    let angle = 15.0;
+    let radius = 10.0;
+    let origin = new THREE.Vector3(0,0,0);
+    let nsteps = 360/angle;
+    let d2r = Math.PI/180;
+    
+    for ( let n = 0; n <= nsteps; n++ ) {
+
+	axes.add(
+	    new THREE.ArrowHelper(
+		new THREE.Vector3(Math.cos(n*angle*d2r), Math.sin(n*angle*d2r), 0),
+		origin,
+		radius, 0x0909090, 0.01, 0.01
+	    )
+	);
+
+    }
+
+    // We need to clone otherwise the axes only
+    // appear in the last scene
+    ispy.scenes['3D'].add(axes);
+    ispy.scenes['RPhi'].add(axes.clone());
+    ispy.scenes['RhoZ'].add(axes.clone());
+
+    
 };
 
 ispy.initLight = function() {
