@@ -451,19 +451,19 @@ ispy.event_description = {
 	"GlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	    extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 2},
 	    selection:{"min_pt":1.0, "index":0}
 	},
 	"GlobalMuons_V2": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (Reco)",
 	    extra: "Points_V1", assoc: "MuonGlobalPoints_V1",
-	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 2},
 	    selection:{"min_pt":1.0, "index":0}
 	},
 	"PATGlobalMuons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Global Muons (PAT)",
 	    extra: "Points_V1", assoc: "PATMuonGlobalPoints_V1",
-	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 3},
+	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 2},
 	    selection:{"min_pt":1.0, "index":0}
 	},    
 	"StandaloneMuons_V1": {
@@ -511,19 +511,19 @@ ispy.event_description = {
 	"GsfElectrons_V1": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 3},
+	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.9, linewidth: 2},
 	    selection: {"min_pt":1.0, "index":0}
 	},
 	"GsfElectrons_V2": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 2},
 	    selection: {"min_pt":1.0, "index":0}
 	},
 	"GsfElectrons_V3": {
 	    type: ispy.ASSOC, on: true, group: "Physics", name: "Electron Tracks (GSF)",
 	    extra: "Extras_V1", assoc: "GsfElectronExtras_V1",
-	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 3},
+	    fn: ispy.makeThickTracks, style: {color: "rgb(10%, 100%, 10%)", opacity: 1, linewidth: 2},
 	    selection: {"min_pt":1.0, "index":0}
 	},
 	"PATElectrons_V1": {

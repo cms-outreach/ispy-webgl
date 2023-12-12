@@ -364,7 +364,7 @@ ispy.handleToggles = function() {
 	
     });
 
-    ispy.use_line2 = false;
+    ispy.use_line2 = true;
     $('#pickable_lines').prop('checked', false);
 
     $('#pickable_lines').change(function() {
