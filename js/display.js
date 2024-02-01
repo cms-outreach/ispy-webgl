@@ -466,10 +466,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	
 	let row_content = "<tr id='" +
 	    key.concat(index++) +  
-	    "' onclick='ispy.clickRow(\""+
-	    objectIds[c]+"\")' onmouseenter='ispy.highlightObject(\"" +
-	    objectIds[c]+"\")' onmouseout='ispy.unHighlightObject(\""+
-	    objectIds[c]+"\")'>";
+	    "' onmouseenter='ispy.highlightObject(\""+objectIds[c]+"\")'"+
+	    " onmouseout='ispy.unHighlightObject(\""+objectIds[c]+"\")'>";
 
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
