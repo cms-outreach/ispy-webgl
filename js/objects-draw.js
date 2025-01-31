@@ -191,7 +191,7 @@ ispy.makeSolidBoxRZ = function(data, ci) {
 
 };
 
-ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
+ispy.makeScaledSolidBox = function(data, boxes, ci, energy, scale) {
 
     let all_positions = [];
 
@@ -209,7 +209,6 @@ ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
     let v6 = new THREE.Vector3(...data[ci+6]);
     let v7 = new THREE.Vector3(...data[ci+7]);
  
-    const energy = data[0];
     scale = energy/scale;
 
     const center = new THREE.Vector3();
@@ -280,7 +279,7 @@ ispy.makeScaledSolidBox = function(data, boxes, ci, scale) {
 
 };
 
-ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, scale) {
+ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, energy, scale) {
 
     let all_positions = [];
 
@@ -335,7 +334,6 @@ ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, scale) {
     let v6 = new THREE.Vector3(2*x, yb3, b3.z);
     let v7 = new THREE.Vector3(x, yb4, b4.z);
  
-    const energy = data[0];
     scale = energy/scale;
 
     const center = new THREE.Vector3();
@@ -406,7 +404,7 @@ ispy.makeScaledSolidBoxRZ = function(data, boxes, ci, scale) {
 
 };
 
-ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
+ispy.makeScaledSolidTower = function(data, towers, ci, energy, scale) {
         
     let all_positions = [];
 
@@ -426,7 +424,6 @@ ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
     let v6 = new THREE.Vector3(...data[ci+6]);
     let v7 = new THREE.Vector3(...data[ci+7]);
 
-    const energy = data[0];
     scale = energy/scale;
 
     v4.sub(v0);
@@ -477,10 +474,237 @@ ispy.makeScaledSolidTower = function(data, towers, ci, scale) {
 
 };
 
+ispy.makePFCandidateTowersRZ = function(data, towers, ci, energy, scale) {
+
+    let all_positions = [];
+
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    // Front vertices
+    let f1 = new THREE.Vector3(...data[ci]);
+    let f2 = new THREE.Vector3(...data[ci+1]);
+    let f3 = new THREE.Vector3(...data[ci+2]);
+    let f4 = new THREE.Vector3(...data[ci+3]);
+    
+    // Back vertices    
+    let b1 = new THREE.Vector3(...data[ci+4]);
+    let b2 = new THREE.Vector3(...data[ci+5]);
+    let b3 = new THREE.Vector3(...data[ci+6]);
+    let b4 = new THREE.Vector3(...data[ci+7]);
+
+    let yf1 = Math.sqrt(f1.x*f1.x + f1.y*f1.y);
+    let yf2 = Math.sqrt(f2.x*f2.x + f2.y*f2.y);
+    let yf3 = Math.sqrt(f3.x*f3.x + f3.y*f3.y);
+    let yf4 = Math.sqrt(f4.x*f4.x + f4.y*f4.y);
+
+    let yb1 = Math.sqrt(b1.x*b1.x + b1.y*b1.y);
+    let yb2 = Math.sqrt(b2.x*b2.x + b2.y*b2.y);
+    let yb3 = Math.sqrt(b3.x*b3.x + b3.y*b3.y);
+    let yb4 = Math.sqrt(b4.x*b4.x + b4.y*b4.y);
+    
+    let x = 0.001;
+    let layer = -0.5;
+    
+    if ( f1.y < 0. )
+    {
+        yf1 = -yf1;
+        yf2 = -yf2;
+        yf3 = -yf3;
+        yf4 = -yf4;
+        yb1 = -yb1;
+        yb2 = -yb2;
+        yb3 = -yb3;
+        yb4 = -yb4;
+        x = -x;
+    }
+
+    if ( f2.z > 0. )
+	x = -x;
+
+    let v0 = new THREE.Vector3(layer + x, yf1, f1.z);
+    let v1 = new THREE.Vector3(layer + 2*x, yf2, f2.z);
+    let v2 = new THREE.Vector3(layer + 2*x, yf3, f3.z);
+    let v3 = new THREE.Vector3(layer + x, yf4, f4.z);
+
+    let v4 = new THREE.Vector3(layer + x, yb1, b1.z);
+    let v5 = new THREE.Vector3(layer + 2*x, yb2, b2.z);
+    let v6 = new THREE.Vector3(layer + 2*x, yb3, b3.z);
+    let v7 = new THREE.Vector3(layer + x, yb4, b4.z);
+    
+    scale = energy/scale;
+
+    v4.sub(v0);
+    v5.sub(v1);
+    v6.sub(v2);
+    v7.sub(v3);
+    
+    v4.normalize();
+    v5.normalize();
+    v6.normalize();
+    v7.normalize();
+
+    v4.multiplyScalar(scale);
+    v5.multiplyScalar(scale);
+    v6.multiplyScalar(scale);
+    v7.multiplyScalar(scale);
+
+    v4.addVectors(v0,v4);
+    v5.addVectors(v1,v5);
+    v6.addVectors(v2,v6);
+    v7.addVectors(v3,v7);
+
+    // front
+    addFace3(v0.toArray(), v1.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v0.toArray());
+    //back
+    addFace3(v4.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v7.toArray(), v4.toArray());
+    //top
+    addFace3(v4.toArray(), v5.toArray(), v1.toArray());
+    addFace3(v1.toArray(), v0.toArray(), v4.toArray());
+    //bottom
+    addFace3(v7.toArray(), v6.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v7.toArray());
+    //left
+    addFace3(v0.toArray(), v3.toArray(), v7.toArray());
+    addFace3(v7.toArray(), v4.toArray(), v0.toArray());
+    //right
+    addFace3(v1.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v2.toArray(), v1.toArray());
+
+    const tower = new THREE.BufferGeometry();
+    tower.attributes.position = new THREE.BufferAttribute(
+	new Float32Array(all_positions), 3
+    );
+
+    towers.push(tower);
+    
+};
+
+ispy.makePFCandidateTowers = function(data, towers, ci, energy, scale) {
+
+    let all_positions = [];
+
+    const addFace3 = (...vectors) => {
+	all_positions = all_positions.concat(...vectors);
+    };
+    
+    // Front vertices
+    let v0 = new THREE.Vector3(...data[ci]);
+    let v1 = new THREE.Vector3(...data[ci+1]);
+    let v2 = new THREE.Vector3(...data[ci+2]);
+    let v3 = new THREE.Vector3(...data[ci+3]);
+    
+    // Back vertices    
+    let v4 = new THREE.Vector3(...data[ci+4]);
+    let v5 = new THREE.Vector3(...data[ci+5]);
+    let v6 = new THREE.Vector3(...data[ci+6]);
+    let v7 = new THREE.Vector3(...data[ci+7]);
+
+    scale = energy/scale;
+
+    v4.sub(v0);
+    v5.sub(v1);
+    v6.sub(v2);
+    v7.sub(v3);
+    
+    v4.normalize();
+    v5.normalize();
+    v6.normalize();
+    v7.normalize();
+
+    v4.multiplyScalar(scale);
+    v5.multiplyScalar(scale);
+    v6.multiplyScalar(scale);
+    v7.multiplyScalar(scale);
+
+    v4.addVectors(v0,v4);
+    v5.addVectors(v1,v5);
+    v6.addVectors(v2,v6);
+    v7.addVectors(v3,v7);
+
+    // front
+    addFace3(v0.toArray(), v1.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v0.toArray());
+    //back
+    addFace3(v4.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v7.toArray(), v4.toArray());
+    //top
+    addFace3(v4.toArray(), v5.toArray(), v1.toArray());
+    addFace3(v1.toArray(), v0.toArray(), v4.toArray());
+    //bottom
+    addFace3(v7.toArray(), v6.toArray(), v2.toArray());
+    addFace3(v2.toArray(), v3.toArray(), v7.toArray());
+    //left
+    addFace3(v0.toArray(), v3.toArray(), v7.toArray());
+    addFace3(v7.toArray(), v4.toArray(), v0.toArray());
+    //right
+    addFace3(v1.toArray(), v5.toArray(), v6.toArray());
+    addFace3(v6.toArray(), v2.toArray(), v1.toArray());
+
+    const tower = new THREE.BufferGeometry();
+    tower.attributes.position = new THREE.BufferAttribute(
+	new Float32Array(all_positions), 3
+    );
+
+    towers.push(tower);
+    
+};
+
+ispy.makeEcalPFCandidateTowers = function(data, towers, scale, selection) {
+
+    const energy = data[0];
+
+    if ( energy > selection.min_energy ) {
+
+	return ispy.makePFCandidateTowers(data, towers, 6, energy, scale);
+
+    }
+    
+};
+
+ispy.makeEcalPFCandidateTowersRZ = function(data, towers, scale, selection) {
+
+    const energy = data[0];
+
+    if ( energy > selection.min_energy ) {
+
+	return ispy.makePFCandidateTowersRZ(data, towers, 6, energy, scale);
+
+    }
+
+};
+
+ispy.makeHcalPFCandidateTowersRZ = function(data, towers, scale, selection) {
+
+    const energy = data[0];
+
+    if ( energy > selection.min_energy ) {
+
+	return ispy.makePFCandidateTowersRZ(data, towers, 6, energy, scale);
+
+    }
+
+};
+
+ispy.makeHcalPFCandidateTowers = function(data, towers, scale, selection) {
+    
+    const energy = data[0];
+
+    if ( energy > selection.min_energy ) {
+	
+	return ispy.makePFCandidateTowers(data, towers, 6, energy, scale);
+
+    }
+  
+};
+
 // Transform energy towers in R-Z view:
 // All hits above XZ plane go up, below - down.
 
-ispy.makeScaledSolidTowerRZ = function(data, towers, ci, scale) {
+ispy.makeScaledSolidTowerRZ = function(data, towers, ci, energy, scale) {
         
     let all_positions = [];
 
@@ -539,7 +763,6 @@ ispy.makeScaledSolidTowerRZ = function(data, towers, ci, scale) {
     let v6 = new THREE.Vector3(layer + 2*x, yb3, b3.z);
     let v7 = new THREE.Vector3(layer + x, yb4, b4.z);
     
-    const energy = data[0];
     scale = energy/scale;
 
     v4.sub(v0);
@@ -1261,11 +1484,11 @@ ispy.makeCaloClusters = function(data, extra, assoc, style, selection) {
 
 ispy.makeEcalDigi = function(data, boxes, scale, selection) {
   
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTower(data, boxes, 15, scale*energy);
+	return ispy.makeScaledSolidTower(data, boxes, 15, energy, scale);
   
     }
 
@@ -1273,11 +1496,11 @@ ispy.makeEcalDigi = function(data, boxes, scale, selection) {
 
 ispy.makeERecHit_V2 = function(data, boxes, scale, selection) {
 
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTower(data, boxes, 5, scale);
+	return ispy.makeScaledSolidTower(data, boxes, 5, energy, scale);
   
     }
 
@@ -1285,11 +1508,11 @@ ispy.makeERecHit_V2 = function(data, boxes, scale, selection) {
 
 ispy.makeHRecHit_V2 = function(data, geometry, scale, selection) {
 
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
    
-	return ispy.makeScaledSolidBox(data, geometry, 5, scale);
+	return ispy.makeScaledSolidBox(data, geometry, 5, energy, scale);
   
     }
 
@@ -1297,11 +1520,11 @@ ispy.makeHRecHit_V2 = function(data, geometry, scale, selection) {
 
 ispy.makeERecHit_RZ = function(data, boxes, scale, selection) {
 
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidTowerRZ(data, boxes, 5, scale);
+	return ispy.makeScaledSolidTowerRZ(data, boxes, 5, energy, scale);
   
     }
 
@@ -1309,11 +1532,11 @@ ispy.makeERecHit_RZ = function(data, boxes, scale, selection) {
 
 ispy.makeHRecHit_RZ = function(data, geometry, scale, selection) {
 
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
    
-	return ispy.makeScaledSolidBoxRZ(data, geometry, 5, scale);
+	return ispy.makeScaledSolidBoxRZ(data, geometry, 5, energy, scale);
   
     }
 
@@ -1321,11 +1544,11 @@ ispy.makeHRecHit_RZ = function(data, geometry, scale, selection) {
 
 ispy.makeHGCRecHit = function(data, geometry, scale, selection) {
 
-    var energy = data[0];
+    const energy = data[0];
   
     if ( energy > selection.min_energy ) {
     
-	return ispy.makeScaledSolidBox(data, geometry, 5, 0.05*scale);
+	return ispy.makeScaledSolidBox(data, geometry, 5, energy, 0.05*scale);
   
     }
 
