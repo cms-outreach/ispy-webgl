@@ -805,7 +805,7 @@ ispy.loadSelectedObj = function() {
 };
 
 ispy.loadOBJMTL_new = function(obj_file, mtl_file, id, name, group, show) {
-
+    
     var mtl_loader = new THREE.MTLLoader();
 
     mtl_loader.load(mtl_file, function(materials) {
