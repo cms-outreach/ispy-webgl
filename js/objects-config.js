@@ -26,7 +26,11 @@ ispy.detector_description = {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Gas Electron Multipliers (+)",
 	    fn: ispy.makeGEM, style: {color: "rgb(30%, 70%, 10%)", opacity: 0.5, linewidth: 1.0}
 	},	
-	"CSC3D_V1": {
+	"CSCMinus3D_V1": {
+	    type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
+	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.2, linewidth: 1.0}
+	},	
+	"CSCPlus3D_V1": {
 	    type: ispy.BOX, on: false, group: "Detector", name: "Cathode Strip Chambers",
 	    fn: ispy.makeCSC, style: {color: "rgb(60%, 70%, 10%)", opacity: 0.2, linewidth: 1.0}
 	},	

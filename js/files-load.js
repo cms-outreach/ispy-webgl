@@ -1019,12 +1019,20 @@ ispy.importDetector = function() {
 	    file: './geometry/gltf/GEMMinus3D_V1.glb'
 	},
 	{
-	    id: 'CSC3D_V1',
-	    name: 'Cathode Strip Chambers',
+	    id: 'CSCPlus3D_V1',
+	    name: 'Cathode Strip Chambers (+)',
 	    group: 'Detector',
 	    show: false,
 	    view: '3D',
-	    file: './geometry/gltf/CSC3D_V1.glb'
+	    file: './geometry/gltf/CSCPlus3D_V1.glb'
+	},
+	{
+	    id: 'CSCMinus3D_V1',
+	    name: 'Cathode Strip Chambers (-)',
+	    group: 'Detector',
+	    show: false,
+	    view: '3D',
+	    file: './geometry/gltf/CSCMinus3D_V1.glb'
 	},
 	{
 	    id: 'DTs3D_V1',
