@@ -1,8 +1,9 @@
-image: gitlab-registry.cern.ch/linuxsupport/alma8-base:latest
+image: gitlab-registry.cern.ch/linuxsupport/alma9-base:latest
 
 before_script:
-  - yum -y update
-  - yum install -y xrootd-client
+  - dnf install -y epel-release dnf-plugins-core
+  - dnf config-manager --set-enabled crb
+  - dnf install -y xrootd-client
 
 pages:
   stage: deploy
