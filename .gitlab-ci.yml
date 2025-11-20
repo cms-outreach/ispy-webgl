@@ -1,22 +1,29 @@
-stages:
-  - build
-  - deploy
+image: busybox
 
 pages:
-  stage: build
+  stage: deploy
   script:
-    - mkdir .public
-    - cp -r $CI_PROJECT_DIR/* .public
-    - ls -ltr .public
-    - mv .public public
+    - echo "The site will be deployed to $CI_PAGES_URL"
+    - mkdir -p public
+    - mkdir -p public/css
+    - mkdir -p public/geometry/gltf
+    - mkdir -p public/geomety/obj
+    - mkdir -p public/fonts
+    - mkdir -p public/graphics
+    - mkdir -p js/lib
+    - mkdir -p webfonts
+    - cp index.html public/index.html
+    - cp css/*.css public/css
+    - cp geometry/gtlf/*.* public/geomtery/gltf
+    - cp geometry/obj/*.* public/geometry/obj
+    - cp fonts/*.*  public/fonts
+    - cp graphics/*.* public/graphics
+    - cp js/*.js public/js
+    - cp js/lib/*.js public/js/lib
+    - cp webfonts/*.* public/webfonts
   artifacts:
     paths:
       - public
-
-dfsdeploy:
-  stage: deploy
   only:
-    - deploy
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
-  script:
-    - deploy-dfs
+      - masterclass26
+
