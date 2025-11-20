@@ -1,4 +1,4 @@
-image: gitlab-registry.cern.ch/linuxsupport/cc7-base
+image: opensciencegrid/osg-wn:el9
 
 pages:
   stage: deploy
@@ -22,7 +22,7 @@ pages:
     - cp js/*.js public/js
     - cp js/lib/*.js public/js/lib
     - cp webfonts/*.* public/webfonts
-    - xrdcp -r root://eosuser.cern.ch//eos/user/m/mccauley/masterclass2026-files/ig?authz=$EOS_TOKEN public/masterclass
+    - xrdcp root://eosuser.cern.ch//eos/user/m/mccauley/masterclass2026-files/ig/*.ig?authz=$EOS_TOKEN public/masterclass
   artifacts:
     paths:
       - public
