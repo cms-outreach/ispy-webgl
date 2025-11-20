@@ -27,7 +27,7 @@ pages:
     - cp js/*.js public/js
     - cp js/lib/*.js public/js/lib
     - cp webfonts/*.* public/webfonts
-    - xrdcp root://eosuser.cern.ch//eos/user/m/mccauley/masterclass2026-files/ig/masterclass_1.ig?authz=$EOS_TOKEN public/masterclass
+    - xrdcp "root://eosuser.cern.ch//eos/user/m/mccauley/masterclass2026-files/ig/masterclass_1.ig?authz=$EOS_TOKEN" public/masterclass
   artifacts:
     paths:
       - public
