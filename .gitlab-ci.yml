@@ -1,4 +1,8 @@
-image: opensciencegrid/osg-wn:el9
+image: gitlab-registry.cern.ch/linuxsupport/alma8-base:latest
+
+before_script:
+  - yum -y update
+  - yum install -y xrootd-client
 
 pages:
   stage: deploy
