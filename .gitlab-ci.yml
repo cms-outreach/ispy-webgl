@@ -1,5 +1,11 @@
 image: busybox
 
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "masterclass26"'
+      when: always
+    - when: never
+
 pages:
   stage: deploy
   script:
@@ -7,11 +13,11 @@ pages:
     - mkdir -p public
     - mkdir -p public/css
     - mkdir -p public/geometry/gltf
-    - mkdir -p public/geomety/obj
+    - mkdir -p public/geometry/obj
     - mkdir -p public/fonts
     - mkdir -p public/graphics
-    - mkdir -p js/lib
-    - mkdir -p webfonts
+    - mkdir -p public/js/lib
+    - mkdir -p public/webfonts
     - cp index.html public/index.html
     - cp css/*.css public/css
     - cp geometry/gltf/*.* public/geomtery/gltf
