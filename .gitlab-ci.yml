@@ -20,7 +20,7 @@ pages:
     - mkdir -p public/webfonts
     - cp index.html public/index.html
     - cp css/*.css public/css
-    - cp geometry/gltf/*.* public/geomtery/gltf
+    - cp geometry/gltf/*.* public/geometry/gltf
     - cp geometry/obj/*.* public/geometry/obj
     - cp fonts/*.*  public/fonts
     - cp graphics/*.* public/graphics
