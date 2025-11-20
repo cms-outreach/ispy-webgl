@@ -14,7 +14,7 @@ pages:
     - mkdir -p webfonts
     - cp index.html public/index.html
     - cp css/*.css public/css
-    - cp geometry/gtlf/*.* public/geomtery/gltf
+    - cp geometry/gltf/*.* public/geomtery/gltf
     - cp geometry/obj/*.* public/geometry/obj
     - cp fonts/*.*  public/fonts
     - cp graphics/*.* public/graphics
