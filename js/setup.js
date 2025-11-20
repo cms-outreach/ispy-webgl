@@ -381,11 +381,11 @@ ispy.handleToggles = function() {
 	
     });
 
-    ispy.use_line2 = false;
+    ispy.use_line2 = true;
 
     let pickable_lines = document.getElementById('pickable_lines');
 
-    pickable_lines.checked = false;
+    pickable_lines.checked = true;
 
     pickable_lines.addEventListener('change', (event) => {
 

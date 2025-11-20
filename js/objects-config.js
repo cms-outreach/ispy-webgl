@@ -257,12 +257,12 @@ ispy.event_description = {
 	    selection: {"min_energy": 1.0}
 	},
 	"HERecHits_V2": {
-	    type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Endcap Rec. Hits",
+	    type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Endcap Rec. Hits",
 	    fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
 	    selection: {"min_energy": 0.0}
 	},
 	"HBRecHits_V2": {
-	    type: ispy.SCALEDSOLIDBOX, on: true, group: "HCAL", name: "Barrel Rec. Hits",
+	    type: ispy.SCALEDSOLIDBOX, on: false, group: "HCAL", name: "Barrel Rec. Hits",
 	    fn: ispy.makeHRecHit_V2, style: {color: "rgb(20%, 70%, 100%)", opacity: 0.5, linewidth: 0.25},
 	    selection: {"min_energy": 0.0}
 	},
@@ -525,25 +525,25 @@ ispy.event_description = {
 	    selection: {"min_pt":1.0, "index":0}
 	},
 	"TrackerMuons_V1": {
-	    type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
+	    type: ispy.ASSOC, on: false, group: "Physics", name: "Tracker Muons (Reco)",
 	    extra: "Points_V1", assoc: "MuonTrackerPoints_V1",
 	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	    selection:{"min_pt":1.0, "index":0}
 	},
 	"TrackerMuons_V2": {
-            type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (Reco)",
+            type: ispy.ASSOC, on: false, group: "Physics", name: "Tracker Muons (Reco)",
             extra: "Extras_V1", assoc: "MuonTrackerExtras_V1",
             fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	    selection:{"min_pt":1.0, "index":0}
 	},
 	"PATTrackerMuons_V1": {
-	    type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
+	    type: ispy.ASSOC, on: false, group: "Physics", name: "Tracker Muons (PAT)",
 	    extra: "Points_V1", assoc: "PATMuonTrackerPoints_V1",
 	    fn: ispy.makeTrackPoints, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	    selection:{"min_pt":1.0, "index":0}
 	},
 	"PATTrackerMuons_V2": {
-	    type: ispy.ASSOC, on: true, group: "Physics", name: "Tracker Muons (PAT)",
+	    type: ispy.ASSOC, on: false, group: "Physics", name: "Tracker Muons (PAT)",
 	    extra: "Extras_V1", assoc: "PATMuonTrackExtras_V1",
 	    fn: ispy.makeTracks, style: {color: "rgb(100%, 0%, 0%)", opacity: 1.0, linewidth: 1},
 	    selection:{"min_pt":1.0, "index":0}
@@ -616,6 +616,11 @@ ispy.event_description = {
 	    type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "Barrel Rec. Hits",
 	    fn: ispy.makeERecHit_V2, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, linewidth: 0.5},
 	    scale: 0.1, selection: {"min_energy": 0.25}
+	},
+	"EcalTowers_V1": {
+	    type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "EcalTowers",
+	    fn: ispy.makeEcalPFCandidateTowers, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, scale: 0.1},
+	    selection: {"min_energy": 1.5}
 	},
 	"HGCEERecHits_V1": {
 	    type: ispy.SCALEDSOLIDBOX, on: true, group: "ECAL", name: "HGC EE Rec. Hits",
@@ -994,7 +999,7 @@ ispy.event_description = {
 	    scale: 0.1, selection: {"min_energy": 0.25}
 	},
 	"EcalTowers_V1": {
-            type: ispy.SCALEDSOLIDTOWER, on: false, group: "ECAL", name: "EcalTowers",
+            type: ispy.SCALEDSOLIDTOWER, on: true, group: "ECAL", name: "EcalTowers",
             fn: ispy.makeEcalPFCandidateTowersRZ, style: {color: "rgb(10%, 100%, 10%)", opacity: 0.5, scale: 0.1},
             selection: {"min_energy": 1.5}
         },
