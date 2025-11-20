@@ -1,10 +1,4 @@
-image: busybox
-
-workflow:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "masterclass26"'
-      when: always
-    - when: never
+image: gitlab-registry.cern.ch/linuxsupport/cc7-base
 
 pages:
   stage: deploy
@@ -18,6 +12,7 @@ pages:
     - mkdir -p public/graphics
     - mkdir -p public/js/lib
     - mkdir -p public/webfonts
+    - mkdir -p public/masterclass
     - cp index.html public/index.html
     - cp css/*.css public/css
     - cp geometry/gltf/*.* public/geometry/gltf
@@ -27,9 +22,9 @@ pages:
     - cp js/*.js public/js
     - cp js/lib/*.js public/js/lib
     - cp webfonts/*.* public/webfonts
+    - xrdcp -r root://eosuser.cern.ch//eos/user/m/mccauley/masterclass2026-files/ig?authz=$EOS_TOKEN public/masterclass
   artifacts:
     paths:
       - public
-  only:
-      - masterclass26
-
+  rules:
+      - if: '$CI_COMMIT_BRANCH == "masterclass26"'
