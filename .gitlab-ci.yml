@@ -8,8 +8,8 @@ before_script:
 pages:
   stage: deploy
   variables:
-    - EOS_MGM_URL: root://eosuser.cern.ch
-    - EOS_PATH: /eos/user/m/mccauley/masterclass2026-files/ig
+    EOS_MGM_URL: root://eosuser.cern.ch
+    EOS_PATH: /eos/user/m/mccauley/masterclass2026-files/ig
   script:
     - echo "The site will be deployed to $CI_PAGES_URL"
     - mkdir -p public
@@ -30,8 +30,8 @@ pages:
     - cp js/*.js public/js
     - cp js/lib/*.js public/js/lib
     - cp webfonts/*.* public/webfonts
-    - echo ${EOS_MGM_URL}/${EOS_PATH}
-    - xrdcp ${EOS_MGM_URL}/${EOS_PATH}/masterclass_1.ig?auth=$EOS_TOKEN public/masterclass
+    - echo $EOS_MGM_URL/$EOS_PATH
+    - xrdcp $EOS_MGM_URL/$EOS_PATH/masterclass_1.ig?auth=$EOS_TOKEN public/masterclass
   artifacts:
     paths:
       - public
