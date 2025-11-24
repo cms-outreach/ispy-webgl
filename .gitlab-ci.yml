@@ -4,6 +4,8 @@ before_script:
   - dnf install -y epel-release dnf-plugins-core
   - dnf config-manager --set-enabled crb
   - dnf install -y xrootd-client
+  - echo "$X509_PROXY_B64" | base64 -d > "$X509_USER_PROXY"
+  - chmod 600 "$X509_USER_PROXY"
 
 pages:
   stage: deploy
@@ -31,7 +33,8 @@ pages:
     - cp js/lib/*.js public/js/lib
     - cp webfonts/*.* public/webfonts
     - echo $EOS_MGM_URL/$EOS_PATH
-    - xrdcp $EOS_MGM_URL/$EOS_PATH/masterclass_1.ig?auth=$EOS_TOKEN public/masterclass
+    - export X509_USER_PROXY
+    - xrdcp $EOS_MGM_URL/$EOS_PATH/masterclass_1.ig public/masterclass
   artifacts:
     paths:
       - public
