@@ -1,5 +1,8 @@
 image: gitlab-registry.cern.ch/linuxsupport/alma9-base:latest
 
+variables:
+  X509_USER_PROXY: "$CI_PROJECT_DIR/x509up"
+
 before_script:
   - dnf install -y epel-release dnf-plugins-core
   - dnf config-manager --set-enabled crb
