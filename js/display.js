@@ -419,9 +419,20 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     const color_class = ispy.inverted_colors ? 'group white' : 'group black';
 
     collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
+
+    let charge_index = -1;
+    let i = 0;
     
     for ( let t in type ) {
 
+	if ( type[t][0] === 'charge' ) {
+
+	    charge_index = i;
+
+	}
+
+	i += 1;
+	
 	let dataSort = type[t][1] === "double" ? "float" : type[t][1];
 	collectionTableHead.append($('<th class="'+ color_class +'" data-sort="' + dataSort + '"><i class="fa fa-sort"></i> ' + type[t][0] + '</th>'));
   
@@ -431,15 +442,27 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     
     for ( let c in collection ) {
 	
-	let row_content = "<tr id='" + key.concat(index++) + "' onmouseenter='ispy.highlightObject(\"" + objectIds[c] + "\")' onmouseout='ispy.unHighlightObject()'>";
+	let row_content = "<tr id='" +
+	    key.concat(index++) +
+	    "' onmouseenter='ispy.highlightObject(\"" +
+	    objectIds[c] +
+	    "\")' onmouseout='ispy.unHighlightObject()'>";
 
 	let i = index-1;
 	row_content += "<td>"+ i + "</td>";
 	
 	for ( let v in collection[c] ) {
-  
-	    row_content += "<td>"+collection[c][v]+"</td>";
+	    
+	    if ( v === charge_index.toString() ) {
+		
+		row_content += "<td> </td>";
 
+	    } else {
+
+		row_content += "<td>"+collection[c][v]+"</td>";
+
+	    }
+	    
 	}
 
 	let rc = $(row_content);
