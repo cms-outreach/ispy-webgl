@@ -421,6 +421,7 @@ ispy.displayCollection = function(key, group, name, objectIds) {
     collectionTableHead.append($('<th class="'+ color_class +'" data-sort="int"><i class="fa fa-sort"></i>index</th>'));
 
     let charge_index = -1;
+    let electronid_index = -1;
     let i = 0;
     
     for ( let t in type ) {
@@ -428,6 +429,12 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	if ( type[t][0] === 'charge' ) {
 
 	    charge_index = i;
+
+	}
+
+	if ( type[t][0] === 'electronId' ) {
+
+	    electronid_index = i;
 
 	}
 
@@ -453,7 +460,8 @@ ispy.displayCollection = function(key, group, name, objectIds) {
 	
 	for ( let v in collection[c] ) {
 	    
-	    if ( v === charge_index.toString() ) {
+	    if ( v === charge_index.toString() ||
+		 v === electronid_index.toString() ) {
 		
 		row_content += "<td> </td>";
 
