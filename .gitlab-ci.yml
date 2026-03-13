@@ -23,7 +23,7 @@ deploy-dev:
   variables:
     EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl-dev"
     EOS_MGM_URL: "root://eosproject.cern.ch"
-    METHOD: "rsync"
+    METHOD: "xrdcp"
   script:
     - deploy-eos
   before_script: []
@@ -37,7 +37,7 @@ deploy-prod:
   variables:
     EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl"
     EOS_MGM_URL: "root://eosproject.cern.ch"
-    METHOD: "rsync"
+    METHOD: "xrdcp"
   script:
     - deploy-eos
   before_script: []
