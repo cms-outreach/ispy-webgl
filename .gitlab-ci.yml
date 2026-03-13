@@ -22,7 +22,7 @@ deploy-dev:
   image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
   variables:
     EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl-dev"
-    EOS_MGM_URL: "root://eosproject.cern.ch"
+    EOS_MGM_URL: "root://eosuser.cern.ch"
     METHOD: "xrdcp"
   script:
     - deploy-eos
@@ -36,7 +36,7 @@ deploy-prod:
   image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
   variables:
     EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl"
-    EOS_MGM_URL: "root://eosproject.cern.ch"
+    EOS_MGM_URL: "root://eosuser.cern.ch"
     METHOD: "xrdcp"
   script:
     - deploy-eos
