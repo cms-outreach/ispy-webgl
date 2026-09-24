@@ -45,14 +45,6 @@ ispy.setDisplayVerticalHeight = function(vh) {
      
 };
 
-ispy.setFramerate = function(fr) {
-
-    ispy.framerate = fr;  
-
-    document.getElementById('fr').innerHTML = fr;
-
-};
-
 ispy.initCamera = function() {
 
     ispy.camera.position.x = 9.5;
@@ -554,9 +546,6 @@ ispy.init = function() {
     ispy.setDisplayVerticalHeight(75);
     document.getElementById('vh-slider').value = ispy.vh;
     
-    ispy.setFramerate(30);
-    document.getElementById('fps-slider').value = ispy.framerate;
-
     ispy.importTransparency = 0.75;
     document.getElementById('transparency-slider').value = ispy.importTransparency;
    
@@ -620,11 +609,7 @@ ispy.render = function() {
 
 ispy.run = function() {
 
-    setTimeout( function() {
-  
-	requestAnimationFrame(ispy.run);
-  
-    }, 1000/ispy.framerate );
+    requestAnimationFrame(ispy.run);
 
     ispy.stats.update();
 
