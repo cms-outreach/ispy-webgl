@@ -68,7 +68,7 @@ ispy.setOrthographic = function() {
     
     document.getElementById('perspective').classList.remove('active');
     document.getElementById('orthographic').classList.add('active');
-    
+
     ispy.is_perspective = false;
     ispy.camera = ispy.o_camera;
 
@@ -110,7 +110,7 @@ ispy.setPerspective = function() {
 
     document.getElementById('perspective').classList.add('active');
     document.getElementById('orthographic').classList.remove('active');
-    
+
     ispy.is_perspective = true;
     ispy.camera = ispy.p_camera;
     
@@ -266,16 +266,27 @@ ispy.reload = function() {
 };
 
 function setOrientationControls(e) {
-  
+
     if ( ! e.alpha ) {
-	
+
 	return;
-    
+
     }
 
     window.removeEventListener('deviceorientation', setOrientationControls, true);
 
 }
+
+ispy.toggleVR = function() {
+
+    const stereo_button = document.getElementById('stereo');
+    const vr_button = document.getElementById('VRButton');
+
+    stereo_button.classList.toggle('active');
+
+    vr_button.style.display = stereo_button.classList.contains('active') ? 'block' : 'none';
+
+};
 
 ispy.zoomIn = function() {
 

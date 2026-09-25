@@ -148,7 +148,11 @@ canvas.hover {
   display: block;
   font-family: 'Lucida Grande', sans-serif;
   font-size: 14px;
-}   
+}
+
+#VRButton {
+  display: none;
+}
 
 #toolbar {
   float: left;

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ispy.initLight();
     ispy.initDetector();
     ispy.loadWebFiles();
-    ispy.run();
+    ispy.renderer.setAnimationLoop(ispy.run);
 
     console.log(ispy.event_description);
 

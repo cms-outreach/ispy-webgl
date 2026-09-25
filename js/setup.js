@@ -4,7 +4,7 @@ import {
     Object3D, OrthographicCamera, PerspectiveCamera, Plane, Raycaster, REVISION,
     Scene, TextGeometry, Vector3, WebGLRenderer
 } from './three-imports.js';
-import { OrbitControls, TrackballControls } from './three-imports.js';
+import { OrbitControls, TrackballControls, VRButton } from './three-imports.js';
 import Stats from 'stats.js';
 import * as dat from 'dat.gui';
 import TWEEN from './lib/tween.min.js';
@@ -84,6 +84,25 @@ ispy.useRenderer = function(type) {
     document.getElementById('axes').appendChild(ispy.inset_renderer.domElement);
 
     document.getElementById('settings').style.display = 'none';
+
+    ispy.renderer.xr.enabled = true;
+    document.getElementById('display').appendChild(VRButton.createButton(ispy.renderer));
+
+    ispy.dolly = new Group();
+    ispy.dolly.position.copy(ispy.camera.position);
+    ispy.scene.add(ispy.dolly);
+
+    ispy.renderer.xr.addEventListener('sessionstart', function() {
+
+	ispy.dolly.add(ispy.camera);
+
+    });
+
+    ispy.renderer.xr.addEventListener('sessionend', function() {
+
+	ispy.dolly.remove(ispy.camera);
+
+    });
 
 };
 
@@ -552,7 +571,7 @@ ispy.init = function() {
     document.getElementById('trspy').innerHTML = ispy.importTransparency;
     
     document.getElementById('display').appendChild(document.getElementById('event-info'));
-    
+
     ispy.autoRotating = false;
 
 };
@@ -584,12 +603,21 @@ ispy.initDetector = function() {
     
 };
 
+const xr_direction = new Vector3();
+
 ispy.render = function() {
 
     if ( ispy.renderer !== null ) {
-	    
+
+	if ( ispy.renderer.xr.enabled === true && ispy.renderer.xr.isPresenting === true ) {
+
+	    ispy.renderer.xr.getCamera().getWorldDirection(xr_direction);
+	    ispy.dolly.translateOnAxis(xr_direction, 0.02);
+
+	}
+
 	ispy.renderer.render(ispy.scene, ispy.camera);
-    
+
 	if ( ispy.get_image_data ){
       
 	    ispy.image_data = ispy.renderer.domElement.toDataURL();
@@ -609,13 +637,11 @@ ispy.render = function() {
 
 ispy.run = function() {
 
-    requestAnimationFrame(ispy.run);
-
     ispy.stats.update();
 
     ispy.controls.update();
     ispy.inset_camera.position.subVectors(ispy.camera.position, ispy.controls.target);
-	
+
     ispy.inset_camera.up = ispy.camera.up;
     ispy.inset_camera.quarternion = ispy.camera.quaternion;
     ispy.inset_camera.position.setLength(10);
