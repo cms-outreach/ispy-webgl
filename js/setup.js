@@ -86,7 +86,11 @@ ispy.useRenderer = function(type) {
     document.getElementById('settings').style.display = 'none';
 
     ispy.renderer.xr.enabled = true;
-    document.getElementById('display').appendChild(VRButton.createButton(ispy.renderer));
+    // VRButton only sets this id when navigator.xr exists; set it for the
+    // 'not available' message too so CSS hides it until toggled
+    const vr_button = VRButton.createButton(ispy.renderer);
+    vr_button.id = 'VRButton';
+    document.getElementById('display').appendChild(vr_button);
 
     ispy.dolly = new Group();
     ispy.dolly.position.copy(ispy.camera.position);
