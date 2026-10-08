@@ -7,13 +7,17 @@
 
 This is a browser-based event display for the <a href="http://cern.ch/cms" target="_blank">CMS experiment</a> at the LHC using [three.js](https://threejs.org/).
 
-The "production" version is here:
+The production version is here:
 
 [https://cern.ch/ispy-webgl](https://cern.ch/ispy-webgl)
 
 and the development version is here:
 
 [https://cern.ch/ispy-webgl-dev](https://cern.ch/ispy-webgl-dev)
+
+The development version is also deployed to the gh-pages branch:
+
+[https://cms-outreach.github.io/ispy-webgl/](https://cms-outreach.github.io/ispy-webgl/)
 
 For more information on the input data format and how to create files for the display:
 
