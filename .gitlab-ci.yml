@@ -7,40 +7,41 @@ build:
   image: node:lts
   script:
     - npm ci
-    - npm run build
+    # Relative base so the bundle works from any EOS sub-directory
+    - npm run build -- --base=./
     - mkdir -p public && cp -r dist/* public/
   artifacts:
     paths:
       - public/
     expire_in: 1 hour
-  only:
-    - dev
-    - prod
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "prod"
+
+# Requires masked CI/CD variables EOS_ACCOUNT_USERNAME and EOS_ACCOUNT_PASSWORD
+# for an account with write access to the ispy EOS project space.
+.deploy-eos:
+  stage: deploy
+  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  needs: [build]
+  variables:
+    CI_OUTPUT_DIR: "public/"
+    EOS_MGM_URL: "root://eosproject.cern.ch"
+    METHOD: "xrdcp"
+  script:
+    - deploy-eos
+  before_script: []
+  after_script: []
 
 deploy-dev:
-  stage: deploy
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  extends: .deploy-eos
   variables:
-    EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl-dev"
-    EOS_MGM_URL: "root://eosuser.cern.ch"
-    METHOD: "xrdcp"
-  script:
-    - deploy-eos
-  before_script: []
-  after_script: []
-  only:
-    - dev
+    EOS_PATH: "/eos/project/i/ispy/www/ispy-webgl-dev"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
 
 deploy-prod:
-  stage: deploy
-  image: gitlab-registry.cern.ch/ci-tools/ci-web-deployer:latest
+  extends: .deploy-eos
   variables:
-    EOS_PATH: "/eos/project-i/ispy/www/ispy-webgl"
-    EOS_MGM_URL: "root://eosuser.cern.ch"
-    METHOD: "xrdcp"
-  script:
-    - deploy-eos
-  before_script: []
-  after_script: []
-  only:
-    - prod
+    EOS_PATH: "/eos/project/i/ispy/www/ispy-webgl"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "prod"
